@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include spo *.css
+recursive-include spo *.csv
+recursive-include spo *.html
+recursive-include spo *.ico
+recursive-include spo *.js
+recursive-include spo *.json
+recursive-include spo *.md
+recursive-include spo *.png
+recursive-include spo *.py
+recursive-include spo *.svg
+recursive-include spo *.txt
+recursive-exclude spo *.pyc
