@@ -7,7 +7,7 @@ def get_data():
 		{
 			"module_name": "SPO",
 			"color": "grey",
-			"icon": "octicon octicon file-submodule",
+			"icon": "octicon octicon-book",
 			"type": "module",
 			"label": _("SPO")
 		}
