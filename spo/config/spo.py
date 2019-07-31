@@ -11,6 +11,11 @@ def get_data():
 					"type": "doctype",
 					"name": "Anfrage",
 					"description": _("Mandats und oder sonstige Anfragen"),
+				},
+				{
+					"type": "doctype",
+					"name": "Mandat",
+					"description": _("Führendes Mandats-Dokument"),
 				}
 			]
 		}
