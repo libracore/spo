@@ -7,6 +7,28 @@ frappe.ui.form.on('Anfrage', {
 		frm.add_custom_button(__("Convert to Mandat"), function() {
             new_mandat(frm.doc.name);
         });
+		//var import_mitgliederdaten_btn = frm.fields_dict.import_mitgliederdaten.input //.addEventListener("click", function(frm) { console.log("yess duuuu"); } );
+		//console.log(import_mitgliederdaten_btn);
+		//import_mitgliederdaten_btn.addEventListener("click", function(frm) { console.log("yess duuuu"); } );
+	},
+	import_mitgliederdaten: function(frm) {
+		if (frm.doc.mitglied) {
+			// do some stuff
+		} else {
+			frappe.prompt([
+				{'fieldname': 'mitgliedernummer', 'fieldtype': 'Link', 'label': 'Mitglied', 'reqd': 1, 'options': 'Customer'}  
+			],
+			function(values){
+				cur_frm.set_value('mitglied', values.mitgliedernummer);
+				// do some stuff
+			},
+			'Bitte geben Sie die Mitgliedernummer an',
+			'Daten importieren'
+			);
+		}
+	},
+	mitglied_erstellen: function(frm) {
+		frappe.msgprint("Muss noch programmiert werden....");
 	}
 });
 
@@ -39,5 +61,5 @@ function new_mandat(anfrage) {
 
 function show_mandat_list_based_on_anfrage() {
 	frappe.route_options = {"anfragen": ["like", "%" + cur_frm.doc.name + "%"]};
-	frappe.set_route("List", "Mandat");
+	frappe.set_route("List", "Mandat");4 
 }
