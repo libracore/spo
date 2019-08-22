@@ -124,3 +124,30 @@ def update_frm_with_fetched_data(frm, name):
 	anfrage.save()
 	
 	return "ok"
+	
+@frappe.whitelist()
+def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', email='', telefon='', mobile=''):
+	mitglied = frappe.get_doc({
+		"doctype": "Customer",
+		"customer_name": vorname + " " + nachname
+	})
+	mitglied.insert()
+	
+	address = frappe.get_doc({
+		"doctype": "Address",
+		"links": [
+			{
+				"link_doctype": "Customer",
+				"link_name": mitglied.name
+			}
+		],
+		"address_line1": strasse + " " + hausnummer,
+		"city": ort,
+		"pincode": plz,
+		"email_id": email,
+		"phone": telefon,
+		"fax": mobile
+	})
+	address.insert()
+	
+	return mitglied.name

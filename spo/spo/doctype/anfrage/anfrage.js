@@ -6,7 +6,7 @@
 // mitgliedernummer = Kundennummer
 
 frappe.ui.form.on('Anfrage', {
-	setup: function(frm) {
+	onload: function(frm) {
 		if (frm.doc.__islocal) {
 			cur_frm.save();
 		}
@@ -78,7 +78,51 @@ frappe.ui.form.on('Anfrage', {
 		}
 	},
 	mitglied_erstellen: function(frm) {
-		frappe.msgprint("Muss noch programmiert werden....");
+		//kontrolle ob pflichtfelder ausgefüllt
+		var fehlende_daten = '';
+		var fehler = false;
+		if(!frm.doc.vorname) {
+			fehlende_daten += 'Vorname<br>';
+			fehler = true;
+		}
+		if(!frm.doc.nachname) {
+			fehlende_daten += 'Nachname<br>';
+			fehler = true;
+		}
+		if(!frm.doc.strasse) {
+			fehlende_daten += 'Strasse<br>';
+			fehler = true;
+		}
+		if(!frm.doc.plz) {
+			fehlende_daten += 'Postleitzahl<br>';
+			fehler = true;
+		}
+		if (fehler) {
+			frappe.msgprint("Bitte tragen Sie mindestens noch folgende Daten ein:<br>" + fehlende_daten, "Fehlende Daten");
+		} else {
+			frappe.call({
+				"method": "spo.spo.doctype.anfrage.anfrage.create_new_mitglied",
+				"args": {
+					"vorname": frm.doc.vorname,
+					"nachname": frm.doc.nachname,
+					"strasse": frm.doc.strasse,
+					"hausnummer": frm.doc.hausnummer,
+					"ort": frm.doc.ort,
+					"plz": frm.doc.plz,
+					"email": frm.doc.email,
+					"telefon": frm.doc.telefon,
+					"mobile": frm.doc.mobile
+				},
+				"async": false,
+				"callback": function(r) {
+					if (r.message) {
+						cur_frm.set_value('mitglied', r.message);
+						cur_frm.save();
+						frappe.msgprint("Das Mitglied <b>" + r.message + "</b> wurde angelegt", "Mitglied wurde angelegt");
+					}
+				}
+			});
+		}
 	}
 });
 
