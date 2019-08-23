@@ -11,7 +11,7 @@ class Anfrage(Document):
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
-	query = """SELECT * FROM `tabMitgliedschaft` WHERE `customer` = '{mitgliedernummer}' AND `ende` >= CURDATE()""".format(mitgliedernummer=mitgliedernummer)
+	query = """SELECT * FROM `tabMitgliedschaft` WHERE `mitglied` = '{mitgliedernummer}' AND `ende` >= CURDATE()""".format(mitgliedernummer=mitgliedernummer)
 	return frappe.db.sql(query, as_dict=True)
 	
 @frappe.whitelist()
@@ -120,7 +120,11 @@ def update_frm_with_fetched_data(frm, name):
 	anfrage.email = address.email_id
 	anfrage.plz = address.pincode
 	anfrage.mitglied = name
-	anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name or ''
+	#anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name or ''
+	if get_valid_mitgliedschaft_based_on_mitgliedernummer(name):
+		anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name
+	else:
+		anfrage.mitgliedschaft = ''
 	anfrage.save()
 	
 	return "ok"
@@ -151,3 +155,49 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 	address.insert()
 	
 	return mitglied.name
+	
+@frappe.whitelist()
+def check_mitgliedschaft_ablaufdatum(mitgliedschaft):
+	query = """SELECT * FROM `tabMitgliedschaft` WHERE `name` = '{mitgliedschaft}' AND `ende` >= CURDATE()""".format(mitgliedschaft=mitgliedschaft)
+	if frappe.db.sql(query, as_dict=True):
+		return True
+	else:
+		return False
+		
+@frappe.whitelist()
+def get_timer_diff(start, ende):
+	from frappe.utils.data import time_diff_in_seconds
+	return time_diff_in_seconds(ende, start) / 60
+	
+@frappe.whitelist()
+def get_dashboard_data(mitglied):
+	# m_ = als mitglied
+	# o_ = ohne mitgliedschaft
+	
+	m_last_year = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND YEAR(`creation`) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	o_last_year = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND YEAR(`creation`) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	m_ytd = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND YEAR(`creation`) = YEAR(CURDATE()) AND DATE_FORMAT(`creation`, '%Y-%m-%d') <= CURDATE()""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	o_ytd = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND YEAR(`creation`) = YEAR(CURDATE()) AND DATE_FORMAT(`creation`, '%Y-%m-%d') <= CURDATE()""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	m_q1 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND QUARTER(`creation`) = 1 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	o_q1 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND QUARTER(`creation`) = 1 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	m_q2 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND QUARTER(`creation`) = 2 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	o_q2 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND QUARTER(`creation`) = 2 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	m_q3 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND QUARTER(`creation`) = 3 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	o_q3 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND QUARTER(`creation`) = 3 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	m_q4 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND QUARTER(`creation`) = 4 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	o_q4 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND QUARTER(`creation`) = 4 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
+	
+	return {
+			"m_last_year": m_last_year,
+			"o_last_year": o_last_year,
+			"m_ytd": m_ytd,
+			"o_ytd": o_ytd,
+			"m_q1": m_q1,
+			"o_q1": o_q1,
+			"m_q2": m_q2,
+			"o_q2": o_q2,
+			"m_q3": m_q3,
+			"o_q3": o_q3,
+			"m_q4": m_q4,
+			"o_q4": o_q4
+			}

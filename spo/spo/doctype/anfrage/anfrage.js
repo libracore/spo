@@ -8,6 +8,7 @@
 frappe.ui.form.on('Anfrage', {
 	onload: function(frm) {
 		if (frm.doc.__islocal) {
+			start_timer(frm);
 			cur_frm.save();
 		}
 	},
@@ -16,9 +17,36 @@ frappe.ui.form.on('Anfrage', {
 		frm.add_custom_button(__("Convert to Mandat"), function() {
             new_mandat(frm.doc.name);
         });
-		//var import_mitgliederdaten_btn = frm.fields_dict.import_mitgliederdaten.input //.addEventListener("click", function(frm) { console.log("yess duuuu"); } );
-		//console.log(import_mitgliederdaten_btn);
-		//import_mitgliederdaten_btn.addEventListener("click", function(frm) { console.log("yess duuuu"); } );
+		
+		//Set filter to mitgliedschaft
+		cur_frm.fields_dict['mitgliedschaft'].get_query = function(doc) {
+			 return {
+				 filters: {
+					 "mitglied": frm.doc.mitglied
+				 }
+			 }
+		}
+		
+		//prüfen ob Mitgliedschaft gültig ist, wenn eine Mitgliedschaft eingetragen ist
+		if (frm.doc.mitgliedschaft) {
+			check_mitgliedschaft_ablaufdatum(frm);
+		}
+		
+		//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
+		if (frm.doc.mitglied) {
+			update_dashboard(frm);
+		}
+		
+		//show/hide timer stop btn
+		if (frm.doc.timer_status == 1) {
+			frm.add_custom_button(__("Stop Timer"), function() {
+				stop_timer(frm);
+			}).addClass("btn-primary");
+		} else {
+			frm.add_custom_button(__("Start Timer"), function() {
+				start_timer(frm);
+			}).addClass("btn-primary");
+		}
 	},
 	import_mitgliederdaten: function(frm) {
 		if (frm.doc.mitglied) {
@@ -118,11 +146,14 @@ frappe.ui.form.on('Anfrage', {
 					if (r.message) {
 						cur_frm.set_value('mitglied', r.message);
 						cur_frm.save();
-						frappe.msgprint("Das Mitglied <b>" + r.message + "</b> wurde angelegt", "Mitglied wurde angelegt");
+						frappe.msgprint("Das Mitglied <b>" + r.message + "</b> wurde angelegt<br><br>Bitte erfassen Sie noch die entsprechende Mitgliedschaft.", "Mitglied wurde angelegt");
 					}
 				}
 			});
 		}
+	},
+	manuelle_korrektur: function(frm) {
+		cur_frm.set_df_property('timer','read_only',0);
 	}
 });
 
@@ -189,7 +220,7 @@ function get_data_from_mitgliedschaft(frm, mitgliedschaft) {
         "async": false,
         "callback": function(response) {
             var mitgliedschaft = response.message;
-			get_data_from_mitgliedernummer(frm, mitgliedschaft.customer, false);
+			get_data_from_mitgliedernummer(frm, mitgliedschaft.mitglied, false);
         }
     });
 }
@@ -236,4 +267,96 @@ function get_vorschlagswerte(frm) {
 			frappe.msgprint(vorschlagswerte.full_matches + "<hr>" + vorschlagswerte.namens_matches + "<hr>" + vorschlagswerte.address_matches, 'Suchresultate');
         }
     });
+}
+
+function check_mitgliedschaft_ablaufdatum(frm) {
+	if (frm.doc.mitgliedschaft) {
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.check_mitgliedschaft_ablaufdatum",
+			"args": {
+				"mitgliedschaft": frm.doc.mitgliedschaft
+			},
+			"async": false,
+			"callback": function(response) {
+				if (!response.message) {
+					frappe.msgprint("Die hinterlegte Mitgliedschaft ist abgelaufen!", 'Achtung');
+				}
+			}
+		});
+	}
+}
+
+function start_timer(frm) {
+	cur_frm.set_value('timer_start', frappe.datetime.now_datetime());
+	cur_frm.set_value('timer_status', 1);
+	cur_frm.save();
+}
+
+function stop_timer(frm) {
+	cur_frm.set_value('timer_status', 0);
+	frappe.call({
+		"method": "spo.spo.doctype.anfrage.anfrage.get_timer_diff",
+		"args": {
+			"start": frm.doc.timer_start,
+			"ende": frappe.datetime.now_datetime()
+		},
+		"async": false,
+		"callback": function(response) {
+			console.log(Math.round(response.message));
+			cur_frm.set_value('timer', cur_frm.doc.timer + Math.round(response.message));
+			cur_frm.save();
+		}
+	});
+}
+
+function update_dashboard(frm) {
+	frappe.call({
+		"method": "spo.spo.doctype.anfrage.anfrage.get_dashboard_data",
+		"args": {
+			"mitglied": frm.doc.mitglied
+		},
+		"async": false,
+		"callback": function(response) {
+			var query = response.message;
+			let chart = new Chart( "#chart", { // or DOM element
+				data: {
+				labels: ["Letztes Jahr", "YTD", "Q1", "Q2", "Q3", "Q4"],
+
+				datasets: [
+					{
+						name: "Als Mitglied", chartType: 'bar',
+						values: [query.m_last_year, query.m_ytd, query.m_q1, query.m_q2, query.m_q3, query.m_q4]
+					},
+					{
+						name: "Ohne<br>Mitgliedschaft", chartType: 'bar',
+						values: [query.o_last_year, query.o_ytd, query.o_q1, query.o_q2, query.o_q3, query.o_q4]
+					},
+					{
+						name: "&Oslash;", chartType: 'line',
+						values: [(query.m_last_year + query.o_last_year) / 2, (query.m_ytd + query.o_ytd) / 2, (query.m_q1 + query.o_q1) / 2, (query.m_q2 + query.o_q2) / 2, (query.m_q3 + query.o_q3) / 2, (query.m_q4 + query.o_q4) / 2]
+					},
+					{
+						name: "Total", chartType: 'line',
+						values: [(query.m_last_year + query.o_last_year), (query.m_ytd + query.o_ytd), (query.m_q1 + query.o_q1), (query.m_q2 + query.o_q2), (query.m_q3 + query.o_q3), (query.m_q4 + query.o_q4)]
+					}
+				],
+
+				yMarkers: [{ label: "Mittelwert", value: (query.m_last_year + query.o_last_year + query.m_ytd + query.o_ytd + query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 12,
+					options: { labelPos: 'left' }}],
+				/*yRegions: [{ label: "Region", start: -10, end: 50,
+					options: { labelPos: 'right' }}]
+				*/},
+
+				title: "Dashboard",
+				type: 'axis-mixed', // or 'bar', 'line', 'pie', 'percentage'
+				height: 180,
+				colors: ['#00b000', '#d40000', 'light-blue', 'blue'],
+
+				tooltipOptions: {
+					formatTooltipX: d => (d + '').toUpperCase(),
+					formatTooltipY: d => d + ' min',
+				}
+			});
+		}
+	});
 }
