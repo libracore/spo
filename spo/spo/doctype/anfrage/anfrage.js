@@ -160,7 +160,7 @@ frappe.ui.form.on('Anfrage', {
 
 function new_mandat(anfrage) {
 	frappe.call({
-		method: 'spo.scripts.mandat.creat_new_mandat',
+		method: 'spo.spo.doctype.anfrage.anfrage.creat_new_mandat',
 		args: {
 			'anfrage': anfrage
 		},
