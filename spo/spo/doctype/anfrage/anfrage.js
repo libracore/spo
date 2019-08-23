@@ -27,9 +27,10 @@ frappe.ui.form.on('Anfrage', {
 			 }
 		}
 		
-		//prüfen ob Mitgliedschaft gültig ist, wenn eine Mitgliedschaft eingetragen ist
+		//prüfen ob Mitgliedschaft gültig ist und ob die Rechnung bezahlt ist
 		if (frm.doc.mitgliedschaft) {
 			check_mitgliedschaft_ablaufdatum(frm);
+			check_rechnung(frm);
 		}
 		
 		//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
@@ -384,6 +385,32 @@ function update_dashboard(frm) {
 					depth: 1             // default: 2
 				}
 			});
+		}
+	});
+}
+
+function check_rechnung(frm) {
+	frappe.call({
+		"method": "spo.spo.doctype.anfrage.anfrage.check_rechnung",
+		"args": {
+			"mitgliedschaft": frm.doc.mitgliedschaft
+		},
+		"async": false,
+		"callback": function(response) {
+			var rechnung = response.message;
+			if (rechnung == "Keine Rechnung") {
+				frm.add_custom_button(__("Es wurde noch keine Mitgliederrechnung erstellt!"), function() {
+					
+				}).addClass("btn-danger pull-left");
+			} else if (rechnung == "Paid") {
+				frm.add_custom_button(__("Die Mitgliederrechnung wurde bezahlt."), function() {
+					
+				}).addClass("btn-success pull-left");
+			} else {
+				frm.add_custom_button(__("Die Mitgliederrechnung ist unbezahlt!"), function() {
+					
+				}).addClass("btn-warning pull-left");
+			}
 		}
 	});
 }

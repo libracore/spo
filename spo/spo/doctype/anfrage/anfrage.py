@@ -206,3 +206,12 @@ def get_dashboard_data(mitglied, anfrage):
 			"callcenter_limit": callcenter_limit,
 			"callcenter_verwendet": callcenter_verwendet
 			}
+			
+@frappe.whitelist()
+def check_rechnung(mitgliedschaft):
+	mitgliedschaft = frappe.get_doc("Mitgliedschaft", mitgliedschaft)
+	if not mitgliedschaft.rechnung:
+		return "Keine Rechnung"
+	else:
+		rechnung = frappe.get_doc("Sales Invoice", mitgliedschaft.rechnung)
+		return rechnung.status
