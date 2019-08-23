@@ -56,5 +56,17 @@ def get_data():
 					"description": _("Mandats und oder sonstige Anfragen"),
 				}
 			]
+		},
+		{
+			"label": _("Einstellungen"),
+			"icon": "fa fa-cog",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Einstellungen",
+					"label": "Defaults",
+					"description": _("Standard Einstellungen"),
+				}
+			]
 		}
 	]

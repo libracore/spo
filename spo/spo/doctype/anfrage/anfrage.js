@@ -313,15 +313,17 @@ function update_dashboard(frm) {
 	frappe.call({
 		"method": "spo.spo.doctype.anfrage.anfrage.get_dashboard_data",
 		"args": {
-			"mitglied": frm.doc.mitglied
+			"mitglied": frm.doc.mitglied,
+			"anfrage": frm.doc.name
 		},
 		"async": false,
 		"callback": function(response) {
 			var query = response.message;
+			//Chart
 			let chart = new Chart( "#chart", { // or DOM element
 				data: {
 				labels: ["Letztes Jahr", "YTD", "Q1", "Q2", "Q3", "Q4"],
-
+				
 				datasets: [
 					{
 						name: "Als Mitglied", chartType: 'bar',
@@ -347,7 +349,7 @@ function update_dashboard(frm) {
 					options: { labelPos: 'right' }}]
 				*/},
 
-				title: "Dashboard",
+				
 				type: 'axis-mixed', // or 'bar', 'line', 'pie', 'percentage'
 				height: 180,
 				colors: ['#00b000', '#d40000', 'light-blue', 'blue'],
@@ -355,6 +357,31 @@ function update_dashboard(frm) {
 				tooltipOptions: {
 					formatTooltipX: d => (d + '').toUpperCase(),
 					formatTooltipY: d => d + ' min',
+				}
+			});
+			
+			//Limits
+			var _colors = ['#d40000', '#00b000'];
+			if (query.callcenter_verwendet == 0) {
+				_colors = ['#00b000', '#d40000'];
+			}
+			let limit_chart = new Chart( "#limit", { // or DOM element
+				data: {
+				labels: ["Verwendet", "Ausstehend"],
+
+				datasets: [
+					{
+						values: [query.callcenter_verwendet, query.callcenter_limit - query.callcenter_verwendet]
+					}
+				],
+
+				},
+				title: "Zeitauswertung (in min)",
+				type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
+				colors: _colors,
+				barOptions: {
+					height: 1,          // default: 20
+					depth: 1             // default: 2
 				}
 			});
 		}

@@ -170,7 +170,7 @@ def get_timer_diff(start, ende):
 	return time_diff_in_seconds(ende, start) / 60
 	
 @frappe.whitelist()
-def get_dashboard_data(mitglied):
+def get_dashboard_data(mitglied, anfrage):
 	# m_ = als mitglied
 	# o_ = ohne mitgliedschaft
 	
@@ -187,6 +187,9 @@ def get_dashboard_data(mitglied):
 	m_q4 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND QUARTER(`creation`) = 4 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
 	o_q4 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND QUARTER(`creation`) = 4 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
 	
+	callcenter_limit = frappe.get_single("Einstellungen").limite_callcenter_anfrage
+	callcenter_verwendet = frappe.get_doc("Anfrage", anfrage).timer
+	
 	return {
 			"m_last_year": m_last_year,
 			"o_last_year": o_last_year,
@@ -199,5 +202,7 @@ def get_dashboard_data(mitglied):
 			"m_q3": m_q3,
 			"o_q3": o_q3,
 			"m_q4": m_q4,
-			"o_q4": o_q4
+			"o_q4": o_q4,
+			"callcenter_limit": callcenter_limit,
+			"callcenter_verwendet": callcenter_verwendet
 			}
