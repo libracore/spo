@@ -48,6 +48,9 @@ frappe.ui.form.on('Anfrage', {
 				start_timer(frm);
 			}).addClass("btn-primary");
 		}
+		
+		// add scroll to navbar
+		add_scroll_to(frm);
 	},
 	import_mitgliederdaten: function(frm) {
 		if (frm.doc.mitglied) {
@@ -155,6 +158,15 @@ frappe.ui.form.on('Anfrage', {
 	},
 	manuelle_korrektur: function(frm) {
 		cur_frm.set_df_property('timer','read_only',0);
+	},
+	scroll_top_1: function(frm) {
+		frappe.utils.scroll_to(0);
+	},
+	scroll_top_2: function(frm) {
+		frappe.utils.scroll_to(0);
+	},
+	scroll_top_3: function(frm) {
+		frappe.utils.scroll_to(0);
 	}
 });
 
@@ -413,4 +425,82 @@ function check_rechnung(frm) {
 			}
 		}
 	});
+}
+
+function add_scroll_to(frm) {
+	//get referenzpunkte und create grundgerüst
+	var vorhandene_sidebar = document.getElementsByClassName("list-unstyled sidebar-menu")[3];
+	var sections = document.getElementsByClassName("row form-section visible-section");
+	
+	var ul = document.createElement("ul");
+	ul.classList.add("list-unstyled");
+	ul.classList.add("sidebar-menu");
+	
+	var li1 = document.createElement("li");
+	li1.classList.add("divider");
+	
+	var li2 = document.createElement("li");
+	li2.style.position = "relative";
+	
+	// link zu "Angaben zur Person"
+	var a1 = document.createElement("a");
+	a1.classList.add("strong");
+	a1.classList.add("sidebar-comments");
+	a1.classList.add("badge-hover");
+	a1.onclick = function(){frappe.utils.scroll_to(sections[3], !0);};
+	
+	var span1 = document.createElement("span")
+	var span_node1 = document.createTextNode("Angaben zur Person");
+	
+	// link zu "Angaben zur Anfrage"
+	var a2 = document.createElement("a");
+	a2.classList.add("strong");
+	a2.classList.add("sidebar-comments");
+	a2.classList.add("badge-hover");
+	a2.onclick = function(){frappe.utils.scroll_to(sections[4], !0);};
+	
+	var span2 = document.createElement("span")
+	var span_node2 = document.createTextNode("Angaben zur Anfrage");
+	
+	// link zu "Zeiterfassung"
+	var a3 = document.createElement("a");
+	a3.classList.add("strong");
+	a3.classList.add("sidebar-comments");
+	a3.classList.add("badge-hover");
+	a3.onclick = function(){frappe.utils.scroll_to(sections[5], !0);};
+	
+	var span3 = document.createElement("span")
+	var span_node3 = document.createTextNode("Zeiterfassung");
+	
+	// verknüpfen "Angaben zur Person"
+	span1.appendChild(span_node1);
+	a1.appendChild(span1);
+	li2.appendChild(a1);
+	
+	// verknüpfen "Angaben zur Anfrage"
+	span2.appendChild(span_node2);
+	a2.appendChild(span2);
+	li2.appendChild(a2);
+	
+	// verknüpfen "Zeiterfassung"
+	span3.appendChild(span_node3);
+	a3.appendChild(span3);
+	li2.appendChild(a3);
+	
+	// verknüpfen Grundgerüst
+	ul.appendChild(li1);
+	ul.appendChild(li2);
+	vorhandene_sidebar.parentElement.insertBefore(ul, vorhandene_sidebar);
+	
+	
+	
+	console.log(sections);
+	
+	
+	//frappe.utils.scroll_to(e.frm.footer.wrapper.find(".form-comments"), !0)
+}
+
+function scroll_to(where) {
+	console.log(where);
+	frappe.utils.scroll_to(where, !0);
 }
