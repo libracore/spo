@@ -102,6 +102,7 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 	
 	return data
 	
+@frappe.whitelist()
 def get_address(customer):
 	return frappe.db.sql("""SELECT * FROM `tabAddress` WHERE `name` = (SELECT `parent` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parenttype` = 'Address' AND `link_name` = '{customer}' LIMIT 1)""".format(customer=customer), as_dict=True)[0]
 	

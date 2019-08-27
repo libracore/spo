@@ -28,11 +28,12 @@ def get_dashboard_data(mitglied):
 	m_q4 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NOT NULL AND QUARTER(`creation`) = 4 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
 	o_q4 = frappe.db.sql("""SELECT SUM(`timer`) FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}' AND `mitgliedschaft` IS NULL AND QUARTER(`creation`) = 4 AND YEAR(`creation`) = YEAR(CURDATE())""".format(mitglied=mitglied), as_list=True)[0][0] or 0
 	
-	callcenter_limit = frappe.get_single("Einstellungen").limite_callcenter_anfrage
+	callcenter_limit = frappe.get_single("Einstellungen").limite_mandat_time
 	anfragen = frappe.get_list("Anfrage", [["mitglied", "=", mitglied]])
 	callcenter_verwendet = 0
 	for anfrage in anfragen:
 		callcenter_verwendet += frappe.get_doc("Anfrage", anfrage).timer
+		# zeiten von mandat muss noch addiert werden!
 	
 	return {
 			"m_last_year": m_last_year,

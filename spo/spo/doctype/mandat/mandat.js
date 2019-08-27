@@ -13,7 +13,7 @@ frappe.ui.form.on('Mandat', {
 
 function update_dashboard(frm) {
 	frappe.call({
-		"method": "spo.spo.doctype.anfrage.anfrage.get_dashboard_data",
+		"method": "spo.spo.doctype.mandat.mandat.get_dashboard_data",
 		"args": {
 			"mitglied": frm.doc.mitglied
 		},
@@ -21,7 +21,7 @@ function update_dashboard(frm) {
 		"callback": function(response) {
 			var query = response.message;
 			//Chart
-			let chart = new Chart( "#chart", { // or DOM element
+			let chart = new frappe.Chart( "#chart", { // or DOM element
 				data: {
 				labels: ["Letztes Jahr", "YTD", "Q1", "Q2", "Q3", "Q4"],
 				
@@ -31,11 +31,11 @@ function update_dashboard(frm) {
 						values: [query.m_last_year, query.m_ytd, query.m_q1, query.m_q2, query.m_q3, query.m_q4]
 					},
 					{
-						name: "Ohne<br>Mitgliedschaft", chartType: 'bar',
+						name: "Nicht Mitglied", chartType: 'bar',
 						values: [query.o_last_year, query.o_ytd, query.o_q1, query.o_q2, query.o_q3, query.o_q4]
 					},
 					{
-						name: "&Oslash;", chartType: 'line',
+						name: "Schnitt", chartType: 'line',
 						values: [(query.m_last_year + query.o_last_year) / 2, (query.m_ytd + query.o_ytd) / 2, (query.m_q1 + query.o_q1) / 2, (query.m_q2 + query.o_q2) / 2, (query.m_q3 + query.o_q3) / 2, (query.m_q4 + query.o_q4) / 2]
 					},
 					{
@@ -45,14 +45,14 @@ function update_dashboard(frm) {
 				],
 
 				yMarkers: [{ label: "Mittelwert", value: (query.m_last_year + query.o_last_year + query.m_ytd + query.o_ytd + query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 12,
-					options: { labelPos: 'left' }}],
+					options: { labelPos: 'right' }}],
 				/*yRegions: [{ label: "Region", start: -10, end: 50,
 					options: { labelPos: 'right' }}]
 				*/},
 
 				
 				type: 'axis-mixed', // or 'bar', 'line', 'pie', 'percentage'
-				height: 180,
+				height: 250,
 				colors: ['#00b000', '#d40000', 'light-blue', 'blue'],
 
 				tooltipOptions: {
@@ -66,7 +66,7 @@ function update_dashboard(frm) {
 			if (query.callcenter_verwendet == 0) {
 				_colors = ['#00b000', '#d40000'];
 			}
-			let limit_chart = new Chart( "#limit", { // or DOM element
+			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
 				labels: ["Verwendet", "Ausstehend"],
 
@@ -81,8 +81,8 @@ function update_dashboard(frm) {
 				type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
 				colors: _colors,
 				barOptions: {
-					height: 1,          // default: 20
-					depth: 1             // default: 2
+					height: 20,          // default: 20
+					depth: 2             // default: 2
 				}
 			});
 		}

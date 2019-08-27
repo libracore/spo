@@ -10,11 +10,16 @@ frappe.ui.form.on('Anfrage', {
 		if (frm.doc.__islocal) {
 			start_timer(frm);
 			cur_frm.save();
+		} else {
+			//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
+			/* if (frm.doc.mitglied) {
+				update_dashboard(frm);
+			} */
 		}
 	},
 	refresh: function(frm) {
 		//add btn to create Mandat
-		frm.add_custom_button(__("Convert to Mandat"), function() {
+		frm.add_custom_button(__("Convert to/Open Mandat"), function() {
             new_mandat(frm.doc.name);
         });
 		
@@ -203,6 +208,7 @@ function show_mandat_list_based_on_anfrage() {
 }
 
 function get_data_from_mitgliedernummer(frm, mitgliedernummer, inkl) {
+	// Get Daten aus Kundenstamm
 	frappe.call({
         "method": "frappe.client.get",
         "args": {
@@ -215,6 +221,48 @@ function get_data_from_mitgliedernummer(frm, mitgliedernummer, inkl) {
             cur_frm.set_value('vorname', customer.customer_name.split(" ")[0]);
 			cur_frm.set_value('nachname', customer.customer_name.split(" ")[1]);
 			cur_frm.set_value('mitglied', mitgliedernummer);
+			
+			// Get daten aus adresse
+			frappe.call({
+				"method": "spo.spo.doctype.anfrage.anfrage.get_address",
+				"args": {
+					"customer": customer.name
+				},
+				"async": false,
+				"callback": function(r) {
+					if(r.message) {
+						frappe.call({
+							"method": "frappe.client.get",
+							"args": {
+								"doctype": "Address",
+								"name": r.message.name
+							},
+							"async": false,
+							"callback": function(resp) {
+								if(resp.message) {
+									var address = resp.message;
+									cur_frm.set_value('strasse', address.address_line1.split(" ")[0]);
+									cur_frm.set_value('hausnummer', address.address_line1.split(" ")[1]);
+									cur_frm.set_value('ort', address.city);
+									cur_frm.set_value('plz', address.pincode);
+									cur_frm.set_value('telefon', address.phone);
+									cur_frm.set_value('mobile', address.fax);
+									cur_frm.set_value('email', address.email_id);
+								}
+								if(inkl) {
+									get_valid_mitgliedschaft_based_on_mitgliedernummer(frm, mitgliedernummer)
+								}
+							}
+						});
+					} else {
+						if(inkl) {
+							get_valid_mitgliedschaft_based_on_mitgliedernummer(frm, mitgliedernummer)
+						}
+					}
+				}
+			});
+			
+			
 			if(inkl) {
 				get_valid_mitgliedschaft_based_on_mitgliedernummer(frm, mitgliedernummer)
 			}
@@ -333,7 +381,7 @@ function update_dashboard(frm) {
 		"callback": function(response) {
 			var query = response.message;
 			//Chart
-			let chart = new Chart( "#chart", { // or DOM element
+			let chart = new frappe.Chart( "#chart", { // or DOM element
 				data: {
 				labels: ["Letztes Jahr", "YTD", "Q1", "Q2", "Q3", "Q4"],
 				
@@ -343,11 +391,11 @@ function update_dashboard(frm) {
 						values: [query.m_last_year, query.m_ytd, query.m_q1, query.m_q2, query.m_q3, query.m_q4]
 					},
 					{
-						name: "Ohne<br>Mitgliedschaft", chartType: 'bar',
+						name: "Nicht Mitglied", chartType: 'bar',
 						values: [query.o_last_year, query.o_ytd, query.o_q1, query.o_q2, query.o_q3, query.o_q4]
 					},
 					{
-						name: "&Oslash;", chartType: 'line',
+						name: "Schnitt", chartType: 'line',
 						values: [(query.m_last_year + query.o_last_year) / 2, (query.m_ytd + query.o_ytd) / 2, (query.m_q1 + query.o_q1) / 2, (query.m_q2 + query.o_q2) / 2, (query.m_q3 + query.o_q3) / 2, (query.m_q4 + query.o_q4) / 2]
 					},
 					{
@@ -357,14 +405,14 @@ function update_dashboard(frm) {
 				],
 
 				yMarkers: [{ label: "Mittelwert", value: (query.m_last_year + query.o_last_year + query.m_ytd + query.o_ytd + query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 12,
-					options: { labelPos: 'left' }}],
+					options: { labelPos: 'right' }}],
 				/*yRegions: [{ label: "Region", start: -10, end: 50,
 					options: { labelPos: 'right' }}]
 				*/},
 
 				
 				type: 'axis-mixed', // or 'bar', 'line', 'pie', 'percentage'
-				height: 180,
+				height: 300,
 				colors: ['#00b000', '#d40000', 'light-blue', 'blue'],
 
 				tooltipOptions: {
@@ -378,7 +426,7 @@ function update_dashboard(frm) {
 			if (query.callcenter_verwendet == 0) {
 				_colors = ['#00b000', '#d40000'];
 			}
-			let limit_chart = new Chart( "#limit", { // or DOM element
+			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
 				labels: ["Verwendet", "Ausstehend"],
 
@@ -393,8 +441,8 @@ function update_dashboard(frm) {
 				type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
 				colors: _colors,
 				barOptions: {
-					height: 1,          // default: 20
-					depth: 1             // default: 2
+					height: 20,          // default: 20
+					depth: 2             // default: 2
 				}
 			});
 		}
@@ -450,7 +498,7 @@ function add_scroll_to(frm) {
 	
 	// link zu "Angaben zur Person"
 	var a1 = document.createElement("a");
-	a1.classList.add("strong");
+	//a1.classList.add("strong");
 	a1.classList.add("sidebar-comments");
 	a1.classList.add("badge-hover");
 	a1.onclick = function(){frappe.utils.scroll_to(sections[3], !0);};
@@ -460,7 +508,7 @@ function add_scroll_to(frm) {
 	
 	// link zu "Angaben zur Anfrage"
 	var a2 = document.createElement("a");
-	a2.classList.add("strong");
+	//a2.classList.add("strong");
 	a2.classList.add("sidebar-comments");
 	a2.classList.add("badge-hover");
 	a2.onclick = function(){frappe.utils.scroll_to(sections[4], !0);};
@@ -470,7 +518,7 @@ function add_scroll_to(frm) {
 	
 	// link zu "Zeiterfassung"
 	var a3 = document.createElement("a");
-	a3.classList.add("strong");
+	//a3.classList.add("strong");
 	a3.classList.add("sidebar-comments");
 	a3.classList.add("badge-hover");
 	a3.onclick = function(){frappe.utils.scroll_to(sections[5], !0);};
@@ -501,13 +549,12 @@ function add_scroll_to(frm) {
 	
 	
 	
-	console.log(sections);
+	//console.log(sections);
 	
 	
 	//frappe.utils.scroll_to(e.frm.footer.wrapper.find(".form-comments"), !0)
 }
 
 function scroll_to(where) {
-	console.log(where);
 	frappe.utils.scroll_to(where, !0);
 }
