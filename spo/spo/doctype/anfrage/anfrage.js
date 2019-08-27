@@ -442,6 +442,12 @@ function add_scroll_to(frm) {
 	var li2 = document.createElement("li");
 	li2.style.position = "relative";
 	
+	var li3 = document.createElement("li");
+	li3.classList.add("h6");
+	li3.classList.add("attachments-label");
+	var li3_node = document.createTextNode("Scroll to...");
+	li3.appendChild(li3_node);
+	
 	// link zu "Angaben zur Person"
 	var a1 = document.createElement("a");
 	a1.classList.add("strong");
@@ -489,6 +495,7 @@ function add_scroll_to(frm) {
 	
 	// verknüpfen Grundgerüst
 	ul.appendChild(li1);
+	ul.appendChild(li3);
 	ul.appendChild(li2);
 	vorhandene_sidebar.parentElement.insertBefore(ul, vorhandene_sidebar);
 	
