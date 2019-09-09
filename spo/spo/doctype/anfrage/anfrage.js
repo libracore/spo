@@ -20,7 +20,7 @@ frappe.ui.form.on('Anfrage', {
 	refresh: function(frm) {
 		//add btn to create Mandat
 		frm.add_custom_button(__("Convert to/Open Mandat"), function() {
-            new_mandat(frm.doc.name);
+            new_mandat(frm.doc.name, frm.doc.mitglied);
         });
 		
 		//Set filter to mitgliedschaft
@@ -36,6 +36,10 @@ frappe.ui.form.on('Anfrage', {
 		if (frm.doc.mitgliedschaft) {
 			check_mitgliedschaft_ablaufdatum(frm);
 			check_rechnung(frm);
+		} else {
+			frm.add_custom_button(__("Keine Mitgliedschaft hinterlegt"), function() {
+				
+			}).addClass("btn-info pull-left");
 		}
 		
 		//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
@@ -175,11 +179,12 @@ frappe.ui.form.on('Anfrage', {
 	}
 });
 
-function new_mandat(anfrage) {
+function new_mandat(anfrage, mitglied) {
 	frappe.call({
 		method: 'spo.spo.doctype.anfrage.anfrage.creat_new_mandat',
 		args: {
-			'anfrage': anfrage
+			'anfrage': anfrage,
+			'mitglied': mitglied
 		},
 		callback: function(r) {
 			if(r.message) {
@@ -404,7 +409,7 @@ function update_dashboard(frm) {
 					}
 				],
 
-				yMarkers: [{ label: "Mittelwert", value: (query.m_last_year + query.o_last_year + query.m_ytd + query.o_ytd + query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 12,
+				yMarkers: [{ label: "Mittelwert", value: (query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 8,
 					options: { labelPos: 'right' }}],
 				/*yRegions: [{ label: "Region", start: -10, end: 50,
 					options: { labelPos: 'right' }}]
@@ -423,9 +428,9 @@ function update_dashboard(frm) {
 			
 			//Limits
 			var _colors = ['#d40000', '#00b000'];
-			if (query.callcenter_verwendet == 0) {
+			/* if (query.callcenter_verwendet == 0) {
 				_colors = ['#00b000', '#d40000'];
-			}
+			} */
 			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
 				labels: ["Verwendet", "Ausstehend"],
@@ -442,7 +447,7 @@ function update_dashboard(frm) {
 				colors: _colors,
 				barOptions: {
 					height: 20,          // default: 20
-					depth: 2             // default: 2
+					depth: 0             // default: 2
 				}
 			});
 		}

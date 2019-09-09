@@ -218,7 +218,7 @@ def check_rechnung(mitgliedschaft):
 		return rechnung.status
 		
 @frappe.whitelist()
-def creat_new_mandat(anfrage=None):
+def creat_new_mandat(anfrage=None, mitglied=None):
 	#check if Mandat linked to Anfrage already exist
 	if anfrage:
 		qty = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabMandat` WHERE `anfragen` LIKE '%{anfrage}%'""".format(anfrage=anfrage), as_list=True)[0][0]
@@ -236,6 +236,13 @@ def creat_new_mandat(anfrage=None):
 	if anfrage:
 		mandat.update({
 			'anfragen': anfrage
+		})
+		mandat.save()
+		
+	#If Mitglied available, set link
+	if mitglied:
+		mandat.update({
+			'mitglied': mitglied
 		})
 		mandat.save()
 	
