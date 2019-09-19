@@ -6,6 +6,10 @@
  "engine": "InnoDB",
  "field_order": [
   "mandat",
+  "cb_1",
+  "mahnstufe_1",
+  "mahnstufe_2",
+  "section_1",
   "brieftext",
   "amended_from"
  ],
@@ -31,10 +35,32 @@
    "label": "Mandat",
    "options": "Mandat",
    "reqd": 1
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Mahnung",
+   "fieldname": "mahnstufe_1",
+   "fieldtype": "Check",
+   "label": "2. Forderung"
+  },
+  {
+   "default": "0",
+   "description": "2. Mahnung",
+   "fieldname": "mahnstufe_2",
+   "fieldtype": "Check",
+   "label": "3. Forderung"
+  },
+  {
+   "fieldname": "section_1",
+   "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-09-19 13:23:20.446622",
+ "modified": "2019-09-19 20:48:18.004427",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",
@@ -53,7 +79,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

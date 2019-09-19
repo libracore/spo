@@ -17,6 +17,7 @@
   "arzt_fachgebiet",
   "definition_arzt_fachgebiet_andere",
   "name_zusatz_sonstige_versicherung",
+  "scroll_top_0",
   "section_person",
   "import_mitgliederdaten",
   "vorname",
@@ -311,10 +312,15 @@
    "fieldname": "name_zusatz_sonstige_versicherung",
    "fieldtype": "Data",
    "label": "Name der Versicherung"
+  },
+  {
+   "fieldname": "scroll_top_0",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
   }
  ],
  "icon": "fa fa-question",
- "modified": "2019-09-19 11:47:33.095523",
+ "modified": "2019-09-19 21:45:34.626592",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

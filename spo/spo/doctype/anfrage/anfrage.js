@@ -165,14 +165,25 @@ frappe.ui.form.on('Anfrage', {
 	manuelle_korrektur: function(frm) {
 		cur_frm.set_df_property('timer','read_only',0);
 	},
+	scroll_top_0: function(frm) {
+		frappe.utils.scroll_to(0);
+		var sections = document.getElementsByClassName("row form-section visible-section");
+		sections[2].childNodes[0].childNodes[0].click();
+	},
 	scroll_top_1: function(frm) {
 		frappe.utils.scroll_to(0);
+		var sections = document.getElementsByClassName("row form-section visible-section");
+		sections[3].childNodes[0].childNodes[0].click();
 	},
 	scroll_top_2: function(frm) {
 		frappe.utils.scroll_to(0);
+		var sections = document.getElementsByClassName("row form-section visible-section");
+		sections[4].childNodes[0].childNodes[0].click();
 	},
 	scroll_top_3: function(frm) {
 		frappe.utils.scroll_to(0);
+		var sections = document.getElementsByClassName("row form-section visible-section");
+		sections[5].childNodes[0].childNodes[0].click();
 	}
 });
 
@@ -459,11 +470,20 @@ function add_scroll_to(frm) {
 	var li3_node = document.createTextNode("Scroll to...");
 	li3.appendChild(li3_node);
 	
+	// link zu "Anfragen Typisierung"
+	var a0 = document.createElement("a");
+	a0.classList.add("sidebar-comments");
+	a0.classList.add("badge-hover");
+	a0.onclick = function(){frappe.utils.scroll_to(sections[2], !0); sections[2].childNodes[0].childNodes[0].click();};
+	
+	var span0 = document.createElement("span")
+	var span_node0 = document.createTextNode("Anfragen Typisierung");
+	
 	// link zu "Angaben zur Person"
 	var a1 = document.createElement("a");
 	a1.classList.add("sidebar-comments");
 	a1.classList.add("badge-hover");
-	a1.onclick = function(){frappe.utils.scroll_to(sections[3], !0);};
+	a1.onclick = function(){frappe.utils.scroll_to(sections[3], !0); sections[3].childNodes[0].childNodes[0].click();};
 	
 	var span1 = document.createElement("span")
 	var span_node1 = document.createTextNode("Angaben zur Person");
@@ -472,7 +492,7 @@ function add_scroll_to(frm) {
 	var a2 = document.createElement("a");
 	a2.classList.add("sidebar-comments");
 	a2.classList.add("badge-hover");
-	a2.onclick = function(){frappe.utils.scroll_to(sections[4], !0);};
+	a2.onclick = function(){frappe.utils.scroll_to(sections[4], !0); sections[4].childNodes[0].childNodes[0].click();};
 	
 	var span2 = document.createElement("span")
 	var span_node2 = document.createTextNode("Angaben zur Anfrage");
@@ -481,10 +501,15 @@ function add_scroll_to(frm) {
 	var a3 = document.createElement("a");
 	a3.classList.add("sidebar-comments");
 	a3.classList.add("badge-hover");
-	a3.onclick = function(){frappe.utils.scroll_to(sections[5], !0);};
+	a3.onclick = function(){frappe.utils.scroll_to(sections[5], !0); sections[5].childNodes[0].childNodes[0].click();};
 	
 	var span3 = document.createElement("span")
 	var span_node3 = document.createTextNode("Zeiterfassung");
+	
+	// verknüpfen "Anfragen Typisierung"
+	span0.appendChild(span_node0);
+	a0.appendChild(span0);
+	li2.appendChild(a0);
 	
 	// verknüpfen "Angaben zur Person"
 	span1.appendChild(span_node1);
@@ -524,11 +549,11 @@ function check_mitgliedschafts_unterbruch(frm, mitgliedschaften) {
 		}
 		
 		if (mitgliedschafts_diff) {
-			frm.add_custom_button(__("Mitglied seit ") + mitgliedschaften[0].start + ' <i class="fa fa-exclamation-circle"></i>', function() {
+			frm.add_custom_button(__("Mitglied seit ") + frappe.datetime.obj_to_user(mitgliedschaften[0].start) + ' <i class="fa fa-exclamation-circle"></i>', function() {
 				show_unterbruch(mitgliedschaften);
 			}).addClass("btn-warning pull-left");
 		} else {
-			frm.add_custom_button(__("Mitglied seit ") + mitgliedschaften[0].start, function() {
+			frm.add_custom_button(__("Mitglied seit ") + frappe.datetime.obj_to_user(mitgliedschaften[0].start), function() {
 				
 			}).addClass("btn-success pull-left");
 		}
@@ -536,14 +561,14 @@ function check_mitgliedschafts_unterbruch(frm, mitgliedschaften) {
 }
 
 function show_unterbruch(mitgliedschaften) {
-	var table = '<table style="width: 100%;"><tr><th>Mitgliedschaft</th><th>Start</th><th>Ende</th></tr>';
+	var table = '<table style="width: 100%;"><tr><th>' + __("Mitgliedschaft") + '</th><th>' + __("Start") + '</th><th>' + __("Ende") + '</th></tr>';
 	var i;
 	
 	for (i=0; i < mitgliedschaften.length; i++) {
-		table += '<tr><td>' + mitgliedschaften[i].name + '</td><td>' + mitgliedschaften[i].start + '</td><td>' + mitgliedschaften[i].ende + '</td></tr>';
+		table += '<tr><td><a target="_blank" href="/desk#Form/Mitgliedschaft/' + mitgliedschaften[i].name + '">' + mitgliedschaften[i].name + '</a></td><td>' + frappe.datetime.obj_to_user(mitgliedschaften[i].start) + '</td><td>' + frappe.datetime.obj_to_user(mitgliedschaften[i].ende) + '</td></tr>';
 	}
 	
 	table += '</table>';
 	
-	frappe.msgprint(table);
+	frappe.msgprint(table, __("Übersicht der Mitgliedschaften"));
 }

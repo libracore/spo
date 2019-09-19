@@ -11,18 +11,22 @@
   "todesfall",
   "section_2",
   "name_vorname",
+  "geburtsdatum",
+  "email",
+  "cb_2",
   "beziehungsverhaeltniss",
   "adresse",
   "telefon",
-  "email",
   "berater",
+  "section_3",
   "eingriff_operation",
-  "datum",
   "spital",
-  "ort",
   "samt_folgen",
   "vor_und_nachbehandlung",
   "todesfall_betreffend",
+  "cb_3",
+  "datum",
+  "ort",
   "amended_from"
  ],
  "fields": [
@@ -75,6 +79,7 @@
    "label": "E-Mail"
   },
   {
+   "depends_on": "eval:doc.todesfall==0",
    "fieldname": "eingriff_operation",
    "fieldtype": "Data",
    "label": "Eingriff/Operation"
@@ -103,6 +108,7 @@
   },
   {
    "default": "0",
+   "depends_on": "eval:doc.todesfall==0",
    "fieldname": "vor_und_nachbehandlung",
    "fieldtype": "Check",
    "label": "inkl. Vor- und Nachbehandlung"
@@ -136,10 +142,27 @@
   {
    "fieldname": "section_2",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fieldname": "section_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-09-19 14:14:20.266696",
+ "modified": "2019-09-19 20:43:56.933454",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",
