@@ -554,7 +554,7 @@ function check_mitgliedschafts_unterbruch(frm, mitgliedschaften, limite_unterbru
 			}).addClass("btn-warning pull-left");
 		} else {
 			frm.add_custom_button(__("Mitglied seit ") + frappe.datetime.obj_to_user(mitgliedschaften[0].start), function() {
-				
+				show_unterbruch(mitgliedschaften);
 			}).addClass("btn-success pull-left");
 		}
 	}
