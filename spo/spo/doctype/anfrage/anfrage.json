@@ -58,6 +58,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "depends_on": "eval:doc.anfrage_typ=='Sonstiges'",
    "fieldname": "dashboard_html",
    "fieldtype": "HTML",
    "options": "<div id=\"limit\"></div>"
@@ -320,7 +321,7 @@
   }
  ],
  "icon": "fa fa-question",
- "modified": "2019-09-19 21:45:34.626592",
+ "modified": "2019-09-19 21:49:05.348031",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

@@ -418,7 +418,7 @@ function update_dashboard(frm) {
 				}
 			});
 			
-			check_mitgliedschafts_unterbruch(frm, query.mitgliedschaften);
+			check_mitgliedschafts_unterbruch(frm, query.mitgliedschaften, query.limite_unterbruch);
 		}
 	});
 }
@@ -537,13 +537,13 @@ function scroll_to(where) {
 	frappe.utils.scroll_to(where, !0);
 }
 
-function check_mitgliedschafts_unterbruch(frm, mitgliedschaften) {
+function check_mitgliedschafts_unterbruch(frm, mitgliedschaften, limite_unterbruch) {
 	if (mitgliedschaften.length >= 1) {
 		var i;
 		var mitgliedschafts_diff = false;
 		
 		for (i=0; i<mitgliedschaften.length - 1; i++) {
-			if (frappe.datetime.get_day_diff(mitgliedschaften[i + 1].start, mitgliedschaften[i].ende) > 1) {
+			if (frappe.datetime.get_day_diff(mitgliedschaften[i + 1].start, mitgliedschaften[i].ende) > limite_unterbruch) {
 				mitgliedschafts_diff = true;
 			}
 		}

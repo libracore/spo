@@ -6,7 +6,8 @@
  "field_order": [
   "section_limiten",
   "limite_callcenter_anfrage",
-  "limite_mandat_time"
+  "limite_mandat_time",
+  "limite_unterbruch"
  ],
  "fields": [
   {
@@ -25,10 +26,16 @@
    "fieldname": "limite_mandat_time",
    "fieldtype": "Float",
    "label": "Aufwandsgrenze Mandat"
+  },
+  {
+   "default": "1",
+   "fieldname": "limite_unterbruch",
+   "fieldtype": "Int",
+   "label": "Maximaler Mitgliedsunterbruch"
   }
  ],
  "issingle": 1,
- "modified": "2019-08-27 15:12:06.000560",
+ "modified": "2019-09-19 21:53:43.298695",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",

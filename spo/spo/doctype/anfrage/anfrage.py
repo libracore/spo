@@ -175,6 +175,7 @@ def get_dashboard_data(mitglied, anfrage):
 	# Zeitbalken
 	callcenter_limit = frappe.get_single("Einstellungen").limite_callcenter_anfrage
 	callcenter_verwendet = frappe.get_doc("Anfrage", anfrage).timer
+	limite_unterbruch = frappe.get_single("Einstellungen").limite_unterbruch
 	
 	# Mitgliedschaftsunterbruch Übersicht
 	mitgliedschaften = frappe.db.sql("""SELECT `name`, `start`, `ende` FROM `tabMitgliedschaft` WHERE `rechnung` IN (
@@ -184,7 +185,8 @@ def get_dashboard_data(mitglied, anfrage):
 	return {
 			"callcenter_limit": callcenter_limit,
 			"callcenter_verwendet": callcenter_verwendet,
-			"mitgliedschaften": mitgliedschaften
+			"mitgliedschaften": mitgliedschaften,
+			"limite_unterbruch": limite_unterbruch
 		}
 			
 @frappe.whitelist()
