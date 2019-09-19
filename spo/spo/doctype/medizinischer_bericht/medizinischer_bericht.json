@@ -1,0 +1,177 @@
+{
+ "autoname": "MED-B-.#####",
+ "creation": "2019-09-19 13:37:20.091279",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mandat",
+  "problemstellung",
+  "diagnose",
+  "operation",
+  "arzt",
+  "verantwortlicher_arzt_sicht_patient",
+  "ausgangslage",
+  "korrespondenz",
+  "bemerkung",
+  "situation_heute",
+  "beurteilung",
+  "section_checkliste",
+  "aufklaerungsprotokolle",
+  "sorgfalt",
+  "kausalitaet",
+  "schaden",
+  "empfehlung",
+  "section_1",
+  "fragestellung_anwalt",
+  "beilagen",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mandat",
+   "options": "Mandat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "problemstellung",
+   "fieldtype": "Text",
+   "label": "Problemstellung"
+  },
+  {
+   "fieldname": "diagnose",
+   "fieldtype": "Text",
+   "label": "Diagnose/n"
+  },
+  {
+   "fieldname": "operation",
+   "fieldtype": "Text",
+   "label": "Operation/en"
+  },
+  {
+   "fieldname": "arzt",
+   "fieldtype": "Data",
+   "label": "Behandelnder Arzt"
+  },
+  {
+   "fieldname": "verantwortlicher_arzt_sicht_patient",
+   "fieldtype": "Data",
+   "label": "Verantwortlicher Arzt aus Sicht der Patientin / des Patienten"
+  },
+  {
+   "fieldname": "ausgangslage",
+   "fieldtype": "Table",
+   "label": "Ausgangslage",
+   "options": "Medizinischer Bericht Ausgangslage"
+  },
+  {
+   "fieldname": "korrespondenz",
+   "fieldtype": "Table",
+   "label": "Nur falls n\u00f6tig: Korrespondenz (Haftpflichtversicherung etc)",
+   "options": "Medizinischer Bericht Korrspondenz"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text",
+   "label": "Bemerkung"
+  },
+  {
+   "fieldname": "situation_heute",
+   "fieldtype": "Text",
+   "label": "Situation heute"
+  },
+  {
+   "fieldname": "beurteilung",
+   "fieldtype": "Text",
+   "label": "Beurteilung (SPO beraterin)"
+  },
+  {
+   "fieldname": "section_checkliste",
+   "fieldtype": "Section Break",
+   "label": "Checkliste"
+  },
+  {
+   "default": "0",
+   "fieldname": "aufklaerungsprotokolle",
+   "fieldtype": "Check",
+   "label": "Alle Aufkl\u00e4rungsprotokolle verlangt?"
+  },
+  {
+   "default": "0",
+   "description": "Sorgfaltsmangel durch aktives Tun oder durch Unterlassung? Dem Standard entsprochen? Abweichung begr\u00fcndet?",
+   "fieldname": "sorgfalt",
+   "fieldtype": "Check",
+   "label": "Sorgfalt?"
+  },
+  {
+   "default": "0",
+   "description": "Mass: mit \u00fcberwiegender Wahrscheinlichkeit?",
+   "fieldname": "kausalitaet",
+   "fieldtype": "Check",
+   "label": "Kausalit\u00e4t?"
+  },
+  {
+   "default": "0",
+   "fieldname": "schaden",
+   "fieldtype": "Check",
+   "label": "Schaden? H\u00f6he? Bleibend?"
+  },
+  {
+   "default": "0",
+   "fieldname": "empfehlung",
+   "fieldtype": "Check",
+   "label": "Empfehlung?"
+  },
+  {
+   "fieldname": "section_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "fragestellung_anwalt",
+   "fieldtype": "Text Editor",
+   "label": "Fragestellung (f\u00fcr Anwalt)"
+  },
+  {
+   "description": "(Krankengeschichte, R\u00f6ntgenbilder usw.)",
+   "fieldname": "beilagen",
+   "fieldtype": "Text",
+   "label": "Beilagen"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Medizinischer Bericht",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-09-19 13:37:20.091279",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Medizinischer Bericht",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

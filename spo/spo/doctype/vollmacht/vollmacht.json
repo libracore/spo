@@ -1,0 +1,165 @@
+{
+ "creation": "2019-09-19 13:59:06.151151",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mandat",
+  "section_1",
+  "rsv",
+  "cb_1",
+  "todesfall",
+  "section_2",
+  "name_vorname",
+  "beziehungsverhaeltniss",
+  "adresse",
+  "telefon",
+  "email",
+  "berater",
+  "eingriff_operation",
+  "datum",
+  "spital",
+  "ort",
+  "samt_folgen",
+  "vor_und_nachbehandlung",
+  "todesfall_betreffend",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "rsv",
+   "fieldtype": "Check",
+   "label": "RSV?"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "todesfall",
+   "fieldtype": "Check",
+   "label": "Todesfall?"
+  },
+  {
+   "fieldname": "section_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "name_vorname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name, Vorname",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.todesfall==1",
+   "fieldname": "beziehungsverhaeltniss",
+   "fieldtype": "Data",
+   "label": "Beziehungsverh\u00e4ltniss"
+  },
+  {
+   "fieldname": "adresse",
+   "fieldtype": "Data",
+   "label": "Adresse"
+  },
+  {
+   "fieldname": "telefon",
+   "fieldtype": "Data",
+   "label": "Telefon"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "E-Mail"
+  },
+  {
+   "fieldname": "eingriff_operation",
+   "fieldtype": "Data",
+   "label": "Eingriff/Operation"
+  },
+  {
+   "fieldname": "datum",
+   "fieldtype": "Date",
+   "label": "Datum"
+  },
+  {
+   "fieldname": "spital",
+   "fieldtype": "Data",
+   "label": "Spital"
+  },
+  {
+   "fieldname": "ort",
+   "fieldtype": "Data",
+   "label": "Ort"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.todesfall==0",
+   "fieldname": "samt_folgen",
+   "fieldtype": "Check",
+   "label": "samt Folgen"
+  },
+  {
+   "default": "0",
+   "fieldname": "vor_und_nachbehandlung",
+   "fieldtype": "Check",
+   "label": "inkl. Vor- und Nachbehandlung"
+  },
+  {
+   "depends_on": "eval:doc.todesfall==1",
+   "fieldname": "todesfall_betreffend",
+   "fieldtype": "Data",
+   "label": "Todesfall Betreffend"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Vollmacht",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "berater",
+   "fieldtype": "Data",
+   "label": "Berater/in"
+  },
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "label": "Mandat",
+   "options": "Mandat"
+  },
+  {
+   "fieldname": "section_2",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-09-19 14:14:20.266696",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Vollmacht",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

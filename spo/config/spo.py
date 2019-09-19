@@ -51,9 +51,21 @@ def get_data():
 			"items": [
 				{
 					"type": "doctype",
-					"name": "Anfrage",
-					"label": "Platzhalter",
-					"description": _("Mandats und oder sonstige Anfragen"),
+					"name": "Anforderung Patientendossier",
+					"label": "Anforderung Patientendossier",
+					"description": _("Anforderung Patientendossier"),
+				},
+				{
+					"type": "doctype",
+					"name": "Medizinischer Bericht",
+					"label": "Medizinischer Bericht",
+					"description": _("Medizinischer Bericht"),
+				},
+				{
+					"type": "doctype",
+					"name": "Vollmacht",
+					"label": "Vollmacht",
+					"description": _("Vollmacht"),
 				}
 			]
 		},

@@ -1,0 +1,39 @@
+{
+ "creation": "2019-09-19 13:30:37.899032",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "datum",
+  "art_dokument_beilage",
+  "krankengeschichte"
+ ],
+ "fields": [
+  {
+   "fieldname": "datum",
+   "fieldtype": "Date",
+   "label": "Datum"
+  },
+  {
+   "fieldname": "art_dokument_beilage",
+   "fieldtype": "Data",
+   "label": "Art Dokument Beilage"
+  },
+  {
+   "fieldname": "krankengeschichte",
+   "fieldtype": "Text",
+   "label": "Genauer Wortlaut aus der Krankengeschichte"
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-09-19 13:30:37.899032",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Medizinischer Bericht Ausgangslage",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
