@@ -10,11 +10,6 @@ frappe.ui.form.on('Anfrage', {
 		if (frm.doc.__islocal) {
 			start_timer(frm);
 			cur_frm.save();
-		} else {
-			//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
-			/* if (frm.doc.mitglied) {
-				update_dashboard(frm);
-			} */
 		}
 	},
 	refresh: function(frm) {
@@ -44,7 +39,9 @@ frappe.ui.form.on('Anfrage', {
 		
 		//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
 		if (frm.doc.mitglied) {
-			update_dashboard(frm);
+			if (frm.doc.anfrage_typ == 'Sonstiges') {
+				update_dashboard(frm);
+			}
 		}
 		
 		//show/hide timer stop btn
@@ -385,47 +382,6 @@ function update_dashboard(frm) {
 		"async": false,
 		"callback": function(response) {
 			var query = response.message;
-			//Chart
-			let chart = new frappe.Chart( "#chart", { // or DOM element
-				data: {
-				labels: ["Letztes Jahr", "YTD", "Q1", "Q2", "Q3", "Q4"],
-				
-				datasets: [
-					{
-						name: "Als Mitglied", chartType: 'bar',
-						values: [query.m_last_year, query.m_ytd, query.m_q1, query.m_q2, query.m_q3, query.m_q4]
-					},
-					{
-						name: "Nicht Mitglied", chartType: 'bar',
-						values: [query.o_last_year, query.o_ytd, query.o_q1, query.o_q2, query.o_q3, query.o_q4]
-					},
-					{
-						name: "Schnitt", chartType: 'line',
-						values: [(query.m_last_year + query.o_last_year) / 2, (query.m_ytd + query.o_ytd) / 2, (query.m_q1 + query.o_q1) / 2, (query.m_q2 + query.o_q2) / 2, (query.m_q3 + query.o_q3) / 2, (query.m_q4 + query.o_q4) / 2]
-					},
-					{
-						name: "Total", chartType: 'line',
-						values: [(query.m_last_year + query.o_last_year), (query.m_ytd + query.o_ytd), (query.m_q1 + query.o_q1), (query.m_q2 + query.o_q2), (query.m_q3 + query.o_q3), (query.m_q4 + query.o_q4)]
-					}
-				],
-
-				yMarkers: [{ label: "Mittelwert", value: (query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 8,
-					options: { labelPos: 'right' }}],
-				/*yRegions: [{ label: "Region", start: -10, end: 50,
-					options: { labelPos: 'right' }}]
-				*/},
-
-				
-				type: 'axis-mixed', // or 'bar', 'line', 'pie', 'percentage'
-				height: 300,
-				colors: ['#00b000', '#d40000', 'light-blue', 'blue'],
-
-				tooltipOptions: {
-					formatTooltipX: d => (d + '').toUpperCase(),
-					formatTooltipY: d => d + ' min',
-				}
-			});
-			
 			//Limits
 			var _colors = ['#d40000', '#00b000'];
 			/* if (query.callcenter_verwendet == 0) {
@@ -450,6 +406,8 @@ function update_dashboard(frm) {
 					depth: 0             // default: 2
 				}
 			});
+			
+			check_mitgliedschafts_unterbruch(frm, query.mitgliedschaften);
 		}
 	});
 }
@@ -503,7 +461,6 @@ function add_scroll_to(frm) {
 	
 	// link zu "Angaben zur Person"
 	var a1 = document.createElement("a");
-	//a1.classList.add("strong");
 	a1.classList.add("sidebar-comments");
 	a1.classList.add("badge-hover");
 	a1.onclick = function(){frappe.utils.scroll_to(sections[3], !0);};
@@ -513,7 +470,6 @@ function add_scroll_to(frm) {
 	
 	// link zu "Angaben zur Anfrage"
 	var a2 = document.createElement("a");
-	//a2.classList.add("strong");
 	a2.classList.add("sidebar-comments");
 	a2.classList.add("badge-hover");
 	a2.onclick = function(){frappe.utils.scroll_to(sections[4], !0);};
@@ -523,7 +479,6 @@ function add_scroll_to(frm) {
 	
 	// link zu "Zeiterfassung"
 	var a3 = document.createElement("a");
-	//a3.classList.add("strong");
 	a3.classList.add("sidebar-comments");
 	a3.classList.add("badge-hover");
 	a3.onclick = function(){frappe.utils.scroll_to(sections[5], !0);};
@@ -551,15 +506,44 @@ function add_scroll_to(frm) {
 	ul.appendChild(li3);
 	ul.appendChild(li2);
 	vorhandene_sidebar.parentElement.insertBefore(ul, vorhandene_sidebar);
-	
-	
-	
-	//console.log(sections);
-	
-	
-	//frappe.utils.scroll_to(e.frm.footer.wrapper.find(".form-comments"), !0)
 }
 
 function scroll_to(where) {
 	frappe.utils.scroll_to(where, !0);
+}
+
+function check_mitgliedschafts_unterbruch(frm, mitgliedschaften) {
+	if (mitgliedschaften.length >= 1) {
+		var i;
+		var mitgliedschafts_diff = false;
+		
+		for (i=0; i<mitgliedschaften.length - 1; i++) {
+			if (frappe.datetime.get_day_diff(mitgliedschaften[i + 1].start, mitgliedschaften[i].ende) > 1) {
+				mitgliedschafts_diff = true;
+			}
+		}
+		
+		if (mitgliedschafts_diff) {
+			frm.add_custom_button(__("Mitglied seit ") + mitgliedschaften[0].start + ' <i class="fa fa-exclamation-circle"></i>', function() {
+				show_unterbruch(mitgliedschaften);
+			}).addClass("btn-warning pull-left");
+		} else {
+			frm.add_custom_button(__("Mitglied seit ") + mitgliedschaften[0].start, function() {
+				
+			}).addClass("btn-success pull-left");
+		}
+	}
+}
+
+function show_unterbruch(mitgliedschaften) {
+	var table = '<table style="width: 100%;"><tr><th>Mitgliedschaft</th><th>Start</th><th>Ende</th></tr>';
+	var i;
+	
+	for (i=0; i < mitgliedschaften.length; i++) {
+		table += '<tr><td>' + mitgliedschaften[i].name + '</td><td>' + mitgliedschaften[i].start + '</td><td>' + mitgliedschaften[i].ende + '</td></tr>';
+	}
+	
+	table += '</table>';
+	
+	frappe.msgprint(table);
 }

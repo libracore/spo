@@ -14,6 +14,9 @@
   "spital_st_gallen",
   "kontakt_via",
   "problematik",
+  "arzt_fachgebiet",
+  "definition_arzt_fachgebiet_andere",
+  "name_zusatz_sonstige_versicherung",
   "section_person",
   "import_mitgliederdaten",
   "vorname",
@@ -56,7 +59,7 @@
   {
    "fieldname": "dashboard_html",
    "fieldtype": "HTML",
-   "options": "<div id=\"chart\"></div>\n<div id=\"limit\"></div>"
+   "options": "<div id=\"limit\"></div>"
   },
   {
    "collapsible": 1,
@@ -70,7 +73,7 @@
    "in_list_view": 1,
    "in_preview": 1,
    "label": "Anfrage Typ",
-   "options": "Callcenter\nBackoffice",
+   "options": "Hotline\nSonstiges",
    "reqd": 1
   },
   {
@@ -251,7 +254,8 @@
    "depends_on": "eval:doc.spo_ombudsstelle=='Ja'",
    "fieldname": "spo_ombudsstelle_details",
    "fieldtype": "Select",
-   "options": "\nMebased\nMonvia\nSpital Leuggern (ASANA)\nSpital Menziken (ASANA)\nZ-Med\nGD St. Gallen"
+   "label": "Ombudstelle von",
+   "options": "\nMedbase\nMonvia\nSpital Leuggern (ASANA)\nSpital Menziken (ASANA)\nZ-Med\nGD St. Gallen\nEMR"
   },
   {
    "depends_on": "eval:doc.spo_ombudsstelle_details=='GD St. Gallen'",
@@ -269,7 +273,7 @@
    "fieldname": "problematik",
    "fieldtype": "Select",
    "label": "Problematik",
-   "options": "Arzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nZA: Hohnorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nPsychiatrie\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nSterben\nKrankenkasse\nSUVA/EMV/IV/UVG\nPrivatversicherung\nallg. Information\nAdressen"
+   "options": "\nArzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nZA: Hohnorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nPsychiatrie\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nSterben\nKrankenkasse (Grundversicherung)\nSUVA/EMV/IV/UVG\nZusatz- / Sonstige Versicherung\nallg. Information\nAdressen"
   },
   {
    "allow_in_quick_entry": 1,
@@ -278,20 +282,39 @@
    "label": "Grundlage der Anfrage"
   },
   {
-   "depends_on": "eval:doc.anfrage_typ=='Callcenter'",
+   "depends_on": "eval:doc.anfrage_typ=='Hotline'",
    "fieldname": "sachverhalt_thema",
    "fieldtype": "Text Editor",
    "label": "Sachverhalt / Thema"
   },
   {
-   "depends_on": "eval:doc.anfrage_typ=='Callcenter'",
+   "depends_on": "eval:doc.anfrage_typ=='Hotline'",
    "fieldname": "rat",
    "fieldtype": "Text Editor",
    "label": "Rat"
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Arzt: m\u00f6gl. Behandlungsfehler'",
+   "fieldname": "arzt_fachgebiet",
+   "fieldtype": "Select",
+   "label": "Fachgebiet",
+   "options": "An\u00e4sthesie\nChirurgie\nGyn\u00e4kologie\nOrthop\u00e4die\nMedizin\nKomplement\u00e4rmedizin\nAndere"
+  },
+  {
+   "depends_on": "eval:doc.arzt_fachgebiet=='Andere'",
+   "fieldname": "definition_arzt_fachgebiet_andere",
+   "fieldtype": "Data",
+   "label": "Definition \"Andere\""
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Zusatz- / Sonstige Versicherung'",
+   "fieldname": "name_zusatz_sonstige_versicherung",
+   "fieldtype": "Data",
+   "label": "Name der Versicherung"
   }
  ],
  "icon": "fa fa-question",
- "modified": "2019-09-09 13:19:57.232406",
+ "modified": "2019-09-19 11:47:33.095523",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
