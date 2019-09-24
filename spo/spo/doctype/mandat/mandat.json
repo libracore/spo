@@ -1,5 +1,5 @@
 {
- "autoname": "MAN-.#####",
+ "autoname": "format:MAN-{YYYY}-{######}",
  "creation": "2019-07-31 15:24:46.186043",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -31,7 +31,8 @@
   "rechnung",
   "section_referenzen",
   "anfragen",
-  "mitglied"
+  "mitglied",
+  "amended_from"
  ],
  "fields": [
   {
@@ -189,10 +190,20 @@
    "fieldname": "rechnung",
    "fieldtype": "Check",
    "label": "Rechnung"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Mandat",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "icon": "fa fa-sitemap",
- "modified": "2019-09-09 13:30:35.523188",
+ "is_submittable": 1,
+ "modified": "2019-09-24 13:34:18.070344",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

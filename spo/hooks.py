@@ -107,6 +107,11 @@ doctype_js = {"Customer" : "scripts/custom_scripts/customer.js"}
 # 		"spo.tasks.monthly"
 # 	]
 # }
+scheduler_events = {
+	"daily": [
+		"spo.spo.doctype.anfrage.anfrage.autom_submit"
+	]
+}
 
 # Testing
 # -------

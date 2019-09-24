@@ -1,5 +1,5 @@
 {
- "autoname": "PDA-.#####",
+ "autoname": "format:PDA-{YYYY}-{######}",
  "creation": "2019-09-19 13:20:07.258180",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -60,7 +60,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2019-09-19 20:48:18.004427",
+ "modified": "2019-09-24 13:29:51.841938",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",

@@ -1,4 +1,5 @@
 {
+ "autoname": "format:VOM-{YYYY}-{######}",
  "creation": "2019-09-19 13:59:06.151151",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -31,7 +32,7 @@
  ],
  "fields": [
   {
-   "default": "0",
+   "default": "1",
    "fieldname": "rsv",
    "fieldtype": "Check",
    "label": "RSV?"
@@ -162,7 +163,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2019-09-19 20:43:56.933454",
+ "modified": "2019-09-24 13:28:26.825669",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",
@@ -181,7 +182,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

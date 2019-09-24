@@ -1,5 +1,5 @@
 {
- "autoname": "ANF-.#####",
+ "autoname": "format:ANF-{YYYY}-{######}",
  "creation": "2019-07-31 13:06:07.002394",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -12,12 +12,22 @@
   "spo_ombudsstelle",
   "spo_ombudsstelle_details",
   "spital_st_gallen",
+  "emr_grund_der_beratung",
+  "emr_name_therapeut",
+  "emr_ort_therapeut",
+  "emr_resultat",
+  "emr_problem",
+  "emr_alter",
+  "emr_geschlecht",
+  "emr_komplement\u00e4rmethode",
   "kontakt_via",
   "problematik",
   "arzt_fachgebiet",
   "definition_arzt_fachgebiet_andere",
   "name_zusatz_sonstige_versicherung",
   "scroll_top_0",
+  "cb_0",
+  "anonymisiert",
   "section_person",
   "import_mitgliederdaten",
   "vorname",
@@ -49,7 +59,8 @@
   "timer_status",
   "manuelle_korrektur",
   "timer",
-  "scroll_top_3"
+  "scroll_top_3",
+  "amended_from"
  ],
  "fields": [
   {
@@ -233,7 +244,7 @@
    "fieldname": "kanton",
    "fieldtype": "Select",
    "label": "Kanton",
-   "options": "AG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH"
+   "options": "AG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
   },
   {
    "fieldname": "krankenkasse",
@@ -318,10 +329,80 @@
    "fieldname": "scroll_top_0",
    "fieldtype": "Button",
    "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
+  },
+  {
+   "fieldname": "cb_0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "anonymisiert",
+   "fieldtype": "Check",
+   "label": "Anonymisiert"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_grund_der_beratung",
+   "fieldtype": "Data",
+   "label": "Grund der Beratung"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_name_therapeut",
+   "fieldtype": "Data",
+   "label": "Name Therapeut"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_ort_therapeut",
+   "fieldtype": "Data",
+   "label": "Ort Therapeut"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_resultat",
+   "fieldtype": "Data",
+   "label": "Resultat"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_problem",
+   "fieldtype": "Select",
+   "label": "Problem",
+   "options": "Gel\u00f6st\nTeilweise gel\u00f6st\nNicht gel\u00f6st"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_alter",
+   "fieldtype": "Int",
+   "label": "Alter"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_geschlecht",
+   "fieldtype": "Select",
+   "label": "Geschlecht",
+   "options": "M\u00e4nnlich\nWeiblich\nAnderes"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_komplement\u00e4rmethode",
+   "fieldtype": "Data",
+   "label": "Bezeichung Methode Komplement\u00e4r- und Alternativmedizin"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Anfrage",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "icon": "fa fa-question",
- "modified": "2019-09-19 21:49:05.348031",
+ "is_submittable": 1,
+ "modified": "2019-09-24 13:46:54.625461",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

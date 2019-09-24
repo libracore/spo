@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe.utils.data import today, add_days
 
 class Anfrage(Document):
 	pass
@@ -228,3 +229,10 @@ def creat_new_mandat(anfrage=None, mitglied=None):
 		mandat.save()
 	
 	return mandat.name
+
+def autom_submit():
+	sql_query = """SELECT `name` FROM `tabAnfrage` WHERE `creation` <= '{last_week}' AND `docstatus` = 0""".format(last_week=add_days(today(), -7))
+	anfragen_to_submit = frappe.db.sql(sql_query, as_dict=True)
+	for _anfrage in anfragen_to_submit:
+		anfrage = frappe.get_doc("Anfrage", _anfrage.name)
+		anfrage.submit()
