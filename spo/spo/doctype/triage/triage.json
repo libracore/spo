@@ -1,0 +1,91 @@
+{
+ "autoname": "format:TRI-{YYYY}-{######}",
+ "creation": "2019-10-02 09:04:29.535623",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "info_titel",
+  "mandat",
+  "problemstellung",
+  "fragestellung_anwalt",
+  "beurteilung",
+  "bemerkung",
+  "fazit",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "info_titel",
+   "fieldtype": "HTML",
+   "options": "<h1>Patienten Daten anonymisieren</h1>"
+  },
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mandat",
+   "options": "Mandat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "problemstellung",
+   "fieldtype": "Text",
+   "label": "Problemstellung"
+  },
+  {
+   "fieldname": "fragestellung_anwalt",
+   "fieldtype": "Text",
+   "label": "Fragestellung"
+  },
+  {
+   "fieldname": "beurteilung",
+   "fieldtype": "Text",
+   "label": "Beurteilung"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text",
+   "label": "Bemerkung"
+  },
+  {
+   "fieldname": "fazit",
+   "fieldtype": "Text",
+   "label": "Fazit"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Triage",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-10-02 09:09:23.756328",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Triage",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

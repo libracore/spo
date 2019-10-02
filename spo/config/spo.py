@@ -63,6 +63,12 @@ def get_data():
 				},
 				{
 					"type": "doctype",
+					"name": "Triage",
+					"label": "Triage",
+					"description": _("Triage"),
+				},
+				{
+					"type": "doctype",
 					"name": "Vollmacht",
 					"label": "Vollmacht",
 					"description": _("Vollmacht"),
