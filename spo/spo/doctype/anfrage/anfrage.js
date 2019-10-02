@@ -14,9 +14,24 @@ frappe.ui.form.on('Anfrage', {
 	},
 	refresh: function(frm) {
 		//add btn to create Mandat
-		frm.add_custom_button(__("Convert to/Open Mandat"), function() {
-            new_mandat(frm.doc.name, frm.doc.mitglied);
-        });
+		frappe.call({
+			method:"frappe.client.get_list",
+			args:{
+				doctype:"Anfrage",
+				filters: [
+					["mitglied","=", frm.doc.mitglied]
+				],
+				fields: ["name"],
+				order_by: 'creation'
+			},
+			callback: function(r) {
+				if (r.message[(r.message.length - 1)].name == frm.doc.name) {
+					frm.add_custom_button(__("Convert to/Open Mandat"), function() {
+						new_mandat(frm.doc.name, frm.doc.mitglied);
+					});
+				}
+			}
+		});
 		
 		//Set filter to mitgliedschaft
 		cur_frm.fields_dict['mitgliedschaft'].get_query = function(doc) {
