@@ -20,14 +20,7 @@
   "telefon",
   "berater",
   "section_3",
-  "eingriff_operation",
-  "spital",
-  "samt_folgen",
-  "vor_und_nachbehandlung",
-  "todesfall_betreffend",
-  "cb_3",
-  "datum",
-  "ort",
+  "titelzeile",
   "amended_from"
  ],
  "fields": [
@@ -80,47 +73,6 @@
    "label": "E-Mail"
   },
   {
-   "depends_on": "eval:doc.todesfall==0",
-   "fieldname": "eingriff_operation",
-   "fieldtype": "Data",
-   "label": "Eingriff/Operation"
-  },
-  {
-   "fieldname": "datum",
-   "fieldtype": "Date",
-   "label": "Datum"
-  },
-  {
-   "fieldname": "spital",
-   "fieldtype": "Data",
-   "label": "Spital"
-  },
-  {
-   "fieldname": "ort",
-   "fieldtype": "Data",
-   "label": "Ort"
-  },
-  {
-   "default": "0",
-   "depends_on": "eval:doc.todesfall==0",
-   "fieldname": "samt_folgen",
-   "fieldtype": "Check",
-   "label": "samt Folgen"
-  },
-  {
-   "default": "0",
-   "depends_on": "eval:doc.todesfall==0",
-   "fieldname": "vor_und_nachbehandlung",
-   "fieldtype": "Check",
-   "label": "inkl. Vor- und Nachbehandlung"
-  },
-  {
-   "depends_on": "eval:doc.todesfall==1",
-   "fieldname": "todesfall_betreffend",
-   "fieldtype": "Data",
-   "label": "Todesfall Betreffend"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -158,12 +110,13 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "cb_3",
-   "fieldtype": "Column Break"
+   "fieldname": "titelzeile",
+   "fieldtype": "Text Editor",
+   "label": "Titelzeile"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-09-24 13:28:26.825669",
+ "modified": "2019-10-02 10:44:00.733029",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",

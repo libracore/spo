@@ -125,3 +125,5 @@ scheduler_events = {
 # 	"frappe.desk.doctype.event.event.get_events": "spo.event.get_events"
 # }
 
+# Fixtures
+fixtures = ["Custom Field"]
