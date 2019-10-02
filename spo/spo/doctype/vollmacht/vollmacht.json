@@ -52,6 +52,7 @@
    "reqd": 1
   },
   {
+   "default": "Ehefrau des\u2026 Tochter des etc.",
    "depends_on": "eval:doc.todesfall==1",
    "fieldname": "beziehungsverhaeltniss",
    "fieldtype": "Data",
@@ -116,7 +117,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-02 10:44:00.733029",
+ "modified": "2019-10-02 11:31:39.759554",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",
