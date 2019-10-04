@@ -6,7 +6,8 @@
  "field_order": [
   "datum",
   "art_dokument_beilage",
-  "wortlaut"
+  "wortlaut",
+  "bemerkung"
  ],
  "fields": [
   {
@@ -23,13 +24,18 @@
   },
   {
    "fieldname": "wortlaut",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "in_list_view": 1,
    "label": "Genauer Wortlaut"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text Editor",
+   "label": "Bemerkung"
   }
  ],
  "istable": 1,
- "modified": "2019-09-19 20:49:36.542041",
+ "modified": "2019-10-04 11:19:03.112637",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht Korrspondenz",

@@ -6,7 +6,8 @@
  "field_order": [
   "datum",
   "art_dokument_beilage",
-  "krankengeschichte"
+  "krankengeschichte",
+  "bemerkung"
  ],
  "fields": [
   {
@@ -23,13 +24,18 @@
   },
   {
    "fieldname": "krankengeschichte",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "in_list_view": 1,
    "label": "Genauer Wortlaut aus der Krankengeschichte"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text Editor",
+   "label": "Bemerkung"
   }
  ],
  "istable": 1,
- "modified": "2019-09-19 20:49:55.229863",
+ "modified": "2019-10-04 11:18:42.623203",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht Ausgangslage",

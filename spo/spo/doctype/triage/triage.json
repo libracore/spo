@@ -12,6 +12,13 @@
   "beurteilung",
   "bemerkung",
   "fazit",
+  "empfehlung",
+  "section_checkliste",
+  "aufklaerungsprotokolle",
+  "sorgfalt",
+  "kausalitaet",
+  "schaden",
+  "empfehlung_check",
   "amended_from"
  ],
  "fields": [
@@ -30,27 +37,27 @@
   },
   {
    "fieldname": "problemstellung",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Problemstellung"
   },
   {
    "fieldname": "fragestellung_anwalt",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Fragestellung"
   },
   {
    "fieldname": "beurteilung",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Beurteilung"
   },
   {
    "fieldname": "bemerkung",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Bemerkung"
   },
   {
    "fieldname": "fazit",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Fazit"
   },
   {
@@ -61,10 +68,51 @@
    "options": "Triage",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "empfehlung",
+   "fieldtype": "Select",
+   "label": "Empfehlung",
+   "options": "Jur. Vorgehen empfohlen\nJur. Vorgehen nicht empfohlen\nAnderes"
+  },
+  {
+   "fieldname": "section_checkliste",
+   "fieldtype": "Section Break",
+   "label": "Checkliste"
+  },
+  {
+   "default": "0",
+   "fieldname": "aufklaerungsprotokolle",
+   "fieldtype": "Check",
+   "label": "Alle Aufkl\u00e4rungsprotokolle verlangt?"
+  },
+  {
+   "default": "0",
+   "fieldname": "sorgfalt",
+   "fieldtype": "Check",
+   "label": "Sorgfalt?"
+  },
+  {
+   "default": "0",
+   "fieldname": "kausalitaet",
+   "fieldtype": "Check",
+   "label": "Kausalit\u00e4t?"
+  },
+  {
+   "default": "0",
+   "fieldname": "schaden",
+   "fieldtype": "Check",
+   "label": "Schaden? H\u00f6he? Bleibend?"
+  },
+  {
+   "default": "0",
+   "fieldname": "empfehlung_check",
+   "fieldtype": "Check",
+   "label": "Empfehlung?"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-02 09:09:23.756328",
+ "modified": "2019-10-04 11:26:03.001912",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",

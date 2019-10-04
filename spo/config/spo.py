@@ -72,6 +72,12 @@ def get_data():
 					"name": "Vollmacht",
 					"label": "Vollmacht",
 					"description": _("Vollmacht"),
+				},
+				{
+					"type": "doctype",
+					"name": "Abschlussbericht",
+					"label": "Abschlussbericht",
+					"description": _("Abschlussbericht"),
 				}
 			]
 		},
@@ -84,6 +90,12 @@ def get_data():
 					"name": "Einstellungen",
 					"label": "Defaults",
 					"description": _("Standard Einstellungen"),
+				},
+				{
+					"type": "doctype",
+					"name": "SPO Textbausteine",
+					"label": "Textbausteine",
+					"description": _("Benutzerspezifische Textbausteine"),
 				}
 			]
 		}

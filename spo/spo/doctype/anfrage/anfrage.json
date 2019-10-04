@@ -23,6 +23,7 @@
   "kontakt_via",
   "problematik",
   "arzt_fachgebiet",
+  "sterben",
   "definition_arzt_fachgebiet_andere",
   "name_zusatz_sonstige_versicherung",
   "scroll_top_0",
@@ -295,13 +296,11 @@
    "label": "Grundlage der Anfrage"
   },
   {
-   "depends_on": "eval:doc.anfrage_typ=='Hotline'",
    "fieldname": "sachverhalt_thema",
    "fieldtype": "Text Editor",
    "label": "Sachverhalt / Thema"
   },
   {
-   "depends_on": "eval:doc.anfrage_typ=='Hotline'",
    "fieldname": "rat",
    "fieldtype": "Text Editor",
    "label": "Rat"
@@ -398,11 +397,18 @@
    "options": "Anfrage",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Sterben'",
+   "fieldname": "sterben",
+   "fieldtype": "Select",
+   "label": "Sterben",
+   "options": "Sterben PV\nSterben ACP"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-09-24 13:46:54.625461",
+ "modified": "2019-10-04 11:11:36.609357",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

@@ -13,19 +13,24 @@
   "arzt",
   "verantwortlicher_arzt_sicht_patient",
   "ausgangslage",
+  "druck_ausgangslage_bemerkung",
   "korrespondenz",
+  "druck_korrespondenz_bemerkung",
   "bemerkung",
   "situation_heute",
   "beurteilung",
+  "druck_beurteilung",
+  "fragestellung_anwalt",
+  "fazit",
+  "beilagen",
+  "empfehlung",
   "section_checkliste",
   "aufklaerungsprotokolle",
   "sorgfalt",
   "kausalitaet",
   "schaden",
-  "empfehlung",
+  "empfehlung_check",
   "section_1",
-  "fragestellung_anwalt",
-  "beilagen",
   "amended_from"
  ],
  "fields": [
@@ -39,22 +44,22 @@
   },
   {
    "fieldname": "problemstellung",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Problemstellung"
   },
   {
    "fieldname": "diagnose",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Diagnose/n"
   },
   {
    "fieldname": "operation",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Operation/en"
   },
   {
    "fieldname": "arzt",
-   "fieldtype": "Data",
+   "fieldtype": "Text",
    "label": "Behandelnder Arzt"
   },
   {
@@ -76,18 +81,18 @@
   },
   {
    "fieldname": "bemerkung",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Bemerkung"
   },
   {
    "fieldname": "situation_heute",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Situation heute"
   },
   {
    "description": "(SPO beraterin)",
    "fieldname": "beurteilung",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Beurteilung"
   },
   {
@@ -122,10 +127,10 @@
    "label": "Schaden? H\u00f6he? Bleibend?"
   },
   {
-   "default": "0",
    "fieldname": "empfehlung",
-   "fieldtype": "Check",
-   "label": "Empfehlung?"
+   "fieldtype": "Select",
+   "label": "Empfehlung",
+   "options": "Jur. Vorgehen empfohlen\nJur. Vorgehen nicht empfohlen\nAnderes"
   },
   {
    "fieldname": "section_1",
@@ -134,13 +139,13 @@
   {
    "description": "(f\u00fcr Anwalt)",
    "fieldname": "fragestellung_anwalt",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Fragestellung"
   },
   {
    "description": "(Krankengeschichte, R\u00f6ntgenbilder usw.)",
    "fieldname": "beilagen",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Beilagen"
   },
   {
@@ -156,10 +161,39 @@
    "fieldname": "info_titel",
    "fieldtype": "HTML",
    "options": "<h1>Patienten Daten anonymisieren</h1>"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_beurteilung",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Beurteilung\"?"
+  },
+  {
+   "fieldname": "fazit",
+   "fieldtype": "Text Editor",
+   "label": "Fazit"
+  },
+  {
+   "default": "0",
+   "fieldname": "empfehlung_check",
+   "fieldtype": "Check",
+   "label": "Empfehlung?"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_ausgangslage_bemerkung",
+   "fieldtype": "Check",
+   "label": "Sollen die Bemerkungen der Ausgangslage gedruckt werden?"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_korrespondenz_bemerkung",
+   "fieldtype": "Check",
+   "label": "Sollen die Bemerkungen der Korrespondenz gedruckt werden?"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-09-24 13:29:18.693213",
+ "modified": "2019-10-04 11:21:06.292443",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",
