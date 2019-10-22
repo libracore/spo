@@ -20,6 +20,7 @@
   "telefon",
   "berater",
   "section_3",
+  "textkonserve",
   "titelzeile",
   "amended_from"
  ],
@@ -111,13 +112,20 @@
    "fieldtype": "Section Break"
   },
   {
+   "fetch_from": "textkonserve.textkonserve",
    "fieldname": "titelzeile",
    "fieldtype": "Text Editor",
    "label": "Titelzeile"
+  },
+  {
+   "fieldname": "textkonserve",
+   "fieldtype": "Link",
+   "label": "Textkonserve",
+   "options": "SPO Textbausteine"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-02 11:31:39.759554",
+ "modified": "2019-10-22 09:38:33.160617",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",

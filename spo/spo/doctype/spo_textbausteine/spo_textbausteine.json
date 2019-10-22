@@ -23,7 +23,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Dokument",
-   "options": "Abschlussbericht\nAnforderung Patientendossier",
+   "options": "Abschlussbericht\nAnforderung Patientendossier\nVollmacht",
    "reqd": 1
   },
   {
@@ -42,7 +42,7 @@
    "reqd": 1
   }
  ],
- "modified": "2019-10-04 11:39:35.165330",
+ "modified": "2019-10-22 09:40:19.481619",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "SPO Textbausteine",

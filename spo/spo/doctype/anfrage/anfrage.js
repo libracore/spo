@@ -125,7 +125,7 @@ frappe.ui.form.on('Anfrage', {
 					get_vorschlagswerte(frm);
 				}
 			},
-			'Haben Sie eine Mitglieder- oder Mitgliedschaftsnummer?',
+			'Haben Sie eine Mitglieder- oder Mitgliedschaftsnummer?<br>Wenn nicht, können Sie die Felder leer lassen um zu suchen.',
 			'Daten importieren'
 			);
 		}

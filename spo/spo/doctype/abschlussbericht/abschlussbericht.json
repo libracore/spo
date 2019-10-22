@@ -17,6 +17,7 @@
    "options": "SPO Textbausteine"
   },
   {
+   "fetch_from": "textkonserve.textkonserve",
    "fieldname": "brieftext",
    "fieldtype": "Text Editor",
    "label": "Brieftext"
@@ -32,7 +33,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-04 11:57:59.225011",
+ "modified": "2019-10-22 09:30:20.614840",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Abschlussbericht",

@@ -99,7 +99,7 @@
   {
    "fieldname": "import_mitgliederdaten",
    "fieldtype": "Button",
-   "label": "Mitgliederdaten importieren"
+   "label": "Mitgliederdaten importieren/suchen"
   },
   {
    "allow_in_quick_entry": 1,
@@ -408,7 +408,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-10-04 11:11:36.609357",
+ "modified": "2019-10-22 09:47:17.422787",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
