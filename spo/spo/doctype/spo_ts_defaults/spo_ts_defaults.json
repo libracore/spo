@@ -1,0 +1,46 @@
+{
+ "creation": "2019-10-23 10:38:54.270412",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dokument",
+  "default_hours",
+  "do_not_overwrite"
+ ],
+ "fields": [
+  {
+   "fieldname": "dokument",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dokument",
+   "options": "Anfrage\nMandat\nAnforderung Patientendossier\nMedizinischer Bericht\nTriage\nVollmacht\nAbschlussbericht",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_hours",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Default Zeit (in Stunden)",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "do_not_overwrite",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Nicht durch effektive Zeit \u00fcberschreiben"
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-10-23 10:39:09.357903",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "SPO TS Defaults",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
