@@ -16,7 +16,7 @@ def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
 	return frappe.db.sql(query, as_dict=True)
 	
 @frappe.whitelist()
-def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='', ort='', plz=''):
+def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', geburtsdatum=''):
 	#Suche nach Vor- resp. Nachnamen
 	name_query = ''
 	if vorname and not nachname:
@@ -30,10 +30,11 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 	if name_query:
 		namens_matches = frappe.db.sql("""SELECT `name` FROM `tabCustomer` WHERE {name_query}""".format(name_query=name_query), as_dict=True)
 		if namens_matches:
-			_namens_matches = '<h2>Namens Matche</h2>'
+			_namens_matches = '<h2>Namens Matches</h2>'
 			for match in namens_matches:
 				customer = frappe.get_doc("Customer", match.name)
-				_namens_matches += '<div class="panel panel-default"><div class="panel-heading">{name}<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'")
+				contact = get_contact(match.name)
+				_namens_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
 				address = get_address(match.name)
 				_namens_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
 				_namens_matches += '</div></div>'
@@ -66,13 +67,13 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 				
 	address_matches = ''
 	if address_query:
-		#address_matches = frappe.db.sql("""SELECT `name` FROM `tabAddress` WHERE {address_query}""".format(address_query=address_query), as_dict=True)
 		address_matches = frappe.db.sql("""SELECT `link_name` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parent` IN (SELECT `name` FROM `tabAddress` WHERE {address_query})""".format(address_query=address_query), as_dict=True)
 		if address_matches:
 			_address_matches = '<h2>Adressen Matches</h2>'
 			for match in address_matches:
 				customer = frappe.get_doc("Customer", match.link_name)
-				_address_matches += '<div class="panel panel-default"><div class="panel-heading">{name}<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'")
+				contact = get_contact(match.link_name)
+				_address_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
 				address = get_address(match.link_name)
 				_address_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
 				_address_matches += '</div></div>'
@@ -89,10 +90,12 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 			_full_matches = '<h2>Vollständige Matches</h2>'
 			for match in full_matches:
 				customer = frappe.get_doc("Customer", match.name)
-				_full_matches += '<div class="panel panel-default"><div class="panel-heading">{name}<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'")
-				address = get_address(match.name)
-				_full_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
-				_full_matches += '</div></div>'
+				contact = get_contact(match.name)
+				if (str(contact.geburtsdatum) == str(geburtsdatum)):
+					_full_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
+					address = get_address(match.name)
+					_full_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
+					_full_matches += '</div></div>'
 			full_matches = _full_matches
 	
 	#Vorbereitung return daten
@@ -106,6 +109,10 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 @frappe.whitelist()
 def get_address(customer):
 	return frappe.db.sql("""SELECT * FROM `tabAddress` WHERE `name` = (SELECT `parent` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parenttype` = 'Address' AND `link_name` = '{customer}' LIMIT 1)""".format(customer=customer), as_dict=True)[0]
+	
+@frappe.whitelist()
+def get_contact(customer):
+	return frappe.db.sql("""SELECT * FROM `tabContact` WHERE `name` = (SELECT `parent` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parenttype` = 'Contact' AND `link_name` = '{customer}' LIMIT 1)""".format(customer=customer), as_dict=True)[0]
 	
 @frappe.whitelist()
 def update_frm_with_fetched_data(frm, name):
@@ -149,12 +156,23 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 		],
 		"address_line1": strasse + " " + hausnummer,
 		"city": ort,
-		"pincode": plz,
-		"email_id": email,
-		"phone": telefon,
-		"fax": mobile
+		"pincode": plz
 	})
 	address.insert()
+	
+	contact = frappe.get_doc({
+		"doctype": "Contact",
+		"links": [
+			{
+				"link_doctype": "Customer",
+				"link_name": mitglied.name
+			}
+		],
+		"email_id": email,
+		"phone": telefon,
+		"mobile_no": mobile
+	})
+	contact.insert()
 	
 	return mitglied.name
 	
@@ -236,3 +254,43 @@ def autom_submit():
 	for _anfrage in anfragen_to_submit:
 		anfrage = frappe.get_doc("Anfrage", _anfrage.name)
 		anfrage.submit()
+		
+@frappe.whitelist()
+def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, strasse, hausnummer, ort, plz, telefon, mobile, email, mitglied):
+	customer = frappe.get_doc("Customer", mitglied)
+	address = get_address(customer.name)
+	contact = get_contact(customer.name)
+	abweichungen = '<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>'
+	
+	#vor- Nachnamen
+	_name_diff = True
+	if (vorname + " " + nachname) == customer.customer_name:
+		_name_diff = False
+	if (nachname + " " + vorname) == customer.customer_name:
+		_name_diff = False
+	if _name_diff:
+		abweichungen = '<h3>Name</h3><b>Alt/Neu:</b><br>' + str(customer.customer_name) + ' / ' + (str(vorname) or 'Kein Vorname') + " " + (str(nachname) or 'Kein Nachnamen') + '<br>'
+		
+	#adresse
+	_address_diff = False
+	if address.address_line1 != (strasse + " " + hausnummer):
+		_address_diff = True
+	if (address.pincode + " " + address.city) != (plz + " " + ort):
+		_address_diff = True
+	if _address_diff:
+		abweichungen += '<h3>Adresse</h3><b>Alt/Neu:</b><br>' + str(address.address_line1) + ' / '  + (str(strasse) or 'Keine Strasse') + " " + (str(hausnummer) or 'Keine Hausnummer') + '<br>' + str(address.pincode) + " " + str(address.city) + ' / '  + (str(plz) or 'Keine Postleitzahl') + " " + (str(ort) or 'Kein Ort') + '<br>'
+		
+	#contact
+	_contact_diff = False
+	if email != contact.email_id:
+		_contact_diff = True
+	if str(geburtsdatum) != str(contact.geburtsdatum):
+		_contact_diff = True
+	if telefon != contact.phone:
+		_contact_diff = True
+	if mobile != contact.mobile_no:
+		_contact_diff = True
+	if _contact_diff:
+		abweichungen += '<h3>Kontakt</h3><b>Alt:/Neu</b><br>E-Mail: ' + str(contact.email_id) + ' / ' + (str(email) or 'Keine E-Mail') + '<br>Telefon: ' + str(contact.phone) + ' / ' + (str(telefon) or 'Kein Telefon') + '<br>Mobilenummer: ' + str(contact.mobile_no) + ' / ' + (str(mobile) or 'Keine Mobilenummer') + '<br>Geburtsdatum: ' + str(contact.geburtsdatum) + ' / ' + (str(geburtsdatum) or 'Kein Geburtsdatum')
+		
+	return abweichungen	

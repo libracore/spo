@@ -9,6 +9,7 @@ frappe.ui.form.on('Anfrage', {
 	onload: function(frm) {
 		if (frm.doc.__islocal) {
 			start_timer(frm);
+			cur_frm.doc.mitglied = '';
 			cur_frm.save();
 		}
 	},
@@ -75,6 +76,9 @@ frappe.ui.form.on('Anfrage', {
 		
 		//pflichtfelder basierend auf Anfrage Typ
 		set_mandatory_and_read_only(frm);
+		
+		//überprüfung ob kontakt- und adress-daten mit stamm übereinstimmen
+		check_anfrage_daten_vs_stamm_daten(frm);
 	},
 	anfrage_typ: function(frm) {
 		//pflichtfelder basierend auf Anfrage Typ
@@ -89,61 +93,10 @@ frappe.ui.form.on('Anfrage', {
 		set_mandatory_and_read_only(frm);
 	},
 	import_mitgliederdaten: function(frm) {
-		if (frm.doc.mitglied) {
-			// laden aller Daten aus Mitgliedernummer
-			if(frm.doc.mitgliedschaft) {
-				get_data_from_mitgliedernummer(frm, frm.doc.mitglied, false);
-			} else {
-				get_data_from_mitgliedernummer(frm, frm.doc.mitglied, true);
-			}
-			console.log("Lade Daten von " + frm.doc.mitglied);
-		} else if(frm.doc.mitgliedschaft) {
-			// laden aller Daten aus Mitgliedschaft
-			get_data_from_mitgliedschaft(frm, frm.doc.mitgliedschaft);
-			console.log("Lade Daten von " + frm.doc.mitgliedschaft);
-		} else {
-			frappe.prompt([
-				{'fieldname': 'mitgliedernummer', 'fieldtype': 'Link', 'label': 'Mitgliedernummer', 'reqd': 0, 'options': 'Customer'},
-				{'fieldname': 'mitgliedschaft', 'fieldtype': 'Link', 'label': 'Mitgliedschaft', 'reqd': 0, 'options': 'Mitgliedschaft'},
-				{'fieldname': 'txt', 'fieldtype': 'HTML', 'label': 'Beschreibung', 'reqd': 0, 'options': '<p>Wenn Ihnen eine Mitglieder- und/oder Mitgliedschaftsnummer bekannt ist, können Sie diese hier zur Suchoptimierung eintragen. Haben Sie keine der genannten Angaben, können Sie die Felder leer lassen.</p>'}
-			],
-			function(values){
-				var mitgliedernummer = '';
-				if (values.mitgliedernummer) {
-					mitgliedernummer = values.mitgliedernummer;
-				}
-				var mitgliedschaft = '';
-				if (values.mitgliedschaft) {
-					mitgliedschaft = values.mitgliedschaft;
-				}
-				if (mitgliedernummer) {
-					// laden aller Daten aus Mitgliedernummer
-					console.log("Lade Daten von " + mitgliedernummer);
-					if(mitgliedschaft) {
-						get_data_from_mitgliedernummer(frm, mitgliedernummer, false);
-					} else {
-						get_data_from_mitgliedernummer(frm, mitgliedernummer, true);
-					}
-					
-					// setzen der Mitgliedernummer in der Anfrage
-					cur_frm.set_value('mitglied', values.mitgliedernummer);
-				} else if (mitgliedschaft) {
-					// laden aller Daten aus Mitgliedschaft
-					console.log("Lade Daten von " + mitgliedschaft);
-					get_data_from_mitgliedschaft(frm, mitgliedschaft);
-					
-					// setzen der Mitgliedschaft in der Anfrage
-					cur_frm.set_value('mitgliedschaft', values.mitgliedschaft);
-				} else {
-					// laden Vorschlagsdaten...
-					console.log("laden Vorschlagsdaten...");
-					get_vorschlagswerte(frm);
-				}
-			},
-			'Haben Sie eine Mitglieder- oder Mitgliedschaftsnummer?<br>Wenn nicht, können Sie die Felder leer lassen um zu suchen.',
-			'Daten importieren'
-			);
-		}
+		_import_mitgliederdaten(frm);
+	},
+	mitglied: function(frm) {
+		_import_mitgliederdaten(frm);
 	},
 	mitglied_erstellen: function(frm) {
 		//kontrolle ob pflichtfelder ausgefüllt
@@ -165,20 +118,15 @@ frappe.ui.form.on('Anfrage', {
 			fehlende_daten += 'Postleitzahl<br>';
 			fehler = true;
 		}
-		// UNDER CONSTRUCTION!
+		
+		var email = ''
 		if (frm.doc.email) {
 			if (frm.doc.email.split("@").length == 2) {
 				if (frm.doc.email.split("@")[1].split(".").length == 2) {
 					if (frm.doc.email.split("@")[1].split(".")[1] != '') {
-						console.log("go with E-Mail");
-					} else {
-						console.log("NO E-MAIL!");
+						email = frm.doc.email;
 					}
-				} else {
-					console.log("NO E-MAIL!");
 				}
-			} else {
-				console.log("NO E-MAIL!");
 			}
 		}
 		if (fehler) {
@@ -193,7 +141,7 @@ frappe.ui.form.on('Anfrage', {
 					"hausnummer": frm.doc.hausnummer,
 					"ort": frm.doc.ort,
 					"plz": frm.doc.plz,
-					"email": frm.doc.email,
+					"email": email,
 					"telefon": frm.doc.telefon,
 					"mobile": frm.doc.mobile
 				},
@@ -304,13 +252,33 @@ function get_data_from_mitgliedernummer(frm, mitgliedernummer, inkl) {
 									cur_frm.set_value('hausnummer', address.address_line1.split(" ")[1]);
 									cur_frm.set_value('ort', address.city);
 									cur_frm.set_value('plz', address.pincode);
-									cur_frm.set_value('telefon', address.phone);
+									
+									//folgende 3 linien müssen aus Kontakt geholt werden!!!
+									/* cur_frm.set_value('telefon', address.phone);
 									cur_frm.set_value('mobile', address.fax);
-									cur_frm.set_value('email', address.email_id);
+									cur_frm.set_value('email', address.email_id); */
 								}
 								if(inkl) {
 									get_valid_mitgliedschaft_based_on_mitgliedernummer(frm, mitgliedernummer)
 								}
+								
+								frappe.call({
+									"method": "spo.spo.doctype.anfrage.anfrage.get_contact",
+									"args": {
+										"doctype": "Address",
+										"customer": customer.name
+									},
+									"async": false,
+									"callback": function(resp) {
+										if(resp.message) {
+											var contact = resp.message;
+											cur_frm.set_value('telefon', contact.phone);
+											cur_frm.set_value('mobile', contact.mobile_no);
+											cur_frm.set_value('email', contact.email_id);
+											cur_frm.set_value('geburtsdatum', contact.geburtsdatum);
+										}
+									}
+								});
 							}
 						});
 					} else {
@@ -375,7 +343,8 @@ function get_vorschlagswerte(frm) {
 			"hausnummer": frm.doc.hausnummer,
 			"ort": frm.doc.ort,
 			"plz": frm.doc.plz,
-			"frm": frm.doc.name
+			"frm": frm.doc.name,
+			"geburtsdatum": frm.doc.geburtsdatum
         },
         "async": false,
         "callback": function(response) {
@@ -660,5 +629,103 @@ function set_mandatory_and_read_only(frm) {
 		if (cur_frm.doc.problematik == 'Krankenkasse (Grundversicherung)') {
 			cur_frm.set_df_property('krankenkasse','reqd', 1);
 		}
+	}
+}
+
+function check_anfrage_daten_vs_stamm_daten(frm) {
+	if (frm.doc.mitglied) {
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.check_anfrage_daten_vs_stamm_daten",
+			"args": {
+				"mitglied": frm.doc.mitglied,
+				"vorname": frm.doc.vorname || '',
+				"nachname": frm.doc.nachname || '',
+				"geburtsdatum": frm.doc.geburtsdatum || '',
+				"kanton": frm.doc.kanton || '',
+				"strasse": frm.doc.strasse || '',
+				"hausnummer": frm.doc.hausnummer || '',
+				"ort": frm.doc.ort || '',
+				"plz": frm.doc.plz || '',
+				"telefon": frm.doc.telefon || '',
+				"mobile": frm.doc.mobile || '',
+				"email": frm.doc.email || ''
+			},
+			"async": false,
+			"callback": function(response) {
+				var abweichungen = response.message;
+				if (abweichungen != '<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>') {
+					frappe.confirm(
+						abweichungen,
+						function(){
+							// on yes
+							console.log("ändern");
+						},
+						function(){
+							// on no
+							console.log("änderungen nicht bearbeiten");
+						}
+					)
+					
+				}
+			}
+		});
+	}
+}
+
+function _import_mitgliederdaten(frm) {
+	if (frm.doc.mitglied) {
+		// laden aller Daten aus Mitgliedernummer
+		if(frm.doc.mitgliedschaft) {
+			get_data_from_mitgliedernummer(frm, frm.doc.mitglied, false);
+		} else {
+			get_data_from_mitgliedernummer(frm, frm.doc.mitglied, true);
+		}
+		console.log("Lade Daten von " + frm.doc.mitglied);
+	} else if(frm.doc.mitgliedschaft) {
+		// laden aller Daten aus Mitgliedschaft
+		get_data_from_mitgliedschaft(frm, frm.doc.mitgliedschaft);
+		console.log("Lade Daten von " + frm.doc.mitgliedschaft);
+	} else {
+		frappe.prompt([
+			{'fieldname': 'mitgliedernummer', 'fieldtype': 'Link', 'label': 'Mitgliedernummer', 'reqd': 0, 'options': 'Customer'},
+			{'fieldname': 'mitgliedschaft', 'fieldtype': 'Link', 'label': 'Mitgliedschaft', 'reqd': 0, 'options': 'Mitgliedschaft'},
+			{'fieldname': 'txt', 'fieldtype': 'HTML', 'label': 'Beschreibung', 'reqd': 0, 'options': '<p>Wenn Ihnen eine Mitglieder- und/oder Mitgliedschaftsnummer bekannt ist, können Sie diese hier zur Suchoptimierung eintragen. Haben Sie keine der genannten Angaben, können Sie die Felder leer lassen.</p>'}
+		],
+		function(values){
+			var mitgliedernummer = '';
+			if (values.mitgliedernummer) {
+				mitgliedernummer = values.mitgliedernummer;
+			}
+			var mitgliedschaft = '';
+			if (values.mitgliedschaft) {
+				mitgliedschaft = values.mitgliedschaft;
+			}
+			if (mitgliedernummer) {
+				// laden aller Daten aus Mitgliedernummer
+				console.log("Lade Daten von " + mitgliedernummer);
+				if(mitgliedschaft) {
+					get_data_from_mitgliedernummer(frm, mitgliedernummer, false);
+				} else {
+					get_data_from_mitgliedernummer(frm, mitgliedernummer, true);
+				}
+				
+				// setzen der Mitgliedernummer in der Anfrage
+				cur_frm.set_value('mitglied', values.mitgliedernummer);
+			} else if (mitgliedschaft) {
+				// laden aller Daten aus Mitgliedschaft
+				console.log("Lade Daten von " + mitgliedschaft);
+				get_data_from_mitgliedschaft(frm, mitgliedschaft);
+				
+				// setzen der Mitgliedschaft in der Anfrage
+				cur_frm.set_value('mitgliedschaft', values.mitgliedschaft);
+			} else {
+				// laden Vorschlagsdaten...
+				console.log("laden Vorschlagsdaten...");
+				get_vorschlagswerte(frm);
+			}
+		},
+		'Haben Sie eine Mitglieder- oder Mitgliedschaftsnummer?<br>Wenn nicht, können Sie die Felder leer lassen um zu suchen.',
+		'Daten importieren'
+		);
 	}
 }
