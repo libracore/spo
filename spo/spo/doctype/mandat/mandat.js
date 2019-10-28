@@ -20,47 +20,6 @@ function update_dashboard(frm) {
 		"async": false,
 		"callback": function(response) {
 			var query = response.message;
-			//Chart
-			let chart = new frappe.Chart( "#chart", { // or DOM element
-				data: {
-				labels: ["Letztes Jahr", "YTD", "Q1", "Q2", "Q3", "Q4"],
-				
-				datasets: [
-					{
-						name: "Als Mitglied", chartType: 'bar',
-						values: [query.m_last_year, query.m_ytd, query.m_q1, query.m_q2, query.m_q3, query.m_q4]
-					},
-					{
-						name: "Nicht Mitglied", chartType: 'bar',
-						values: [query.o_last_year, query.o_ytd, query.o_q1, query.o_q2, query.o_q3, query.o_q4]
-					},
-					{
-						name: "Schnitt", chartType: 'line',
-						values: [(query.m_last_year + query.o_last_year) / 2, (query.m_ytd + query.o_ytd) / 2, (query.m_q1 + query.o_q1) / 2, (query.m_q2 + query.o_q2) / 2, (query.m_q3 + query.o_q3) / 2, (query.m_q4 + query.o_q4) / 2]
-					},
-					{
-						name: "Total", chartType: 'line',
-						values: [(query.m_last_year + query.o_last_year), (query.m_ytd + query.o_ytd), (query.m_q1 + query.o_q1), (query.m_q2 + query.o_q2), (query.m_q3 + query.o_q3), (query.m_q4 + query.o_q4)]
-					}
-				],
-
-				yMarkers: [{ label: "Mittelwert", value: (query.m_last_year + query.o_last_year + query.m_ytd + query.o_ytd + query.m_q1 + query.o_q1 + query.m_q2 + query.o_q2 + query.m_q3 + query.o_q3 + query.m_q4 + query.o_q4) / 12,
-					options: { labelPos: 'right' }}],
-				/*yRegions: [{ label: "Region", start: -10, end: 50,
-					options: { labelPos: 'right' }}]
-				*/},
-
-				
-				type: 'axis-mixed', // or 'bar', 'line', 'pie', 'percentage'
-				height: 250,
-				colors: ['#00b000', '#d40000', 'light-blue', 'blue'],
-
-				tooltipOptions: {
-					formatTooltipX: d => (d + '').toUpperCase(),
-					formatTooltipY: d => d + ' min',
-				}
-			});
-			
 			//Limits
 			var _colors = ['#d40000', '#00b000'];
 			if (query.callcenter_verwendet == 0) {

@@ -13,6 +13,7 @@
   "bemerkung",
   "fazit",
   "empfehlung",
+  "empfehlung_anderes",
   "section_checkliste",
   "aufklaerungsprotokolle",
   "sorgfalt",
@@ -109,10 +110,16 @@
    "fieldname": "empfehlung_check",
    "fieldtype": "Check",
    "label": "Empfehlung?"
+  },
+  {
+   "depends_on": "eval:doc.empfehlung=='Anderes'",
+   "fieldname": "empfehlung_anderes",
+   "fieldtype": "Data",
+   "label": "Anderes"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-04 11:26:03.001912",
+ "modified": "2019-10-28 11:58:47.349153",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",

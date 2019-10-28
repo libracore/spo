@@ -72,6 +72,21 @@ frappe.ui.form.on('Anfrage', {
 		
 		// add scroll to navbar
 		add_scroll_to(frm);
+		
+		//pflichtfelder basierend auf Anfrage Typ
+		set_mandatory_and_read_only(frm);
+	},
+	anfrage_typ: function(frm) {
+		//pflichtfelder basierend auf Anfrage Typ
+		set_mandatory_and_read_only(frm);
+	},
+	anonymisiert: function(frm) {
+		//pflichtfelder basierend auf Anfrage Typ
+		set_mandatory_and_read_only(frm);
+	},
+	problematik: function(frm) {
+		//pflichtfelder basierend auf Anfrage Typ
+		set_mandatory_and_read_only(frm);
 	},
 	import_mitgliederdaten: function(frm) {
 		if (frm.doc.mitglied) {
@@ -149,6 +164,22 @@ frappe.ui.form.on('Anfrage', {
 		if(!frm.doc.plz) {
 			fehlende_daten += 'Postleitzahl<br>';
 			fehler = true;
+		}
+		// UNDER CONSTRUCTION!
+		if (frm.doc.email) {
+			if (frm.doc.email.split("@").length == 2) {
+				if (frm.doc.email.split("@")[1].split(".").length == 2) {
+					if (frm.doc.email.split("@")[1].split(".")[1] != '') {
+						console.log("go with E-Mail");
+					} else {
+						console.log("NO E-MAIL!");
+					}
+				} else {
+					console.log("NO E-MAIL!");
+				}
+			} else {
+				console.log("NO E-MAIL!");
+			}
 		}
 		if (fehler) {
 			frappe.msgprint("Bitte tragen Sie mindestens noch folgende Daten ein:<br>" + fehlende_daten, "Fehlende Daten");
@@ -586,4 +617,48 @@ function show_unterbruch(mitgliedschaften) {
 	table += '</table>';
 	
 	frappe.msgprint(table, __("Übersicht der Mitgliedschaften"));
+}
+
+function set_mandatory_and_read_only(frm) {
+	if (!frm.doc.__islocal) {
+		//cur_frm.doc.kanton = '';
+		cur_frm.set_df_property('kanton','reqd', 1);
+		cur_frm.set_df_property('problematik','reqd', 1);
+		if (frm.doc.anfrage_typ == 'Hotline') {
+			cur_frm.doc.kontakt_via = 'Telefon';
+			cur_frm.set_df_property('kontakt_via','read_only', 1);
+			cur_frm.set_df_property('vorname','reqd', 0);
+			cur_frm.set_df_property('nachname','reqd', 0);
+			cur_frm.set_df_property('geburtsdatum','reqd', 0);
+			cur_frm.set_df_property('kanton','reqd', 0);
+			cur_frm.set_df_property('strasse','reqd', 0);
+			cur_frm.set_df_property('hausnummer','reqd', 0);
+			cur_frm.set_df_property('ort','reqd', 0);
+			cur_frm.set_df_property('plz','reqd', 0);
+			cur_frm.set_df_property('email','reqd', 0);
+			if (frm.doc.anonymisiert == 1) {
+				cur_frm.set_df_property('kanton','reqd', 1);
+				cur_frm.set_df_property('nachname','reqd', 0);
+			} else {
+				cur_frm.set_df_property('kanton','reqd', 1);
+				cur_frm.set_df_property('nachname','reqd', 1);
+			}
+		} else {
+			cur_frm.set_df_property('kontakt_via','read_only', 0);
+			cur_frm.set_df_property('vorname','reqd', 1);
+			cur_frm.set_df_property('nachname','reqd', 1);
+			cur_frm.set_df_property('geburtsdatum','reqd', 1);
+			cur_frm.set_df_property('kanton','reqd', 1);
+			cur_frm.set_df_property('strasse','reqd', 1);
+			cur_frm.set_df_property('hausnummer','reqd', 1);
+			cur_frm.set_df_property('ort','reqd', 1);
+			cur_frm.set_df_property('plz','reqd', 1);
+			cur_frm.set_df_property('email','reqd', 1);
+			cur_frm.doc.kontakt_via = '';
+			cur_frm.set_df_property('kontakt_via','reqd', 1);
+		}
+		if (cur_frm.doc.problematik == 'Krankenkasse (Grundversicherung)') {
+			cur_frm.set_df_property('krankenkasse','reqd', 1);
+		}
+	}
 }

@@ -245,7 +245,7 @@
    "fieldname": "kanton",
    "fieldtype": "Select",
    "label": "Kanton",
-   "options": "AG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
   },
   {
    "fieldname": "krankenkasse",
@@ -258,6 +258,7 @@
    "label": "Referenznummer"
   },
   {
+   "depends_on": "eval:doc.anfrage_typ=='Sonstiges'",
    "fieldname": "spo_ombudsstelle",
    "fieldtype": "Select",
    "label": "SPO als Ombudsstelle",
@@ -272,7 +273,7 @@
    "options": "\nMedbase\nMonvia\nSpital Leuggern (ASANA)\nSpital Menziken (ASANA)\nZ-Med\nGD St. Gallen\nEMR"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='GD St. Gallen'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='GD St. Gallen'",
    "fieldname": "spital_st_gallen",
    "fieldtype": "Data",
    "label": "Spital"
@@ -281,7 +282,7 @@
    "fieldname": "kontakt_via",
    "fieldtype": "Select",
    "label": "Kontakt via",
-   "options": "Telefon\nBrief\nMail\nRechtsanwalt\nRechtsschutzversicherung\npers\u00f6nliche Beratung"
+   "options": "\nTelefon\nBrief\nMail\nRechtsanwalt\nRechtsschutzversicherung\npers\u00f6nliche Beratung"
   },
   {
    "fieldname": "problematik",
@@ -335,56 +336,57 @@
   },
   {
    "default": "0",
+   "depends_on": "eval:doc.anfrage_typ=='Hotline'",
    "fieldname": "anonymisiert",
    "fieldtype": "Check",
-   "label": "Anonymisiert"
+   "label": "Anonym"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_grund_der_beratung",
    "fieldtype": "Data",
    "label": "Grund der Beratung"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_name_therapeut",
    "fieldtype": "Data",
    "label": "Name Therapeut"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_ort_therapeut",
    "fieldtype": "Data",
    "label": "Ort Therapeut"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_resultat",
    "fieldtype": "Data",
    "label": "Resultat"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_problem",
    "fieldtype": "Select",
    "label": "Problem",
    "options": "Gel\u00f6st\nTeilweise gel\u00f6st\nNicht gel\u00f6st"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_alter",
    "fieldtype": "Int",
    "label": "Alter"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_geschlecht",
    "fieldtype": "Select",
    "label": "Geschlecht",
    "options": "M\u00e4nnlich\nWeiblich\nAnderes"
   },
   {
-   "depends_on": "eval:doc.spo_ombudsstelle_details=='EMR'",
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
    "fieldname": "emr_komplement\u00e4rmethode",
    "fieldtype": "Data",
    "label": "Bezeichung Methode Komplement\u00e4r- und Alternativmedizin"
@@ -408,7 +410,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-10-22 09:47:17.422787",
+ "modified": "2019-10-28 11:44:38.655175",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

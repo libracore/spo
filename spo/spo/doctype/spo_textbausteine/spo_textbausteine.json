@@ -23,7 +23,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Dokument",
-   "options": "Abschlussbericht\nAnforderung Patientendossier\nVollmacht",
+   "options": "Abschlussbericht\nAnforderung Patientendossier\nVollmacht - Titelzeile\nVollmacht - Begleitbrief",
    "reqd": 1
   },
   {
@@ -42,7 +42,7 @@
    "reqd": 1
   }
  ],
- "modified": "2019-10-22 09:40:19.481619",
+ "modified": "2019-10-28 13:52:10.642954",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "SPO Textbausteine",

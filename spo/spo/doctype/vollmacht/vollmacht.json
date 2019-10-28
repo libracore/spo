@@ -22,6 +22,8 @@
   "section_3",
   "textkonserve",
   "titelzeile",
+  "textkonserve_begleitbrief",
+  "begleitbrief",
   "amended_from"
  ],
  "fields": [
@@ -122,10 +124,22 @@
    "fieldtype": "Link",
    "label": "Textkonserve",
    "options": "SPO Textbausteine"
+  },
+  {
+   "fieldname": "textkonserve_begleitbrief",
+   "fieldtype": "Link",
+   "label": "Textkonserve",
+   "options": "SPO Textbausteine"
+  },
+  {
+   "fetch_from": "textkonserve_begleitbrief.textkonserve",
+   "fieldname": "begleitbrief",
+   "fieldtype": "Text Editor",
+   "label": "Begleitbrief"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-22 09:38:33.160617",
+ "modified": "2019-10-28 11:56:26.717625",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",

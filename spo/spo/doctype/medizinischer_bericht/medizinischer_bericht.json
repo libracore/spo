@@ -24,6 +24,7 @@
   "fazit",
   "beilagen",
   "empfehlung",
+  "empfehlung_anderes",
   "section_checkliste",
   "aufklaerungsprotokolle",
   "sorgfalt",
@@ -190,10 +191,16 @@
    "fieldname": "druck_korrespondenz_bemerkung",
    "fieldtype": "Check",
    "label": "Sollen die Bemerkungen der Korrespondenz gedruckt werden?"
+  },
+  {
+   "depends_on": "eval:doc.empfehlung=='Anderes'",
+   "fieldname": "empfehlung_anderes",
+   "fieldtype": "Data",
+   "label": "Anderes"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-04 11:21:06.292443",
+ "modified": "2019-10-28 11:57:57.412231",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",
