@@ -8,6 +8,7 @@ import frappe
 @frappe.whitelist()
 def handle_timesheet(user, doctype, reference, time):
 	user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
+	time = float(time)
 	if user:
 		user = user[0][0]
 		ts = check_if_timesheet_exist(user, doctype, reference)
@@ -15,7 +16,6 @@ def handle_timesheet(user, doctype, reference, time):
 			update_timesheet(ts, time, doctype, reference)
 		else:
 			create_timesheet(user, doctype, reference, time)
-			#return False
 	else:
 		return False
 	
