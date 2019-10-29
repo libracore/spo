@@ -98,5 +98,17 @@ def get_data():
 					"description": _("Benutzerspezifische Textbausteine"),
 				}
 			]
+		},
+		{
+			"label": _("Zeiterfassung"),
+			"icon": "fa fa-cog",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Timesheet",
+					"label": "Timesheet",
+					"description": _("Timesheet"),
+				}
+			]
 		}
 	]

@@ -26,7 +26,10 @@ app_include_js = "/assets/spo/js/spo.js"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Customer" : "scripts/custom_scripts/customer.js"}
+doctype_js = {
+	"Customer" : "scripts/custom_scripts/customer.js",
+	"Timesheet" : "scripts/custom_scripts/timesheet.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -126,4 +129,4 @@ scheduler_events = {
 # }
 
 # Fixtures
-fixtures = ["Custom Field"]
+#fixtures = ["Custom Field"]
