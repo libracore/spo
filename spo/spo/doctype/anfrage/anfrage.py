@@ -139,7 +139,7 @@ def update_frm_with_fetched_data(frm, name):
 	return "ok"
 	
 @frappe.whitelist()
-def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', email='', telefon='', mobile=''):
+def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', email='', telefon='', mobile='', geburtsdatum=''):
 	mitglied = frappe.get_doc({
 		"doctype": "Customer",
 		"customer_name": vorname + " " + nachname
@@ -170,7 +170,8 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 		],
 		"email_id": email,
 		"phone": telefon,
-		"mobile_no": mobile
+		"mobile_no": mobile,
+		"geburtsdatum": geburtsdatum
 	})
 	contact.insert()
 	
@@ -260,7 +261,7 @@ def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, 
 	customer = frappe.get_doc("Customer", mitglied)
 	address = get_address(customer.name)
 	contact = get_contact(customer.name)
-	abweichungen = '<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>'
+	abweichungen = ''
 	
 	#vor- Nachnamen
 	_name_diff = True
@@ -293,4 +294,19 @@ def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, 
 	if _contact_diff:
 		abweichungen += '<h3>Kontakt</h3><b>Alt:/Neu</b><br>E-Mail: ' + str(contact.email_id) + ' / ' + (str(email) or 'Keine E-Mail') + '<br>Telefon: ' + str(contact.phone) + ' / ' + (str(telefon) or 'Kein Telefon') + '<br>Mobilenummer: ' + str(contact.mobile_no) + ' / ' + (str(mobile) or 'Keine Mobilenummer') + '<br>Geburtsdatum: ' + str(contact.geburtsdatum) + ' / ' + (str(geburtsdatum) or 'Kein Geburtsdatum')
 		
-	return abweichungen	
+	assign_to = frappe.get_doc("Einstellungen").auto_assign
+	for assign in assign_to:
+		if assign.dokument_aufgabe == "Anfrage - Mutation Mitglied":
+			assign_to = assign.user
+			break
+	
+	return {'abweichungen': abweichungen, 'assign_to': assign_to}
+	
+@frappe.whitelist()
+def assign_mitglied_anlage():
+	assign_to = frappe.get_doc("Einstellungen").auto_assign
+	for assign in assign_to:
+		if assign.dokument_aufgabe == "Anfrage - Neu Anlage Mitglied":
+			assign_to = assign.user
+			break
+	return assign_to

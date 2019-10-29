@@ -9,7 +9,9 @@
   "limite_mandat_time",
   "limite_unterbruch",
   "section_timesheet",
-  "ts_defaults"
+  "ts_defaults",
+  "section_auto_assign",
+  "auto_assign"
  ],
  "fields": [
   {
@@ -43,12 +45,23 @@
   {
    "fieldname": "ts_defaults",
    "fieldtype": "Table",
-   "label": "Defaults",
+   "label": "Default Times",
    "options": "SPO TS Defaults"
+  },
+  {
+   "fieldname": "section_auto_assign",
+   "fieldtype": "Section Break",
+   "label": "Auto Assign"
+  },
+  {
+   "fieldname": "auto_assign",
+   "fieldtype": "Table",
+   "label": "Auto Assign Users",
+   "options": "Auto Assign"
   }
  ],
  "issingle": 1,
- "modified": "2019-10-23 10:40:19.147888",
+ "modified": "2019-10-29 10:48:08.419355",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",

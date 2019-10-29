@@ -99,62 +99,87 @@ frappe.ui.form.on('Anfrage', {
 		_import_mitgliederdaten(frm);
 	},
 	mitglied_erstellen: function(frm) {
-		//kontrolle ob pflichtfelder ausgefüllt
-		var fehlende_daten = '';
-		var fehler = false;
-		if(!frm.doc.vorname) {
-			fehlende_daten += 'Vorname<br>';
-			fehler = true;
-		}
-		if(!frm.doc.nachname) {
-			fehlende_daten += 'Nachname<br>';
-			fehler = true;
-		}
-		if(!frm.doc.strasse) {
-			fehlende_daten += 'Strasse<br>';
-			fehler = true;
-		}
-		if(!frm.doc.plz) {
-			fehlende_daten += 'Postleitzahl<br>';
-			fehler = true;
-		}
-		
-		var email = ''
-		if (frm.doc.email) {
-			if (frm.doc.email.split("@").length == 2) {
-				if (frm.doc.email.split("@")[1].split(".").length == 2) {
-					if (frm.doc.email.split("@")[1].split(".")[1] != '') {
-						email = frm.doc.email;
-					}
+		frappe.call({
+			method:"frappe.core.doctype.user.user.get_roles",
+			args: {"uid":frappe.user.name}
+		}).done((r)=>{
+			var i;
+			var has_role = false;
+			for (i=0; i < r.message.length; i++) {
+				if (r.message[i] == "SPO Mitglied Verwaltung") {
+					has_role = true;
 				}
 			}
-		}
-		if (fehler) {
-			frappe.msgprint("Bitte tragen Sie mindestens noch folgende Daten ein:<br>" + fehlende_daten, "Fehlende Daten");
-		} else {
-			frappe.call({
-				"method": "spo.spo.doctype.anfrage.anfrage.create_new_mitglied",
-				"args": {
-					"vorname": frm.doc.vorname,
-					"nachname": frm.doc.nachname,
-					"strasse": frm.doc.strasse,
-					"hausnummer": frm.doc.hausnummer,
-					"ort": frm.doc.ort,
-					"plz": frm.doc.plz,
-					"email": email,
-					"telefon": frm.doc.telefon,
-					"mobile": frm.doc.mobile
-				},
-				"async": false,
-				"callback": function(r) {
-					if (r.message) {
-						cur_frm.set_value('mitglied', r.message);
-						cur_frm.save();
-						frappe.msgprint("Das Mitglied <b>" + r.message + "</b> wurde angelegt<br><br>Bitte erfassen Sie noch die entsprechende Mitgliedschaft.", "Mitglied wurde angelegt");
+			if (has_role) {
+				//kontrolle ob pflichtfelder ausgefüllt
+				var fehlende_daten = '';
+				var fehler = false;
+				if(!frm.doc.vorname) {
+					fehlende_daten += 'Vorname<br>';
+					fehler = true;
+				}
+				if(!frm.doc.nachname) {
+					fehlende_daten += 'Nachname<br>';
+					fehler = true;
+				}
+				if(!frm.doc.strasse) {
+					fehlende_daten += 'Strasse<br>';
+					fehler = true;
+				}
+				if(!frm.doc.plz) {
+					fehlende_daten += 'Postleitzahl<br>';
+					fehler = true;
+				}
+				
+				var email = ''
+				if (frm.doc.email) {
+					if (frm.doc.email.split("@").length == 2) {
+						if (frm.doc.email.split("@")[1].split(".").length == 2) {
+							if (frm.doc.email.split("@")[1].split(".")[1] != '') {
+								email = frm.doc.email;
+							}
+						}
 					}
 				}
-			});
-		}
+				if (fehler) {
+					frappe.msgprint("Bitte tragen Sie mindestens noch folgende Daten ein:<br>" + fehlende_daten, "Fehlende Daten");
+				} else {
+					frappe.call({
+						"method": "spo.spo.doctype.anfrage.anfrage.create_new_mitglied",
+						"args": {
+							"vorname": frm.doc.vorname,
+							"nachname": frm.doc.nachname,
+							"strasse": frm.doc.strasse,
+							"hausnummer": frm.doc.hausnummer,
+							"ort": frm.doc.ort,
+							"plz": frm.doc.plz,
+							"email": email,
+							"telefon": frm.doc.telefon,
+							"mobile": frm.doc.mobile,
+							"geburtsdatum": frm.doc.geburtsdatum
+						},
+						"async": false,
+						"callback": function(r) {
+							if (r.message) {
+								cur_frm.set_value('mitglied', r.message);
+								cur_frm.save();
+								frappe.msgprint("Das Mitglied <b>" + r.message + "</b> wurde angelegt<br><br>Bitte erfassen Sie noch die entsprechende Mitgliedschaft.", "Mitglied wurde angelegt");
+							}
+						}
+					});
+				}
+			} else {
+				frappe.call({
+					method: 'spo.spo.doctype.anfrage.anfrage.assign_mitglied_anlage',
+					callback: function(r) {
+						if(r.message) {
+							//auto assign
+							assign_anfrage(frm, r.message, '', false);
+						} 
+					}
+				});
+			}
+		});
 	},
 	manuelle_korrektur: function(frm) {
 		cur_frm.set_df_property('timer','read_only',0);
@@ -391,8 +416,11 @@ function stop_timer(frm) {
 		},
 		"async": false,
 		"callback": function(response) {
-			console.log(Math.round(response.message));
-			cur_frm.set_value('timer', cur_frm.doc.timer + Math.round(response.message));
+			var time_diff = response.message;
+			var diff_to_5_factor = Math.ceil(time_diff / 5);
+			var timer_time = 5 * diff_to_5_factor;
+			
+			cur_frm.set_value('timer', cur_frm.doc.timer + timer_time);
 			cur_frm.save();
 		}
 	});
@@ -590,7 +618,6 @@ function show_unterbruch(mitgliedschaften) {
 
 function set_mandatory_and_read_only(frm) {
 	if (!frm.doc.__islocal) {
-		//cur_frm.doc.kanton = '';
 		cur_frm.set_df_property('kanton','reqd', 1);
 		cur_frm.set_df_property('problematik','reqd', 1);
 		if (frm.doc.anfrage_typ == 'Hotline') {
@@ -633,7 +660,14 @@ function set_mandatory_and_read_only(frm) {
 }
 
 function check_anfrage_daten_vs_stamm_daten(frm) {
-	if (frm.doc.mitglied) {
+	var i;
+	var assign = true;
+	for (i=0; i < cur_frm.get_docinfo().assignments.length; i++) {
+		if (cur_frm.get_docinfo().assignments[i].description.includes("Bitte folgende Änderungen in den Stammdaten vornehmen:")) {
+			assign = false;
+		}
+	}
+	if (frm.doc.mitglied && assign) {
 		frappe.call({
 			"method": "spo.spo.doctype.anfrage.anfrage.check_anfrage_daten_vs_stamm_daten",
 			"args": {
@@ -652,21 +686,53 @@ function check_anfrage_daten_vs_stamm_daten(frm) {
 			},
 			"async": false,
 			"callback": function(response) {
-				var abweichungen = response.message;
-				if (abweichungen != '<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>') {
+				var abweichungen = response.message.abweichungen;
+				var assign_to = response.message.assign_to;
+				if (abweichungen != '') {
 					frappe.confirm(
-						abweichungen,
+						'<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>' + abweichungen,
 						function(){
-							// on yes
-							console.log("ändern");
+							// on yes assign
+							assign_anfrage(frm, assign_to, abweichungen, true);
 						},
 						function(){
-							// on no
-							console.log("änderungen nicht bearbeiten");
+							// on no nothing
 						}
 					)
 					
 				}
+			}
+		});
+	}
+}
+
+function assign_anfrage(frm, assign_to, abweichungen, mutation) {
+	if (mutation) {
+		frappe.call({
+			"method": "frappe.desk.form.assign_to.add",
+			"args": {
+				"assign_to": assign_to,
+				"doctype": frm.doc.doctype,
+				"name": frm.doc.name,
+				"description": "Bitte folgende Änderungen in den Stammdaten vornehmen:<br>" + abweichungen
+			},
+			"callback": function(response) {
+				frappe.msgprint("Die Stammdaten Änderung wurde zugewiesen.", "Zuweisung erfolgreich");
+				cur_frm.reload_doc();
+			}
+		});
+	} else {
+		frappe.call({
+			"method": "frappe.desk.form.assign_to.add",
+			"args": {
+				"assign_to": assign_to,
+				"doctype": frm.doc.doctype,
+				"name": frm.doc.name,
+				"description": "Bitte Kundenstamm anlegen."
+			},
+			"callback": function(response) {
+				frappe.msgprint("Die Stammdaten Anlage wurde zugewiesen.", "Zuweisung erfolgreich");
+				cur_frm.reload_doc();
 			}
 		});
 	}
@@ -680,11 +746,9 @@ function _import_mitgliederdaten(frm) {
 		} else {
 			get_data_from_mitgliedernummer(frm, frm.doc.mitglied, true);
 		}
-		console.log("Lade Daten von " + frm.doc.mitglied);
 	} else if(frm.doc.mitgliedschaft) {
 		// laden aller Daten aus Mitgliedschaft
 		get_data_from_mitgliedschaft(frm, frm.doc.mitgliedschaft);
-		console.log("Lade Daten von " + frm.doc.mitgliedschaft);
 	} else {
 		frappe.prompt([
 			{'fieldname': 'mitgliedernummer', 'fieldtype': 'Link', 'label': 'Mitgliedernummer', 'reqd': 0, 'options': 'Customer'},
@@ -702,7 +766,6 @@ function _import_mitgliederdaten(frm) {
 			}
 			if (mitgliedernummer) {
 				// laden aller Daten aus Mitgliedernummer
-				console.log("Lade Daten von " + mitgliedernummer);
 				if(mitgliedschaft) {
 					get_data_from_mitgliedernummer(frm, mitgliedernummer, false);
 				} else {
@@ -713,14 +776,12 @@ function _import_mitgliederdaten(frm) {
 				cur_frm.set_value('mitglied', values.mitgliedernummer);
 			} else if (mitgliedschaft) {
 				// laden aller Daten aus Mitgliedschaft
-				console.log("Lade Daten von " + mitgliedschaft);
 				get_data_from_mitgliedschaft(frm, mitgliedschaft);
 				
 				// setzen der Mitgliedschaft in der Anfrage
 				cur_frm.set_value('mitgliedschaft', values.mitgliedschaft);
 			} else {
 				// laden Vorschlagsdaten...
-				console.log("laden Vorschlagsdaten...");
 				get_vorschlagswerte(frm);
 			}
 		},
