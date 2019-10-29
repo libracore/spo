@@ -89,6 +89,11 @@ def cleanup_ts(user):
 		ts = frappe.get_doc("Timesheet", _ts.name)
 		for time_log in ts.time_logs:
 			all_time_logs.append(time_log)
+			
+	for _ts in all_ts:
+		ts = frappe.get_doc("Timesheet", _ts.name)
+		ts.delete()
+			
 	new_ts = frappe.get_doc({
 		"doctype": "Timesheet",
 		"employee": user,
@@ -101,6 +106,6 @@ def cleanup_ts(user):
 		new_ts.time_logs.append(time_log)
 		start = add_to_date(start, hours=time_log.hours + 0.001)
 	new_ts.insert()
-	for _ts in all_ts:
-		ts = frappe.get_doc("Timesheet", _ts.name)
-		ts.delete()
+	# for _ts in all_ts:
+		# ts = frappe.get_doc("Timesheet", _ts.name)
+		# ts.delete()
