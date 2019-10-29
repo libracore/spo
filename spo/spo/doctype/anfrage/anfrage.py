@@ -6,9 +6,11 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.utils.data import today, add_days
+from spo.utils.timesheet_handlings import handle_timesheet
 
 class Anfrage(Document):
-	pass
+	def validate(self):
+		handle_timesheet(frappe.session.user, self.doctype, self.name, self.timer)
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
