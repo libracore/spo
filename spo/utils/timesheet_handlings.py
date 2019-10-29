@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
+from frappe.utils.data import nowdate, add_to_date
 
 @frappe.whitelist()
 def handle_timesheet(user, doctype, reference, time):
@@ -13,7 +14,7 @@ def handle_timesheet(user, doctype, reference, time):
 		user = user[0][0]
 		ts = check_if_timesheet_exist(user, doctype, reference)
 		if ts:
-			update_timesheet(ts, time, doctype, reference)
+			update_timesheet(ts, time, doctype, reference, user)
 		else:
 			create_timesheet(user, doctype, reference, time)
 	else:
@@ -39,20 +40,38 @@ def create_timesheet(user, doctype, reference, time):
 				"activity_type": "Execution",
 				"hours": time,
 				"spo_dokument": doctype,
-				"spo_referenz": reference
+				"spo_referenz": reference,
+				"from_time": add_to_date(nowdate(), days=100)
 			}
 		]
 	})
 	ts.insert()
+	cleanup_ts(user)
 	
-def update_timesheet(ts, time, doctype, reference):
+def update_timesheet(ts, time, doctype, reference, user):
 	ts = frappe.get_doc("Timesheet", ts)
-	for time_log in ts.time_logs:
-		if time_log.spo_dokument == doctype:
-			if time_log.spo_referenz == reference:
-				if time > get_default_time(doctype):
-					time_log.hours = time
+	if len(ts.time_logs) <= 1:
+		for time_log in ts.time_logs:
+			if time_log.spo_dokument == doctype:
+				if time_log.spo_referenz == reference:
+					if time > get_default_time(doctype):
+						time_log.hours = time
+	else:
+		found = False
+		for time_log in ts.time_logs:
+			if not found:
+				if time_log.spo_dokument == doctype:
+					if time_log.spo_referenz == reference:
+						if time > get_default_time(doctype):
+							time_log.hours = time
+							found = True
+							start = add_to_date(time_log.to_time, hours=0.001)
+			else:
+				time_log.from_time = start
+				time_log.to_time = add_to_date(start, hours=time_log.hours)
+				start = add_to_date(time_log.to_time, hours=0.001)
 	ts.save()
+	cleanup_ts(user)
 				
 def get_default_time(doctype):
 	time = 0
@@ -62,3 +81,26 @@ def get_default_time(doctype):
 			time = default.default_hours
 			break
 	return time
+	
+def cleanup_ts(user):
+	all_ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}'""".format(user=user), as_dict=True)
+	all_time_logs = []
+	for _ts in all_ts:
+		ts = frappe.get_doc("Timesheet", _ts.name)
+		for time_log in ts.time_logs:
+			all_time_logs.append(time_log)
+	new_ts = frappe.get_doc({
+		"doctype": "Timesheet",
+		"employee": user,
+		"time_logs": []
+	})
+	start = nowdate() + " 00:00:00"
+	for time_log in all_time_logs:
+		time_log.from_time = start
+		time_log.to_time = add_to_date(start, hours=time_log.hours)
+		new_ts.time_logs.append(time_log)
+		start = add_to_date(start, hours=time_log.hours + 0.001)
+	new_ts.insert()
+	for _ts in all_ts:
+		ts = frappe.get_doc("Timesheet", _ts.name)
+		ts.delete()
