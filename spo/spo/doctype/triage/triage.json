@@ -1,0 +1,155 @@
+{
+ "autoname": "format:TRI-{YYYY}-{######}",
+ "creation": "2019-10-02 09:04:29.535623",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "info_titel",
+  "mandat",
+  "problemstellung",
+  "fragestellung_anwalt",
+  "beurteilung",
+  "bemerkung",
+  "fazit",
+  "empfehlung",
+  "empfehlung_anderes",
+  "section_checkliste",
+  "aufklaerungsprotokolle",
+  "sorgfalt",
+  "kausalitaet",
+  "schaden",
+  "empfehlung_check",
+  "fusszeile",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "info_titel",
+   "fieldtype": "HTML",
+   "options": "<h1>Patienten Daten anonymisieren</h1>"
+  },
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mandat",
+   "options": "Mandat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "problemstellung",
+   "fieldtype": "Text Editor",
+   "label": "Problemstellung"
+  },
+  {
+   "fieldname": "fragestellung_anwalt",
+   "fieldtype": "Text Editor",
+   "label": "Fragestellung"
+  },
+  {
+   "fieldname": "beurteilung",
+   "fieldtype": "Text Editor",
+   "label": "Beurteilung"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text Editor",
+   "label": "Bemerkung"
+  },
+  {
+   "fieldname": "fazit",
+   "fieldtype": "Text Editor",
+   "label": "Fazit"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Triage",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "empfehlung",
+   "fieldtype": "Select",
+   "label": "Empfehlung",
+   "options": "Jur. Vorgehen empfohlen\nJur. Vorgehen nicht empfohlen\nAnderes"
+  },
+  {
+   "fieldname": "section_checkliste",
+   "fieldtype": "Section Break",
+   "label": "Checkliste"
+  },
+  {
+   "default": "0",
+   "fieldname": "aufklaerungsprotokolle",
+   "fieldtype": "Check",
+   "label": "Alle Aufkl\u00e4rungsprotokolle verlangt?"
+  },
+  {
+   "default": "0",
+   "fieldname": "sorgfalt",
+   "fieldtype": "Check",
+   "label": "Sorgfalt?"
+  },
+  {
+   "default": "0",
+   "fieldname": "kausalitaet",
+   "fieldtype": "Check",
+   "label": "Kausalit\u00e4t?"
+  },
+  {
+   "default": "0",
+   "fieldname": "schaden",
+   "fieldtype": "Check",
+   "label": "Schaden? H\u00f6he? Bleibend?"
+  },
+  {
+   "default": "0",
+   "fieldname": "empfehlung_check",
+   "fieldtype": "Check",
+   "label": "Empfehlung?"
+  },
+  {
+   "depends_on": "eval:doc.empfehlung=='Anderes'",
+   "fieldname": "empfehlung_anderes",
+   "fieldtype": "Data",
+   "label": "Anderes"
+  },
+  {
+   "default": "Z\u00fcrich",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-11-07 14:01:59.182509",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Triage",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

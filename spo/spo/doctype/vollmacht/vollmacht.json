@@ -1,0 +1,173 @@
+{
+ "autoname": "format:VOM-{YYYY}-{######}",
+ "creation": "2019-09-19 13:59:06.151151",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mandat",
+  "section_1",
+  "rsv",
+  "cb_1",
+  "todesfall",
+  "section_2",
+  "name_vorname",
+  "geburtsdatum",
+  "email",
+  "cb_2",
+  "beziehungsverhaeltniss",
+  "adresse",
+  "telefon",
+  "berater",
+  "section_3",
+  "textkonserve",
+  "titelzeile",
+  "textkonserve_begleitbrief",
+  "begleitbrief",
+  "amended_from",
+  "fusszeile"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "rsv",
+   "fieldtype": "Check",
+   "label": "RSV?"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "todesfall",
+   "fieldtype": "Check",
+   "label": "Todesfall?"
+  },
+  {
+   "fieldname": "section_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "name_vorname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name, Vorname",
+   "reqd": 1
+  },
+  {
+   "default": "Ehefrau des\u2026 Tochter des etc.",
+   "depends_on": "eval:doc.todesfall==1",
+   "fieldname": "beziehungsverhaeltniss",
+   "fieldtype": "Data",
+   "label": "Beziehungsverh\u00e4ltniss"
+  },
+  {
+   "fieldname": "adresse",
+   "fieldtype": "Data",
+   "label": "Adresse"
+  },
+  {
+   "fieldname": "telefon",
+   "fieldtype": "Data",
+   "label": "Telefon"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "E-Mail"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Vollmacht",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "berater",
+   "fieldtype": "Data",
+   "label": "Berater/in"
+  },
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "label": "Mandat",
+   "options": "Mandat"
+  },
+  {
+   "fieldname": "section_2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fieldname": "section_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "textkonserve.textkonserve",
+   "fieldname": "titelzeile",
+   "fieldtype": "Text Editor",
+   "label": "Titelzeile"
+  },
+  {
+   "fieldname": "textkonserve",
+   "fieldtype": "Link",
+   "label": "Textkonserve",
+   "options": "SPO Textbausteine"
+  },
+  {
+   "fieldname": "textkonserve_begleitbrief",
+   "fieldtype": "Link",
+   "label": "Textkonserve",
+   "options": "SPO Textbausteine"
+  },
+  {
+   "fetch_from": "textkonserve_begleitbrief.textkonserve",
+   "fieldname": "begleitbrief",
+   "fieldtype": "Text Editor",
+   "label": "Begleitbrief"
+  },
+  {
+   "default": "Z\u00fcrich",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-11-07 14:10:30.679267",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Vollmacht",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

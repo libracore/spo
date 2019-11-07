@@ -1,0 +1,101 @@
+{
+ "autoname": "format:PDA-{YYYY}-{######}",
+ "creation": "2019-09-19 13:20:07.258180",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mandat",
+  "cb_1",
+  "mahnstufe_1",
+  "mahnstufe_2",
+  "section_1",
+  "textbaustein",
+  "brieftext",
+  "fusszeile",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "brieftext",
+   "fieldtype": "Text Editor",
+   "label": "Brieftext"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Anforderung Patientendossier",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mandat",
+   "options": "Mandat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Mahnung",
+   "fieldname": "mahnstufe_1",
+   "fieldtype": "Check",
+   "label": "2. Forderung"
+  },
+  {
+   "default": "0",
+   "description": "2. Mahnung",
+   "fieldname": "mahnstufe_2",
+   "fieldtype": "Check",
+   "label": "3. Forderung"
+  },
+  {
+   "fieldname": "section_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "textbaustein",
+   "fieldtype": "Link",
+   "label": "Textbaustein",
+   "options": "SPO Textbausteine"
+  },
+  {
+   "default": "Z\u00fcrich",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-11-07 12:51:14.409646",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Anforderung Patientendossier",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

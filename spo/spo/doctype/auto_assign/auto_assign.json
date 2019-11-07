@@ -1,0 +1,48 @@
+{
+ "creation": "2019-10-29 10:46:41.007937",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "dokument_aufgabe",
+  "user",
+  "fallback_user"
+ ],
+ "fields": [
+  {
+   "fieldname": "dokument_aufgabe",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dokument - Aufgabe",
+   "options": "Anfrage - Neu Anlage Mitglied\nAnfrage - Mutation Mitglied",
+   "reqd": 1
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fallback_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Fallback User",
+   "options": "User",
+   "reqd": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-10-29 10:46:41.007937",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Auto Assign",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

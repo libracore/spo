@@ -16,7 +16,7 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/spo/css/spo.css"
-# app_include_js = "/assets/spo/js/spo.js"
+app_include_js = "/assets/spo/js/spo.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/spo/css/spo.css"
@@ -26,7 +26,10 @@ app_license = "MIT"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+	"Customer" : "scripts/custom_scripts/customer.js",
+	"Timesheet" : "scripts/custom_scripts/timesheet.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -107,6 +110,11 @@ app_license = "MIT"
 # 		"spo.tasks.monthly"
 # 	]
 # }
+scheduler_events = {
+	"daily": [
+		"spo.spo.doctype.anfrage.anfrage.autom_submit"
+	]
+}
 
 # Testing
 # -------
@@ -120,3 +128,5 @@ app_license = "MIT"
 # 	"frappe.desk.doctype.event.event.get_events": "spo.event.get_events"
 # }
 
+# Fixtures
+#fixtures = ["Custom Field"]

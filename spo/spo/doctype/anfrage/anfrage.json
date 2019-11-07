@@ -1,0 +1,436 @@
+{
+ "autoname": "format:ANF-{YYYY}-{######}",
+ "creation": "2019-07-31 13:06:07.002394",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_dashboard",
+  "dashboard_html",
+  "section_typ",
+  "anfrage_typ",
+  "spo_ombudsstelle",
+  "spo_ombudsstelle_details",
+  "spital_st_gallen",
+  "emr_grund_der_beratung",
+  "emr_name_therapeut",
+  "emr_ort_therapeut",
+  "emr_resultat",
+  "emr_problem",
+  "emr_alter",
+  "emr_geschlecht",
+  "emr_komplement\u00e4rmethode",
+  "kontakt_via",
+  "problematik",
+  "arzt_fachgebiet",
+  "sterben",
+  "definition_arzt_fachgebiet_andere",
+  "name_zusatz_sonstige_versicherung",
+  "scroll_top_0",
+  "cb_0",
+  "anonymisiert",
+  "section_person",
+  "import_mitgliederdaten",
+  "vorname",
+  "geburtsdatum",
+  "strasse",
+  "ort",
+  "telefon",
+  "email",
+  "rechtsschutzversicherung",
+  "mitglied",
+  "scroll_top_1",
+  "break_1",
+  "mitglied_erstellen",
+  "nachname",
+  "kanton",
+  "hausnummer",
+  "plz",
+  "mobile",
+  "krankenkasse",
+  "rechtsschutz_ref",
+  "mitgliedschaft",
+  "section_anfrage",
+  "grundlage_anfrage",
+  "sachverhalt_thema",
+  "rat",
+  "scroll_top_2",
+  "section_zeiterfassung",
+  "timer_start",
+  "timer_status",
+  "manuelle_korrektur",
+  "timer",
+  "scroll_top_3",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "depends_on": "eval:doc.mitglied",
+   "fieldname": "section_dashboard",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.anfrage_typ=='Sonstiges'",
+   "fieldname": "dashboard_html",
+   "fieldtype": "HTML",
+   "options": "<div id=\"limit\"></div>"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_typ",
+   "fieldtype": "Section Break",
+   "label": "Anfragen Typisierung"
+  },
+  {
+   "fieldname": "anfrage_typ",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Anfrage Typ",
+   "options": "Hotline\nSonstiges",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_person",
+   "fieldtype": "Section Break",
+   "label": "Angaben zur Person"
+  },
+  {
+   "fieldname": "import_mitgliederdaten",
+   "fieldtype": "Button",
+   "label": "Mitgliederdaten importieren/suchen"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "vorname",
+   "fieldtype": "Data",
+   "label": "Vorname"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "strasse",
+   "fieldtype": "Data",
+   "label": "Strasse"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "ort",
+   "fieldtype": "Data",
+   "label": "Ort"
+  },
+  {
+   "fieldname": "telefon",
+   "fieldtype": "Data",
+   "label": "Telefon"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "E-Mail"
+  },
+  {
+   "fieldname": "scroll_top_1",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
+  },
+  {
+   "fieldname": "break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mitglied_erstellen",
+   "fieldtype": "Button",
+   "label": "Mitglied erstellen"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "nachname",
+   "fieldtype": "Data",
+   "label": "Nachname"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "hausnummer",
+   "fieldtype": "Data",
+   "label": "Hausnummer"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "plz",
+   "fieldtype": "Data",
+   "label": "Postleitzahl"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "mobile",
+   "fieldtype": "Data",
+   "label": "Mobile"
+  },
+  {
+   "fieldname": "mitglied",
+   "fieldtype": "Link",
+   "in_preview": 1,
+   "label": "Mitgliedernummer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "mitgliedschaft",
+   "fieldtype": "Link",
+   "in_preview": 1,
+   "label": "Mitgliedschaft",
+   "options": "Mitgliedschaft"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_anfrage",
+   "fieldtype": "Section Break",
+   "label": "Angaben zur Anfrage"
+  },
+  {
+   "fieldname": "scroll_top_2",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_zeiterfassung",
+   "fieldtype": "Section Break",
+   "label": "Zeiterfassung"
+  },
+  {
+   "fieldname": "timer_start",
+   "fieldtype": "Datetime",
+   "hidden": 1,
+   "label": "Timer Start",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "timer_status",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Timer Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "manuelle_korrektur",
+   "fieldtype": "Button",
+   "label": "Manuelle Korrektur"
+  },
+  {
+   "fieldname": "timer",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Timer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "scroll_top_3",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
+  },
+  {
+   "fieldname": "geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fieldname": "rechtsschutzversicherung",
+   "fieldtype": "Data",
+   "label": "Rechtsschutzversicherung"
+  },
+  {
+   "fieldname": "kanton",
+   "fieldtype": "Select",
+   "label": "Kanton",
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
+  },
+  {
+   "fieldname": "krankenkasse",
+   "fieldtype": "Data",
+   "label": "Krankenkasse"
+  },
+  {
+   "fieldname": "rechtsschutz_ref",
+   "fieldtype": "Data",
+   "label": "Referenznummer"
+  },
+  {
+   "depends_on": "eval:doc.anfrage_typ=='Sonstiges'",
+   "fieldname": "spo_ombudsstelle",
+   "fieldtype": "Select",
+   "label": "SPO als Ombudsstelle",
+   "options": "Nein\nJa",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja'",
+   "fieldname": "spo_ombudsstelle_details",
+   "fieldtype": "Select",
+   "label": "Ombudstelle von",
+   "options": "\nMedbase\nMonvia\nSpital Leuggern (ASANA)\nSpital Menziken (ASANA)\nZ-Med\nGD St. Gallen\nEMR"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='GD St. Gallen'",
+   "fieldname": "spital_st_gallen",
+   "fieldtype": "Data",
+   "label": "Spital"
+  },
+  {
+   "fieldname": "kontakt_via",
+   "fieldtype": "Select",
+   "label": "Kontakt via",
+   "options": "\nTelefon\nBrief\nMail\nRechtsanwalt\nRechtsschutzversicherung\npers\u00f6nliche Beratung"
+  },
+  {
+   "fieldname": "problematik",
+   "fieldtype": "Select",
+   "label": "Problematik",
+   "options": "\nArzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nZA: Hohnorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nPsychiatrie\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nSterben\nKrankenkasse (Grundversicherung)\nSUVA/EMV/IV/UVG\nZusatz- / Sonstige Versicherung\nallg. Information\nAdressen"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "grundlage_anfrage",
+   "fieldtype": "Text Editor",
+   "label": "Grundlage der Anfrage"
+  },
+  {
+   "fieldname": "sachverhalt_thema",
+   "fieldtype": "Text Editor",
+   "label": "Sachverhalt / Thema"
+  },
+  {
+   "fieldname": "rat",
+   "fieldtype": "Text Editor",
+   "label": "Rat"
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Arzt: m\u00f6gl. Behandlungsfehler'",
+   "fieldname": "arzt_fachgebiet",
+   "fieldtype": "Select",
+   "label": "Fachgebiet",
+   "options": "An\u00e4sthesie\nChirurgie\nGyn\u00e4kologie\nOrthop\u00e4die\nMedizin\nKomplement\u00e4rmedizin\nAndere"
+  },
+  {
+   "depends_on": "eval:doc.arzt_fachgebiet=='Andere'",
+   "fieldname": "definition_arzt_fachgebiet_andere",
+   "fieldtype": "Data",
+   "label": "Definition \"Andere\""
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Zusatz- / Sonstige Versicherung'",
+   "fieldname": "name_zusatz_sonstige_versicherung",
+   "fieldtype": "Data",
+   "label": "Name der Versicherung"
+  },
+  {
+   "fieldname": "scroll_top_0",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
+  },
+  {
+   "fieldname": "cb_0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.anfrage_typ=='Hotline'",
+   "fieldname": "anonymisiert",
+   "fieldtype": "Check",
+   "label": "Anonym"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_grund_der_beratung",
+   "fieldtype": "Data",
+   "label": "Grund der Beratung"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_name_therapeut",
+   "fieldtype": "Data",
+   "label": "Name Therapeut"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_ort_therapeut",
+   "fieldtype": "Data",
+   "label": "Ort Therapeut"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_resultat",
+   "fieldtype": "Data",
+   "label": "Resultat"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_problem",
+   "fieldtype": "Select",
+   "label": "Problem",
+   "options": "Gel\u00f6st\nTeilweise gel\u00f6st\nNicht gel\u00f6st"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_alter",
+   "fieldtype": "Int",
+   "label": "Alter"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_geschlecht",
+   "fieldtype": "Select",
+   "label": "Geschlecht",
+   "options": "M\u00e4nnlich\nWeiblich\nAnderes"
+  },
+  {
+   "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='EMR'",
+   "fieldname": "emr_komplement\u00e4rmethode",
+   "fieldtype": "Data",
+   "label": "Bezeichung Methode Komplement\u00e4r- und Alternativmedizin"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Anfrage",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Sterben'",
+   "fieldname": "sterben",
+   "fieldtype": "Select",
+   "label": "Sterben",
+   "options": "Sterben PV\nSterben ACP"
+  }
+ ],
+ "icon": "fa fa-question",
+ "is_submittable": 1,
+ "modified": "2019-10-28 11:44:38.655175",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Anfrage",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_preview_popup": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "track_changes": 1
+}

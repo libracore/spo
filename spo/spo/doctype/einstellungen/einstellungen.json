@@ -1,0 +1,85 @@
+{
+ "creation": "2019-08-23 14:54:37.470826",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_limiten",
+  "limite_callcenter_anfrage",
+  "limite_mandat_time",
+  "limite_unterbruch",
+  "section_timesheet",
+  "ts_defaults",
+  "section_auto_assign",
+  "auto_assign"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_limiten",
+   "fieldtype": "Section Break",
+   "label": "Limiten"
+  },
+  {
+   "default": "60.000",
+   "fieldname": "limite_callcenter_anfrage",
+   "fieldtype": "Float",
+   "label": "Aufwandsgrenze Callcenter Anfrage"
+  },
+  {
+   "default": "100.000",
+   "fieldname": "limite_mandat_time",
+   "fieldtype": "Float",
+   "label": "Aufwandsgrenze Mandat"
+  },
+  {
+   "default": "1",
+   "fieldname": "limite_unterbruch",
+   "fieldtype": "Int",
+   "label": "Maximaler Mitgliedsunterbruch"
+  },
+  {
+   "fieldname": "section_timesheet",
+   "fieldtype": "Section Break",
+   "label": "Timesheet defaults"
+  },
+  {
+   "fieldname": "ts_defaults",
+   "fieldtype": "Table",
+   "label": "Default Times",
+   "options": "SPO TS Defaults"
+  },
+  {
+   "fieldname": "section_auto_assign",
+   "fieldtype": "Section Break",
+   "label": "Auto Assign"
+  },
+  {
+   "fieldname": "auto_assign",
+   "fieldtype": "Table",
+   "label": "Auto Assign Users",
+   "options": "Auto Assign"
+  }
+ ],
+ "issingle": 1,
+ "modified": "2019-10-29 10:48:08.419355",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Einstellungen",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "track_changes": 1
+}

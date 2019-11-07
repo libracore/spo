@@ -1,0 +1,228 @@
+{
+ "autoname": "format:MAN-{YYYY}-{######}",
+ "creation": "2019-07-31 15:24:46.186043",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_dashboard",
+  "dashboard_html",
+  "section_rat",
+  "bestaetigung_erhalt_unterlagen",
+  "sachstandbericht_alle_3_monate",
+  "sachstandbericht_alle_3_monate_am",
+  "telefon_mit_vn",
+  "vollmacht_mit_begleitbrief",
+  "pat_dossier_anfordern",
+  "mahnen_per_tel",
+  "schriftlich_mahnen",
+  "aktenstudium",
+  "ausgangslage",
+  "bericht",
+  "triage_mit_kurzbeurteilung",
+  "facharzt_fragen",
+  "dossier_an_fa",
+  "bericht_fertigstellen",
+  "tel_mit_vn_procedere",
+  "rsv_bericht",
+  "einladung_beratung",
+  "beratung_am",
+  "abschluss_an_rsv",
+  "rechnung",
+  "section_referenzen",
+  "anfragen",
+  "mitglied",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_dashboard",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "dashboard_html",
+   "fieldtype": "HTML",
+   "options": "<div id=\"chart\"></div>\n<div id=\"limit\"></div>"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
+  },
+  {
+   "fieldname": "anfragen",
+   "fieldtype": "Data",
+   "label": "Anfragen"
+  },
+  {
+   "fieldname": "mitglied",
+   "fieldtype": "Link",
+   "label": "Mitglied",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "section_rat",
+   "fieldtype": "Section Break",
+   "label": "Rat"
+  },
+  {
+   "default": "0",
+   "fieldname": "bestaetigung_erhalt_unterlagen",
+   "fieldtype": "Check",
+   "label": "best\u00e4tigung Erhalt Unterlagen"
+  },
+  {
+   "default": "0",
+   "fieldname": "sachstandbericht_alle_3_monate",
+   "fieldtype": "Check",
+   "label": "Sachstandbericht alle 3 Monate"
+  },
+  {
+   "fieldname": "sachstandbericht_alle_3_monate_am",
+   "fieldtype": "Date",
+   "label": "Am"
+  },
+  {
+   "default": "0",
+   "fieldname": "telefon_mit_vn",
+   "fieldtype": "Check",
+   "label": "Telefon mit VN"
+  },
+  {
+   "default": "0",
+   "fieldname": "vollmacht_mit_begleitbrief",
+   "fieldtype": "Check",
+   "label": "Vollmacht mit Begleitbrief"
+  },
+  {
+   "default": "0",
+   "fieldname": "pat_dossier_anfordern",
+   "fieldtype": "Check",
+   "label": "Pat. Dossier anfordern"
+  },
+  {
+   "default": "0",
+   "fieldname": "mahnen_per_tel",
+   "fieldtype": "Check",
+   "label": "...mahnen per Tel."
+  },
+  {
+   "default": "0",
+   "fieldname": "schriftlich_mahnen",
+   "fieldtype": "Check",
+   "label": "...schriftlich mahnen"
+  },
+  {
+   "default": "0",
+   "fieldname": "aktenstudium",
+   "fieldtype": "Check",
+   "label": "Aktenstudium"
+  },
+  {
+   "default": "0",
+   "fieldname": "ausgangslage",
+   "fieldtype": "Check",
+   "label": "Ausgangslage"
+  },
+  {
+   "default": "0",
+   "fieldname": "bericht",
+   "fieldtype": "Check",
+   "label": "...Bericht"
+  },
+  {
+   "default": "0",
+   "fieldname": "triage_mit_kurzbeurteilung",
+   "fieldtype": "Check",
+   "label": "...Triage mit Kurzbeurteilung"
+  },
+  {
+   "default": "0",
+   "fieldname": "facharzt_fragen",
+   "fieldtype": "Check",
+   "label": "Facharzt - Fragen"
+  },
+  {
+   "default": "0",
+   "fieldname": "dossier_an_fa",
+   "fieldtype": "Check",
+   "label": "...Dossier an FA"
+  },
+  {
+   "default": "0",
+   "fieldname": "bericht_fertigstellen",
+   "fieldtype": "Check",
+   "label": "Bericht fertigstellen"
+  },
+  {
+   "default": "0",
+   "fieldname": "tel_mit_vn_procedere",
+   "fieldtype": "Check",
+   "label": "Tel mit VN - das weitere Procedere besprechen"
+  },
+  {
+   "default": "0",
+   "description": "z.B. med.- jur. Beratung",
+   "fieldname": "rsv_bericht",
+   "fieldtype": "Check",
+   "label": "RSV Bericht - Empfehlung"
+  },
+  {
+   "default": "0",
+   "fieldname": "einladung_beratung",
+   "fieldtype": "Check",
+   "label": "Einladung med. - jur. Beratung"
+  },
+  {
+   "fieldname": "beratung_am",
+   "fieldtype": "Date",
+   "label": "med. - jur. Beratung am"
+  },
+  {
+   "default": "0",
+   "fieldname": "abschluss_an_rsv",
+   "fieldtype": "Check",
+   "label": "Abschluss an RSV"
+  },
+  {
+   "default": "0",
+   "fieldname": "rechnung",
+   "fieldtype": "Check",
+   "label": "Rechnung"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Mandat",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "icon": "fa fa-sitemap",
+ "is_submittable": 1,
+ "modified": "2019-09-24 13:34:18.070344",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Mandat",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "track_changes": 1
+}

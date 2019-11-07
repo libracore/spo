@@ -1,0 +1,81 @@
+{
+ "autoname": "format:MS-{YYYY}-{######}",
+ "creation": "2019-08-20 15:45:28.983870",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mitglied",
+  "start",
+  "rechnung",
+  "cb_1",
+  "mitgliedschafts_typ",
+  "ende"
+ ],
+ "fields": [
+  {
+   "fieldname": "mitglied",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mitglied",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rechnung",
+   "fieldtype": "Link",
+   "label": "Rechnung",
+   "options": "Sales Invoice"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mitgliedschafts_typ",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Mitgliedschafts Typ",
+   "options": "1\n2\n3\n4",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ende",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Ende",
+   "reqd": 1
+  }
+ ],
+ "icon": "fa fa-id-card",
+ "modified": "2019-09-24 13:33:43.455700",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Mitgliedschaft",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "track_changes": 1
+}
