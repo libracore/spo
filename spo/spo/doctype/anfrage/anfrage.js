@@ -26,10 +26,12 @@ frappe.ui.form.on('Anfrage', {
 				order_by: 'creation'
 			},
 			callback: function(r) {
-				if (r.message[(r.message.length - 1)].name == frm.doc.name) {
-					frm.add_custom_button(__("Umwandeln in/Öffne Mandat"), function() {
-						new_mandat(frm.doc.name, frm.doc.mitglied);
-					});
+				if (r.message.length > 0) {
+					if (r.message[(r.message.length - 1)].name == frm.doc.name) {
+						frm.add_custom_button(__("Umwandeln in/Öffne Mandat"), function() {
+							new_mandat(frm.doc.name, frm.doc.mitglied);
+						});
+					}
 				}
 			}
 		});
@@ -662,9 +664,11 @@ function set_mandatory_and_read_only(frm) {
 function check_anfrage_daten_vs_stamm_daten(frm) {
 	var i;
 	var assign = true;
-	for (i=0; i < cur_frm.get_docinfo().assignments.length; i++) {
-		if (cur_frm.get_docinfo().assignments[i].description.includes("Bitte folgende Änderungen in den Stammdaten vornehmen:")) {
-			assign = false;
+	if (cur_frm.get_docinfo().assignments) {
+		for (i=0; i < cur_frm.get_docinfo().assignments.length; i++) {
+			if (cur_frm.get_docinfo().assignments[i].description.includes("Bitte folgende Änderungen in den Stammdaten vornehmen:")) {
+				assign = false;
+			}
 		}
 	}
 	if (frm.doc.mitglied && assign) {
@@ -684,7 +688,7 @@ function check_anfrage_daten_vs_stamm_daten(frm) {
 				"mobile": frm.doc.mobile || '',
 				"email": frm.doc.email || ''
 			},
-			"async": false,
+			//"async": false,
 			"callback": function(response) {
 				var abweichungen = response.message.abweichungen;
 				var assign_to = response.message.assign_to;

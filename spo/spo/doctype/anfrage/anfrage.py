@@ -10,7 +10,7 @@ from spo.utils.timesheet_handlings import handle_timesheet
 
 class Anfrage(Document):
 	def validate(self):
-		if not self.is_new():
+		if self.is_new() == None:
 			handle_timesheet(frappe.session.user, self.doctype, self.name, self.timer)
 
 @frappe.whitelist()
@@ -123,18 +123,18 @@ def update_frm_with_fetched_data(frm, name):
 	customer = frappe.get_doc("Customer", name)
 	address = get_address(name)
 	contact = get_contact(name)
-	anfrage.vorname = contact.first_name #customer.customer_name.split(" ")[0]
-	anfrage.nachname = contact.last_name #customer.customer_name.split(" ")[1] or ''
+	anfrage.vorname = contact.first_name
+	anfrage.nachname = contact.last_name
 	anfrage.strasse = address.address_line1.split(" ")[0]
 	anfrage.hausnummer = address.address_line1.split(" ")[1] or ''
 	anfrage.ort = address.city
-	anfrage.telefon = contact.phone #address.phone
-	anfrage.mobile = contact.mobile_no #address.fax
-	anfrage.email = contact.email_id #address.email_id
+	anfrage.telefon = contact.phone
+	anfrage.mobile = contact.mobile_no
+	anfrage.email = contact.email_id
 	anfrage.geburtsdatum = contact.geburtsdatum
 	anfrage.plz = address.pincode
 	anfrage.mitglied = name
-	#anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name or ''
+	
 	if get_valid_mitgliedschaft_based_on_mitgliedernummer(name):
 		anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name
 	else:
@@ -173,9 +173,22 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 				"link_name": mitglied.name
 			}
 		],
-		"email_id": email,
-		"phone": telefon,
-		"mobile_no": mobile,
+		"email_ids": [
+			{
+				"email_id": email,
+				"is_primary": 1
+			}
+		],
+		"phone_nos": [
+			{
+				"phone": telefon,
+				"is_primary_phone": 1
+			},
+			{
+				"phone": mobile,
+				"is_primary_mobile_no": 1
+			}
+		],
 		"geburtsdatum": geburtsdatum,
 		"first_name": vorname,
 		"last_name": nachname
