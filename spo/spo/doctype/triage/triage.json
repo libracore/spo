@@ -20,6 +20,7 @@
   "kausalitaet",
   "schaden",
   "empfehlung_check",
+  "fusszeile",
   "amended_from"
  ],
  "fields": [
@@ -116,10 +117,18 @@
    "fieldname": "empfehlung_anderes",
    "fieldtype": "Data",
    "label": "Anderes"
+  },
+  {
+   "default": "Z\u00fcrich",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-28 11:58:47.349153",
+ "modified": "2019-11-07 14:01:59.182509",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",

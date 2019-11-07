@@ -27,7 +27,7 @@ frappe.ui.form.on('Anfrage', {
 			},
 			callback: function(r) {
 				if (r.message[(r.message.length - 1)].name == frm.doc.name) {
-					frm.add_custom_button(__("Convert to/Open Mandat"), function() {
+					frm.add_custom_button(__("Umwandeln in/Öffne Mandat"), function() {
 						new_mandat(frm.doc.name, frm.doc.mitglied);
 					});
 				}

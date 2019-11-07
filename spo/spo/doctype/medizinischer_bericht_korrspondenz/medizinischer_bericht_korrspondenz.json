@@ -31,11 +31,12 @@
   {
    "fieldname": "bemerkung",
    "fieldtype": "Text Editor",
+   "in_list_view": 1,
    "label": "Bemerkung"
   }
  ],
  "istable": 1,
- "modified": "2019-10-04 11:19:03.112637",
+ "modified": "2019-11-07 13:24:54.179698",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht Korrspondenz",

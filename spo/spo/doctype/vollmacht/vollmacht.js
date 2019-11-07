@@ -158,7 +158,7 @@ frappe.ui.form.on('Vollmacht', {
 		}
 		
 		// filter for textbaustein (begleitbrief) based on doctype and user
-		cur_frm.fields_dict['textkonserve'].get_query = function(doc) {
+		cur_frm.fields_dict['textkonserve_begleitbrief'].get_query = function(doc) {
 			 return {
 				 filters: {
 					 "mitarbeiter": frappe.user.name,

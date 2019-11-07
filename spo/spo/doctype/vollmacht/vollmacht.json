@@ -24,7 +24,8 @@
   "titelzeile",
   "textkonserve_begleitbrief",
   "begleitbrief",
-  "amended_from"
+  "amended_from",
+  "fusszeile"
  ],
  "fields": [
   {
@@ -136,10 +137,18 @@
    "fieldname": "begleitbrief",
    "fieldtype": "Text Editor",
    "label": "Begleitbrief"
+  },
+  {
+   "default": "Z\u00fcrich",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-28 11:56:26.717625",
+ "modified": "2019-11-07 14:10:30.679267",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",

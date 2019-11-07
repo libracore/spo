@@ -12,6 +12,7 @@
   "section_1",
   "textbaustein",
   "brieftext",
+  "fusszeile",
   "amended_from"
  ],
  "fields": [
@@ -64,10 +65,18 @@
    "fieldtype": "Link",
    "label": "Textbaustein",
    "options": "SPO Textbausteine"
+  },
+  {
+   "default": "Z\u00fcrich",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2019-10-04 11:39:01.561074",
+ "modified": "2019-11-07 12:51:14.409646",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",
