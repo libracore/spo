@@ -10,7 +10,8 @@ from spo.utils.timesheet_handlings import handle_timesheet
 
 class Anfrage(Document):
 	def validate(self):
-		handle_timesheet(frappe.session.user, self.doctype, self.name, self.timer)
+		if not self.is_new():
+			handle_timesheet(frappe.session.user, self.doctype, self.name, self.timer)
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
@@ -121,14 +122,16 @@ def update_frm_with_fetched_data(frm, name):
 	anfrage = frappe.get_doc("Anfrage", frm)
 	customer = frappe.get_doc("Customer", name)
 	address = get_address(name)
-	anfrage.vorname = customer.customer_name.split(" ")[0]
-	anfrage.nachname = customer.customer_name.split(" ")[1] or ''
+	contact = get_contact(name)
+	anfrage.vorname = contact.first_name #customer.customer_name.split(" ")[0]
+	anfrage.nachname = contact.last_name #customer.customer_name.split(" ")[1] or ''
 	anfrage.strasse = address.address_line1.split(" ")[0]
 	anfrage.hausnummer = address.address_line1.split(" ")[1] or ''
 	anfrage.ort = address.city
-	anfrage.telefon = address.phone
-	anfrage.mobile = address.fax
-	anfrage.email = address.email_id
+	anfrage.telefon = contact.phone #address.phone
+	anfrage.mobile = contact.mobile_no #address.fax
+	anfrage.email = contact.email_id #address.email_id
+	anfrage.geburtsdatum = contact.geburtsdatum
 	anfrage.plz = address.pincode
 	anfrage.mitglied = name
 	#anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name or ''
@@ -173,7 +176,9 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 		"email_id": email,
 		"phone": telefon,
 		"mobile_no": mobile,
-		"geburtsdatum": geburtsdatum
+		"geburtsdatum": geburtsdatum,
+		"first_name": vorname,
+		"last_name": nachname
 	})
 	contact.insert()
 	

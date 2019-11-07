@@ -54,11 +54,11 @@ frappe.ui.form.on('Anfrage', {
 		}
 		
 		//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
-		if (frm.doc.mitglied) {
+		/* if (frm.doc.mitglied) {
 			if (frm.doc.anfrage_typ == 'Sonstiges') {
 				update_dashboard(frm);
 			}
-		}
+		} */
 		
 		//show/hide timer stop btn
 		if (frm.doc.timer_status == 1) {
@@ -187,22 +187,22 @@ frappe.ui.form.on('Anfrage', {
 	scroll_top_0: function(frm) {
 		frappe.utils.scroll_to(0);
 		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[2].childNodes[0].childNodes[0].click();
+		sections[1].childNodes[0].childNodes[0].click();
 	},
 	scroll_top_1: function(frm) {
 		frappe.utils.scroll_to(0);
 		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[3].childNodes[0].childNodes[0].click();
+		sections[2].childNodes[0].childNodes[0].click();
 	},
 	scroll_top_2: function(frm) {
 		frappe.utils.scroll_to(0);
 		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[4].childNodes[0].childNodes[0].click();
+		sections[3].childNodes[0].childNodes[0].click();
 	},
 	scroll_top_3: function(frm) {
 		frappe.utils.scroll_to(0);
 		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[5].childNodes[0].childNodes[0].click();
+		sections[4].childNodes[0].childNodes[0].click();
 	}
 });
 
@@ -517,7 +517,7 @@ function add_scroll_to(frm) {
 	var a0 = document.createElement("a");
 	a0.classList.add("sidebar-comments");
 	a0.classList.add("badge-hover");
-	a0.onclick = function(){frappe.utils.scroll_to(sections[2], !0); sections[2].childNodes[0].childNodes[0].click();};
+	a0.onclick = function(){frappe.utils.scroll_to(sections[1], !0); sections[1].childNodes[0].childNodes[0].click();};
 	
 	var span0 = document.createElement("span")
 	var span_node0 = document.createTextNode("Anfragen Typisierung");
@@ -526,7 +526,7 @@ function add_scroll_to(frm) {
 	var a1 = document.createElement("a");
 	a1.classList.add("sidebar-comments");
 	a1.classList.add("badge-hover");
-	a1.onclick = function(){frappe.utils.scroll_to(sections[3], !0); sections[3].childNodes[0].childNodes[0].click();};
+	a1.onclick = function(){frappe.utils.scroll_to(sections[2], !0); sections[2].childNodes[0].childNodes[0].click();};
 	
 	var span1 = document.createElement("span")
 	var span_node1 = document.createTextNode("Angaben zur Person");
@@ -535,7 +535,7 @@ function add_scroll_to(frm) {
 	var a2 = document.createElement("a");
 	a2.classList.add("sidebar-comments");
 	a2.classList.add("badge-hover");
-	a2.onclick = function(){frappe.utils.scroll_to(sections[4], !0); sections[4].childNodes[0].childNodes[0].click();};
+	a2.onclick = function(){frappe.utils.scroll_to(sections[3], !0); sections[3].childNodes[0].childNodes[0].click();};
 	
 	var span2 = document.createElement("span")
 	var span_node2 = document.createTextNode("Angaben zur Anfrage");
@@ -544,7 +544,7 @@ function add_scroll_to(frm) {
 	var a3 = document.createElement("a");
 	a3.classList.add("sidebar-comments");
 	a3.classList.add("badge-hover");
-	a3.onclick = function(){frappe.utils.scroll_to(sections[5], !0); sections[5].childNodes[0].childNodes[0].click();};
+	a3.onclick = function(){frappe.utils.scroll_to(sections[4], !0); sections[4].childNodes[0].childNodes[0].click();};
 	
 	var span3 = document.createElement("span")
 	var span_node3 = document.createTextNode("Zeiterfassung");

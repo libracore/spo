@@ -9,6 +9,8 @@ from frappe.utils.data import nowdate, add_to_date
 @frappe.whitelist()
 def handle_timesheet(user, doctype, reference, time):
 	user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
+	if not time:
+		time = 0
 	time = float(time)
 	if user:
 		user = user[0][0]
