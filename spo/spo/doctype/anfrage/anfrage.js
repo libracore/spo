@@ -8,31 +8,49 @@
 frappe.ui.form.on('Anfrage', {
 	onload: function(frm) {
 		if (frm.doc.__islocal) {
-			start_timer(frm);
 			cur_frm.doc.mitglied = '';
+			cur_frm.set_value('datum', frappe.datetime.get_today());
 			cur_frm.save();
+			// open typ section
+			setTimeout(function(){ cur_frm.fields[5].collapse_link.click(); }, 1000);
 		}
 	},
 	refresh: function(frm) {
-		//add btn to create Mandat
-		frappe.call({
-			method:"frappe.client.get_list",
-			args:{
-				doctype:"Anfrage",
-				filters: [
-					["mitglied","=", frm.doc.mitglied]
-				],
-				fields: ["name"],
-				order_by: 'creation'
-			},
-			callback: function(r) {
-				if (r.message[(r.message.length - 1)].name == frm.doc.name) {
-					frm.add_custom_button(__("Umwandeln in/Öffne Mandat"), function() {
-						new_mandat(frm.doc.name, frm.doc.mitglied);
-					});
-				}
-			}
+		if (frm.doc.anfrage_typ == 'Sonstiges') {
+			update_dashboard(frm);
+		}
+		
+		// timer action icon
+		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
+			timesheet_handling(frm);
 		});
+		//add btn to create Mandat
+		if (cur_frm.doc.mitglied) {
+			frappe.call({
+				method:"frappe.client.get_list",
+				args:{
+					doctype:"Anfrage",
+					filters: [
+						["mitglied","=", cur_frm.doc.mitglied]
+					],
+					fields: ["name"],
+					order_by: 'creation'
+				},
+				callback: function(r) {
+					if (r.message.length > 0) {
+						if (r.message[(r.message.length - 1)].name == frm.doc.name) {
+							frm.add_custom_button(__("Mandat"), function() {
+								new_mandat(frm.doc.name, frm.doc.mitglied);
+							});
+						}
+					}
+				}
+			});
+		} else {
+			frm.add_custom_button(__("Mandat"), function() {
+				new_mandat(frm.doc.name, frm.doc.mitglied);
+			});
+		}
 		
 		//Set filter to mitgliedschaft
 		cur_frm.fields_dict['mitgliedschaft'].get_query = function(doc) {
@@ -53,26 +71,10 @@ frappe.ui.form.on('Anfrage', {
 			}).addClass("btn-info pull-left");
 		}
 		
-		//erstellen des Dashboards, wenn ein Mitglied eingetragen ist
-		/* if (frm.doc.mitglied) {
-			if (frm.doc.anfrage_typ == 'Sonstiges') {
-				update_dashboard(frm);
-			}
-		} */
-		
-		//show/hide timer stop btn
-		if (frm.doc.timer_status == 1) {
-			frm.add_custom_button(__("Stop Timer"), function() {
-				stop_timer(frm);
-			}).addClass("btn-primary");
-		} else {
-			frm.add_custom_button(__("Start Timer"), function() {
-				start_timer(frm);
-			}).addClass("btn-primary");
-		}
-		
-		// add scroll to navbar
-		add_scroll_to(frm);
+		//erstellen des Dashboards, wenn anfrage_typ == 'Sonstiges' und mitglied vorhanden
+		//if (frm.doc.mitglied) {
+			
+		//}
 		
 		//pflichtfelder basierend auf Anfrage Typ
 		set_mandatory_and_read_only(frm);
@@ -82,6 +84,7 @@ frappe.ui.form.on('Anfrage', {
 	},
 	anfrage_typ: function(frm) {
 		//pflichtfelder basierend auf Anfrage Typ
+		cur_frm.set_value('kontakt_via', '');
 		set_mandatory_and_read_only(frm);
 	},
 	anonymisiert: function(frm) {
@@ -97,6 +100,35 @@ frappe.ui.form.on('Anfrage', {
 	},
 	mitglied: function(frm) {
 		_import_mitgliederdaten(frm);
+		if (cur_frm.doc.mitglied) {
+			frappe.call({
+				method:"frappe.client.get_list",
+				args:{
+					doctype:"Anfrage",
+					filters: [
+						["mitglied","=", cur_frm.doc.mitglied]
+					],
+					fields: ["name"],
+					order_by: 'creation'
+				},
+				callback: function(r) {
+					if (r.message.length > 0) {
+						if (r.message[(r.message.length - 1)].name == frm.doc.name) {
+							frm.add_custom_button(__("Mandat"), function() {
+								new_mandat(frm.doc.name, frm.doc.mitglied);
+							});
+						} else {
+							cur_frm.remove_custom_button("Mandat");
+						}
+					}
+				}
+			});
+		} else {
+			frm.add_custom_button(__("Mandat"), function() {
+				new_mandat(frm.doc.name, frm.doc.mitglied);
+			});
+		}
+		cur_frm.scroll_to_field("mitgliedschaft");
 	},
 	mitglied_erstellen: function(frm) {
 		frappe.call({
@@ -186,23 +218,62 @@ frappe.ui.form.on('Anfrage', {
 	},
 	scroll_top_0: function(frm) {
 		frappe.utils.scroll_to(0);
-		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[1].childNodes[0].childNodes[0].click();
+		cur_frm.fields[5].collapse_link.click();
 	},
 	scroll_top_1: function(frm) {
 		frappe.utils.scroll_to(0);
-		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[2].childNodes[0].childNodes[0].click();
+		cur_frm.fields[29].collapse_link.click();
 	},
 	scroll_top_2: function(frm) {
 		frappe.utils.scroll_to(0);
-		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[3].childNodes[0].childNodes[0].click();
+		cur_frm.fields[50].collapse_link.click();
 	},
 	scroll_top_3: function(frm) {
 		frappe.utils.scroll_to(0);
-		var sections = document.getElementsByClassName("row form-section visible-section");
-		sections[4].childNodes[0].childNodes[0].click();
+		cur_frm.fields[55].collapse_link.click();
+	},
+	vorname: function(frm) {
+		cur_frm.scroll_to_field("nachname");
+	},
+	nachname: function(frm) {
+		cur_frm.scroll_to_field("geburtsdatum");
+	},
+	geburtsdatum: function(frm) {
+		cur_frm.scroll_to_field("kanton");
+	},
+	kanton: function(frm) {
+		cur_frm.scroll_to_field("strasse");
+	},
+	strasse: function(frm) {
+		cur_frm.scroll_to_field("hausnummer");
+	},
+	hausnummer: function(frm) {
+		cur_frm.scroll_to_field("ort");
+	},
+	ort: function(frm) {
+		cur_frm.scroll_to_field("plz");
+	},
+	plz: function(frm) {
+		get_city_from_pincode(cur_frm.doc.plz, 'ort', 'kanton');
+		cur_frm.scroll_to_field("telefon");
+	},
+	telefon: function(frm) {
+		cur_frm.scroll_to_field("mobile");
+	},
+	mobile: function(frm) {
+		cur_frm.scroll_to_field("email");
+	},
+	email: function(frm) {
+		cur_frm.scroll_to_field("krankenkasse");
+	},
+	krankenkasse: function(frm) {
+		cur_frm.scroll_to_field("rechtsschutzversicherung");
+	},
+	rechtsschutzversicherung: function(frm) {
+		cur_frm.scroll_to_field("rechtsschutz_ref");
+	},
+	rechtsschutz_ref: function(frm) {
+		cur_frm.scroll_to_field("mitglied");
 	}
 });
 
@@ -277,11 +348,6 @@ function get_data_from_mitgliedernummer(frm, mitgliedernummer, inkl) {
 									cur_frm.set_value('hausnummer', address.address_line1.split(" ")[1]);
 									cur_frm.set_value('ort', address.city);
 									cur_frm.set_value('plz', address.pincode);
-									
-									//folgende 3 linien müssen aus Kontakt geholt werden!!!
-									/* cur_frm.set_value('telefon', address.phone);
-									cur_frm.set_value('mobile', address.fax);
-									cur_frm.set_value('email', address.email_id); */
 								}
 								if(inkl) {
 									get_valid_mitgliedschaft_based_on_mitgliedernummer(frm, mitgliedernummer)
@@ -400,32 +466,6 @@ function check_mitgliedschaft_ablaufdatum(frm) {
 	}
 }
 
-function start_timer(frm) {
-	cur_frm.set_value('timer_start', frappe.datetime.now_datetime());
-	cur_frm.set_value('timer_status', 1);
-	cur_frm.save();
-}
-
-function stop_timer(frm) {
-	cur_frm.set_value('timer_status', 0);
-	frappe.call({
-		"method": "spo.spo.doctype.anfrage.anfrage.get_timer_diff",
-		"args": {
-			"start": frm.doc.timer_start,
-			"ende": frappe.datetime.now_datetime()
-		},
-		"async": false,
-		"callback": function(response) {
-			var time_diff = response.message;
-			var diff_to_5_factor = Math.ceil(time_diff / 5);
-			var timer_time = 5 * diff_to_5_factor;
-			
-			cur_frm.set_value('timer', cur_frm.doc.timer + timer_time);
-			cur_frm.save();
-		}
-	});
-}
-
 function update_dashboard(frm) {
 	frappe.call({
 		"method": "spo.spo.doctype.anfrage.anfrage.get_dashboard_data",
@@ -433,9 +473,10 @@ function update_dashboard(frm) {
 			"mitglied": frm.doc.mitglied,
 			"anfrage": frm.doc.name
 		},
-		"async": false,
+		"async": true,
 		"callback": function(response) {
 			var query = response.message;
+			console.log(query);
 			//Limits
 			var _colors = ['#d40000', '#00b000'];
 			/* if (query.callcenter_verwendet == 0) {
@@ -461,7 +502,9 @@ function update_dashboard(frm) {
 				}
 			});
 			
-			check_mitgliedschafts_unterbruch(frm, query.mitgliedschaften, query.limite_unterbruch);
+			if (query.mitgliedschaften != 'keine') {
+				check_mitgliedschafts_unterbruch(frm, query.mitgliedschaften, query.limite_unterbruch);
+			}
 		}
 	});
 }
@@ -490,90 +533,6 @@ function check_rechnung(frm) {
 			}
 		}
 	});
-}
-
-function add_scroll_to(frm) {
-	//get referenzpunkte und create grundgerüst
-	var vorhandene_sidebar = document.getElementsByClassName("list-unstyled sidebar-menu")[3];
-	var sections = document.getElementsByClassName("row form-section visible-section");
-	
-	var ul = document.createElement("ul");
-	ul.classList.add("list-unstyled");
-	ul.classList.add("sidebar-menu");
-	
-	var li1 = document.createElement("li");
-	li1.classList.add("divider");
-	
-	var li2 = document.createElement("li");
-	li2.style.position = "relative";
-	
-	var li3 = document.createElement("li");
-	li3.classList.add("h6");
-	li3.classList.add("attachments-label");
-	var li3_node = document.createTextNode("Scroll to...");
-	li3.appendChild(li3_node);
-	
-	// link zu "Anfragen Typisierung"
-	var a0 = document.createElement("a");
-	a0.classList.add("sidebar-comments");
-	a0.classList.add("badge-hover");
-	a0.onclick = function(){frappe.utils.scroll_to(sections[1], !0); sections[1].childNodes[0].childNodes[0].click();};
-	
-	var span0 = document.createElement("span")
-	var span_node0 = document.createTextNode("Anfragen Typisierung");
-	
-	// link zu "Angaben zur Person"
-	var a1 = document.createElement("a");
-	a1.classList.add("sidebar-comments");
-	a1.classList.add("badge-hover");
-	a1.onclick = function(){frappe.utils.scroll_to(sections[2], !0); sections[2].childNodes[0].childNodes[0].click();};
-	
-	var span1 = document.createElement("span")
-	var span_node1 = document.createTextNode("Angaben zur Person");
-	
-	// link zu "Angaben zur Anfrage"
-	var a2 = document.createElement("a");
-	a2.classList.add("sidebar-comments");
-	a2.classList.add("badge-hover");
-	a2.onclick = function(){frappe.utils.scroll_to(sections[3], !0); sections[3].childNodes[0].childNodes[0].click();};
-	
-	var span2 = document.createElement("span")
-	var span_node2 = document.createTextNode("Angaben zur Anfrage");
-	
-	// link zu "Zeiterfassung"
-	var a3 = document.createElement("a");
-	a3.classList.add("sidebar-comments");
-	a3.classList.add("badge-hover");
-	a3.onclick = function(){frappe.utils.scroll_to(sections[4], !0); sections[4].childNodes[0].childNodes[0].click();};
-	
-	var span3 = document.createElement("span")
-	var span_node3 = document.createTextNode("Zeiterfassung");
-	
-	// verknüpfen "Anfragen Typisierung"
-	span0.appendChild(span_node0);
-	a0.appendChild(span0);
-	li2.appendChild(a0);
-	
-	// verknüpfen "Angaben zur Person"
-	span1.appendChild(span_node1);
-	a1.appendChild(span1);
-	li2.appendChild(a1);
-	
-	// verknüpfen "Angaben zur Anfrage"
-	span2.appendChild(span_node2);
-	a2.appendChild(span2);
-	li2.appendChild(a2);
-	
-	// verknüpfen "Zeiterfassung"
-	span3.appendChild(span_node3);
-	a3.appendChild(span3);
-	li2.appendChild(a3);
-	
-	// verknüpfen Grundgerüst
-	ul.appendChild(li1);
-	ul.appendChild(li3);
-	ul.appendChild(li2);
-	vorhandene_sidebar.parentElement.insertBefore(ul, vorhandene_sidebar);
 }
 
 function scroll_to(where) {
@@ -621,7 +580,7 @@ function set_mandatory_and_read_only(frm) {
 		cur_frm.set_df_property('kanton','reqd', 1);
 		cur_frm.set_df_property('problematik','reqd', 1);
 		if (frm.doc.anfrage_typ == 'Hotline') {
-			cur_frm.doc.kontakt_via = 'Telefon';
+			cur_frm.set_value('kontakt_via', 'Telefon');
 			cur_frm.set_df_property('kontakt_via','read_only', 1);
 			cur_frm.set_df_property('vorname','reqd', 0);
 			cur_frm.set_df_property('nachname','reqd', 0);
@@ -650,7 +609,7 @@ function set_mandatory_and_read_only(frm) {
 			cur_frm.set_df_property('ort','reqd', 1);
 			cur_frm.set_df_property('plz','reqd', 1);
 			cur_frm.set_df_property('email','reqd', 1);
-			cur_frm.doc.kontakt_via = '';
+			
 			cur_frm.set_df_property('kontakt_via','reqd', 1);
 		}
 		if (cur_frm.doc.problematik == 'Krankenkasse (Grundversicherung)') {
@@ -662,9 +621,11 @@ function set_mandatory_and_read_only(frm) {
 function check_anfrage_daten_vs_stamm_daten(frm) {
 	var i;
 	var assign = true;
-	for (i=0; i < cur_frm.get_docinfo().assignments.length; i++) {
-		if (cur_frm.get_docinfo().assignments[i].description.includes("Bitte folgende Änderungen in den Stammdaten vornehmen:")) {
-			assign = false;
+	if (cur_frm.get_docinfo().assignments) {
+		for (i=0; i < cur_frm.get_docinfo().assignments.length; i++) {
+			if (cur_frm.get_docinfo().assignments[i].description.includes("Bitte folgende Änderungen in den Stammdaten vornehmen:")) {
+				assign = false;
+			}
 		}
 	}
 	if (frm.doc.mitglied && assign) {
@@ -684,7 +645,6 @@ function check_anfrage_daten_vs_stamm_daten(frm) {
 				"mobile": frm.doc.mobile || '',
 				"email": frm.doc.email || ''
 			},
-			"async": false,
 			"callback": function(response) {
 				var abweichungen = response.message.abweichungen;
 				var assign_to = response.message.assign_to;
@@ -789,4 +749,29 @@ function _import_mitgliederdaten(frm) {
 		'Daten importieren'
 		);
 	}
+}
+
+function timesheet_handling(frm) {
+	frappe.prompt([
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Total Time (in hours)', 'reqd': 1}  
+	],
+	function(values){
+		console.log(frm.doc.doctype);
+		frappe.call({
+			"method": "spo.utils.timesheet_handlings.handle_timesheet",
+			"args": {
+				"user": frappe.session.user_email,
+				"doctype": frm.doc.doctype,
+				"reference": frm.doc.name,
+				"time": values.time
+			},
+			"async": false,
+			"callback": function(response) {
+				console.log(response);
+			}
+		});
+	},
+	'Timesheet Action',
+	'Go'
+	)
 }

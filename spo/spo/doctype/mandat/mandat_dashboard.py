@@ -6,7 +6,7 @@ def get_data():
       'transactions': [
          {
             'label': _('Anforderungen'),
-            'items': ['Anforderung Patientendossier', 'Medizinischer Bericht', 'Triage', 'Vollmacht', 'Abschlussbericht']
+            'items': ['Vollmacht', 'Anforderung Patientendossier', 'Medizinischer Bericht', 'Triage', 'Abschlussbericht']
          }
       ]
    }

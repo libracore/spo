@@ -61,7 +61,7 @@
   }
  ],
  "issingle": 1,
- "modified": "2019-10-29 10:48:08.419355",
+ "modified": "2019-11-11 16:53:55.443942",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",
@@ -74,6 +74,16 @@
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "SPO Poweruser",
    "share": 1,
    "write": 1
   }

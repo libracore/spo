@@ -7,6 +7,8 @@
  "field_order": [
   "section_dashboard",
   "dashboard_html",
+  "vorname",
+  "nachname",
   "section_rat",
   "bestaetigung_erhalt_unterlagen",
   "sachstandbericht_alle_3_monate",
@@ -32,6 +34,8 @@
   "section_referenzen",
   "anfragen",
   "mitglied",
+  "customer",
+  "max_aufwand",
   "amended_from"
  ],
  "fields": [
@@ -52,8 +56,9 @@
   },
   {
    "fieldname": "anfragen",
-   "fieldtype": "Data",
-   "label": "Anfragen"
+   "fieldtype": "Link",
+   "label": "Anfragen",
+   "options": "Anfrage"
   },
   {
    "fieldname": "mitglied",
@@ -199,17 +204,46 @@
    "options": "Mandat",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fetch_from": "anfragen.vorname",
+   "fieldname": "vorname",
+   "fieldtype": "Data",
+   "label": "Vorname",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "anfragen.nachname",
+   "fieldname": "nachname",
+   "fieldtype": "Data",
+   "label": "Nachname",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "max_aufwand",
+   "fieldtype": "Int",
+   "label": "Maximale Aufwandsgrenze (in min)"
+  },
+  {
+   "fetch_from": "mitglied.name",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-09-24 13:34:18.070344",
+ "modified": "2019-11-12 13:27:11.980356",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
  "owner": "Administrator",
  "permissions": [
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -219,6 +253,21 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SPO Poweruser",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

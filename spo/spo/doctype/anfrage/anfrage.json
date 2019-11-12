@@ -22,6 +22,7 @@
   "emr_komplement\u00e4rmethode",
   "kontakt_via",
   "problematik",
+  "bestellung_von",
   "arzt_fachgebiet",
   "sterben",
   "definition_arzt_fachgebiet_andere",
@@ -29,6 +30,7 @@
   "scroll_top_0",
   "cb_0",
   "anonymisiert",
+  "datum",
   "section_person",
   "import_mitgliederdaten",
   "vorname",
@@ -39,6 +41,7 @@
   "email",
   "rechtsschutzversicherung",
   "mitglied",
+  "customer",
   "scroll_top_1",
   "break_1",
   "mitglied_erstellen",
@@ -65,7 +68,6 @@
  ],
  "fields": [
   {
-   "depends_on": "eval:doc.mitglied",
    "fieldname": "section_dashboard",
    "fieldtype": "Section Break"
   },
@@ -288,7 +290,7 @@
    "fieldname": "problematik",
    "fieldtype": "Select",
    "label": "Problematik",
-   "options": "\nArzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nZA: Hohnorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nPsychiatrie\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nSterben\nKrankenkasse (Grundversicherung)\nSUVA/EMV/IV/UVG\nZusatz- / Sonstige Versicherung\nallg. Information\nAdressen"
+   "options": "\nArzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nZA: Honorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nPsychiatrie\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nSterben\nKrankenkasse (Grundversicherung)\nSUVA/EMV/IV/UVG\nZusatz- / Sonstige Versicherung\nallg. Information\nAdressen\nBestellung"
   },
   {
    "allow_in_quick_entry": 1,
@@ -406,17 +408,36 @@
    "fieldtype": "Select",
    "label": "Sterben",
    "options": "Sterben PV\nSterben ACP"
+  },
+  {
+   "depends_on": "eval:doc.problematik=='Bestellung'",
+   "fieldname": "bestellung_von",
+   "fieldtype": "Data",
+   "label": "Bestellung von"
+  },
+  {
+   "fieldname": "datum",
+   "fieldtype": "Date",
+   "label": "Anfrage Datum"
+  },
+  {
+   "fetch_from": "mitglied.name",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-10-28 11:44:38.655175",
+ "modified": "2019-11-12 13:25:46.553918",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -426,6 +447,22 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SPO Poweruser",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

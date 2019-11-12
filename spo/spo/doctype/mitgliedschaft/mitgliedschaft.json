@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "mitglied",
+  "customer",
   "start",
   "rechnung",
   "cb_1",
@@ -52,10 +53,17 @@
    "in_list_view": 1,
    "label": "Ende",
    "reqd": 1
+  },
+  {
+   "fetch_from": "mitglied.name",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2019-09-24 13:33:43.455700",
+ "modified": "2019-11-12 13:28:07.300968",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",
@@ -70,6 +78,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SPO Poweruser",
    "share": 1,
    "write": 1
   }
