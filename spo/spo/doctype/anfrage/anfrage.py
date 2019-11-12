@@ -7,6 +7,7 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils.data import today, add_days
 from spo.utils.timesheet_handlings import handle_timesheet
+from frappe.utils import validate_email_address
 
 class Anfrage(Document):
 	def validate(self):
@@ -165,36 +166,75 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 	})
 	address.insert()
 	
-	contact = frappe.get_doc({
-		"doctype": "Contact",
-		"links": [
-			{
-				"link_doctype": "Customer",
-				"link_name": mitglied.name
-			}
-		],
-		"email_ids": [
-			{
-				"email_id": email,
-				"is_primary": 1
-			}
-		],
-		"phone_nos": [
-			{
-				"phone": telefon,
-				"is_primary_phone": 1
-			},
-			{
-				"phone": mobile,
-				"is_primary_mobile_no": 1
-			}
-		],
-		"geburtsdatum": geburtsdatum,
-		"first_name": vorname,
-		"last_name": nachname
-	})
-	contact.insert()
+	if not validate_email_address(email):
+		contact = frappe.get_doc({
+			"doctype": "Contact",
+			"links": [
+				{
+					"link_doctype": "Customer",
+					"link_name": mitglied.name
+				}
+			],
+			"geburtsdatum": geburtsdatum,
+			"first_name": vorname,
+			"last_name": nachname
+		})
+		contact.insert()
+	else:
+		contact = frappe.get_doc({
+			"doctype": "Contact",
+			"links": [
+				{
+					"link_doctype": "Customer",
+					"link_name": mitglied.name
+				}
+			],
+			"geburtsdatum": geburtsdatum,
+			"first_name": vorname,
+			"last_name": nachname,
+			"email_ids": [
+				{
+					"email_id": email,
+					"is_primary": 1
+				}
+			]
+		})
+		contact.insert()
 	
+	if telefon and mobile:
+		contact.update({
+			"phone_nos": [
+				{
+					"phone": telefon,
+					"is_primary_phone": 1
+				},
+				{
+					"phone": mobile,
+					"is_primary_mobile_no": 1
+				}
+			]
+		})
+		contact.save()
+	elif mobile:
+		contact.update({
+			"phone_nos": [
+				{
+					"phone": mobile,
+					"is_primary_mobile_no": 1
+				}
+			]
+		})
+		contact.save()
+	elif telefon:
+		contact.update({
+			"phone_nos": [
+				{
+					"phone": telefon,
+					"is_primary_phone": 1
+				}
+			]
+		})
+		contact.save()
 	return mitglied.name
 	
 @frappe.whitelist()
@@ -211,16 +251,30 @@ def get_timer_diff(start, ende):
 	return time_diff_in_seconds(ende, start) / 60
 	
 @frappe.whitelist()
-def get_dashboard_data(mitglied, anfrage):
+def get_dashboard_data(mitglied='', anfrage=''):
 	# Zeitbalken
 	callcenter_limit = frappe.get_single("Einstellungen").limite_callcenter_anfrage
-	callcenter_verwendet = frappe.get_doc("Anfrage", anfrage).timer
+	callcenter_verwendet = 0.000
+	if not mitglied:
+		callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage' AND `spo_referenz` = '{anfrage}' AND `parent` IN (
+														SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage), as_list=True)[0][0])
+		callcenter_verwendet = callcenter_verwendet * 60
+	else:
+		callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
+														SELECT `name` FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}')
+														AND `parent` IN (
+															SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mitglied=mitglied), as_list=True)[0][0])
+		callcenter_verwendet = callcenter_verwendet * 60
+		
 	limite_unterbruch = frappe.get_single("Einstellungen").limite_unterbruch
 	
 	# Mitgliedschaftsunterbruch Übersicht
-	mitgliedschaften = frappe.db.sql("""SELECT `name`, `start`, `ende` FROM `tabMitgliedschaft` WHERE `rechnung` IN (
-		SELECT `name` FROM `tabSales Invoice` WHERE `status` = 'Paid'
-		) AND `mitglied` = '{mitglied}' ORDER BY `start` ASC""".format(mitglied=mitglied), as_dict=True)
+	if mitglied:
+		mitgliedschaften = frappe.db.sql("""SELECT `name`, `start`, `ende` FROM `tabMitgliedschaft` WHERE `rechnung` IN (
+			SELECT `name` FROM `tabSales Invoice` WHERE `status` = 'Paid'
+			) AND `mitglied` = '{mitglied}' ORDER BY `start` ASC""".format(mitglied=mitglied), as_dict=True)
+	else:
+		mitgliedschaften = 'keine'
 		
 	return {
 			"callcenter_limit": callcenter_limit,
@@ -251,7 +305,7 @@ def creat_new_mandat(anfrage=None, mitglied=None):
 		"doctype": "Mandat"
 	})
 	
-	mandat.insert()
+	mandat.insert(ignore_permissions=True)
 	
 	#If Anfrage available, set link
 	if anfrage:

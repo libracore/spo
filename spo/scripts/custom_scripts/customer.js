@@ -1,6 +1,18 @@
 frappe.ui.form.on('Customer', {
 	refresh: function(frm) {
-		if (!frm.doc.__islocal) {
+		cur_frm.dashboard.add_transactions([
+			{
+				'label': 'Referenzen',
+				'items': [
+					'Anfrage',
+					'Mandat',
+					'Mitgliedschaft'
+				]
+			}
+		]);
+		/* if (!frm.doc.__islocal) {
+			
+			
 			check_contact(frm);
 			
 			//add btn to create Membership
@@ -62,11 +74,13 @@ frappe.ui.form.on('Customer', {
 				frappe.route_options = {"mitglied": ["like", "%" + cur_frm.doc.name + "%"]};
 				frappe.set_route("List", "Mandat");
 			}, __("Show"));
-		}
+		} */
+		
+		
 	}
 });
 
-function check_contact(frm) {
+/* function check_contact(frm) {
 	frappe.call({
 		method: 'spo.scripts.custom_scripts.customer.check_contact',
 		args: {
@@ -74,4 +88,4 @@ function check_contact(frm) {
 		},
 		callback: function(r) {}
 	});
-}
+} */
