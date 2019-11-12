@@ -35,6 +35,9 @@
   "anfragen",
   "mitglied",
   "customer",
+  "section_zeiterfassung",
+  "timer",
+  "default_ts",
   "max_aufwand",
   "amended_from"
  ],
@@ -229,13 +232,33 @@
    "fetch_from": "mitglied.name",
    "fieldname": "customer",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Customer",
    "options": "Customer"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_zeiterfassung",
+   "fieldtype": "Section Break",
+   "label": "Zeiterfassung"
+  },
+  {
+   "fieldname": "timer",
+   "fieldtype": "Float",
+   "label": "Total verbuchte Zeit (in h)",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "default_ts",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "default_ts"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-11-12 13:27:11.980356",
+ "modified": "2019-11-12 16:04:18.173304",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

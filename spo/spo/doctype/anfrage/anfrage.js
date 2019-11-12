@@ -16,6 +16,7 @@ frappe.ui.form.on('Anfrage', {
 		}
 	},
 	refresh: function(frm) {
+		//load dashboard
 		if (frm.doc.anfrage_typ == 'Sonstiges') {
 			update_dashboard(frm);
 		}
@@ -213,9 +214,6 @@ frappe.ui.form.on('Anfrage', {
 			}
 		});
 	},
-	manuelle_korrektur: function(frm) {
-		cur_frm.set_df_property('timer','read_only',0);
-	},
 	scroll_top_0: function(frm) {
 		frappe.utils.scroll_to(0);
 		cur_frm.fields[5].collapse_link.click();
@@ -226,11 +224,11 @@ frappe.ui.form.on('Anfrage', {
 	},
 	scroll_top_2: function(frm) {
 		frappe.utils.scroll_to(0);
-		cur_frm.fields[50].collapse_link.click();
+		cur_frm.fields[51].collapse_link.click();
 	},
 	scroll_top_3: function(frm) {
 		frappe.utils.scroll_to(0);
-		cur_frm.fields[55].collapse_link.click();
+		cur_frm.fields[56].collapse_link.click();
 	},
 	vorname: function(frm) {
 		cur_frm.scroll_to_field("nachname");
@@ -443,7 +441,6 @@ function get_vorschlagswerte(frm) {
 			if (response) {
 				var vorschlagswerte = response.message;
 			}
-			console.log(vorschlagswerte);
 			frappe.msgprint(vorschlagswerte.full_matches + "<hr>" + vorschlagswerte.namens_matches + "<hr>" + vorschlagswerte.address_matches, 'Suchresultate');
         }
     });
@@ -476,7 +473,6 @@ function update_dashboard(frm) {
 		"async": true,
 		"callback": function(response) {
 			var query = response.message;
-			console.log(query);
 			//Limits
 			var _colors = ['#d40000', '#00b000'];
 			/* if (query.callcenter_verwendet == 0) {
@@ -756,7 +752,6 @@ function timesheet_handling(frm) {
 		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Total Time (in hours)', 'reqd': 1}  
 	],
 	function(values){
-		console.log(frm.doc.doctype);
 		frappe.call({
 			"method": "spo.utils.timesheet_handlings.handle_timesheet",
 			"args": {
@@ -767,7 +762,7 @@ function timesheet_handling(frm) {
 			},
 			"async": false,
 			"callback": function(response) {
-				console.log(response);
+				//done
 			}
 		});
 	},

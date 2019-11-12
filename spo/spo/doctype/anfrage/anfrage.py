@@ -6,13 +6,18 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.utils.data import today, add_days
-from spo.utils.timesheet_handlings import handle_timesheet
+from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time
 from frappe.utils import validate_email_address
 
 class Anfrage(Document):
 	def validate(self):
-		if self.is_new() == None:
-			handle_timesheet(frappe.session.user, self.doctype, self.name, self.timer)
+		if self.is_new() != True:
+			if not self.default_ts:
+				# create start ts buchung
+				handle_timesheet(frappe.session.user, self.doctype, self.name, 0)
+				self.default_ts = 1
+			if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
+				self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
