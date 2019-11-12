@@ -16,8 +16,8 @@ class Anfrage(Document):
 				# create start ts buchung
 				handle_timesheet(frappe.session.user, self.doctype, self.name, 0)
 				self.default_ts = 1
-			if float(self.timer) != float(get_total_ts_time(self.doctype, self.name)):
-				self.timer = float(get_total_ts_time(self.doctype, self.name))
+			if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
+				self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):

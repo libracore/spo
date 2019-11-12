@@ -23,7 +23,8 @@ function update_dashboard(frm) {
 		"method": "spo.spo.doctype.mandat.mandat.get_dashboard_data",
 		"args": {
 			"mitglied": frm.doc.mitglied,
-			"anfrage": frm.doc.anfragen
+			"anfrage": frm.doc.anfragen,
+			"mandat": frm.doc.name
 		},
 		"async": false,
 		"callback": function(response) {

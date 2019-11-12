@@ -403,6 +403,7 @@
    "fetch_from": "mitglied.name",
    "fieldname": "customer",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Customer",
    "options": "Customer"
   },
@@ -416,7 +417,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-11-12 15:49:30.422467",
+ "modified": "2019-11-12 16:04:35.672825",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
