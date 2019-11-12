@@ -56,16 +56,16 @@ def update_timesheet(ts, time, doctype, reference, user):
 		for time_log in ts.time_logs:
 			if time_log.spo_dokument == doctype:
 				if time_log.spo_referenz == reference:
-					if time > get_default_time(doctype):
-						time_log.hours = time
+					if (time + time_log.hours) > get_default_time(doctype):
+						time_log.hours = time + time_log.hours
 	else:
 		found = False
 		for time_log in ts.time_logs:
 			if not found:
 				if time_log.spo_dokument == doctype:
 					if time_log.spo_referenz == reference:
-						if time > get_default_time(doctype):
-							time_log.hours = time
+						if (time + time_log.hours) > get_default_time(doctype):
+							time_log.hours = time + time_log.hours
 							found = True
 							start = add_to_date(time_log.to_time, hours=0.001)
 			else:
@@ -108,3 +108,10 @@ def cleanup_ts(user):
 		new_ts.time_logs.append(time_log)
 		start = add_to_date(start, hours=time_log.hours + 0.001)
 	new_ts.insert()
+	
+@frappe.whitelist()
+def get_total_ts_time(doctype, reference):
+	if doctype == "Anfrage":
+		time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
+							SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(doctype=doctype, reference=reference), as_list=True)[0][0] or 0)
+		return time

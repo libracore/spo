@@ -59,10 +59,8 @@
   "rat",
   "scroll_top_2",
   "section_zeiterfassung",
-  "timer_start",
-  "timer_status",
-  "manuelle_korrektur",
   "timer",
+  "default_ts",
   "scroll_top_3",
   "amended_from"
  ],
@@ -202,30 +200,11 @@
    "label": "Zeiterfassung"
   },
   {
-   "fieldname": "timer_start",
-   "fieldtype": "Datetime",
-   "hidden": 1,
-   "label": "Timer Start",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "timer_status",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Timer Status",
-   "read_only": 1
-  },
-  {
-   "fieldname": "manuelle_korrektur",
-   "fieldtype": "Button",
-   "label": "Manuelle Korrektur"
-  },
-  {
+   "allow_on_submit": 1,
    "fieldname": "timer",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Timer",
+   "label": "Total verbuchte Zeit (in h)",
    "read_only": 1
   },
   {
@@ -426,11 +405,18 @@
    "fieldtype": "Link",
    "label": "Customer",
    "options": "Customer"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_ts",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Default TS"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-11-12 13:25:46.553918",
+ "modified": "2019-11-12 15:49:30.422467",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
