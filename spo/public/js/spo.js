@@ -8,16 +8,7 @@ function fetch_data_from_search(frm, name) {
         "async": false,
         "callback": function(response) {
            location.reload();
+		   get_city_from_pincode(cur_frm.doc.plz, 'ort', 'kanton');
         }
     });
 }
-
-document.onreadystatechange = () => {
-	if (document.readyState === 'complete') {
-		if (window.location.href.indexOf("/desk#Form/Anfrage/") > -1) {
-			setTimeout(function() {
-				document.getElementsByClassName("section-head")[1].click();
-			}, 2000);
-		}
-	}
-};
