@@ -43,7 +43,7 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 			for match in namens_matches:
 				customer = frappe.get_doc("Customer", match.name)
 				contact = get_contact(match.name)
-				_namens_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
+				_namens_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
 				address = get_address(match.name)
 				_namens_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
 				_namens_matches += '</div></div>'
@@ -82,7 +82,7 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 			for match in address_matches:
 				customer = frappe.get_doc("Customer", match.link_name)
 				contact = get_contact(match.link_name)
-				_address_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
+				_address_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
 				address = get_address(match.link_name)
 				_address_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
 				_address_matches += '</div></div>'
@@ -101,7 +101,7 @@ def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='',
 				customer = frappe.get_doc("Customer", match.name)
 				contact = get_contact(match.name)
 				if (str(contact.geburtsdatum) == str(geburtsdatum)):
-					_full_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.customer_name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
+					_full_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
 					address = get_address(match.name)
 					_full_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
 					_full_matches += '</div></div>'
@@ -127,22 +127,32 @@ def get_contact(customer):
 def update_frm_with_fetched_data(frm, name):
 	anfrage = frappe.get_doc("Anfrage", frm)
 	customer = frappe.get_doc("Customer", name)
-	address = get_address(name)
-	contact = get_contact(name)
-	anfrage.vorname = contact.first_name
-	anfrage.nachname = contact.last_name
-	anfrage.strasse = address.address_line1.split(" ")[0]
-	anfrage.hausnummer = address.address_line1.split(" ")[1] or ''
-	anfrage.ort = address.city
-	anfrage.telefon = contact.phone
-	anfrage.mobile = contact.mobile_no
-	anfrage.email = contact.email_id
-	anfrage.geburtsdatum = contact.geburtsdatum
-	anfrage.plz = address.pincode
-	anfrage.mitglied = name
+	#frappe.throw(name)
+	try:
+		address = get_address(customer.name)
+		anfrage.strasse = address.address_line1.split(" ")[0]
+		anfrage.hausnummer = address.address_line1.split(" ")[1] or ''
+		anfrage.ort = address.city
+		anfrage.plz = address.pincode
+		anfrage.kanton = address.kanton
+	except:
+		address = 'Fehler im Laden der Adresse'
+		
+	try:
+		contact = get_contact(customer.name)
+		anfrage.vorname = contact.first_name
+		anfrage.nachname = contact.last_name
+		anfrage.telefon = contact.phone
+		anfrage.mobile = contact.mobile_no
+		anfrage.email = contact.email_id
+		anfrage.geburtsdatum = contact.geburtsdatum
+	except:
+		contact = 'Fehler im Laden des Kontaktes'
+		
+	anfrage.mitglied = customer.name
 	
-	if get_valid_mitgliedschaft_based_on_mitgliedernummer(name):
-		anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(name)[0].name
+	if get_valid_mitgliedschaft_based_on_mitgliedernummer(customer.name):
+		anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(customer.name)[0].name
 	else:
 		anfrage.mitgliedschaft = ''
 	anfrage.save()
@@ -150,13 +160,16 @@ def update_frm_with_fetched_data(frm, name):
 	return "ok"
 	
 @frappe.whitelist()
-def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', email='', telefon='', mobile='', geburtsdatum=''):
+def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', email='', telefon='', mobile='', geburtsdatum='', kanton=''):
 	mitglied = frappe.get_doc({
 		"doctype": "Customer",
 		"customer_name": vorname + " " + nachname
 	})
 	mitglied.insert()
 	
+	if kanton == '' or kanton == 'Keine Angabe':
+		kanton = 'ZH'
+		
 	address = frappe.get_doc({
 		"doctype": "Address",
 		"links": [
@@ -167,7 +180,8 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 		],
 		"address_line1": strasse + " " + hausnummer,
 		"city": ort,
-		"pincode": plz
+		"pincode": plz,
+		"kanton": kanton
 	})
 	address.insert()
 	

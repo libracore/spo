@@ -189,7 +189,8 @@ frappe.ui.form.on('Anfrage', {
 							"email": email,
 							"telefon": frm.doc.telefon,
 							"mobile": frm.doc.mobile,
-							"geburtsdatum": frm.doc.geburtsdatum
+							"geburtsdatum": frm.doc.geburtsdatum,
+							"kanton": frm.doc.kanton
 						},
 						"async": false,
 						"callback": function(r) {
@@ -229,7 +230,7 @@ frappe.ui.form.on('Anfrage', {
 	scroll_top_3: function(frm) {
 		frappe.utils.scroll_to(0);
 		cur_frm.fields[56].collapse_link.click();
-	},
+	}/* ,
 	vorname: function(frm) {
 		cur_frm.scroll_to_field("nachname");
 	},
@@ -250,11 +251,11 @@ frappe.ui.form.on('Anfrage', {
 	},
 	ort: function(frm) {
 		cur_frm.scroll_to_field("plz");
-	},
+	}*/,
 	plz: function(frm) {
 		get_city_from_pincode(cur_frm.doc.plz, 'ort', 'kanton');
-		cur_frm.scroll_to_field("telefon");
-	},
+		//cur_frm.scroll_to_field("telefon");
+	}/*,
 	telefon: function(frm) {
 		cur_frm.scroll_to_field("mobile");
 	},
@@ -272,7 +273,7 @@ frappe.ui.form.on('Anfrage', {
 	},
 	rechtsschutz_ref: function(frm) {
 		cur_frm.scroll_to_field("mitglied");
-	}
+	} */
 });
 
 function new_mandat(anfrage, mitglied) {
@@ -749,7 +750,7 @@ function _import_mitgliederdaten(frm) {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Total Time (in hours)', 'reqd': 1}  
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
 	],
 	function(values){
 		frappe.call({
@@ -766,7 +767,7 @@ function timesheet_handling(frm) {
 			}
 		});
 	},
-	'Timesheet Action',
-	'Go'
+	'Arbeitszeit erfassen',
+	'Erfassen'
 	)
 }

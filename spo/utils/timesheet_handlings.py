@@ -4,7 +4,8 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils.data import nowdate, add_to_date
+from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str
+from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 
 @frappe.whitelist()
 def handle_timesheet(user, doctype, reference, time):
@@ -23,10 +24,9 @@ def handle_timesheet(user, doctype, reference, time):
 		return False
 	
 def check_if_timesheet_exist(user, doctype, reference):
-	ts = frappe.db.sql("""SELECT DISTINCT `parent` FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
-							SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}')""".format(user=user, doctype=doctype, reference=reference), as_dict=True)
+	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}'""".format(user=user), as_dict=True)
 	if len(ts) > 0:
-		return ts[0].parent
+		return ts[0].name
 	else:
 		return False
 	
@@ -34,6 +34,7 @@ def create_timesheet(user, doctype, reference, time):
 	default_time = get_default_time(doctype)
 	if time < default_time:
 		time = default_time
+	start = nowdate() + " 00:00:00"
 	ts = frappe.get_doc({
 		"doctype": "Timesheet",
 		"employee": user,
@@ -43,37 +44,44 @@ def create_timesheet(user, doctype, reference, time):
 				"hours": time,
 				"spo_dokument": doctype,
 				"spo_referenz": reference,
-				"from_time": add_to_date(nowdate(), days=100)
+				"from_time": get_datetime(get_datetime_str(start))
 			}
 		]
 	})
-	ts.insert()
-	cleanup_ts(user)
+	ts.insert(ignore_permissions=True)
 	
 def update_timesheet(ts, time, doctype, reference, user):
+	#**********************************************************
+	#overwrite the time_log overlap validation of timesheet
+	overwrite_ts_validation()
+	#**********************************************************
+	
 	ts = frappe.get_doc("Timesheet", ts)
-	if len(ts.time_logs) <= 1:
-		for time_log in ts.time_logs:
+	ref_time_log_found = False
+	for time_log in ts.time_logs:
+		if time_log.activity_type != 'Kommen/gehen':
 			if time_log.spo_dokument == doctype:
 				if time_log.spo_referenz == reference:
 					if (time + time_log.hours) > get_default_time(doctype):
 						time_log.hours = time + time_log.hours
+						ref_time_log_found = True
+	
+	if ref_time_log_found:
+		ts.save()
 	else:
-		found = False
-		for time_log in ts.time_logs:
-			if not found:
-				if time_log.spo_dokument == doctype:
-					if time_log.spo_referenz == reference:
-						if (time + time_log.hours) > get_default_time(doctype):
-							time_log.hours = time + time_log.hours
-							found = True
-							start = add_to_date(time_log.to_time, hours=0.001)
-			else:
-				time_log.from_time = start
-				time_log.to_time = add_to_date(start, hours=time_log.hours)
-				start = add_to_date(time_log.to_time, hours=0.001)
-	ts.save()
-	cleanup_ts(user)
+		start = nowdate() + " 00:00:00"
+		row = {}
+		row["activity_type"] = 'Execution'
+		if (time) > get_default_time(doctype):
+			row["hours"] = time
+		else:
+			row["hours"] = get_default_time(doctype)
+		row["from_time"] = get_datetime(get_datetime_str(start))
+		row["to_time"] = add_to_date(get_datetime(get_datetime_str(start)), hours=time)
+		row["spo_dokument"] = doctype
+		row["spo_referenz"] = reference
+		ts.append('time_logs', row)
+		ts.save()
 				
 def get_default_time(doctype):
 	time = 0
@@ -85,6 +93,11 @@ def get_default_time(doctype):
 	return time
 	
 def cleanup_ts(user):
+	#**********************************************************
+	#overwrite the time_log overlap validation of timesheet
+	overwrite_ts_validation()
+	#**********************************************************
+	
 	all_ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}'""".format(user=user), as_dict=True)
 	all_time_logs = []
 	for _ts in all_ts:
@@ -103,14 +116,71 @@ def cleanup_ts(user):
 	})
 	start = nowdate() + " 00:00:00"
 	for time_log in all_time_logs:
-		time_log.from_time = start
-		time_log.to_time = add_to_date(start, hours=time_log.hours)
-		new_ts.time_logs.append(time_log)
-		start = add_to_date(start, hours=time_log.hours + 0.001)
-	new_ts.insert()
+		if time_log.activity_type != 'Kommen/Gehen':
+			time_log.from_time = start
+			time_log.to_time = add_to_date(start, hours=time_log.hours)
+			new_ts.time_logs.append(time_log)
+			start = add_to_date(start, hours=time_log.hours + 0.001)
+		else:
+			new_ts.time_logs.append(time_log)
+	new_ts.insert(ignore_permissions=True)
 	
 @frappe.whitelist()
 def get_total_ts_time(doctype, reference):
 	time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
 						SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(doctype=doctype, reference=reference), as_list=True)[0][0] or 0)
 	return time
+	
+@frappe.whitelist()
+def sollzeit(ts=None, user=None, typ='Kommen/Gehen', time='00:00:00', insert_first=False):
+	if not user:
+		return False
+		
+	#**********************************************************
+	#overwrite the time_log overlap validation of timesheet
+	overwrite_ts_validation()
+	#**********************************************************
+	
+	if ts:
+		ts = frappe.get_doc("Timesheet", ts)
+	else:
+		user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)[0][0]
+		ts = frappe.db.sql("""SELECT DISTINCT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}'""".format(user=user), as_dict=True)
+		if len(ts) > 0:
+			ts = frappe.get_doc("Timesheet", ts[0].name)
+		else:
+			ts = frappe.get_doc({
+				"doctype": "Timesheet",
+				"employee": user
+			})
+			insert_first = True
+			
+	time = str(time.split(":")[0]) + ":" + str(time.split(":")[1]) + ":00"
+	start = nowdate() + " " + str(time)
+	row = {}
+	row["activity_type"] = typ #'Execution'
+	row["hours"] = 0.000
+	row["from_time"] = get_datetime(get_datetime_str(start))
+	row["to_time"] = get_datetime(get_datetime_str(start))
+	ts.append('time_logs', row)
+	if insert_first:
+		ts.insert(ignore_permissions=True)
+	else:
+		ts.save()
+	return 'ok'
+		
+def overwrite_ts_validation():
+	Timesheet.validate = ts_validation
+	
+def ts_validation(self):
+	#original timesheet validierung exkl. validate_time_logs()
+	
+	self.set_employee_name()
+	self.set_status()
+	self.validate_dates()
+	#self.validate_time_logs()
+	self.calculate_std_hours()
+	self.update_cost()
+	self.calculate_total_amounts()
+	self.calculate_percentage_billed()
+	self.set_dates()
