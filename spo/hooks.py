@@ -114,7 +114,8 @@ doctype_list_js = {
 # }
 scheduler_events = {
 	"daily": [
-		"spo.spo.doctype.anfrage.anfrage.autom_submit"
+		"spo.spo.doctype.anfrage.anfrage.autom_submit",
+		"spo.utils.timesheet_handlings.auto_ts_submit"
 	]
 }
 
