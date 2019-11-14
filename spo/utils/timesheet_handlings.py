@@ -67,7 +67,7 @@ def update_timesheet(ts, time, doctype, reference, user):
 						ref_time_log_found = True
 	
 	if ref_time_log_found:
-		ts.save()
+		ts.save(ignore_permissions=True)
 	else:
 		start = nowdate() + " 00:00:00"
 		row = {}
@@ -81,7 +81,7 @@ def update_timesheet(ts, time, doctype, reference, user):
 		row["spo_dokument"] = doctype
 		row["spo_referenz"] = reference
 		ts.append('time_logs', row)
-		ts.save()
+		ts.save(ignore_permissions=True)
 				
 def get_default_time(doctype):
 	time = 0
@@ -107,7 +107,7 @@ def cleanup_ts(user):
 			
 	for _ts in all_ts:
 		ts = frappe.get_doc("Timesheet", _ts.name)
-		ts.delete()
+		ts.delete(ignore_permissions=True)
 			
 	new_ts = frappe.get_doc({
 		"doctype": "Timesheet",
@@ -166,7 +166,7 @@ def sollzeit(ts=None, user=None, typ='Kommen/Gehen', time='00:00:00', insert_fir
 	if insert_first:
 		ts.insert(ignore_permissions=True)
 	else:
-		ts.save()
+		ts.save(ignore_permissions=True)
 	return 'ok'
 		
 def overwrite_ts_validation():
@@ -204,5 +204,5 @@ def auto_ts_submit():
 	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{nowdate}'""".format(nowdate=nowdate()), as_dict=True)
 	for _ts in ts_list:
 		ts = frappe.get_doc("Timesheet", _ts.name)
-		ts.submit()
+		ts.submit(ignore_permissions=True)
 	
