@@ -23,7 +23,7 @@
    "default": "60.000",
    "fieldname": "limite_callcenter_anfrage",
    "fieldtype": "Float",
-   "label": "Aufwandsgrenze Callcenter Anfrage"
+   "label": "Aufwandsgrenze Anfrage"
   },
   {
    "default": "100.000",
@@ -45,7 +45,7 @@
   {
    "fieldname": "ts_defaults",
    "fieldtype": "Table",
-   "label": "Default Times",
+   "label": "Default Zeiten",
    "options": "SPO TS Defaults"
   },
   {
@@ -61,7 +61,7 @@
   }
  ],
  "issingle": 1,
- "modified": "2019-11-11 16:53:55.443942",
+ "modified": "2019-11-14 12:45:44.938261",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",
