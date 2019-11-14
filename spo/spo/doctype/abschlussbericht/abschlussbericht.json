@@ -20,6 +20,7 @@
   },
   {
    "fetch_from": "textkonserve.textkonserve",
+   "fetch_if_empty": 1,
    "fieldname": "brieftext",
    "fieldtype": "Text Editor",
    "label": "Brieftext"
@@ -50,7 +51,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-11 16:37:01.416680",
+ "modified": "2019-11-14 11:58:20.819122",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Abschlussbericht",
