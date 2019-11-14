@@ -26,18 +26,49 @@ def get_dashboard_data(mitglied='', anfrage='', mandat=''):
 	
 	if not mitglied:
 		# zeit aus anfrage & mandat
-		callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE ((`spo_dokument` = 'Anfrage' AND `spo_referenz` = '{anfrage}') OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')) AND `parent` IN (
-										SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mandat=mandat), as_list=True)[0][0])
+		try:
+			callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE (
+														(`spo_dokument` = 'Anfrage' AND `spo_referenz` = '{anfrage}')
+														OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')
+														OR (`spo_dokument` = 'Anforderung Patientendossier' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Medizinischer Bericht' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabMedizinischer Bericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Triage' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabTriage` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Vollmacht' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabVollmacht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Abschlussbericht' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabAbschlussbericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														) AND `parent` IN (
+															SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mandat=mandat), as_list=True)[0][0])
+		except:
+			callcenter_verwendet = 0
 		callcenter_verwendet = callcenter_verwendet * 60
 	else:
 		# zeit aus anfrage & mandat zu mitglied
-		callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`)
+		try:
+			callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`)
 														FROM `tabTimesheet Detail`
 														WHERE
 														`parent` IN (SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)
-														AND 
-														(`spo_dokument` = 'Anfrage' AND `spo_referenz` IN (SELECT `name` FROM `tabAnfrage` WHERE `mitglied` = 'CUST-2019-000015'))
-														OR (`spo_dokument` = 'Mandat' AND `spo_referenz` IN (SELECT `name` FROM `tabMandat` WHERE `mitglied` = 'CUST-2019-000015'))""".format(anfrage=anfrage, mitglied=mitglied), as_list=True)[0][0])
+														AND (
+														(`spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
+															SELECT `name` FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}'))
+														OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')
+														OR (`spo_dokument` = 'Anforderung Patientendossier' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Medizinischer Bericht' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabMedizinischer Bericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Triage' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabTriage` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Vollmacht' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabVollmacht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														OR (`spo_dokument` = 'Abschlussbericht' AND `spo_referenz` IN (
+															SELECT `name`FROM `tabAbschlussbericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
+														)""".format(anfrage=anfrage, mitglied=mitglied, mandat=mandat), as_list=True)[0][0])
+		except:
+			callcenter_verwendet = 0
 		callcenter_verwendet = callcenter_verwendet * 60
 		
 	return {

@@ -72,11 +72,6 @@ frappe.ui.form.on('Anfrage', {
 			}).addClass("btn-info pull-left");
 		}
 		
-		//erstellen des Dashboards, wenn anfrage_typ == 'Sonstiges' und mitglied vorhanden
-		//if (frm.doc.mitglied) {
-			
-		//}
-		
 		//pflichtfelder basierend auf Anfrage Typ
 		set_mandatory_and_read_only(frm);
 		
@@ -230,50 +225,10 @@ frappe.ui.form.on('Anfrage', {
 	scroll_top_3: function(frm) {
 		frappe.utils.scroll_to(0);
 		cur_frm.fields[56].collapse_link.click();
-	}/* ,
-	vorname: function(frm) {
-		cur_frm.scroll_to_field("nachname");
 	},
-	nachname: function(frm) {
-		cur_frm.scroll_to_field("geburtsdatum");
-	},
-	geburtsdatum: function(frm) {
-		cur_frm.scroll_to_field("kanton");
-	},
-	kanton: function(frm) {
-		cur_frm.scroll_to_field("strasse");
-	},
-	strasse: function(frm) {
-		cur_frm.scroll_to_field("hausnummer");
-	},
-	hausnummer: function(frm) {
-		cur_frm.scroll_to_field("ort");
-	},
-	ort: function(frm) {
-		cur_frm.scroll_to_field("plz");
-	}*/,
 	plz: function(frm) {
 		get_city_from_pincode(cur_frm.doc.plz, 'ort', 'kanton');
-		//cur_frm.scroll_to_field("telefon");
-	}/*,
-	telefon: function(frm) {
-		cur_frm.scroll_to_field("mobile");
-	},
-	mobile: function(frm) {
-		cur_frm.scroll_to_field("email");
-	},
-	email: function(frm) {
-		cur_frm.scroll_to_field("krankenkasse");
-	},
-	krankenkasse: function(frm) {
-		cur_frm.scroll_to_field("rechtsschutzversicherung");
-	},
-	rechtsschutzversicherung: function(frm) {
-		cur_frm.scroll_to_field("rechtsschutz_ref");
-	},
-	rechtsschutz_ref: function(frm) {
-		cur_frm.scroll_to_field("mitglied");
-	} */
+	}
 });
 
 function new_mandat(anfrage, mitglied) {
@@ -606,7 +561,7 @@ function set_mandatory_and_read_only(frm) {
 			cur_frm.set_df_property('ort','reqd', 1);
 			cur_frm.set_df_property('plz','reqd', 1);
 			cur_frm.set_df_property('email','reqd', 1);
-			
+			cur_frm.set_df_property('spo_ombudsstelle','reqd', 1);
 			cur_frm.set_df_property('kontakt_via','reqd', 1);
 		}
 		if (cur_frm.doc.problematik == 'Krankenkasse (Grundversicherung)') {

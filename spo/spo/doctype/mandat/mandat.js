@@ -63,10 +63,9 @@ function update_dashboard(frm) {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Total Time (in hours)', 'reqd': 1}  
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
 	],
 	function(values){
-		console.log(frm.doc.doctype);
 		frappe.call({
 			"method": "spo.utils.timesheet_handlings.handle_timesheet",
 			"args": {
@@ -77,11 +76,11 @@ function timesheet_handling(frm) {
 			},
 			"async": false,
 			"callback": function(response) {
-				console.log(response);
+				//done
 			}
 		});
 	},
-	'Timesheet Action',
-	'Go'
+	'Arbeitszeit erfassen',
+	'Erfassen'
 	)
 }
