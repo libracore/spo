@@ -172,6 +172,13 @@ def sollzeit(ts=None, user=None, typ='Kommen/Gehen', time='00:00:00', insert_fir
 def overwrite_ts_validation():
 	Timesheet.validate = ts_validation
 	
+def overwrite_ts_on_submit():
+	Timesheet.on_submit = ts_on_submit
+	
+def ts_on_submit(self):
+	#self.validate_mandatory_fields()
+	self.update_task_and_project()
+	
 def ts_validation(self):
 	#original timesheet validierung exkl. validate_time_logs()
 	
@@ -184,3 +191,18 @@ def ts_validation(self):
 	self.calculate_total_amounts()
 	self.calculate_percentage_billed()
 	self.set_dates()
+	
+def auto_ts_submit():
+	#************************************************************************************
+	#overwrite the time_log overlap validation of timesheet and the on_submit validation
+	overwrite_ts_validation()
+	overwrite_ts_on_submit()
+	#************************************************************************************
+	
+	today = nowdate() + " 00:00:00"
+	midnight = get_datetime(get_datetime_str(today))
+	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{nowdate}'""".format(nowdate=nowdate()), as_dict=True)
+	for _ts in ts_list:
+		ts = frappe.get_doc("Timesheet", _ts.name)
+		ts.submit()
+	
