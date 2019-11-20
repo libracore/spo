@@ -136,44 +136,6 @@ def get_total_ts_time(doctype, reference):
 	time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
 						SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(doctype=doctype, reference=reference), as_list=True)[0][0] or 0)
 	return time
-	
-# @frappe.whitelist()
-# def sollzeit(ts=None, user=None, typ='Kommen/Gehen', time='00:00:00', insert_first=False):
-	# if not user:
-		# return False
-		
-	# #**********************************************************
-	# #overwrite the time_log overlap validation of timesheet
-	# overwrite_ts_validation()
-	# #**********************************************************
-	
-	# if ts:
-		# ts = frappe.get_doc("Timesheet", ts)
-	# else:
-		# user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)[0][0]
-		# ts = frappe.db.sql("""SELECT DISTINCT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}'""".format(user=user), as_dict=True)
-		# if len(ts) > 0:
-			# ts = frappe.get_doc("Timesheet", ts[0].name)
-		# else:
-			# ts = frappe.get_doc({
-				# "doctype": "Timesheet",
-				# "employee": user
-			# })
-			# insert_first = True
-			
-	# time = str(time.split(":")[0]) + ":" + str(time.split(":")[1]) + ":00"
-	# start = nowdate() + " " + str(time)
-	# row = {}
-	# row["activity_type"] = typ #'Execution'
-	# row["hours"] = 0.000
-	# row["from_time"] = get_datetime(get_datetime_str(start))
-	# row["to_time"] = get_datetime(get_datetime_str(start))
-	# ts.append('time_logs', row)
-	# if insert_first:
-		# ts.insert(ignore_permissions=True)
-	# else:
-		# ts.save(ignore_permissions=True)
-	# return 'ok'
 		
 def overwrite_ts_validation():
 	Timesheet.validate = ts_validation
