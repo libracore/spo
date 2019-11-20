@@ -35,12 +35,15 @@ def create_timesheet(user, doctype, reference, time):
 	if time < default_time:
 		time = default_time
 	start = nowdate() + " 00:00:00"
+	type = 'Mandatsarbeit'
+	if doctype == 'Anfrage':
+		type = 'Beratung'
 	ts = frappe.get_doc({
 		"doctype": "Timesheet",
 		"employee": user,
 		"time_logs": [
 			{
-				"activity_type": "Execution",
+				"activity_type": type,
 				"hours": time,
 				"spo_dokument": doctype,
 				"spo_referenz": reference,
@@ -59,7 +62,7 @@ def update_timesheet(ts, time, doctype, reference, user):
 	ts = frappe.get_doc("Timesheet", ts)
 	ref_time_log_found = False
 	for time_log in ts.time_logs:
-		if time_log.activity_type != 'Kommen/gehen':
+		if time_log.activity_type != 'Arbeitszeit' and time_log.activity_type != 'Pause':
 			if time_log.spo_dokument == doctype:
 				if time_log.spo_referenz == reference:
 					if (time + time_log.hours) > get_default_time(doctype):
@@ -69,9 +72,12 @@ def update_timesheet(ts, time, doctype, reference, user):
 	if ref_time_log_found:
 		ts.save(ignore_permissions=True)
 	else:
+		type = 'Mandatsarbeit'
+		if doctype == 'Anfrage':
+			type = 'Beratung'
 		start = nowdate() + " 00:00:00"
 		row = {}
-		row["activity_type"] = 'Execution'
+		row["activity_type"] = type
 		if (time) > get_default_time(doctype):
 			row["hours"] = time
 		else:
@@ -116,7 +122,7 @@ def cleanup_ts(user):
 	})
 	start = nowdate() + " 00:00:00"
 	for time_log in all_time_logs:
-		if time_log.activity_type != 'Kommen/Gehen':
+		if time_log.activity_type != 'Arbeitszeit' and time_log.activity_type != 'Pause':
 			time_log.from_time = start
 			time_log.to_time = add_to_date(start, hours=time_log.hours)
 			new_ts.time_logs.append(time_log)
