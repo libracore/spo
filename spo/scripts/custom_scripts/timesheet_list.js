@@ -1,18 +1,6 @@
 frappe.listview_settings['Timesheet'] = {
     onload: function(listview) {
-        /* listview.page.add_menu_item( __("Sollzeit Buchung"), function() {
-			frappe.prompt([
-				{'fieldname': 'time', 'fieldtype': 'Time', 'label': 'Zeitpunkt', 'reqd': 1}  
-			],
-			function(values){
-				console.log(values);
-				sollzeit(values.time);
-			},
-			'Sollzeit Buchung',
-			'Erfassen'
-			)
-		}); */
-		listview.page.add_menu_item( __("Erfassung Tagesarbeitszeit"), function() {
+        listview.page.add_menu_item( __("Erfassung Tagesarbeitszeit"), function() {
 			erfassung_tagesarbeitszeit();
 		});
 		listview.page.add_menu_item( __("Erfassung zusätzliche Pause"), function() {
@@ -24,26 +12,11 @@ frappe.listview_settings['Timesheet'] = {
     }
 }
 
-/* function sollzeit(time) {
-	frappe.call({
-		method: "spo.utils.timesheet_handlings.sollzeit",
-		args:{
-			"user": frappe.user.name,
-			"time": time
-		},
-		callback: function(r)
-		{
-			if (r.message == 'ok') {
-				frappe.msgprint("Die Sollzeit Buchung wurde erfasst.");
-			}
-		}
-	});
-} */
-
-function calc_end_time(start_zeit) {
+function calc_end_time(start_zeit, pausen_dauer) {
+	pausen_dauer = 60 * parseFloat(pausen_dauer);
 	var stunden = parseInt(start_zeit.split(":")[0]);
-	var end_stunden = stunden + 9;
-	var minuten = parseInt(start_zeit.split(":")[1]) + 54;
+	var end_stunden = stunden + 8;
+	var minuten = (parseInt(start_zeit.split(":")[1]) + 24) + pausen_dauer;
 	while (minuten >= 60) {
 		end_stunden = end_stunden + 1;
 		minuten = minuten - 60;
@@ -59,7 +32,7 @@ function calc_end_time(start_zeit) {
 
 function erfassung_tagesarbeitszeit() {
 	var start_zeit = frappe.datetime.now_time();
-	var end_zeit = calc_end_time(start_zeit);
+	var end_zeit = calc_end_time(start_zeit, 1.5);
 	frappe.prompt([
 			{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': frappe.datetime.get_today()},
 			{'fieldname': 'pause', 'fieldtype': 'Time', 'label': 'Zeitpunkt Pause', 'reqd': 1, 'default': '12:00:00'},
@@ -69,7 +42,6 @@ function erfassung_tagesarbeitszeit() {
 			{'fieldname': 'pause_duration', 'fieldtype': 'Float', 'label': 'Pausen Dauer (in h)', 'reqd': 1, 'default': 1.500}
 		],
 		function(values){
-			//console.log(values);
 			frappe.call({
 				method: "spo.utils.timesheet_handlings.erfassung_tagesarbeitszeit",
 				args:{
@@ -95,9 +67,16 @@ function erfassung_tagesarbeitszeit() {
 	setTimeout(function(){
 		var start_time_element = document.querySelectorAll("[data-fieldname='start_time']");
 		start_time_element = start_time_element[start_time_element.length - 1];
-		//console.log(start_time_element);
+		var pause_element = document.querySelectorAll("[data-fieldname='pause_duration']");
+		pause_element = pause_element[pause_element.length - 1];
 		start_time_element.onchange = function(){
-			var end_time = calc_end_time(start_time_element.value);
+			var end_time = calc_end_time(start_time_element.value, pause_element.value);
+			var end_time_element = document.querySelectorAll("[data-fieldname='end_time']");
+			end_time_element = end_time_element[end_time_element.length - 1];
+			end_time_element.value = end_time;
+		};
+		pause_element.onchange = function(){
+			var end_time = calc_end_time(start_time_element.value, pause_element.value);
 			var end_time_element = document.querySelectorAll("[data-fieldname='end_time']");
 			end_time_element = end_time_element[end_time_element.length - 1];
 			end_time_element.value = end_time;
@@ -116,7 +95,6 @@ function erfassung_zusatz_pause() {
 			{'fieldname': 'pause_duration', 'fieldtype': 'Float', 'label': 'Pausen Dauer (in h)', 'reqd': 1}
 		],
 		function(values){
-			//console.log(values);
 			frappe.call({
 				method: "spo.utils.timesheet_handlings.erfassung_zusatz_pause",
 				args:{
@@ -168,7 +146,6 @@ function restzeit_zuordnung() {
 						
 					],
 					function(values){
-						console.log(values);
 						frappe.call({
 							method: "spo.utils.timesheet_handlings.restzeit_zuordnung",
 							args:{
