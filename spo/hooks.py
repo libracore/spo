@@ -28,7 +28,8 @@ app_include_js = "/assets/spo/js/spo.js"
 # include js in doctype views
 doctype_js = {
 	"Customer" : "scripts/custom_scripts/customer.js",
-	"Timesheet" : "scripts/custom_scripts/timesheet.js"
+	"Timesheet" : "scripts/custom_scripts/timesheet.js",
+	"Address" : "scripts/custom_scripts/address.js"
 }
 doctype_list_js = {
 	"Timesheet" : "scripts/custom_scripts/timesheet_list.js"
