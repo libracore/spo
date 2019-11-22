@@ -1,6 +1,6 @@
 {
  "autoname": "format:MS-{YYYY}-{######}",
- "creation": "2019-08-20 15:45:28.983870",
+ "creation": "2019-11-21 15:45:28.983870",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -44,7 +44,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Mitgliedschafts Typ",
-   "options": "1\n2\n3\n4",
+   "options": "Einzelmitglied\nFamilienmitglied\nPassivmitglied\nFreimitglied",
    "reqd": 1
   },
   {
@@ -63,7 +63,7 @@
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2019-11-12 13:28:07.300968",
+ "modified": "2019-11-22 13:28:07.300968",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",

@@ -16,6 +16,7 @@ def create_invoice(mitgliedschaft):
 	invoice = frappe.get_doc({
 		"doctype": "Sales Invoice",
 		"customer": mitgliedschaft.mitglied,
+		"company": "Gönnerverein",
 		#"due_date": ,
 		"items": [
 			{
