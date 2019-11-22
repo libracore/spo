@@ -134,7 +134,7 @@ frappe.ui.form.on('Anfrage', {
 			var i;
 			var has_role = false;
 			for (i=0; i < r.message.length; i++) {
-				if (r.message[i] == "SPO Mitglied Verwaltung") {
+				if (r.message[i] == "Kundenstamm Verwaltung") {
 					has_role = true;
 				}
 			}
