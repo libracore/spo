@@ -152,7 +152,7 @@ function restzeit_zuordnung() {
 								"user": frappe.session.user_email,
 								"type": values.activity,
 								"dauer": values.duration,
-								"spo_remark": values.remark
+								"spo_remark": values.remark || ''
 							},
 							callback: function(r)
 							{
