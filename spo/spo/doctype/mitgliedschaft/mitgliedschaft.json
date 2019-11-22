@@ -44,7 +44,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Mitgliedschafts Typ",
-   "options": "Einzelmitglied\nFamilienmitglied\nPassivmitglied\nFreimitglied",
+   "options": "Einzelmitglied\nFamilienmitglied\nPassiv-/Kollektivmitglied\nFreimitglied",
    "reqd": 1
   },
   {
@@ -63,7 +63,7 @@
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2019-11-22 13:28:07.300968",
+ "modified": "2019-11-23 15:28:07.300968",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",
