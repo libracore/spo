@@ -77,6 +77,28 @@ frappe.ui.form.on('Anfrage', {
 		
 		//überprüfung ob kontakt- und adress-daten mit stamm übereinstimmen
 		check_anfrage_daten_vs_stamm_daten(frm);
+		
+		//*******************************************************************************************
+		// Diese Funktion muss in jedes SPO Beratungs-/Mandatspezifisches Dokument adaptiert werden!
+		//*******************************************************************************************
+		//update timesheet table
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.create_zeiten_uebersicht",
+			"args": {
+				"dt": cur_frm.doctype,
+				"name": cur_frm.doc.name
+			},
+			"async": false,
+			"callback": function(r) {
+				if (r.message) {
+					cur_frm.set_df_property('zeiten_uebersicht','options', r.message);
+					$("[data-funktion='open_ts']").on('click', function() {
+						console.log($(this).attr("data-referenz"));
+						ts_bearbeiten($(this).attr("data-referenz"));
+					});
+				}
+			}
+		});
 	},
 	anfrage_typ: function(frm) {
 		//pflichtfelder basierend auf Anfrage Typ
@@ -725,4 +747,12 @@ function timesheet_handling(frm) {
 	'Arbeitszeit erfassen',
 	'Erfassen'
 	)
+}
+
+//*******************************************************************************************
+// Diese Funktion muss in jedes SPO Beratungs-/Mandatspezifisches Dokument adaptiert werden!
+//*******************************************************************************************
+function ts_bearbeiten(ts) {
+	frappe.route_options = {"timesheet": ts};
+	frappe.set_route("Form", "Zeiterfassung");
 }

@@ -5,8 +5,8 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from frappe.utils.data import today, add_days, nowdate
-from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time
+from frappe.utils.data import today, add_days, nowdate, get_datetime_str
+from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time, get_zeiten_uebersicht
 from frappe.utils import validate_email_address
 
 class Anfrage(Document):
@@ -16,8 +16,13 @@ class Anfrage(Document):
 				# create start ts buchung
 				handle_timesheet(frappe.session.user, self.doctype, self.name, 0)
 				self.default_ts = 1
-		if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
-			self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
+		
+	def onload(self):
+		if self.is_new() != True:
+			if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
+				self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
+				#self.zeiten_uebersicht = create_zeiten_uebersicht("Anfrage", self.name)
+				#frappe.log_error(get_zeiten_uebersicht(Anfrage, self.name), "und?")
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
@@ -409,3 +414,18 @@ def assign_mitglied_anlage():
 			assign_to = assign.user
 			break
 	return assign_to
+	
+@frappe.whitelist()
+def create_zeiten_uebersicht(dt, name):
+	'''
+		Diese Funktion muss in jedes SPO Beratungs-/Mandatspezifisches Dokument adaptiert werden!
+	'''
+	alle_zeiten = get_zeiten_uebersicht(dt, name)
+	if alle_zeiten:
+		html = '<div style="width: 50%;"><table style="width: 100%;" class="table-striped"><tr><th>Datum</th><th>Stunden</th><th>Timesheet</th><th>Bearbeiten</th></tr>'
+		for zeit in alle_zeiten:
+			html += '<tr><td>' + get_datetime_str(zeit.from_time).split(" ")[0] + '</td><td>' + str(zeit.hours) + '</td><td>' + zeit.parent + '</td><td><a data-referenz="' + zeit.parent + '" data-funktion="open_ts"><i class="fa fa-edit"></i></a></td></tr>'
+		html += '</table></div>'
+		return html
+	else:
+		return False

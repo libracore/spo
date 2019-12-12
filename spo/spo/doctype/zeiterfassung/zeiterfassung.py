@@ -166,13 +166,15 @@ def fetch_diverses_von_ts(ts):
 		}
 		
 @frappe.whitelist()
-def update_ts(ts, datum, start, ende, pausen, beratungen_mandate, diverses, working_hours):
+def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, working_hours):
 	#**********************************************************
 	#overwrite the time_log overlap validation of timesheet
 	overwrite_ts_validation()
 	#**********************************************************
 	
 	ts = frappe.get_doc("Timesheet", ts)
+	if ts.employee != ma:
+		frappe.throw("Das ist nicht Ihr Timesheet. Dieses Timesheet kann nur von {employee_name} bearbeitet werden.".format(employee_name=ts.employee_name))
 	ts.twh = working_hours
 	ts.time_logs = []
 	_datum = datum

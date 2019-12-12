@@ -1,17 +1,36 @@
 var not_block = true;
 frappe.ui.form.on('Zeiterfassung', {
 	onload: function (frm) {
+		/* console.log("jez");
+		set_ma_from_user(frm);
+		set_default_start_and_end(frm);
+		set_subtable_filter(frm); */
+	},
+	refresh: function (frm) {
+		clear_all(frm);
 		set_ma_from_user(frm);
 		set_default_start_and_end(frm);
 		set_subtable_filter(frm);
-		
-	},
-	refresh: function (frm) {
 		cur_frm.disable_save();
 		hide_indicator(frm);
+		//console.log("refresh");
 	},
 	employee: function (frm) {
-		cur_frm.set_value('timesheet', '');
+		//console.log("employee");
+		if (frappe.route_options.timesheet) {
+			//remove_all_rows_of_all_subtables(frm);
+			var ts_from_route = frappe.route_options.timesheet;
+			frappe.route_options = {};
+			setTimeout(function(){
+				cur_frm.set_value('timesheet', ts_from_route);
+				//frappe.route_options = {};
+				//console.log("fetch ts");
+			}, 1000);
+			/* cur_frm.set_value('timesheet', frappe.route_options.timesheet);
+			frappe.route_options = {}; */
+		}/*  else {
+			cur_frm.set_value('timesheet', '');
+		} */
 		set_timesheet_filter(frm);
 		if (cur_frm.doc.employee) {
 			frm.add_custom_button(__("Zeiterfassung speichern"), function() {
@@ -130,6 +149,20 @@ frappe.ui.form.on('Zeiterfassung', {
 		frappe.utils.scroll_to($(".form-inner-toolbar"));
 	}
 });
+
+function clear_all(frm) {
+	remove_all_rows_of_all_subtables(frm);
+	cur_frm.set_value('employee', '');
+	cur_frm.set_value('datum', '');
+	cur_frm.set_value('timesheet', '');
+	cur_frm.set_value('start', '');
+	cur_frm.set_value('ende', '');
+	cur_frm.set_value('arbeitszeit', '');
+	cur_frm.set_value('total_pausen', 0);
+	cur_frm.set_value('total_beratung', 0);
+	cur_frm.set_value('total_mandatsarbeit', 0);
+	cur_frm.set_value('total_diverses', 0);
+}
 
 function scroll_to_btn() {
 	frappe.route_options = { 'scroll_to': { 'fieldname': 'timesheet' } };
@@ -312,6 +345,7 @@ function save_update_ts(frm) {
 			frappe.call({
 				method: "spo.spo.doctype.zeiterfassung.zeiterfassung.update_ts",
 				args:{
+					"ma": cur_frm.doc.employee,
 					"ts": cur_frm.doc.timesheet,
 					"pausen": cur_frm.doc.pausen,
 					"datum": cur_frm.doc.datum,
@@ -418,6 +452,7 @@ function alles_freigeben(frm) {
 }
 
 function set_default_start_and_end(frm) {
+	//console.log("default calc");
 	var start_zeit = frappe.datetime.now_time();
 	var end_zeit = calc_end_time(start_zeit, 0);
 	var heute = frappe.datetime.now_date();
@@ -427,14 +462,17 @@ function set_default_start_and_end(frm) {
 }
 
 function recalc_end_time(frm) {
-	var start = cur_frm.doc.start;
-	var diff = 0;
-	if (Number(parseFloat(cur_frm.doc.arbeitszeit).toFixed(3)) != 8.4) {	
-		var diff = Number(parseFloat(cur_frm.doc.arbeitszeit).toFixed(3)) - 8.4;
+	//console.log("recalc");
+	if (cur_frm.doc.start) {
+		var start = cur_frm.doc.start;
+		var diff = 0;
+		if (Number(parseFloat(cur_frm.doc.arbeitszeit).toFixed(3)) != 8.4) {	
+			var diff = Number(parseFloat(cur_frm.doc.arbeitszeit).toFixed(3)) - 8.4;
+		}
+		var ende = calc_end_time(start, diff + cur_frm.doc.total_pausen);
+		not_block = false;
+		cur_frm.set_value('ende', ende);
 	}
-	var ende = calc_end_time(start, diff + cur_frm.doc.total_pausen);
-	not_block = false;
-	cur_frm.set_value('ende', ende);
 }
 
 function calc_end_time(start_zeit, pausen_dauer) {

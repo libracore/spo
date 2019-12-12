@@ -342,3 +342,12 @@ def restzeit_zuordnung(user, type, dauer, spo_remark):
 	ts.save(ignore_permissions=True)
 	return 'ok'
 	
+def get_zeiten_uebersicht(dt, name):
+	'''
+		Muss noch ausgebaut werden für Mandat!
+	'''
+	if dt != 'Mandat':
+		alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time` FROM `tabTimesheet Detail` WHERE `spo_referenz` = '{name}'""".format(name=name), as_dict=True)
+		return alle_zeiten
+	else:
+		return False

@@ -61,6 +61,7 @@
   "section_zeiterfassung",
   "timer",
   "default_ts",
+  "zeiten_uebersicht",
   "scroll_top_3",
   "amended_from"
  ],
@@ -412,18 +413,23 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "Default TS"
+  },
+  {
+   "fieldname": "zeiten_uebersicht",
+   "fieldtype": "HTML",
+   "label": "Zeiten \u00dcbersicht",
+   "options": "<div>Es wurden keine Zeiten erfasst</div>"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-11-14 11:06:12.677381",
+ "modified": "2019-12-12 12:23:43.774108",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
  "owner": "Administrator",
  "permissions": [
   {
-   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -433,12 +439,10 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   },
   {
    "amend": 1,
-   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -448,7 +452,6 @@
    "report": 1,
    "role": "SPO Poweruser",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],
