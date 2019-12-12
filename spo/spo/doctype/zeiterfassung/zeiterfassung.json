@@ -1,0 +1,227 @@
+{
+ "allow_copy": 1,
+ "creation": "2019-12-09 13:46:57.399917",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_allgemein",
+  "employee",
+  "cb_1",
+  "datum",
+  "cb_2",
+  "timesheet",
+  "section_visuell",
+  "overview_html",
+  "section_zeiten",
+  "start",
+  "scroll_to_top1",
+  "cb_3",
+  "ende",
+  "cb_4",
+  "arbeitszeit",
+  "section_pausen",
+  "pausen",
+  "total_pausen",
+  "scroll_to_top2",
+  "section_arbeiten",
+  "beratungen_mandate",
+  "section_total_beratung_mandate",
+  "total_beratung",
+  "scroll_to_top3",
+  "cb_5",
+  "total_mandatsarbeit",
+  "section_diverses",
+  "diverses",
+  "total_diverses",
+  "scroll_to_top4"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_allgemein",
+   "fieldtype": "Section Break",
+   "label": "Allgemein"
+  },
+  {
+   "fieldname": "datum",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Datum",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mitarbeiter",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Leer lassen wenn ein neues erstellt werden soll.",
+   "fieldname": "timesheet",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Timesheet",
+   "options": "Timesheet"
+  },
+  {
+   "fieldname": "section_visuell",
+   "fieldtype": "Section Break",
+   "label": "Visuelle \u00dcbersicht"
+  },
+  {
+   "fieldname": "overview_html",
+   "fieldtype": "HTML",
+   "options": "<div>Bitte zuerst eine(n) Mitarbeiter(in) und ein Timesheet ausw\u00e4hlen.</div>"
+  },
+  {
+   "fieldname": "section_zeiten",
+   "fieldtype": "Section Break",
+   "label": "\u00dcbersicht Arbeitszeiten"
+  },
+  {
+   "fieldname": "start",
+   "fieldtype": "Time",
+   "label": "Arbeitsbeginn",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ende",
+   "fieldtype": "Time",
+   "label": "Arbeitsende",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "8.4",
+   "fieldname": "arbeitszeit",
+   "fieldtype": "Float",
+   "label": "Arbeitszeit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_pausen",
+   "fieldtype": "Section Break",
+   "label": "Pausen"
+  },
+  {
+   "fieldname": "section_arbeiten",
+   "fieldtype": "Section Break",
+   "label": "Beratungen / Mandate"
+  },
+  {
+   "fieldname": "pausen",
+   "fieldtype": "Table",
+   "label": "\u00dcbersicht",
+   "options": "SPO Zeiterfassung Pause"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_pausen",
+   "fieldtype": "Float",
+   "label": "Total Pausen",
+   "read_only": 1
+  },
+  {
+   "fieldname": "beratungen_mandate",
+   "fieldtype": "Table",
+   "label": "\u00dcbersicht",
+   "options": "SPO Zeiterfassung Beratung Mandate"
+  },
+  {
+   "fieldname": "total_beratung",
+   "fieldtype": "Float",
+   "label": "Total Beratung",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_mandatsarbeit",
+   "fieldtype": "Float",
+   "label": "Total Mandatsarbeit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_total_beratung_mandate",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_diverses",
+   "fieldtype": "Section Break",
+   "label": "Diverses"
+  },
+  {
+   "fieldname": "diverses",
+   "fieldtype": "Table",
+   "label": "\u00dcbersicht",
+   "options": "SPO Zeiterfassung Diverses"
+  },
+  {
+   "fieldname": "total_diverses",
+   "fieldtype": "Float",
+   "label": "Total Diverses",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fieldname": "scroll_to_top1",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up\"></i>"
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fieldname": "scroll_to_top2",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up\"></i>"
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fieldname": "scroll_to_top3",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up\"></i>"
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fieldname": "scroll_to_top4",
+   "fieldtype": "Button",
+   "label": "<i class=\"fa fa-chevron-up\"></i>"
+  }
+ ],
+ "hide_toolbar": 1,
+ "issingle": 1,
+ "modified": "2019-12-12 10:42:08.570197",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Zeiterfassung",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

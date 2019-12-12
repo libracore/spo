@@ -1,0 +1,67 @@
+{
+ "creation": "2019-12-11 09:17:53.017800",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "spo_referenz",
+  "dauer",
+  "referenz",
+  "spo_dokument",
+  "mandat",
+  "beratung"
+ ],
+ "fields": [
+  {
+   "fieldname": "spo_referenz",
+   "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "label": "SPO Referenz",
+   "options": "spo_dokument",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dauer",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Dauer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "referenz",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Referenz"
+  },
+  {
+   "fieldname": "spo_dokument",
+   "fieldtype": "Link",
+   "label": "SPO Dokument",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "mandat",
+   "fieldtype": "Check",
+   "label": "Mandat"
+  },
+  {
+   "default": "0",
+   "fieldname": "beratung",
+   "fieldtype": "Check",
+   "label": "Beratung"
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-12-12 10:50:48.680176",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "SPO Zeiterfassung Beratung Mandate",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

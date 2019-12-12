@@ -1,4 +1,8 @@
-frappe.listview_settings['Timesheet'] = {
+//************************************************************************************
+//Obsolet because of new timesheet handling (Zeiterfassungs Manager (Zeiterfassung))
+//************************************************************************************
+
+/* frappe.listview_settings['Timesheet'] = {
     onload: function(listview) {
         listview.page.add_menu_item( __("Erfassung Tagesarbeitszeit"), function() {
 			erfassung_tagesarbeitszeit();
@@ -170,4 +174,4 @@ function restzeit_zuordnung() {
 			}
 		}
 	});
-}
+} */

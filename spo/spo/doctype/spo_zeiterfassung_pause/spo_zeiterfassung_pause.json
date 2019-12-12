@@ -1,0 +1,44 @@
+{
+ "creation": "2019-12-10 03:40:52.828560",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "from",
+  "dauer",
+  "referenz"
+ ],
+ "fields": [
+  {
+   "fieldname": "from",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Von",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dauer",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Dauer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "referenz",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Referenz"
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-12-12 10:50:19.569775",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "SPO Zeiterfassung Pause",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

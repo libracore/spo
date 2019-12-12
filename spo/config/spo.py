@@ -103,11 +103,17 @@ def get_data():
 			"label": _("Zeiterfassung"),
 			"icon": "fa fa-cog",
 			"items": [
+				# {
+					# "type": "doctype",
+					# "name": "Timesheet",
+					# "label": "Timesheets",
+					# "description": _("Timesheets"),
+				# },
 				{
 					"type": "doctype",
-					"name": "Timesheet",
-					"label": "Timesheet",
-					"description": _("Timesheet"),
+					"name": "Zeiterfassung",
+					"label": "Zeiterfassungs Manager",
+					"description": _("Zeiterfassungs Manager"),
 				}
 			]
 		}
