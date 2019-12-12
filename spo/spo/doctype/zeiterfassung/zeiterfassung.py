@@ -38,7 +38,7 @@ def get_visual_overview(ts):
 	#/arbeitszeit
 	
 	#Mandate/Anfrage
-	html_to_return += '<div class="col-sm-4"><h2>Zeiten für Beratungen/Mandate</h2>'
+	html_to_return += '<div class="col-sm-4"><h2>Beratungen / Mandate</h2>'
 	for log in ts.time_logs:
 		if log.activity_type == 'Beratung':
 			html_to_return += 'Beratung (' + log.spo_referenz + '): ' + str(log.hours) + 'h<br>'
@@ -50,7 +50,7 @@ def get_visual_overview(ts):
 	#/Mandate/Anfrage
 	
 	#diverses
-	html_to_return += '<div class="col-sm-4"><h2>Zeiten für Diverses</h2>'
+	html_to_return += '<div class="col-sm-4"><h2>Diverses</h2>'
 	for log in ts.time_logs:
 		if log.activity_type != 'Beratung' and log.activity_type != 'Mandatsarbeit' and log.activity_type != 'Pause' and log.activity_type != 'Arbeitszeit':
 			html_to_return += log.activity_type + ': ' + str(log.hours) + 'h<br>'
