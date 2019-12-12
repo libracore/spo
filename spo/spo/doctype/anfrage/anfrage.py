@@ -21,8 +21,6 @@ class Anfrage(Document):
 		if self.is_new() != True:
 			if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
 				self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
-				#self.zeiten_uebersicht = create_zeiten_uebersicht("Anfrage", self.name)
-				#frappe.log_error(get_zeiten_uebersicht(Anfrage, self.name), "und?")
 
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
@@ -417,9 +415,6 @@ def assign_mitglied_anlage():
 	
 @frappe.whitelist()
 def create_zeiten_uebersicht(dt, name):
-	'''
-		Diese Funktion muss in jedes SPO Beratungs-/Mandatspezifisches Dokument adaptiert werden!
-	'''
 	alle_zeiten = get_zeiten_uebersicht(dt, name)
 	if alle_zeiten:
 		html = '<div style="width: 50%;"><table style="width: 100%;" class="table-striped"><tr><th>Datum</th><th>Stunden</th><th>Timesheet</th><th>Bearbeiten</th></tr>'

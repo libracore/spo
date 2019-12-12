@@ -39,6 +39,7 @@
   "timer",
   "default_ts",
   "max_aufwand",
+  "zeiten_uebersicht",
   "amended_from"
  ],
  "fields": [
@@ -254,11 +255,17 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "default_ts"
+  },
+  {
+   "fieldname": "zeiten_uebersicht",
+   "fieldtype": "HTML",
+   "label": "Zeiten \u00dcbersicht",
+   "options": "<div>Es wurden keine Zeiten erfasst</div>"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-11-12 16:04:18.173304",
+ "modified": "2019-12-12 15:47:27.582422",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

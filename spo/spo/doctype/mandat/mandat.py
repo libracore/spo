@@ -5,7 +5,8 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time
+from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time, get_zeiten_uebersicht
+from frappe.utils.data import today, add_days, nowdate, get_datetime_str
 
 class Mandat(Document):
 	def validate(self):
@@ -14,9 +15,11 @@ class Mandat(Document):
 				# create start ts buchung
 				handle_timesheet(frappe.session.user, self.doctype, self.name, 0)
 				self.default_ts = 1
+
+	def onload(self):
+		if self.is_new() != True:
 			if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
 				self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
-
 	
 @frappe.whitelist()
 def get_dashboard_data(mitglied='', anfrage='', mandat=''):
@@ -75,3 +78,15 @@ def get_dashboard_data(mitglied='', anfrage='', mandat=''):
 			"callcenter_limit": callcenter_limit,
 			"callcenter_verwendet": callcenter_verwendet
 		}
+		
+@frappe.whitelist()
+def create_zeiten_uebersicht(dt, name):
+	alle_zeiten = get_zeiten_uebersicht(dt, name)
+	if alle_zeiten:
+		html = '<div style="width: 80%;"><table style="width: 100%;" class="table-striped"><tr><th>Datum</th><th>Dokument</th><th>Stunden</th><th>Timesheet</th><th>Bearbeiten</th></tr>'
+		for zeit in alle_zeiten:
+			html += '<tr><td>' + get_datetime_str(zeit.from_time).split(" ")[0] + '</td><td>' + zeit.spo_dokument + ' (' + zeit.spo_referenz + ')</td><td>' + str(zeit.hours) + '</td><td>' + zeit.parent + '</td><td><a data-referenz="' + zeit.parent + '" data-funktion="open_ts"><i class="fa fa-edit"></i></a></td></tr>'
+		html += '</table></div>'
+		return html
+	else:
+		return False

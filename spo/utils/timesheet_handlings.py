@@ -343,11 +343,26 @@ def restzeit_zuordnung(user, type, dauer, spo_remark):
 	return 'ok'
 	
 def get_zeiten_uebersicht(dt, name):
-	'''
-		Muss noch ausgebaut werden für Mandat!
-	'''
 	if dt != 'Mandat':
 		alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time` FROM `tabTimesheet Detail` WHERE `spo_referenz` = '{name}'""".format(name=name), as_dict=True)
 		return alle_zeiten
 	else:
-		return False
+		mandat = frappe.get_doc("Mandat", name)
+		referenz_anfrage = mandat.anfragen
+		if referenz_anfrage:
+			referenz_anfrage = " OR `spo_referenz` = '{referenz_anfrage}'".format(referenz_anfrage=referenz_anfrage)
+		else:
+			referenz_anfrage = ''
+		alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time`, `spo_referenz`, `spo_dokument` FROM `tabTimesheet Detail` WHERE
+										`spo_referenz` = '{name}'
+										OR `spo_referenz` IN (
+											SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{name}')
+										OR `spo_referenz` IN (
+											SELECT `name` FROM `tabMedizinischer Bericht` WHERE `mandat` = '{name}')
+										OR `spo_referenz` IN (
+											SELECT `name` FROM `tabTriage` WHERE `mandat` = '{name}')
+										OR `spo_referenz` IN (
+											SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{name}')
+										OR `spo_referenz` IN (
+											SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{name}'){referenz_anfrage} ORDER BY `spo_referenz`""".format(name=name, referenz_anfrage=referenz_anfrage), as_dict=True)
+		return alle_zeiten
