@@ -4,7 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours
+from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 
 @frappe.whitelist()
@@ -341,3 +341,4 @@ def restzeit_zuordnung(user, type, dauer, spo_remark):
 	ts.append('time_logs', row)
 	ts.save(ignore_permissions=True)
 	return 'ok'
+	

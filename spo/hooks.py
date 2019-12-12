@@ -32,9 +32,12 @@ doctype_js = {
 	"Address" : "scripts/custom_scripts/address.js",
 	"Employee" : "scripts/custom_scripts/employee.js"
 }
+'''
+	Obsolet because of new timesheet handling (Zeiterfassungs Manager (Zeiterfassung)):
 doctype_list_js = {
 	"Timesheet" : "scripts/custom_scripts/timesheet_list.js"
 }
+'''
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
