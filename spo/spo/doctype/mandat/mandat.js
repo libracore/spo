@@ -14,6 +14,25 @@ frappe.ui.form.on('Mandat', {
 		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
 			timesheet_handling(frm);
 		});
+		
+		//update timesheet table
+		frappe.call({
+			"method": "spo.spo.doctype.mandat.mandat.create_zeiten_uebersicht",
+			"args": {
+				"dt": cur_frm.doctype,
+				"name": cur_frm.doc.name
+			},
+			"async": false,
+			"callback": function(r) {
+				if (r.message) {
+					cur_frm.set_df_property('zeiten_uebersicht','options', r.message);
+					$("[data-funktion='open_ts']").on('click', function() {
+						console.log($(this).attr("data-referenz"));
+						ts_bearbeiten($(this).attr("data-referenz"));
+					});
+				}
+			}
+		});
 	}
 });
 
@@ -83,4 +102,9 @@ function timesheet_handling(frm) {
 	'Arbeitszeit erfassen',
 	'Erfassen'
 	)
+}
+
+function ts_bearbeiten(ts) {
+	frappe.route_options = {"timesheet": ts};
+	frappe.set_route("Form", "Zeiterfassung");
 }

@@ -78,9 +78,6 @@ frappe.ui.form.on('Anfrage', {
 		//überprüfung ob kontakt- und adress-daten mit stamm übereinstimmen
 		check_anfrage_daten_vs_stamm_daten(frm);
 		
-		//*******************************************************************************************
-		// Diese Funktion muss in jedes SPO Beratungs-/Mandatspezifisches Dokument adaptiert werden!
-		//*******************************************************************************************
 		//update timesheet table
 		frappe.call({
 			"method": "spo.spo.doctype.anfrage.anfrage.create_zeiten_uebersicht",
@@ -749,9 +746,6 @@ function timesheet_handling(frm) {
 	)
 }
 
-//*******************************************************************************************
-// Diese Funktion muss in jedes SPO Beratungs-/Mandatspezifisches Dokument adaptiert werden!
-//*******************************************************************************************
 function ts_bearbeiten(ts) {
 	frappe.route_options = {"timesheet": ts};
 	frappe.set_route("Form", "Zeiterfassung");
