@@ -36,6 +36,7 @@
   "mitglied",
   "customer",
   "section_zeiterfassung",
+  "absprung_einstellungen",
   "timer",
   "default_ts",
   "max_aufwand",
@@ -261,11 +262,16 @@
    "fieldtype": "HTML",
    "label": "Zeiten \u00dcbersicht",
    "options": "<div>Es wurden keine Zeiten erfasst</div>"
+  },
+  {
+   "fieldname": "absprung_einstellungen",
+   "fieldtype": "Button",
+   "label": "Standardzeiten"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-12 15:47:27.582422",
+ "modified": "2019-12-15 20:24:05.635351",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

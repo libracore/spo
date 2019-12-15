@@ -310,6 +310,8 @@ function get_ts_overview(frm) {
 				var diff_zu_arbeitszeit = r.message.arbeitszeit - (r.message.total_beratungszeit + r.message.total_mandatszeit + r.message.total_diverses);
 				if (diff_zu_arbeitszeit < 0) {
 					diff_zu_arbeitszeit = (r.message.total_beratungszeit + r.message.total_mandatszeit + r.message.total_diverses) - r.message.arbeitszeit;
+				} else {
+					cur_frm.set_value('total_differenz', diff_zu_arbeitszeit);
 				}
 				const data = {
 					labels: ["Arbeitszeit", "Beratung", "Mandatsarbeit", "Diverses", "Differenz"],
@@ -459,6 +461,11 @@ function set_default_start_and_end(frm) {
 	cur_frm.set_value('start', start_zeit);
 	cur_frm.set_value('ende', end_zeit);
 	cur_frm.set_value('datum', heute);
+	
+	var child = cur_frm.add_child('pausen');
+	frappe.model.set_value(child.doctype, child.name, 'from', "12:00:00");
+	frappe.model.set_value(child.doctype, child.name, 'dauer', 1.5);
+	cur_frm.refresh_field('pausen');
 }
 
 function recalc_end_time(frm) {

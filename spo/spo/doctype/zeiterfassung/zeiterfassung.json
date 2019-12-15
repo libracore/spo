@@ -13,6 +13,8 @@
   "timesheet",
   "section_visuell",
   "overview_html",
+  "section_meine_arbeitszeit",
+  "titel_arbeitszeit",
   "section_zeiten",
   "start",
   "scroll_to_top1",
@@ -24,6 +26,8 @@
   "pausen",
   "total_pausen",
   "scroll_to_top2",
+  "section_arbeitsinhalt",
+  "titel_arbeitsinhalt",
   "section_arbeiten",
   "beratungen_mandate",
   "section_total_beratung_mandate",
@@ -33,6 +37,7 @@
   "total_mandatsarbeit",
   "section_diverses",
   "diverses",
+  "total_differenz",
   "total_diverses",
   "scroll_to_top4"
  ],
@@ -59,6 +64,7 @@
    "in_list_view": 1,
    "label": "Mitarbeiter",
    "options": "Employee",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -204,11 +210,36 @@
    "fieldname": "scroll_to_top4",
    "fieldtype": "Button",
    "label": "<i class=\"fa fa-chevron-up\"></i>"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_differenz",
+   "fieldtype": "Float",
+   "label": "Total Differenzzeit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "titel_arbeitszeit",
+   "fieldtype": "Heading",
+   "label": "Meine Arbeitszeit"
+  },
+  {
+   "fieldname": "section_meine_arbeitszeit",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_arbeitsinhalt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "titel_arbeitsinhalt",
+   "fieldtype": "Heading",
+   "label": "Arbeitsinhalt"
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
- "modified": "2019-12-12 10:42:08.570197",
+ "modified": "2019-12-15 20:27:27.813206",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Zeiterfassung",
