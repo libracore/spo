@@ -59,6 +59,7 @@
   "rat",
   "scroll_top_2",
   "section_zeiterfassung",
+  "absprung_einstellungen",
   "timer",
   "default_ts",
   "zeiten_uebersicht",
@@ -88,7 +89,7 @@
    "in_list_view": 1,
    "in_preview": 1,
    "label": "Anfrage Typ",
-   "options": "Hotline\nSonstiges",
+   "options": "Hotline\nSonstiges\nMandats Anfrage",
    "reqd": 1
   },
   {
@@ -419,11 +420,16 @@
    "fieldtype": "HTML",
    "label": "Zeiten \u00dcbersicht",
    "options": "<div>Es wurden keine Zeiten erfasst</div>"
+  },
+  {
+   "fieldname": "absprung_einstellungen",
+   "fieldtype": "Button",
+   "label": "Standardzeiten"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-12-12 12:23:43.774108",
+ "modified": "2019-12-15 20:38:18.674155",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

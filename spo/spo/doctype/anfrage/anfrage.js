@@ -247,6 +247,9 @@ frappe.ui.form.on('Anfrage', {
 	},
 	plz: function(frm) {
 		get_city_from_pincode(cur_frm.doc.plz, 'ort', 'kanton');
+	},
+	absprung_einstellungen: function(frm) {
+		frappe.set_route("Form", "Einstellungen");
 	}
 });
 
@@ -582,6 +585,20 @@ function set_mandatory_and_read_only(frm) {
 			cur_frm.set_df_property('email','reqd', 1);
 			cur_frm.set_df_property('spo_ombudsstelle','reqd', 1);
 			cur_frm.set_df_property('kontakt_via','reqd', 1);
+			
+			if (frm.doc.anfrage_typ == 'Mandats Anfrage') {
+				cur_frm.set_df_property('vorname','reqd', 0);
+				cur_frm.set_df_property('nachname','reqd', 0);
+				cur_frm.set_df_property('geburtsdatum','reqd', 0);
+				cur_frm.set_df_property('kanton','reqd', 0);
+				cur_frm.set_df_property('strasse','reqd', 0);
+				cur_frm.set_df_property('hausnummer','reqd', 0);
+				cur_frm.set_df_property('ort','reqd', 0);
+				cur_frm.set_df_property('plz','reqd', 0);
+				cur_frm.set_df_property('email','reqd', 0);
+				cur_frm.set_df_property('kanton','reqd', 0);
+				cur_frm.set_df_property('nachname','reqd', 0);
+			}
 		}
 		if (cur_frm.doc.problematik == 'Krankenkasse (Grundversicherung)') {
 			cur_frm.set_df_property('krankenkasse','reqd', 1);

@@ -33,6 +33,9 @@ frappe.ui.form.on('Mandat', {
 				}
 			}
 		});
+	},
+	absprung_einstellungen: function(frm) {
+		frappe.set_route("Form", "Einstellungen");
 	}
 });
 
