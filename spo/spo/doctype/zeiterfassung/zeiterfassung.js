@@ -1,11 +1,5 @@
 var not_block = true;
 frappe.ui.form.on('Zeiterfassung', {
-	onload: function (frm) {
-		/* console.log("jez");
-		set_ma_from_user(frm);
-		set_default_start_and_end(frm);
-		set_subtable_filter(frm); */
-	},
 	refresh: function (frm) {
 		clear_all(frm);
 		set_ma_from_user(frm);
@@ -13,24 +7,19 @@ frappe.ui.form.on('Zeiterfassung', {
 		set_subtable_filter(frm);
 		cur_frm.disable_save();
 		hide_indicator(frm);
-		//console.log("refresh");
+		if (frappe.user.has_role("SPO Poweruser")) {
+			cur_frm.set_df_property('employee','read_only','0');
+		}
 	},
 	employee: function (frm) {
-		//console.log("employee");
 		if (frappe.route_options.timesheet) {
 			//remove_all_rows_of_all_subtables(frm);
 			var ts_from_route = frappe.route_options.timesheet;
 			frappe.route_options = {};
 			setTimeout(function(){
 				cur_frm.set_value('timesheet', ts_from_route);
-				//frappe.route_options = {};
-				//console.log("fetch ts");
 			}, 1000);
-			/* cur_frm.set_value('timesheet', frappe.route_options.timesheet);
-			frappe.route_options = {}; */
-		}/*  else {
-			cur_frm.set_value('timesheet', '');
-		} */
+		}
 		set_timesheet_filter(frm);
 		if (cur_frm.doc.employee) {
 			frm.add_custom_button(__("Zeiterfassung speichern"), function() {
@@ -42,6 +31,7 @@ frappe.ui.form.on('Zeiterfassung', {
 		hide_indicator(frm);
 	},
 	datum: function (frm) {
+		cur_frm.set_value('timesheet', '');
 		set_timesheet_filter(frm);
 	},
 	timesheet: function (frm) {
@@ -147,6 +137,37 @@ frappe.ui.form.on('Zeiterfassung', {
 	},
 	scroll_to_top4: function (frm) {
 		frappe.utils.scroll_to($(".form-inner-toolbar"));
+	},
+	edit_submitted_ts: function (frm) {
+		alles_freigeben(frm);
+		frappe.msgprint("Das timesheet wurde entsperrt, Sie können nun Änderungen vornehmen.", "TS entsperrt");
+		cur_frm.set_df_property('edit_submitted_ts','hidden','1');
+		cur_frm.set_df_property('save_edited_ts','hidden','0');
+	},
+	save_edited_ts: function (frm) {
+		frappe.call({
+			method: "spo.spo.doctype.zeiterfassung.zeiterfassung.save_ts",
+			args:{
+				"ts_to_delete": cur_frm.doc.timesheet,
+				"pausen": cur_frm.doc.pausen,
+				"datum": cur_frm.doc.datum,
+				"start": cur_frm.doc.start,
+				"ende": cur_frm.doc.ende,
+				"beratungen_mandate": cur_frm.doc.beratungen_mandate,
+				"diverses": cur_frm.doc.diverses,
+				"working_hours": cur_frm.doc.arbeitszeit,
+				"ma": cur_frm.doc.employee
+			},
+			callback: function(r)
+			{
+				if (r.message) {
+					cur_frm.set_value('timesheet', r.message);
+					frappe.msgprint("Das Timesheet wurde erstellt.", "Erstellung erfolgreich");
+					get_ts_overview(frm);
+					cur_frm.set_df_property('save_edited_ts','hidden','1');
+				}
+			}
+		});
 	}
 });
 
@@ -329,6 +350,9 @@ function get_ts_overview(frm) {
 					frappe.msgprint("Dieses Timesheet wurde bereits verbucht und kann nur noch betrachtet werden.", "Timesheet bereits verbucht");
 					cur_frm.remove_custom_button("Zeiterfassung speichern");
 					alles_sperren(frm);
+					if (frappe.user.has_role("SPO Poweruser")) {
+						cur_frm.set_df_property('edit_submitted_ts','hidden','0');
+					}
 				} else {
 					cur_frm.remove_custom_button("Zeiterfassung speichern");
 					frm.add_custom_button(__("Zeiterfassung updaten"), function() {
@@ -369,7 +393,7 @@ function save_update_ts(frm) {
 			frappe.call({
 				method: "spo.spo.doctype.zeiterfassung.zeiterfassung.save_ts",
 				args:{
-					"ts": cur_frm.doc.timesheet,
+					"ts_to_delete": '',
 					"pausen": cur_frm.doc.pausen,
 					"datum": cur_frm.doc.datum,
 					"start": cur_frm.doc.start,
@@ -454,7 +478,6 @@ function alles_freigeben(frm) {
 }
 
 function set_default_start_and_end(frm) {
-	//console.log("default calc");
 	var start_zeit = frappe.datetime.now_time();
 	var end_zeit = calc_end_time(start_zeit, 0);
 	var heute = frappe.datetime.now_date();
@@ -469,7 +492,6 @@ function set_default_start_and_end(frm) {
 }
 
 function recalc_end_time(frm) {
-	//console.log("recalc");
 	if (cur_frm.doc.start) {
 		var start = cur_frm.doc.start;
 		var diff = 0;
@@ -504,7 +526,6 @@ function calc_end_time(start_zeit, pausen_dauer) {
 	if (end_stunden > 23) {
 		end_zeit = "23:59:59";
 	}
-	
 	return end_zeit;
 }
 
@@ -513,6 +534,7 @@ function calc_arbeitszeit(start, end, frm) {
     end = end.split(":");
     var startDate = new Date(0, 0, 0, start[0], start[1], 0);
     var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+	
     var diff = endDate.getTime() - startDate.getTime();
 	var hours = Math.floor(diff / 1000 / 60 / 60);
 	diff -= hours * 1000 * 60 * 60;
@@ -522,8 +544,8 @@ function calc_arbeitszeit(start, end, frm) {
        hours = hours + 24;
    
     minutes = minutes / 60;
-	
-	cur_frm.set_value('arbeitszeit', hours + "." + minutes.toString().split(".")[1]);
+	var berechnete_stunden = parseFloat(hours + "." + minutes.toString().split(".")[1]) - cur_frm.doc.total_pausen;
+	cur_frm.set_value('arbeitszeit', berechnete_stunden);
 }
 
 function fetch_pausen_von_ts(frm) {

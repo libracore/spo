@@ -4,7 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time
+from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 
 @frappe.whitelist()
@@ -133,10 +133,30 @@ def cleanup_ts(user):
 	
 @frappe.whitelist()
 def get_total_ts_time(doctype, reference):
-	time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
-						SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(doctype=doctype, reference=reference), as_list=True)[0][0] or 0)
-	return time
-		
+	if doctype != 'Mandat':
+		time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
+							SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(doctype=doctype, reference=reference), as_list=True)[0][0] or 0)
+		return time
+	else:
+		mandat = frappe.get_doc("Mandat", reference)
+		referenz_anfrage = mandat.anfragen
+		if referenz_anfrage:
+			referenz_anfrage = " OR `spo_referenz` = '{referenz_anfrage}'".format(referenz_anfrage=referenz_anfrage)
+		else:
+			referenz_anfrage = ''
+		time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE
+									`spo_referenz` = '{reference}'
+									OR `spo_referenz` IN (
+										SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{reference}')
+									OR `spo_referenz` IN (
+										SELECT `name` FROM `tabMedizinischer Bericht` WHERE `mandat` = '{reference}')
+									OR `spo_referenz` IN (
+										SELECT `name` FROM `tabTriage` WHERE `mandat` = '{reference}')
+									OR `spo_referenz` IN (
+										SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{reference}')
+									OR `spo_referenz` IN (
+										SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{reference}'){referenz_anfrage}""".format(reference=reference, referenz_anfrage=referenz_anfrage), as_list=True)[0][0] or 0)
+		return time
 def overwrite_ts_validation():
 	Timesheet.validate = ts_validation
 	
@@ -168,179 +188,10 @@ def auto_ts_submit():
 	#************************************************************************************
 	
 	
-	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{nowdate}'""".format(nowdate=nowdate()), as_dict=True)
+	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
 	for _ts in ts_list:
 		ts = frappe.get_doc("Timesheet", _ts.name)
 		ts.submit()
-		
-
-# @frappe.whitelist()
-# def erfassung_tagesarbeitszeit(user, datum, start_zeit, pause_start, pause_dauer, end_zeit):
-	# #**********************************************************
-	# #overwrite the time_log overlap validation of timesheet
-	# overwrite_ts_validation()
-	# #**********************************************************
-	
-	# user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
-	# if user:
-		# user = user[0][0]
-	# else:
-		# frappe.throw("Sie besitzen keinen Mitarbeiterstamm.")
-	# string_ed_date = datum + " " + end_zeit
-	# string_st_date = datum + " " + start_zeit
-	# # check if ts already exist
-	# ts = frappe.db.sql("""SELECT `name`, `docstatus` FROM `tabTimesheet` WHERE `employee` = '{user}' AND `start_date` = '{datum}'""".format(user=user, datum=datum), as_dict=True)
-	# if len(ts) > 0:
-		# ts = ts[0]
-		# if ts.docstatus != 0:
-			# frappe.throw("Das Timesheet wurde bereits verbucht. Bitte wenden Sie sich an das HR zur Korrektion.")
-		# else:
-			# ts = frappe.get_doc("Timesheet", ts.name)
-			# clean_time_logs = []
-			# for time_log in ts.time_logs:
-				# if time_log.activity_type != 'Arbeitszeit' and time_log.activity_type != 'Pause':
-					# clean_time_logs.append(time_log)
-			# ts.time_logs = clean_time_logs
-			# # add arbeitszeit
-			# row = {}
-			# row["activity_type"] = 'Arbeitszeit'
-			# row["hours"] = time_diff_in_hours(string_ed_date, string_st_date)
-			# row["from_time"] = get_datetime(string_st_date)
-			# row["to_time"] = get_datetime(string_ed_date)
-			# ts.append('time_logs', row)
-			# # add pause
-			# row = {}
-			# row["activity_type"] = 'Pause'
-			# row["hours"] = pause_dauer
-			# row["from_time"] = get_datetime(datum + " " + pause_start)
-			# ts.append('time_logs', row)
-			# ts.save(ignore_permissions=True)
-	# else:
-		# ts = frappe.get_doc({
-			# "doctype": "Timesheet",
-			# "employee": user,
-			# "time_logs": [
-				# {
-					# "activity_type": "Arbeitszeit",
-					# "hours": time_diff_in_hours(string_ed_date, string_st_date),
-					# "from_time": get_datetime(string_st_date),
-					# "to_time": get_datetime(string_ed_date)
-				# },
-				# {
-					# "activity_type": "Pause",
-					# "hours": pause_dauer,
-					# "from_time": get_datetime(datum + " " + pause_start)
-				# }
-			# ]
-		# })
-		# ts.insert(ignore_permissions=True)
-		
-	# return 'ok'
-	
-# @frappe.whitelist()
-# def erfassung_zusatz_pause(user, datum, start_zeit, dauer):
-	# #**********************************************************
-	# #overwrite the time_log overlap validation of timesheet
-	# overwrite_ts_validation()
-	# #**********************************************************
-	
-	# user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
-	# if user:
-		# user = user[0][0]
-	# else:
-		# frappe.throw("Sie besitzen keinen Mitarbeiterstamm.")
-	# string_st_date = datum + " " + start_zeit
-	# # check if ts already exist
-	# ts = frappe.db.sql("""SELECT `name`, `docstatus` FROM `tabTimesheet` WHERE `employee` = '{user}' AND `start_date` = '{datum}'""".format(user=user, datum=datum), as_dict=True)
-	# if len(ts) > 0:
-		# ts = ts[0]
-		# if ts.docstatus != 0:
-			# frappe.throw("Das Timesheet wurde bereits verbucht. Bitte wenden Sie sich an das HR zur Korrektion.")
-		# else:
-			# ts = frappe.get_doc("Timesheet", ts.name)
-			# arbeitszeit_wurde_erfasst = False
-			# for time_log in ts.time_logs:
-				# if time_log.activity_type == 'Arbeitszeit':
-					# arbeitszeit_wurde_erfasst = True
-			# if arbeitszeit_wurde_erfasst:
-				# # add pause
-				# row = {}
-				# row["activity_type"] = 'Pause'
-				# row["hours"] = dauer
-				# row["from_time"] = get_datetime(string_st_date)
-				# ts.append('time_logs', row)
-				# ts.save(ignore_permissions=True)
-				# return 'ok'
-			# else:
-				# frappe.throw("Bitte erfassen Sie zuerst Ihre reguläre Arbeitszeit.")
-	# else:
-		# frappe.throw("Bitte erfassen Sie zuerst Ihre reguläre Arbeitszeit.")
-
-# @frappe.whitelist()
-# def get_restzeit(user):
-	# #**********************************************************
-	# #overwrite the time_log overlap validation of timesheet
-	# overwrite_ts_validation()
-	# #**********************************************************
-	
-	# user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
-	# if user:
-		# user = user[0][0]
-	# else:
-		# frappe.throw("Sie besitzen keinen Mitarbeiterstamm.")
-	# # check if ts already exist
-	# ts = frappe.db.sql("""SELECT `name`, `docstatus` FROM `tabTimesheet` WHERE `employee` = '{user}' AND `start_date` = '{datum}'""".format(user=user, datum=nowdate()), as_dict=True)
-	# if len(ts) > 0:
-		# ts = ts[0]
-		# if ts.docstatus != 0:
-			# frappe.throw("Das Timesheet wurde bereits verbucht. Bitte wenden Sie sich an das HR zur Korrektion.")
-		# else:
-			# ts = frappe.get_doc("Timesheet", ts.name)
-			# arbeitszeit_wurde_erfasst = False
-			# dauer_arbeit = 0
-			# dauer_pause = 0
-			# dauer_rest = 0
-			# for time_log in ts.time_logs:
-				# if time_log.activity_type == 'Arbeitszeit':
-					# arbeitszeit_wurde_erfasst = True
-					# dauer_arbeit = time_log.hours
-				# else:
-					# if time_log.activity_type == 'Pause':
-						# dauer_pause += time_log.hours
-					# else:
-						# dauer_rest += time_log.hours
-			# if arbeitszeit_wurde_erfasst:
-				# restzeit = dauer_arbeit - (dauer_pause + dauer_rest)
-				# return restzeit
-			# else:
-				# frappe.throw("Bitte erfassen Sie zuerst Ihre reguläre Arbeitszeit.")
-	# else:
-		# frappe.throw("Bitte erfassen Sie zuerst Ihre reguläre Arbeitszeit.")
-		
-# @frappe.whitelist()
-# def restzeit_zuordnung(user, type, dauer, spo_remark):
-	# #**********************************************************
-	# #overwrite the time_log overlap validation of timesheet
-	# overwrite_ts_validation()
-	# #**********************************************************
-	
-	# user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
-	# if user:
-		# user = user[0][0]
-	# else:
-		# frappe.throw("Sie besitzen keinen Mitarbeiterstamm.")
-	# string_st_date = nowdate() + " 00:00:00"
-	# ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{user}' AND `start_date` = '{datum}'""".format(user=user, datum=nowdate()), as_dict=True)[0]
-	# ts = frappe.get_doc("Timesheet", ts.name)
-	# # add restzeit
-	# row = {}
-	# row["activity_type"] = type
-	# row["hours"] = dauer
-	# row["from_time"] = get_datetime(string_st_date)
-	# row["spo_remark"] = spo_remark
-	# ts.append('time_logs', row)
-	# ts.save(ignore_permissions=True)
-	# return 'ok'
 	
 def get_zeiten_uebersicht(dt, name):
 	if dt != 'Mandat':

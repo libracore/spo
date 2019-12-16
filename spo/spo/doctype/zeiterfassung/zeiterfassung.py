@@ -228,7 +228,12 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 	return "ok"
 	
 @frappe.whitelist()
-def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, working_hours):
+def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, working_hours, ts_to_delete):
+	if ts_to_delete:
+		ts_to_delete = frappe.get_doc("Timesheet", ts_to_delete)
+		ts_to_delete.cancel()
+		ts_to_delete.delete()
+		
 	if check_if_ts_exist(ma, datum):
 		frappe.throw("Am gewählten Datum existiert für diese(n) Mitarbeiter(in) bereits ein Timesheet")
 	#**********************************************************

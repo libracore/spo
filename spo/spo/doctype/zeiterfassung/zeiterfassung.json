@@ -11,6 +11,8 @@
   "datum",
   "cb_2",
   "timesheet",
+  "edit_submitted_ts",
+  "save_edited_ts",
   "section_visuell",
   "overview_html",
   "section_meine_arbeitszeit",
@@ -235,12 +237,24 @@
    "fieldname": "titel_arbeitsinhalt",
    "fieldtype": "Heading",
    "label": "Arbeitsinhalt"
+  },
+  {
+   "fieldname": "edit_submitted_ts",
+   "fieldtype": "Button",
+   "hidden": 1,
+   "label": "Edit submitted TS"
+  },
+  {
+   "fieldname": "save_edited_ts",
+   "fieldtype": "Button",
+   "hidden": 1,
+   "label": "Save edited TS"
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
- "modified": "2019-12-15 20:27:27.813206",
- "modified_by": "Administrator",
+ "modified": "2019-12-16 14:01:04.447726",
+ "modified_by": "joel.mesmer@libracore.com",
  "module": "SPO",
  "name": "Zeiterfassung",
  "owner": "Administrator",
