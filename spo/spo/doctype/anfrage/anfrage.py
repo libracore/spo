@@ -187,7 +187,7 @@ def check_rechnung(mitgliedschaft):
 		return rechnung.status
 		
 @frappe.whitelist()
-def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None):
+def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rsv=None, rsv_kontakt=None, rsv_adresse=None, rsv_ref=None):
 	#check if Mandat linked to Anfrage already exist
 	if anfrage:
 		qty = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabMandat` WHERE `anfragen` LIKE '%{anfrage}%'""".format(anfrage=anfrage), as_list=True)[0][0]
@@ -226,6 +226,34 @@ def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None):
 	if kontakt:
 		mandat.update({
 			'kontakt': kontakt
+		})
+		mandat.save()
+		
+	#If rsv available, set link
+	if rsv:
+		mandat.update({
+			'rsv': rsv
+		})
+		mandat.save()
+		
+	#If rsv_kontakt available, set link
+	if rsv_kontakt:
+		mandat.update({
+			'rsv_kontakt': rsv_kontakt
+		})
+		mandat.save()
+		
+	#If rsv_adresse available, set link
+	if rsv_adresse:
+		mandat.update({
+			'rsv_adresse': rsv_adresse
+		})
+		mandat.save()
+		
+	#If rsv_ref available, set link
+	if rsv_ref:
+		mandat.update({
+			'rechtsschutz_ref': rsv_ref
 		})
 		mandat.save()
 	
@@ -420,3 +448,24 @@ def kontaktdaten_suchen(vorname='', nachname='', strasse='', adress_zusatz='', p
 		'alle_kontakte': alle_kontakte,
 		'alle_adressen': alle_adressen
 	}
+	
+@frappe.whitelist()
+def get_rsv_data(rsv, adresse, kontakt):
+	rsv = frappe.get_doc("Customer", rsv)
+	adresse = frappe.get_doc("Address", adresse)
+	kontakt = frappe.get_doc("Contact", kontakt)
+	
+	html = '<div><h3>'
+	html += rsv.customer_name
+	html += '</h3><div class="row"><div class="col-sm-6"><p>'
+	html += kontakt.first_name + " " + kontakt.last_name + "<br>"
+	html += kontakt.email_id + "<br>"
+	html += kontakt.phone + "<br>"
+	html += kontakt.mobile_no or ''
+	html += '</p></div><div class="col-sm-6"><p>'
+	html += adresse.address_line1 + "<br>"
+	html += adresse.address_line2 or ''
+	html += '<br>' + adresse.plz + " " + adresse.city + " " + adresse.kanton
+	html += '</p></div></div>'
+	
+	return html

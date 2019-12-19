@@ -254,6 +254,15 @@ frappe.ui.form.on('Anfrage', {
 	},
 	kontaktdaten_suchen: function(frm) {
 		_kontaktdaten_suchen(frm);
+	},
+	rsv: function(frm) {
+		fetch_rsv(frm);
+	},
+	rsv_kontakt: function(frm) {
+		fetch_rsv(frm);
+	},
+	rsv_adresse: function(frm) {
+		fetch_rsv(frm);
 	}
 });
 
@@ -265,7 +274,11 @@ function new_mandat(anfrage, patient, adresse, kontakt) {
 				'anfrage': anfrage,
 				'mitglied': patient,
 				'adresse': adresse,
-				'kontakt': kontakt
+				'kontakt': kontakt,
+				'rsv': cur_frm.doc.rsv,
+				'rsv_kontakt': cur_frm.doc.rsv_kontakt,
+				'rsv_adresse': cur_frm.doc.rsv_adresse,
+				'rsv_ref': cur_frm.doc.rechtsschutz_ref
 			},
 			callback: function(r) {
 				if(r.message) {
@@ -891,6 +904,23 @@ function dropdown_steuerung_von_sections(frm) {
 		});
 		cur_frm.fields_dict.section_rsv.collapse_link.on("click", function(){
 			cur_frm.fields_dict.section_kontakt_daten.collapse();
+		});
+	}
+}
+
+function fetch_rsv(frm) {
+	if (cur_frm.doc.rsv && cur_frm.doc.rsv_adresse && cur_frm.doc.rsv_kontakt) {
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.get_rsv_data",
+			"args": {
+				"rsv": cur_frm.doc.rsv,
+				"adresse": cur_frm.doc.rsv_adresse,
+				"kontakt": cur_frm.doc.rsv_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('rsv_kontaktdaten','options', r.message);
+			}
 		});
 	}
 }
