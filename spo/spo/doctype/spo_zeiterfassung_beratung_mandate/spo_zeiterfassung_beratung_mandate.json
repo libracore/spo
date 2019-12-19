@@ -5,6 +5,7 @@
  "engine": "InnoDB",
  "field_order": [
   "spo_referenz",
+  "arbeit",
   "dauer",
   "referenz",
   "spo_dokument",
@@ -51,10 +52,16 @@
    "fieldname": "beratung",
    "fieldtype": "Check",
    "label": "Beratung"
+  },
+  {
+   "fieldname": "arbeit",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Arbeit"
   }
  ],
  "istable": 1,
- "modified": "2019-12-12 10:50:48.680176",
+ "modified": "2019-12-19 15:49:41.110002",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "SPO Zeiterfassung Beratung Mandate",

@@ -32,27 +32,34 @@
   "anonymisiert",
   "datum",
   "section_person",
-  "import_mitgliederdaten",
-  "vorname",
-  "nachname",
-  "geburtsdatum",
-  "telefon",
-  "mobile",
-  "email",
-  "customer",
+  "kontaktdaten_suchen",
+  "patient_vorname",
+  "patient_nachname",
+  "patient_geburtsdatum",
+  "patient_telefon",
+  "patient_mobile",
+  "patient_mail",
   "scroll_top_1",
   "break_1",
   "mitglied_erstellen",
-  "strasse",
-  "hausnummer",
-  "plz",
-  "ort",
-  "kanton",
-  "krankenkasse",
-  "rechtsschutzversicherung",
-  "rechtsschutz_ref",
-  "mitglied",
+  "patient_strasse",
+  "patient_adress_zusatz",
+  "patient_plz",
+  "patient_ort",
+  "patient_kanton",
+  "patient_krankenkasse",
+  "section_patienten_links",
+  "patient",
+  "patienten_kontakt",
+  "patienten_adresse",
   "mitgliedschaft",
+  "section_kontakt_daten",
+  "rsv_vorname",
+  "section_rsv",
+  "rsv",
+  "rsv_kontakt",
+  "rsv_adresse",
+  "rechtsschutz_ref",
   "section_anfrage",
   "grundlage_anfrage",
   "sachverhalt_thema",
@@ -99,40 +106,6 @@
    "label": "Angaben zur Person"
   },
   {
-   "fieldname": "import_mitgliederdaten",
-   "fieldtype": "Button",
-   "label": "Mitgliederdaten importieren/suchen"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "vorname",
-   "fieldtype": "Data",
-   "label": "Vorname"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "strasse",
-   "fieldtype": "Data",
-   "label": "Strasse"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "ort",
-   "fieldtype": "Data",
-   "label": "Ort"
-  },
-  {
-   "fieldname": "telefon",
-   "fieldtype": "Data",
-   "label": "Telefon"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "E-Mail"
-  },
-  {
    "fieldname": "scroll_top_1",
    "fieldtype": "Button",
    "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
@@ -145,37 +118,6 @@
    "fieldname": "mitglied_erstellen",
    "fieldtype": "Button",
    "label": "Mitglied erstellen"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "nachname",
-   "fieldtype": "Data",
-   "label": "Nachname"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "hausnummer",
-   "fieldtype": "Data",
-   "label": "Hausnummer"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "plz",
-   "fieldtype": "Data",
-   "label": "Postleitzahl"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "mobile",
-   "fieldtype": "Data",
-   "label": "Mobile"
-  },
-  {
-   "fieldname": "mitglied",
-   "fieldtype": "Link",
-   "in_preview": 1,
-   "label": "Mitgliedernummer",
-   "options": "Customer"
   },
   {
    "fieldname": "mitgliedschaft",
@@ -213,27 +155,6 @@
    "fieldname": "scroll_top_3",
    "fieldtype": "Button",
    "label": "<i class=\"fa fa-chevron-up text-muted\"></i>"
-  },
-  {
-   "fieldname": "geburtsdatum",
-   "fieldtype": "Date",
-   "label": "Geburtsdatum"
-  },
-  {
-   "fieldname": "rechtsschutzversicherung",
-   "fieldtype": "Data",
-   "label": "Rechtsschutzversicherung"
-  },
-  {
-   "fieldname": "kanton",
-   "fieldtype": "Select",
-   "label": "Kanton",
-   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
-  },
-  {
-   "fieldname": "krankenkasse",
-   "fieldtype": "Data",
-   "label": "Krankenkasse"
   },
   {
    "fieldname": "rechtsschutz_ref",
@@ -401,14 +322,6 @@
    "label": "Anfrage Datum"
   },
   {
-   "fetch_from": "mitglied.name",
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Customer",
-   "options": "Customer"
-  },
-  {
    "default": "0",
    "fieldname": "default_ts",
    "fieldtype": "Check",
@@ -425,11 +338,152 @@
    "fieldname": "absprung_einstellungen",
    "fieldtype": "Button",
    "label": "Standardzeiten"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
+   "fieldname": "section_kontakt_daten",
+   "fieldtype": "Section Break",
+   "label": "Rechtsschutzversicherung"
+  },
+  {
+   "fieldname": "patient",
+   "fieldtype": "Link",
+   "label": "Patient",
+   "options": "Customer"
+  },
+  {
+   "depends_on": "eval:doc.patient",
+   "fieldname": "patienten_kontakt",
+   "fieldtype": "Link",
+   "label": "Patienten Kontakt",
+   "options": "Contact"
+  },
+  {
+   "depends_on": "eval:doc.patient",
+   "fieldname": "patienten_adresse",
+   "fieldtype": "Link",
+   "label": "Patienten Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "rsv",
+   "fieldtype": "Link",
+   "label": "RSV",
+   "options": "Customer"
+  },
+  {
+   "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
+   "fieldname": "rsv_kontakt",
+   "fieldtype": "Link",
+   "label": "RSV Kontakt",
+   "options": "Contact"
+  },
+  {
+   "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
+   "fieldname": "rsv_adresse",
+   "fieldtype": "Link",
+   "label": "RSV Adresse",
+   "options": "Address"
+  },
+  {
+   "fetch_from": "patienten_kontakt.first_name",
+   "fieldname": "patient_vorname",
+   "fieldtype": "Data",
+   "label": "Vorname"
+  },
+  {
+   "fetch_from": "patienten_kontakt.last_name",
+   "fieldname": "patient_nachname",
+   "fieldtype": "Data",
+   "label": "Nachname"
+  },
+  {
+   "fetch_from": "patienten_kontakt.geburtsdatum",
+   "fieldname": "patient_geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fetch_from": "patienten_adresse.plz",
+   "fieldname": "patient_plz",
+   "fieldtype": "Data",
+   "label": "Postleitzahl"
+  },
+  {
+   "fetch_from": "patienten_adresse.kanton",
+   "fieldname": "patient_kanton",
+   "fieldtype": "Select",
+   "label": "Kanton",
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
+  },
+  {
+   "fetch_from": "patienten_kontakt.phone",
+   "fieldname": "patient_telefon",
+   "fieldtype": "Data",
+   "label": "Telefon"
+  },
+  {
+   "fieldname": "patient_krankenkasse",
+   "fieldtype": "Data",
+   "label": "Krankenkasse"
+  },
+  {
+   "fetch_from": "patienten_adresse.address_line1",
+   "fieldname": "patient_strasse",
+   "fieldtype": "Data",
+   "label": "Strasse und Hausnummer"
+  },
+  {
+   "fetch_from": "patienten_adresse.city",
+   "fieldname": "patient_ort",
+   "fieldtype": "Data",
+   "label": "Ort"
+  },
+  {
+   "fetch_from": "patienten_kontakt.email_id",
+   "fieldname": "patient_mail",
+   "fieldtype": "Data",
+   "label": "E-Mail"
+  },
+  {
+   "fieldname": "patient_mobile",
+   "fieldtype": "Data",
+   "label": "Mobile"
+  },
+  {
+   "fetch_from": "patienten_adresse.address_line2",
+   "fieldname": "patient_adress_zusatz",
+   "fieldtype": "Data",
+   "label": "Adress Zusatz"
+  },
+  {
+   "fieldname": "kontaktdaten_suchen",
+   "fieldtype": "Button",
+   "label": "Kontaktdaten suchen"
+  },
+  {
+   "fieldname": "rsv_vorname",
+   "fieldtype": "Data",
+   "label": "Vorname"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_patienten_links",
+   "fieldtype": "Section Break",
+   "label": "Links zu Patienten Daten (oder allgemeine Anfrage Bezugsperson)"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
+   "fieldname": "section_rsv",
+   "fieldtype": "Section Break",
+   "label": "Links zu RSV (Rechtsschutzversicherung)"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-12-15 20:38:18.674155",
+ "modified": "2019-12-19 13:27:32.024040",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

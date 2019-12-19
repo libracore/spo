@@ -116,6 +116,7 @@ def fetch_beratungs_und_mandats_arbeiten_von_ts(ts):
 			total_beratung += log.hours
 			beratung = {}
 			beratung["spo_referenz"] = log.spo_referenz
+			beratung["arbeit"] = ''
 			beratung["dauer"] = log.hours
 			beratung["referenz"] = log.name
 			beratung["spo_dokument"] = log.spo_dokument
@@ -127,6 +128,7 @@ def fetch_beratungs_und_mandats_arbeiten_von_ts(ts):
 		if log.activity_type == 'Mandatsarbeit':
 			beratung = {}
 			beratung["spo_referenz"] = log.spo_referenz
+			beratung["arbeit"] = log.spo_remark
 			beratung["dauer"] = log.hours
 			beratung["referenz"] = log.name
 			beratung["spo_dokument"] = log.spo_dokument
@@ -212,6 +214,7 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 		row["from_time"] = get_datetime(get_datetime_str(datum))
 		row["spo_dokument"] = beratung['spo_dokument']
 		row["spo_referenz"] = beratung['spo_referenz']
+		row["spo_remark"] = beratung['arbeit']
 		ts.append('time_logs', row)
 	#/Beratungen/Mandate
 	#Diverses
@@ -284,6 +287,7 @@ def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, workin
 		row["from_time"] = get_datetime(get_datetime_str(datum))
 		row["spo_dokument"] = beratung['spo_dokument']
 		row["spo_referenz"] = beratung['spo_referenz']
+		row["spo_remark"] = beratung['arbeit']
 		ts.append('time_logs', row)
 	#/Beratungen/Mandate
 	#Diverses

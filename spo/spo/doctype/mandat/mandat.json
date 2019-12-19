@@ -35,6 +35,8 @@
   "anfragen",
   "mitglied",
   "customer",
+  "kontakt",
+  "adresse",
   "section_zeiterfassung",
   "absprung_einstellungen",
   "timer",
@@ -267,11 +269,23 @@
    "fieldname": "absprung_einstellungen",
    "fieldtype": "Button",
    "label": "Standardzeiten"
+  },
+  {
+   "fieldname": "kontakt",
+   "fieldtype": "Link",
+   "label": "Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "adresse",
+   "fieldtype": "Link",
+   "label": "Adresse",
+   "options": "Address"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-15 20:24:05.635351",
+ "modified": "2019-12-19 14:13:20.670911",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

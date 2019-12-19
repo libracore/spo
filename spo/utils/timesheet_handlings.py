@@ -8,7 +8,7 @@ from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_s
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 
 @frappe.whitelist()
-def handle_timesheet(user, doctype, reference, time):
+def handle_timesheet(user, doctype, reference, time, bemerkung=''):
 	user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
 	if not time:
 		time = 0
@@ -17,9 +17,15 @@ def handle_timesheet(user, doctype, reference, time):
 		user = user[0][0]
 		ts = check_if_timesheet_exist(user, doctype, reference)
 		if ts:
-			update_timesheet(ts, time, doctype, reference, user)
+			if doctype == 'Mandat':
+				update_mandat_timesheet(ts, time, doctype, reference, user, bemerkung)
+			else:
+				update_timesheet(ts, time, doctype, reference, user)
 		else:
-			create_timesheet(user, doctype, reference, time)
+			if doctype == 'Mandat':
+				create_mandat_timesheet(user, doctype, reference, time, bemerkung)
+			else:
+				create_timesheet(user, doctype, reference, time)
 	else:
 		return False
 	
@@ -48,6 +54,30 @@ def create_timesheet(user, doctype, reference, time):
 				"spo_dokument": doctype,
 				"spo_referenz": reference,
 				"from_time": get_datetime(get_datetime_str(start))
+			}
+		]
+	})
+	ts.insert(ignore_permissions=True)
+	
+def create_mandat_timesheet(user, doctype, reference, time, bemerkung):
+	default_time = get_default_time(doctype)
+	if time < default_time:
+		time = default_time
+	start = nowdate() + " 00:00:00"
+	type = 'Mandatsarbeit'
+	if doctype == 'Anfrage':
+		type = 'Beratung'
+	ts = frappe.get_doc({
+		"doctype": "Timesheet",
+		"employee": user,
+		"time_logs": [
+			{
+				"activity_type": type,
+				"hours": time,
+				"spo_dokument": doctype,
+				"spo_referenz": reference,
+				"from_time": get_datetime(get_datetime_str(start)),
+				"spo_remark": bemerkung
 			}
 		]
 	})
@@ -88,6 +118,26 @@ def update_timesheet(ts, time, doctype, reference, user):
 		row["spo_referenz"] = reference
 		ts.append('time_logs', row)
 		ts.save(ignore_permissions=True)
+		
+def update_mandat_timesheet(ts, time, doctype, reference, user, bemerkung):
+	#**********************************************************
+	#overwrite the time_log overlap validation of timesheet
+	overwrite_ts_validation()
+	#**********************************************************
+	
+	ts = frappe.get_doc("Timesheet", ts)
+	type = 'Mandatsarbeit'
+	start = nowdate() + " 00:00:00"
+	row = {}
+	row["activity_type"] = type
+	row["hours"] = time
+	row["from_time"] = get_datetime(get_datetime_str(start))
+	row["to_time"] = add_to_date(get_datetime(get_datetime_str(start)), hours=time)
+	row["spo_dokument"] = doctype
+	row["spo_referenz"] = reference
+	row['spo_remark'] = bemerkung
+	ts.append('time_logs', row)
+	ts.save(ignore_permissions=True)
 				
 def get_default_time(doctype):
 	time = 0
@@ -204,7 +254,7 @@ def get_zeiten_uebersicht(dt, name):
 			referenz_anfrage = " OR `spo_referenz` = '{referenz_anfrage}'".format(referenz_anfrage=referenz_anfrage)
 		else:
 			referenz_anfrage = ''
-		alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time`, `spo_referenz`, `spo_dokument` FROM `tabTimesheet Detail` WHERE
+		alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time`, `spo_referenz`, `spo_dokument`, `spo_remark` FROM `tabTimesheet Detail` WHERE
 										`spo_referenz` = '{name}'
 										OR `spo_referenz` IN (
 											SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{name}')

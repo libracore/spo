@@ -28,142 +28,7 @@ def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
 	return frappe.db.sql(query, as_dict=True)
 	
 @frappe.whitelist()
-def get_vorschlagswerte(frm, vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', geburtsdatum=''):
-	#Suche nach Vor- resp. Nachnamen
-	name_query = ''
-	if vorname and not nachname:
-		name_query = "`customer_name` LIKE '%{vorname}%'".format(vorname=vorname)
-	if nachname and not vorname:
-		name_query = "`customer_name` LIKE '%{nachname}%'".format(nachname=nachname)
-	if vorname and nachname:
-		name_query = "`customer_name` LIKE '%{vorname}%{nachname}%' OR `customer_name` LIKE '%{nachname}%{vorname}%'".format(vorname=vorname, nachname=nachname)
-		
-	namens_matches = ''
-	if name_query:
-		namens_matches = frappe.db.sql("""SELECT `name` FROM `tabCustomer` WHERE {name_query}""".format(name_query=name_query), as_dict=True)
-		if namens_matches:
-			_namens_matches = '<h2>Namens Matches</h2>'
-			for match in namens_matches:
-				customer = frappe.get_doc("Customer", match.name)
-				contact = get_contact(match.name)
-				_namens_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
-				address = get_address(match.name)
-				_namens_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
-				_namens_matches += '</div></div>'
-			namens_matches = _namens_matches
-	else:
-		namens_matches = '<h2>Namens Matches</h2><p>Fehlende Angaben!</p>'
-	
-	#Suche nach Adressen
-	address_query = ''
-	if strasse and not hausnummer:
-		address_query = "`address_line1` LIKE '%{strasse}%'".format(strasse=strasse)
-	if hausnummer and not strasse:
-		address_query = "`address_line1` LIKE '%{hausnummer}%'".format(hausnummer=hausnummer)
-	if strasse and hausnummer:
-		address_query = "(`address_line1` LIKE '%{strasse}%{hausnummer}%' OR `address_line1` LIKE '%{hausnummer}%{strasse}%')".format(strasse=strasse, hausnummer=hausnummer)
-	
-	if address_query:
-		if ort:
-			address_query += " AND `city` LIKE '%{ort}%'".format(ort=ort)
-		if plz:
-			address_query += " AND `pincode` LIKE '%{plz}%'".format(plz=plz)
-	else:
-		if ort:
-			address_query = "`city` LIKE '%{ort}%'".format(ort=ort)
-			if plz:
-				address_query += " AND `pincode` LIKE '%{plz}%'".format(plz=plz)
-		else:
-			if plz:
-				address_query = "`pincode` LIKE '%{plz}%'".format(plz=plz)
-				
-	address_matches = ''
-	if address_query:
-		address_matches = frappe.db.sql("""SELECT `link_name` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parent` IN (SELECT `name` FROM `tabAddress` WHERE {address_query})""".format(address_query=address_query), as_dict=True)
-		if address_matches:
-			_address_matches = '<h2>Adressen Matches</h2>'
-			for match in address_matches:
-				customer = frappe.get_doc("Customer", match.link_name)
-				contact = get_contact(match.link_name)
-				_address_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
-				address = get_address(match.link_name)
-				_address_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
-				_address_matches += '</div></div>'
-			address_matches = _address_matches
-	else:
-		address_matches = '<h2>Adress Matches</h2><p>Fehlende Angaben!</p>'
-	
-	#Suche nach Kombinationen von Namen und Adressen
-	full_matches = ''
-	if name_query and address_query:
-		ref_list = """SELECT `link_name` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parent` IN (SELECT `name` FROM `tabAddress` WHERE {address_query})""".format(address_query=address_query)
-		full_matches = frappe.db.sql("""SELECT `name` FROM `tabCustomer` WHERE {name_query} AND `name` IN ({ref_list})""".format(name_query=name_query, ref_list=ref_list), as_dict=True)
-		if full_matches:
-			_full_matches = '<h2>Vollständige Matches</h2>'
-			for match in full_matches:
-				customer = frappe.get_doc("Customer", match.name)
-				contact = get_contact(match.name)
-				if (str(contact.geburtsdatum) == str(geburtsdatum)):
-					_full_matches += '<div class="panel panel-default"><div class="panel-heading">{name} ({geburtsdatum})<div class="pull-right" style="margin: 0px;"><button class="btn btn-primary btn-sm primary-action" style="padding: 2px;" onclick="fetch_data_from_search({frm}, {name_for_js})"><span>Übernehmen</span></button></div></div><div class="panel-body">'.format(name=customer.customer_name, name_for_js="'" + customer.name + "'", frm= "'" + frm + "'", geburtsdatum=str(contact.geburtsdatum))
-					address = get_address(match.name)
-					_full_matches += address.address_line1 + "<br>" + address.pincode + " " + address.city
-					_full_matches += '</div></div>'
-			full_matches = _full_matches
-	
-	#Vorbereitung return daten
-	data = {}
-	data['namens_matches'] = namens_matches or '<h2>Namens Matches</h2><p>Keine übereinstimmungen gefunden</p>'
-	data['address_matches'] = address_matches or '<h2>Adress Matches</h2><p>Keine übereinstimmungen gefunden</p>'
-	data['full_matches'] = full_matches or '<h2>Vollständige Matches</h2><p>Keine übereinstimmungen gefunden</p>'
-	
-	return data
-	
-@frappe.whitelist()
-def get_address(customer):
-	return frappe.db.sql("""SELECT * FROM `tabAddress` WHERE `name` = (SELECT `parent` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parenttype` = 'Address' AND `link_name` = '{customer}' LIMIT 1)""".format(customer=customer), as_dict=True)[0]
-	
-@frappe.whitelist()
-def get_contact(customer):
-	return frappe.db.sql("""SELECT * FROM `tabContact` WHERE `name` = (SELECT `parent` FROM `tabDynamic Link` WHERE `link_doctype` = 'Customer' AND `parenttype` = 'Contact' AND `link_name` = '{customer}' LIMIT 1)""".format(customer=customer), as_dict=True)[0]
-	
-@frappe.whitelist()
-def update_frm_with_fetched_data(frm, name):
-	anfrage = frappe.get_doc("Anfrage", frm)
-	customer = frappe.get_doc("Customer", name)
-	#frappe.throw(name)
-	try:
-		address = get_address(customer.name)
-		anfrage.strasse = address.address_line1.split(" ")[0]
-		anfrage.hausnummer = address.address_line1.split(" ")[1] or ''
-		anfrage.ort = address.city
-		anfrage.plz = address.pincode
-		anfrage.kanton = address.kanton
-	except:
-		address = 'Fehler im Laden der Adresse'
-		
-	try:
-		contact = get_contact(customer.name)
-		anfrage.vorname = contact.first_name
-		anfrage.nachname = contact.last_name
-		anfrage.telefon = contact.phone
-		anfrage.mobile = contact.mobile_no
-		anfrage.email = contact.email_id
-		anfrage.geburtsdatum = contact.geburtsdatum
-	except:
-		contact = 'Fehler im Laden des Kontaktes'
-		
-	anfrage.mitglied = customer.name
-	
-	if get_valid_mitgliedschaft_based_on_mitgliedernummer(customer.name):
-		anfrage.mitgliedschaft = get_valid_mitgliedschaft_based_on_mitgliedernummer(customer.name)[0].name
-	else:
-		anfrage.mitgliedschaft = ''
-	anfrage.save()
-	
-	return "ok"
-	
-@frappe.whitelist()
-def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort='', plz='', email='', telefon='', mobile='', geburtsdatum='', kanton=''):
+def create_new_mitglied(vorname='', nachname='', strasse='', ort='', plz='', email='', telefon='', mobile='', geburtsdatum='', kanton='', adress_zusatz=''):
 	mitglied = frappe.get_doc({
 		"doctype": "Customer",
 		"customer_name": vorname + " " + nachname
@@ -181,8 +46,10 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 				"link_name": mitglied.name
 			}
 		],
-		"address_line1": strasse + " " + hausnummer,
+		"address_line1": strasse,
+		"address_line2": adress_zusatz,
 		"city": ort,
+		"plz": plz,
 		"pincode": plz,
 		"kanton": kanton
 	})
@@ -257,7 +124,11 @@ def create_new_mitglied(vorname='', nachname='', strasse='', hausnummer='', ort=
 			]
 		})
 		contact.save()
-	return mitglied.name
+	return {
+			'patient': mitglied.name,
+			'patienten_kontakt': contact.name,
+			'patienten_adresse': address.name
+		}
 	
 @frappe.whitelist()
 def check_mitgliedschaft_ablaufdatum(mitgliedschaft):
@@ -266,11 +137,6 @@ def check_mitgliedschaft_ablaufdatum(mitgliedschaft):
 		return True
 	else:
 		return False
-		
-@frappe.whitelist()
-def get_timer_diff(start, ende):
-	from frappe.utils.data import time_diff_in_seconds
-	return time_diff_in_seconds(ende, start) / 60
 	
 @frappe.whitelist()
 def get_dashboard_data(mitglied='', anfrage=''):
@@ -321,7 +187,7 @@ def check_rechnung(mitgliedschaft):
 		return rechnung.status
 		
 @frappe.whitelist()
-def creat_new_mandat(anfrage=None, mitglied=None):
+def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None):
 	#check if Mandat linked to Anfrage already exist
 	if anfrage:
 		qty = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabMandat` WHERE `anfragen` LIKE '%{anfrage}%'""".format(anfrage=anfrage), as_list=True)[0][0]
@@ -348,6 +214,20 @@ def creat_new_mandat(anfrage=None, mitglied=None):
 			'mitglied': mitglied
 		})
 		mandat.save()
+		
+	#If adresse available, set link
+	if adresse:
+		mandat.update({
+			'adresse': adresse
+		})
+		mandat.save()
+		
+	#If kontakt available, set link
+	if kontakt:
+		mandat.update({
+			'kontakt': kontakt
+		})
+		mandat.save()
 	
 	return mandat.name
 
@@ -359,10 +239,10 @@ def autom_submit():
 		anfrage.submit()
 		
 @frappe.whitelist()
-def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, strasse, hausnummer, ort, plz, telefon, mobile, email, mitglied):
-	customer = frappe.get_doc("Customer", mitglied)
-	address = get_address(customer.name)
-	contact = get_contact(customer.name)
+def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, strasse, ort, plz, telefon, mobile, email, patient, kontakt, adresse, adress_zusatz):
+	customer = frappe.get_doc("Customer", patient)
+	address = frappe.get_doc("Address", adresse)
+	contact = frappe.get_doc("Contact", kontakt)
 	abweichungen = ''
 	
 	#vor- Nachnamen
@@ -376,12 +256,14 @@ def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, 
 		
 	#adresse
 	_address_diff = False
-	if address.address_line1 != (strasse + " " + hausnummer):
+	if address.address_line1 != strasse:
 		_address_diff = True
-	if (address.pincode + " " + address.city) != (plz + " " + ort):
+	if address.address_line2 != adress_zusatz:
+		_address_diff = True
+	if (str(address.plz) + " " + address.city) != (str(plz) + " " + ort):
 		_address_diff = True
 	if _address_diff:
-		abweichungen += '<h3>Adresse</h3><b>Alt/Neu:</b><br>' + str(address.address_line1) + ' / '  + (str(strasse) or 'Keine Strasse') + " " + (str(hausnummer) or 'Keine Hausnummer') + '<br>' + str(address.pincode) + " " + str(address.city) + ' / '  + (str(plz) or 'Keine Postleitzahl') + " " + (str(ort) or 'Kein Ort') + '<br>'
+		abweichungen += '<h3>Adresse</h3><b>Alt/Neu:</b><br>' + str(address.address_line1) + ' / '  + (str(strasse) or 'Keine Strasse') + '<br>' + str(address.address_line2) + ' / '  + (str(adress_zusatz) or 'Kein Adress-Zusatz') + '<br>' + str(address.pincode) + " " + str(address.city) + ' / '  + (str(plz) or 'Keine Postleitzahl') + " " + (str(ort) or 'Kein Ort') + '<br>'
 		
 	#contact
 	_contact_diff = False
@@ -424,3 +306,117 @@ def create_zeiten_uebersicht(dt, name):
 		return html
 	else:
 		return False
+		
+@frappe.whitelist()
+def kontaktdaten_suchen(vorname='', nachname='', strasse='', adress_zusatz='', plz='', ort='', kanton='', mail='', telefon='', mobile='', geburtsdatum=''):
+	# Adressen
+	go_adressen_query = False
+	if strasse:
+		strasse = """ AND `address_line1` LIKE '%{strasse}%'""".format(strasse=strasse)
+		go_adressen_query = True
+	if adress_zusatz:
+		adress_zusatz = """ AND `address_line2` LIKE '%{adress_zusatz}%'""".format(adress_zusatz=adress_zusatz)
+		go_adressen_query = True
+	if plz:
+		plz = """ AND `plz` LIKE '%{plz}%'""".format(plz=plz)
+		go_adressen_query = True
+	if ort:
+		ort = """ AND `city` LIKE '%{ort}%'""".format(ort=ort)
+		go_adressen_query = True
+	if kanton:
+		kanton = """ AND `kanton` LIKE '%{kanton}%'""".format(kanton=kanton)
+		go_adressen_query = True
+	if go_adressen_query:
+		adressen_query = strasse + adress_zusatz + plz + ort + kanton
+		adressen_query = adressen_query.replace(" AND", "WHERE", 1)
+		adressen_query = """SELECT `name` FROM `tabAddress` {adressen_query}""".format(adressen_query=adressen_query)
+		_alle_adressen = frappe.db.sql(adressen_query, as_dict=True)
+		alle_adressen = []
+		for adresse in _alle_adressen:
+			adressen_container = {}
+			adressen_container['adresse'] = frappe.db.sql("""SELECT * FROM `tabAddress` WHERE `name` = '{adresse}'""".format(adresse=adresse.name), as_dict=True)
+			adressen_container['kunde'] = frappe.db.sql("""SELECT `link_name` FROM `tabDynamic Link` WHERE `parenttype` = 'Address' AND `link_doctype` = 'Customer' AND `parent` = '{adresse}'""".format(adresse=adresse.name), as_dict=True)
+			if len(adressen_container['kunde']) > 0:
+				alle_adressen.append(adressen_container)
+	else:
+		adressen_query = ''
+		alle_adressen = []
+	# /Adressen
+	
+	# Kontakte
+	go_kontakte_query = False
+	if vorname:
+		vorname = """ AND `first_name` LIKE '%{vorname}%'""".format(vorname=vorname)
+		go_kontakte_query = True
+	if nachname:
+		nachname = """ AND `last_name` LIKE '%{nachname}%'""".format(nachname=nachname)
+		go_kontakte_query = True
+	if mail:
+		mail = """ AND `email_id` LIKE '%{mail}%'""".format(mail=mail)
+		go_kontakte_query = True
+	if geburtsdatum:
+		geburtsdatum = """ AND `geburtsdatum` LIKE '%{geburtsdatum}%'""".format(geburtsdatum=geburtsdatum)
+		go_kontakte_query = True
+	if mobile:
+		mobile = """ AND `mobile_no` LIKE '%{mobile}%'""".format(mobile=mobile)
+		go_kontakte_query = True
+	if telefon:
+		telefon = """ AND `phone` LIKE '%{telefon}%'""".format(telefon=telefon)
+		go_kontakte_query = True
+	if go_kontakte_query:
+		kontakte_query = vorname + nachname + mail + geburtsdatum + mobile + telefon
+		kontakte_query = kontakte_query.replace(" AND", "WHERE", 1)
+		kontakte_query = """SELECT `name` FROM `tabContact` {kontakte_query}""".format(kontakte_query=kontakte_query)
+		_alle_kontakte = frappe.db.sql(kontakte_query, as_dict=True)
+		alle_kontakte = []
+		for kontakt in _alle_kontakte:
+			kontakt_container = {}
+			kontakt_container['kontakt'] = frappe.db.sql("""SELECT * FROM `tabContact` WHERE `name` = '{kontakt}'""".format(kontakt=kontakt.name), as_dict=True)
+			kontakt_container['kunde'] = frappe.db.sql("""SELECT `link_name` FROM `tabDynamic Link` WHERE `parenttype` = 'Contact' AND `link_doctype` = 'Customer' AND `parent` = '{kontakt}'""".format(kontakt=kontakt.name), as_dict=True)
+			if len(kontakt_container['kunde']) > 0:
+				alle_kontakte.append(kontakt_container)
+	else:
+		kontakte_query = ''
+		alle_kontakte = []
+	# /Kontakte
+	
+	# Full Matches
+	if go_kontakte_query and go_adressen_query:
+		alle_kunden = frappe.db.sql("""
+										SELECT DISTINCT `link_name` FROM `tabDynamic Link`
+											WHERE `link_doctype` = 'Customer'
+												AND (
+													(`parenttype` = 'Address' AND `parent` IN ({adressen_query}))
+												OR
+													(`parenttype` = 'Contact' AND `parent` IN ({kontakte_query}))
+												)
+									""".format(adressen_query=adressen_query, kontakte_query=kontakte_query), as_dict=True)
+		full_matches = []
+		for kunde in alle_kunden:
+			kunden_container = {}
+			kunden_container['kunde'] = kunde.link_name
+			kunden_container['adressen'] = frappe.db.sql("""
+															SELECT * FROM `tabAddress`
+																WHERE `name` IN ({adressen_query})
+																AND `name` IN (
+																	SELECT `parent` FROM `tabDynamic Link` WHERE `parenttype` = 'Address' AND `link_name` = '{kunde}'
+																)
+														""".format(adressen_query=adressen_query, kunde=kunde.link_name), as_dict=True)
+			kunden_container['kontakte'] = frappe.db.sql("""
+															SELECT * FROM `tabContact`
+																WHERE `name` IN ({kontakte_query})
+																AND `name` IN (
+																	SELECT `parent` FROM `tabDynamic Link` WHERE `parenttype` = 'Contact' AND `link_name` = '{kunde}'
+																)
+														""".format(kontakte_query=kontakte_query, kunde=kunde.link_name), as_dict=True)
+			if len(kunden_container['adressen']) > 0 and len(kunden_container['kontakte']) > 0:
+				full_matches.append(kunden_container)
+	else:
+		full_matches = []
+	# /Full Matches
+	
+	return {
+		'full_matches': full_matches,
+		'alle_kontakte': alle_kontakte,
+		'alle_adressen': alle_adressen
+	}
