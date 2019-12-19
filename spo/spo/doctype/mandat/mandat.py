@@ -83,9 +83,11 @@ def get_dashboard_data(mitglied='', anfrage='', mandat=''):
 def create_zeiten_uebersicht(dt, name):
 	alle_zeiten = get_zeiten_uebersicht(dt, name)
 	if alle_zeiten:
-		html = '<div style="width: 80%;"><table style="width: 100%;" class="table-striped"><tr><th>Datum</th><th>Dokument</th><th>Stunden</th><th>Timesheet</th><th>Bearbeiten</th></tr>'
+		html = '<div style="width: 100%;"><table style="width: 100%;" class="table-striped"><tr><th>Datum</th><th>Dokument</th><th>Arbeit</th><th>Stunden</th><th>Timesheet</th><th>Bearbeiten</th></tr>'
 		for zeit in alle_zeiten:
-			html += '<tr><td>' + get_datetime_str(zeit.from_time).split(" ")[0] + '</td><td>' + zeit.spo_dokument + ' (' + zeit.spo_referenz + ')</td><td>' + str(zeit.hours) + '</td><td>' + zeit.parent + '</td><td><a data-referenz="' + zeit.parent + '" data-funktion="open_ts"><i class="fa fa-edit"></i></a></td></tr>'
+			if not zeit.spo_remark:
+				zeit.spo_remark = ''
+			html += '<tr><td>' + get_datetime_str(zeit.from_time).split(" ")[0] + '</td><td>' + zeit.spo_dokument + ' (' + zeit.spo_referenz + ')</td><td>' + str(zeit.spo_remark) + '</td><td>' + str(zeit.hours) + '</td><td>' + zeit.parent + '</td><td><a data-referenz="' + zeit.parent + '" data-funktion="open_ts"><i class="fa fa-edit"></i></a></td></tr>'
 		html += '</table></div>'
 		return html
 	else:
