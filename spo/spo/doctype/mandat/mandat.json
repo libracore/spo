@@ -37,6 +37,11 @@
   "customer",
   "kontakt",
   "adresse",
+  "rsv",
+  "rsv_kontakt",
+  "rsv_adresse",
+  "rechtsschutz_ref",
+  "rsv_html",
   "section_zeiterfassung",
   "absprung_einstellungen",
   "timer",
@@ -281,11 +286,38 @@
    "fieldtype": "Link",
    "label": "Adresse",
    "options": "Address"
+  },
+  {
+   "fieldname": "rsv",
+   "fieldtype": "Link",
+   "label": "RSV",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "rsv_kontakt",
+   "fieldtype": "Link",
+   "label": "RSV Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "rsv_adresse",
+   "fieldtype": "Link",
+   "label": "RSV Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "rechtsschutz_ref",
+   "fieldtype": "Data",
+   "label": "Referenznummer"
+  },
+  {
+   "fieldname": "rsv_html",
+   "fieldtype": "HTML"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-19 14:13:20.670911",
+ "modified": "2019-12-19 17:26:23.069929",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

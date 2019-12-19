@@ -54,7 +54,7 @@
   "patienten_adresse",
   "mitgliedschaft",
   "section_kontakt_daten",
-  "rsv_vorname",
+  "rsv_kontaktdaten",
   "section_rsv",
   "rsv",
   "rsv_kontakt",
@@ -463,11 +463,6 @@
    "label": "Kontaktdaten suchen"
   },
   {
-   "fieldname": "rsv_vorname",
-   "fieldtype": "Data",
-   "label": "Vorname"
-  },
-  {
    "collapsible": 1,
    "fieldname": "section_patienten_links",
    "fieldtype": "Section Break",
@@ -479,11 +474,17 @@
    "fieldname": "section_rsv",
    "fieldtype": "Section Break",
    "label": "Links zu RSV (Rechtsschutzversicherung)"
+  },
+  {
+   "fieldname": "rsv_kontaktdaten",
+   "fieldtype": "HTML",
+   "label": "Erfasste Kontaktdaten",
+   "options": "<div>Bitte w\u00e4hlen Sie untenstehend eine RSV, eine Adresse und ein Kontakt aus.</div>"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-12-19 13:27:32.024040",
+ "modified": "2019-12-19 16:50:17.542596",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

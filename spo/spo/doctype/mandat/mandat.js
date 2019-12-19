@@ -33,6 +33,8 @@ frappe.ui.form.on('Mandat', {
 				}
 			}
 		});
+		
+		set_rsv_html(frm);
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
@@ -113,4 +115,21 @@ function timesheet_handling(frm) {
 function ts_bearbeiten(ts) {
 	frappe.route_options = {"timesheet": ts};
 	frappe.set_route("Form", "Zeiterfassung");
+}
+
+function set_rsv_html(frm) {
+	if (cur_frm.doc.rsv && cur_frm.doc.rsv_adresse && cur_frm.doc.rsv_kontakt) {
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.get_rsv_data",
+			"args": {
+				"rsv": cur_frm.doc.rsv,
+				"adresse": cur_frm.doc.rsv_adresse,
+				"kontakt": cur_frm.doc.rsv_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('rsv_html','options', r.message);
+			}
+		});
+	}
 }
