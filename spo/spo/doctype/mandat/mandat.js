@@ -87,6 +87,7 @@ function update_dashboard(frm) {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
 		{'fieldname': 'arbeit', 'fieldtype': 'Select', 'label': 'Arbeitsinhalt', 'reqd': 1, options: [__('Korrespondenz'), __('Telefonat'), __('Aktenstudium'), __('Organisation der juristischen Beratung'), __('Juristische Beratung'), __('Recherche Facharzt'), __('Organisation Facharzt'), __('Interne fachliche Besprechung'), __('Sonstiges')]},
 		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': 'Bemerkung', 'reqd': 0},
 		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}		
@@ -99,7 +100,8 @@ function timesheet_handling(frm) {
 				"doctype": frm.doc.doctype,
 				"reference": frm.doc.name,
 				"time": values.time,
-				"bemerkung": values.arbeit + ": " + values.remark
+				"bemerkung": values.arbeit + ": " + values.remark,
+				"date": values.datum
 			},
 			"async": false,
 			"callback": function(response) {
