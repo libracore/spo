@@ -591,6 +591,7 @@ function fetch_beratungs_und_mandats_arbeiten_von_ts(frm) {
 				for (i=0; i < fetch.beratungen.length; i++) {
 					var child = cur_frm.add_child('beratungen_mandate');
 					frappe.model.set_value(child.doctype, child.name, 'spo_referenz', fetch.beratungen[i].spo_referenz);
+					frappe.model.set_value(child.doctype, child.name, 'arbeit', fetch.beratungen[i].arbeit);
 					frappe.model.set_value(child.doctype, child.name, 'dauer', fetch.beratungen[i].dauer);
 					frappe.model.set_value(child.doctype, child.name, 'referenz', fetch.beratungen[i].referenz);
 					frappe.model.set_value(child.doctype, child.name, 'spo_dokument', fetch.beratungen[i].spo_dokument);
