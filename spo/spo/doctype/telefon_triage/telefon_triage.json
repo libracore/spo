@@ -1,0 +1,151 @@
+{
+ "allow_copy": 1,
+ "creation": "2019-12-20 12:44:31.968998",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "info_html",
+  "section_mitglieder_suche",
+  "suchen",
+  "vorname",
+  "nachname",
+  "geburtsdatum",
+  "reset_suche",
+  "cb_1",
+  "open_anfrage",
+  "strasse",
+  "plz",
+  "ort",
+  "kanton",
+  "section_referenzen",
+  "kunde",
+  "kontakt",
+  "adresse",
+  "mitgliedschaft"
+ ],
+ "fields": [
+  {
+   "fieldname": "suchen",
+   "fieldtype": "Button",
+   "label": "Mitgliederdaten Suchen"
+  },
+  {
+   "fieldname": "vorname",
+   "fieldtype": "Data",
+   "label": "Vorname"
+  },
+  {
+   "fieldname": "nachname",
+   "fieldtype": "Data",
+   "label": "Nachname"
+  },
+  {
+   "fieldname": "geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "open_anfrage",
+   "fieldtype": "Button",
+   "label": "Anfrage er\u00f6ffnen"
+  },
+  {
+   "fieldname": "strasse",
+   "fieldtype": "Data",
+   "label": "Strasse und Hausnummer"
+  },
+  {
+   "fieldname": "plz",
+   "fieldtype": "Data",
+   "label": "Postleitzahl"
+  },
+  {
+   "fieldname": "ort",
+   "fieldtype": "Data",
+   "label": "Ort"
+  },
+  {
+   "fieldname": "kanton",
+   "fieldtype": "Select",
+   "label": "Kanton",
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH"
+  },
+  {
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
+  },
+  {
+   "fieldname": "kunde",
+   "fieldtype": "Link",
+   "label": "Kunde",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "kontakt",
+   "fieldtype": "Link",
+   "label": "Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "adresse",
+   "fieldtype": "Link",
+   "label": "Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "mitgliedschaft",
+   "fieldtype": "Link",
+   "label": "Mitgliedschaft",
+   "options": "Mitgliedschaft"
+  },
+  {
+   "fieldname": "info_html",
+   "fieldtype": "HTML",
+   "options": "<div>Bitte suchen Sie als Erstes nach einem m\u00f6glichen Mitglied</div>"
+  },
+  {
+   "fieldname": "section_mitglieder_suche",
+   "fieldtype": "Section Break",
+   "label": "Mitglieder Suche"
+  },
+  {
+   "fieldname": "reset_suche",
+   "fieldtype": "Button",
+   "label": "Suchanfrage zur\u00fccksetzen"
+  }
+ ],
+ "hide_toolbar": 1,
+ "issingle": 1,
+ "modified": "2019-12-20 13:02:13.331085",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Telefon Triage",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
