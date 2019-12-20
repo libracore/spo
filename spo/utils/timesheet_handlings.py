@@ -8,14 +8,17 @@ from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_s
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 
 @frappe.whitelist()
-def handle_timesheet(user, doctype, reference, time, bemerkung=''):
+def handle_timesheet(user, doctype, reference, time, bemerkung='', date=nowdate()):
+	latest_date = add_days(nowdate(), -7)
+	if date < latest_date:
+		frappe.throw("Sie können maximal 7 Tage in die Vergangenheit buchungen vornehmen.")
 	user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
 	if not time:
 		time = 0
 	time = float(time)
 	if user:
 		user = user[0][0]
-		ts = check_if_timesheet_exist(user, doctype, reference)
+		ts = check_if_timesheet_exist(user, doctype, reference, date)
 		if ts:
 			if doctype == 'Mandat':
 				update_mandat_timesheet(ts, time, doctype, reference, user, bemerkung)
@@ -23,24 +26,28 @@ def handle_timesheet(user, doctype, reference, time, bemerkung=''):
 				update_timesheet(ts, time, doctype, reference, user)
 		else:
 			if doctype == 'Mandat':
-				create_mandat_timesheet(user, doctype, reference, time, bemerkung)
+				create_mandat_timesheet(user, doctype, reference, time, bemerkung, date)
 			else:
-				create_timesheet(user, doctype, reference, time)
+				create_timesheet(user, doctype, reference, time, date)
 	else:
 		return False
 	
-def check_if_timesheet_exist(user, doctype, reference):
-	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=nowdate()), as_dict=True)
+def check_if_timesheet_exist(user, doctype, reference, date):
+	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=date), as_dict=True)
 	if len(ts) > 0:
 		return ts[0].name
 	else:
-		return False
+		ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 1 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=date), as_dict=True)
+		if len(ts) > 0:
+			frappe.throw("Das Timesheet vom {datum} ist bereits verbucht.".format(date=date))
+		else:
+			return False
 	
-def create_timesheet(user, doctype, reference, time):
+def create_timesheet(user, doctype, reference, time, date):
 	default_time = get_default_time(doctype)
 	if time < default_time:
 		time = default_time
-	start = nowdate() + " 00:00:00"
+	start = date + " 00:00:00"
 	type = 'Mandatsarbeit'
 	if doctype == 'Anfrage':
 		type = 'Beratung'
@@ -59,11 +66,11 @@ def create_timesheet(user, doctype, reference, time):
 	})
 	ts.insert(ignore_permissions=True)
 	
-def create_mandat_timesheet(user, doctype, reference, time, bemerkung):
+def create_mandat_timesheet(user, doctype, reference, time, bemerkung, date):
 	default_time = get_default_time(doctype)
 	if time < default_time:
 		time = default_time
-	start = nowdate() + " 00:00:00"
+	start = date + " 00:00:00"
 	type = 'Mandatsarbeit'
 	if doctype == 'Anfrage':
 		type = 'Beratung'

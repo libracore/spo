@@ -457,7 +457,7 @@ function show_unterbruch(mitgliedschaften) {
 function set_mandatory_and_read_only(frm) {
 	if (!frm.doc.__islocal) {
 		cur_frm.set_df_property('patient_kanton','reqd', 1);
-		cur_frm.set_df_property('problematik','reqd', 1);
+		cur_frm.set_df_property('problematik','reqd', 0);
 		if (frm.doc.anfrage_typ == 'Hotline') {
 			cur_frm.set_value('kontakt_via', 'Telefon');
 			cur_frm.set_df_property('kontakt_via','read_only', 1);
@@ -500,7 +500,7 @@ function set_mandatory_and_read_only(frm) {
 				cur_frm.set_df_property('patient_mail','reqd', 0);
 				cur_frm.set_df_property('patient_kanton','reqd', 0);
 				cur_frm.set_df_property('patient_nachname','reqd', 0);
-				cur_frm.set_df_property('problematik','reqd', 0);
+				//cur_frm.set_df_property('problematik','reqd', 0);
 				cur_frm.set_df_property('problematik','hidden', 1);
 				cur_frm.set_df_property('spo_ombudsstelle','reqd', 0);
 			}
@@ -614,6 +614,7 @@ function assign_anfrage(frm, assign_to, abweichungen, mutation) {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
 		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
 	],
 	function(values){
@@ -623,7 +624,8 @@ function timesheet_handling(frm) {
 				"user": frappe.session.user_email,
 				"doctype": frm.doc.doctype,
 				"reference": frm.doc.name,
-				"time": values.time
+				"time": values.time,
+				"date": values.datum
 			},
 			"async": false,
 			"callback": function(response) {

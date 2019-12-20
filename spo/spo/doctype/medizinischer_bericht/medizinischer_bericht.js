@@ -12,6 +12,7 @@ frappe.ui.form.on('Medizinischer Bericht', {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
 		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
 	],
 	function(values){
@@ -21,7 +22,8 @@ function timesheet_handling(frm) {
 				"user": frappe.session.user_email,
 				"doctype": frm.doc.doctype,
 				"reference": frm.doc.name,
-				"time": values.time
+				"time": values.time,
+				"date": values.datum
 			},
 			"async": false,
 			"callback": function(response) {

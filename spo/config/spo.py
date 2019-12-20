@@ -9,6 +9,12 @@ def get_data():
 			"items": [
 				{
 					"type": "doctype",
+					"name": "Telefon Triage",
+					"label": "Telefon Triage",
+					"description": _("Telefon Triage"),
+				},
+				{
+					"type": "doctype",
 					"name": "Anfrage",
 					"label": "Anfragen",
 					"description": _("Mandats und oder sonstige Anfragen"),
