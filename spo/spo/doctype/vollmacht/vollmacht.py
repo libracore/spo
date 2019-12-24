@@ -28,10 +28,10 @@ def get_kunden_data(kunde, adresse, kontakt):
 	kontakt = frappe.get_doc("Contact", kontakt)
 	
 	html = '<div><h4>Kunde:</h4><p>'
-	html += kontakt.first_name + " " + kontakt.last_name + "<br>"
-	html += adresse.address_line1 + "<br>"
+	html += kontakt.first_name + " " + kontakt.last_name + "<br>" or ''
+	html += adresse.address_line1 + "<br>" or ''
 	if adresse.address_line2:
-		html += adresse.address_line2 + "<br>"
+		html += adresse.address_line2 + "<br>" or ''
 	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton + '<br><br>'
 	html += kontakt.email_id + "<br>" or ''
 	html += kontakt.phone + "<br>" or ''
@@ -47,10 +47,10 @@ def get_ang_data(ang, adresse, kontakt):
 	kontakt = frappe.get_doc("Contact", kontakt)
 	
 	html = '<div><h4>Angehörige:</h4><p>'
-	html += kontakt.first_name + " " + kontakt.last_name + "<br>"
-	html += adresse.address_line1 + "<br>"
+	html += kontakt.first_name + " " + kontakt.last_name + "<br>" or ''
+	html += adresse.address_line1 + "<br>" or ''
 	if adresse.address_line2:
-		html += adresse.address_line2 + "<br>"
+		html += adresse.address_line2 + "<br>" or ''
 	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton + '<br><br>'
 	html += kontakt.email_id + "<br>" or ''
 	html += kontakt.phone + "<br>" or ''
