@@ -77,8 +77,12 @@ frappe.ui.form.on('Anfrage', {
 		//pflichtfelder basierend auf Anfrage Typ
 		set_mandatory_and_read_only(frm);
 		
+		
+		//*************************************************************************
+		// vorübergehend deaktiviert
 		//überprüfung ob kontakt- und adress-daten mit stamm übereinstimmen
-		check_anfrage_daten_vs_stamm_daten(frm);
+		//check_anfrage_daten_vs_stamm_daten(frm);
+		//*************************************************************************
 		
 		//update timesheet table
 		frappe.call({

@@ -5,6 +5,20 @@ frappe.ui.form.on('Telefon Triage', {
 	refresh: function(frm) {
 		cur_frm.disable_save();
 		show_mitglied_suche_in_html(frm);
+		cur_frm.set_value('vorname', '');
+		cur_frm.set_value('nachname', '');
+		cur_frm.set_value('geburtsdatum', '');
+		cur_frm.set_value('strasse', '');
+		cur_frm.set_value('plz', '');
+		cur_frm.set_value('ort', '');
+		cur_frm.set_value('kanton', '');
+		cur_frm.set_value('kunde', '');
+		cur_frm.set_value('kontakt', '');
+		cur_frm.set_value('adresse', '');
+		cur_frm.set_value('mitgliedschaft', '');
+		
+		//Set filter to link fields
+		set_link_filter(frm);
 	},
 	reset_suche: function(frm) {
 		show_mitglied_suche_in_html(frm);
@@ -254,5 +268,31 @@ function check_mitgliedschaft(frm) {
 				}
 			}
 		});
+	}
+}
+
+function set_link_filter(frm) {
+	cur_frm.fields_dict['kontakt'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.kunde
+			}
+		}
+	};
+	cur_frm.fields_dict['adresse'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.kunde
+			}
+		}
+	};
+	cur_frm.fields_dict['mitgliedschaft'].get_query = function(doc) {
+		 return {
+			 filters: {
+				 "mitglied": frm.doc.kunde
+			 }
+		 }
 	}
 }
