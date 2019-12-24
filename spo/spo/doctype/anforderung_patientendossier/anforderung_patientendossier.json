@@ -5,8 +5,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "mandat",
-  "cb_1",
+  "kunden_display",
+  "cb_2",
+  "adressat",
+  "cb_3",
   "mahnstufe_1",
   "mahnstufe_2",
   "section_1",
@@ -14,7 +16,13 @@
   "text_ohne_konserve",
   "brieftext",
   "fusszeile",
-  "amended_from"
+  "amended_from",
+  "fold_referenzen",
+  "section_referenzen",
+  "mandat",
+  "customer",
+  "kunden_kontakt",
+  "kunden_adresse"
  ],
  "fields": [
   {
@@ -40,10 +48,6 @@
    "label": "Mandat",
    "options": "Mandat",
    "reqd": 1
-  },
-  {
-   "fieldname": "cb_1",
-   "fieldtype": "Column Break"
   },
   {
    "default": "0",
@@ -82,10 +86,60 @@
    "fieldname": "text_ohne_konserve",
    "fieldtype": "Check",
    "label": "Eigener Text ohne Konserve verwenden"
+  },
+  {
+   "fetch_from": "mandat.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Kunde",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mandat.kontakt",
+   "fieldname": "kunden_kontakt",
+   "fieldtype": "Link",
+   "label": "Kontakt",
+   "options": "Contact",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mandat.adresse",
+   "fieldname": "kunden_adresse",
+   "fieldtype": "Link",
+   "label": "Adresse",
+   "options": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "kunden_display",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "fold_referenzen",
+   "fieldtype": "Fold"
+  },
+  {
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
+  },
+  {
+   "fieldname": "adressat",
+   "fieldtype": "Small Text",
+   "label": "Adressat"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-14 10:40:13.041038",
+ "modified": "2019-12-24 09:17:02.960014",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",

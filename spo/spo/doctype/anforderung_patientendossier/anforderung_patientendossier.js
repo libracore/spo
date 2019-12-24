@@ -21,12 +21,22 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 	},
 	onload: function(frm) {
 		defaul_texte(frm);
+		set_kunden_html(frm);
 	},
 	mahnstufe_1: function(frm) {
 		defaul_texte(frm);
 	},
 	mahnstufe_2: function(frm) {
 		defaul_texte(frm);
+	},
+	customer: function(frm) {
+		set_kunden_html(frm);
+	},
+	kunden_adresse: function(frm) {
+		set_kunden_html(frm);
+	},
+	kunden_kontakt: function(frm) {
+		set_kunden_html(frm);
 	}
 });
 
@@ -96,4 +106,21 @@ function timesheet_handling(frm) {
 	'Arbeitszeit erfassen',
 	'Erfassen'
 	)
+}
+
+function set_kunden_html(frm) {
+	if (cur_frm.doc.customer && cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
+		frappe.call({
+			"method": "spo.spo.doctype.anforderung_patientendossier.anforderung_patientendossier.get_kunden_data",
+			"args": {
+				"kunde": cur_frm.doc.customer,
+				"adresse": cur_frm.doc.kunden_adresse,
+				"kontakt": cur_frm.doc.kunden_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('kunden_display','options', r.message);
+			}
+		});
+	}
 }

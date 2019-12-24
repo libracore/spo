@@ -2,6 +2,11 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Vollmacht', {
+	onload: function(frm) {
+		check_todesfall(frm);
+		set_kunden_html(frm);
+		set_ang_html(frm)
+	},
 	before_save: function(frm) {
 		if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
 			var titelzeile_string = '<p><b>Abklärungen im Zusammenhang mit</b> (dem Eingriffes/ der Operation) <b>vom</b> (Datum)  <b>im Spital XY</b> (Ort) <b>samt</b> (Folgen) oder (inkl. Vor- und Nachbehandlung)<b>.</b></p>';
@@ -17,113 +22,7 @@ frappe.ui.form.on('Vollmacht', {
 			timesheet_handling(frm);
 		});
 		
-		if (cur_frm.doc.mandat) {
-			frappe.call({
-				"method": "frappe.client.get",
-				"args": {
-					"doctype": "Mandat",
-					"name": frm.doc.mandat
-				},
-				"callback": function(response) {
-					var mandat = response.message;
-
-					if (mandat) {
-						frappe.call({
-							"method": "frappe.client.get",
-							"args": {
-								"doctype": "Customer",
-								"name": mandat.mitglied
-							},
-							"callback": function(response) {
-								var mitglied = response.message;
-
-								if (mitglied) {
-									if (!cur_frm.doc.name_vorname) {
-										cur_frm.set_value('name_vorname', mitglied.customer_name);
-									}
-									if (!cur_frm.doc.adresse) {
-										frappe.call({
-											method:"frappe.client.get_list",
-											args:{
-												doctype:"Dynamic Link",
-												filters: [
-													["link_doctype","=", 'Customer'],
-													["link_name","=", mitglied.name],
-													["parenttype","=", 'Address']
-												],
-												fields: ["parent"],
-												parent: "Address"
-											},
-											callback: function(r) {
-												if (r.message) {
-													var adress_link = r.message[0].parent;
-													if (adress_link) {
-														frappe.call({
-															"method": "frappe.client.get",
-															"args": {
-																"doctype": "Address",
-																"name": adress_link
-															},
-															"callback": function(response) {
-																var address = response.message;
-																if (address) {
-																	cur_frm.set_value('adresse', address.address_line1);
-																}
-															}
-														});
-													}
-												}
-											}
-										});
-									}
-									if (!cur_frm.doc.email) {
-										frappe.call({
-											method:"frappe.client.get_list",
-											args:{
-												doctype:"Dynamic Link",
-												filters: [
-													["link_doctype","=", 'Customer'],
-													["link_name","=", mitglied.name],
-													["parenttype","=", 'Contact']
-												],
-												fields: ["parent"],
-												parent: "Contact"
-											},
-											callback: function(r) {
-												if (r.message) {
-													var contact_link = r.message[0].parent;
-													if (contact_link) {
-														frappe.call({
-															"method": "frappe.client.get",
-															"args": {
-																"doctype": "Contact",
-																"name": contact_link
-															},
-															"callback": function(response) {
-																var contact = response.message;
-																if (contact) {
-																	cur_frm.set_value('email', contact.email_id);
-																	if (!cur_frm.doc.telefon) {
-																		cur_frm.set_value('telefon', contact.phone);
-																	}
-																	if (!cur_frm.doc.geburtsdatum) {
-																		cur_frm.set_value('geburtsdatum', contact.geburtsdatum);
-																	}
-																}
-															}
-														});
-													}
-												}
-											}
-										});
-									}
-								}
-							}
-						});
-					}
-				}
-			});
-		}
+		
 		if (!cur_frm.doc.berater) {
 			cur_frm.set_value('berater', frappe.user_info().fullname);
 		}
@@ -147,8 +46,126 @@ frappe.ui.form.on('Vollmacht', {
 				 }
 			 }
 		}
+		
+		check_todesfall(frm);
+		set_kunden_html(frm);
+		set_ang_html(frm)
+	},
+	todesfall: function(frm) {
+		if (cur_frm.doc.todesfall == 1) {
+			fetch_data_from_ang(frm);
+		} else {
+			fetch_data_from_kunde(frm);
+		}
 	}
 });
+
+function fetch_data_from_ang(frm) {
+	if (cur_frm.doc.ang_kontakt && cur_frm.doc.ang_adresse) {
+		frappe.call({
+			"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
+			"args": {
+				"adresse": cur_frm.doc.ang_adresse,
+				"kontakt": cur_frm.doc.ang_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				if (r) {
+					var adresse = r.message.adresse;
+					var kontakt = r.message.kontakt;
+					
+					cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+					cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
+					cur_frm.set_value("adresse", adresse.address_line1);
+					cur_frm.set_value("email", kontakt.email_id);
+					if (kontakt.phone) {
+						cur_frm.set_value("telefon", kontakt.phone);
+					} else if (kontakt.mobile_no) {
+						cur_frm.set_value("telefon", kontakt.mobile_no);
+					}
+				}
+			}
+		});
+	}
+}
+
+function fetch_data_from_kunde(frm) {
+	if (cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
+		frappe.call({
+			"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
+			"args": {
+				"adresse": cur_frm.doc.kunden_adresse,
+				"kontakt": cur_frm.doc.kunden_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				if (r) {
+					var adresse = r.message.adresse;
+					var kontakt = r.message.kontakt;
+					
+					cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+					cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
+					cur_frm.set_value("adresse", adresse.address_line1);
+					cur_frm.set_value("email", kontakt.email_id);
+					if (kontakt.phone) {
+						cur_frm.set_value("telefon", kontakt.phone);
+					} else if (kontakt.mobile_no) {
+						cur_frm.set_value("telefon", kontakt.mobile_no);
+					}
+				}
+			}
+		});
+	}
+}
+
+function check_todesfall(frm) {
+	if (cur_frm.doc.mandat) {
+		frappe.call({
+			"method": "spo.spo.doctype.vollmacht.vollmacht.check_todesfall",
+			"args": {
+				"mandat": cur_frm.doc.mandat
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_value("todesfall", r.message);
+			}
+		});
+	}
+}
+
+function set_kunden_html(frm) {
+	if (cur_frm.doc.customer && cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
+		frappe.call({
+			"method": "spo.spo.doctype.vollmacht.vollmacht.get_kunden_data",
+			"args": {
+				"kunde": cur_frm.doc.customer,
+				"adresse": cur_frm.doc.kunden_adresse,
+				"kontakt": cur_frm.doc.kunden_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('kunde_html','options', r.message);
+			}
+		});
+	}
+}
+
+function set_ang_html(frm) {
+	if (cur_frm.doc.ang && cur_frm.doc.ang_kontakt && cur_frm.doc.ang_adresse) {
+		frappe.call({
+			"method": "spo.spo.doctype.vollmacht.vollmacht.get_ang_data",
+			"args": {
+				"ang": cur_frm.doc.ang,
+				"adresse": cur_frm.doc.ang_adresse,
+				"kontakt": cur_frm.doc.ang_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('ang_html','options', r.message);
+			}
+		});
+	}
+}
 
 function timesheet_handling(frm) {
 	frappe.prompt([

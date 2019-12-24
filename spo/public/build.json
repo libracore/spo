@@ -1,0 +1,7 @@
+{
+    "js/spo.min.js": [
+		"public/js/conf.js",
+		"public/js/help_links.js",
+		"public/js/spo.js"
+    ]
+}

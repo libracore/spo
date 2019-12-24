@@ -24,6 +24,14 @@ def get_data():
 					"name": "Mandat",
 					"label": "Mandate",
 					"description": _("Führendes Mandats-Dokument"),
+				},
+				{
+					"type": "report",
+					"name": "Alle Mandate in Arbeit",
+					"label": "Alle Mandate in Arbeit",
+					"description": _("Alle Mandate in Arbeit"),
+					"doctype": "Telefon Triage",
+					"is_query_report": True
 				}
 			]
 		},
@@ -109,12 +117,6 @@ def get_data():
 			"label": _("Zeiterfassung"),
 			"icon": "fa fa-cog",
 			"items": [
-				# {
-					# "type": "doctype",
-					# "name": "Timesheet",
-					# "label": "Timesheets",
-					# "description": _("Timesheets"),
-				# },
 				{
 					"type": "doctype",
 					"name": "Zeiterfassung",

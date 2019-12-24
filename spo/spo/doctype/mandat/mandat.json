@@ -31,24 +31,34 @@
   "beratung_am",
   "abschluss_an_rsv",
   "rechnung",
-  "section_referenzen",
-  "anfragen",
-  "mitglied",
-  "customer",
-  "kontakt",
-  "adresse",
-  "rsv",
-  "rsv_kontakt",
-  "rsv_adresse",
-  "rechtsschutz_ref",
-  "rsv_html",
   "section_zeiterfassung",
   "absprung_einstellungen",
   "timer",
   "default_ts",
   "max_aufwand",
   "zeiten_uebersicht",
-  "amended_from"
+  "amended_from",
+  "fold_referenzen",
+  "section_allg_referenzen",
+  "anfragen",
+  "kunde_html",
+  "ang_html",
+  "rsv_html",
+  "section_referenzen_kunde",
+  "mitglied",
+  "customer",
+  "kontakt",
+  "adresse",
+  "section_referenzen_ang",
+  "ang",
+  "ang_kontakt",
+  "ang_adresse",
+  "section_referenzen_auftraggeber",
+  "rechtsschutz_ref",
+  "rsv",
+  "auftraggeber_name",
+  "rsv_kontakt",
+  "rsv_adresse"
  ],
  "fields": [
   {
@@ -61,12 +71,6 @@
    "options": "<div id=\"chart\"></div>\n<div id=\"limit\"></div>"
   },
   {
-   "collapsible": 1,
-   "fieldname": "section_referenzen",
-   "fieldtype": "Section Break",
-   "label": "Referenzen"
-  },
-  {
    "fieldname": "anfragen",
    "fieldtype": "Link",
    "label": "Anfragen",
@@ -75,7 +79,7 @@
   {
    "fieldname": "mitglied",
    "fieldtype": "Link",
-   "label": "Mitglied",
+   "label": "Mitgliedschaft",
    "options": "Customer"
   },
   {
@@ -218,14 +222,14 @@
    "read_only": 1
   },
   {
-   "fetch_from": "anfragen.vorname",
+   "fetch_from": "kontakt.first_name",
    "fieldname": "vorname",
    "fieldtype": "Data",
    "label": "Vorname",
    "read_only": 1
   },
   {
-   "fetch_from": "anfragen.nachname",
+   "fetch_from": "kontakt.last_name",
    "fieldname": "nachname",
    "fieldtype": "Data",
    "label": "Nachname",
@@ -242,7 +246,7 @@
    "fieldname": "customer",
    "fieldtype": "Link",
    "hidden": 1,
-   "label": "Customer",
+   "label": "Kunde",
    "options": "Customer"
   },
   {
@@ -278,13 +282,13 @@
   {
    "fieldname": "kontakt",
    "fieldtype": "Link",
-   "label": "Kontakt",
+   "label": "Kunden Kontakt",
    "options": "Contact"
   },
   {
    "fieldname": "adresse",
    "fieldtype": "Link",
-   "label": "Adresse",
+   "label": "Kunde Adresse",
    "options": "Address"
   },
   {
@@ -313,11 +317,71 @@
   {
    "fieldname": "rsv_html",
    "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "fold_referenzen",
+   "fieldtype": "Fold"
+  },
+  {
+   "fieldname": "section_allg_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Allgemeine \u00dcbersicht"
+  },
+  {
+   "fieldname": "kunde_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "ang_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_referenzen_kunde",
+   "fieldtype": "Section Break",
+   "label": "Referenzen Kunde"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_referenzen_ang",
+   "fieldtype": "Section Break",
+   "label": "Referenzen Angeh\u00f6rige"
+  },
+  {
+   "fieldname": "ang",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ang_kontakt",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "ang_adresse",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige Adresse",
+   "options": "Address"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_referenzen_auftraggeber",
+   "fieldtype": "Section Break",
+   "label": "Referenzen Auftraggeber"
+  },
+  {
+   "fetch_from": "rsv.customer_name",
+   "fieldname": "auftraggeber_name",
+   "fieldtype": "Data",
+   "label": "Auftraggeber Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-19 17:26:23.069929",
+ "modified": "2019-12-23 16:14:26.117278",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

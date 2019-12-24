@@ -4,7 +4,7 @@
 frappe.ui.form.on('Telefon Triage', {
 	refresh: function(frm) {
 		cur_frm.disable_save();
-		show_mitglied_in_html(frm);
+		show_mitglied_suche_in_html(frm);
 	},
 	reset_suche: function(frm) {
 		show_mitglied_suche_in_html(frm);
@@ -24,9 +24,32 @@ frappe.ui.form.on('Telefon Triage', {
 		kontaktdaten_suchen(frm);
 	},
 	open_anfrage: function(frm) {
-		frappe.msgprint("Dies muss noch programmiert werden...");
+		neue_anfrage(frm);
 	}
 });
+
+function neue_anfrage(frm) {
+	if (cur_frm.doc.kunde) {
+		frappe.call({
+			method: 'spo.spo.doctype.telefon_triage.telefon_triage.creat_new_anfrage',
+			args: {
+				'kunde': cur_frm.doc.kunde,
+				'mitgliedschaft': cur_frm.doc.mitgliedschaft,
+				'adresse': cur_frm.doc.adresse,
+				'kontakt': cur_frm.doc.kontakt
+			},
+			callback: function(r) {
+				if(r.message) {
+					if (r.message) {
+						frappe.set_route("Form", "Anfrage", r.message)
+					}
+				} 
+			}
+		});
+	} else {
+		frappe.msgprint("Bitte suchen Sie zuerst nach einem möglichen Mitglied.", "Fehlender Kunde");
+	}
+}
 
 function show_mitglied_suche_in_html(frm) {
 	cur_frm.set_df_property('info_html','options', '<div class="alert alert-info"><strong>Bitte suchen Sie nach einem möglichen Mitglied.</strong></div>');

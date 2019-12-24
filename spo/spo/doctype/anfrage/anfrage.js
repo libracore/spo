@@ -10,6 +10,7 @@ frappe.ui.form.on('Anfrage', {
 		if (frm.doc.__islocal) {
 			cur_frm.doc.mitglied = '';
 			cur_frm.set_value('datum', frappe.datetime.get_today());
+			cur_frm.set_value('patient', cur_frm.doc.customer);
 			nothing_mandatory(frm);
 			cur_frm.save();
 		}
@@ -139,7 +140,9 @@ frappe.ui.form.on('Anfrage', {
 				new_mandat(frm.doc.name, frm.doc.patient, frm.doc.patienten_adresse, frm.doc.patienten_kontakt);
 			});
 		}
-		cur_frm.scroll_to_field("mitgliedschaft");
+		//cur_frm.scroll_to_field("mitgliedschaft");
+		
+			cur_frm.set_value('customer', cur_frm.doc.patient);
 	},
 	mitglied_erstellen: function(frm) {
 		frappe.call({
@@ -246,8 +249,11 @@ frappe.ui.form.on('Anfrage', {
 		frappe.utils.scroll_to(0);
 		cur_frm.fields[56].collapse_link.click();
 	},
-	plz: function(frm) {
-		get_city_from_pincode(cur_frm.doc.plz, 'ort', 'kanton');
+	patient_plz: function(frm) {
+		get_city_from_pincode(cur_frm.doc.patient_plz, 'patient_ort', 'patient_kanton');
+	},
+	ang_plz: function(frm) {
+		get_city_from_pincode(cur_frm.doc.ang_plz, 'ang_ort', 'ang_kanton');
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
@@ -278,7 +284,10 @@ function new_mandat(anfrage, patient, adresse, kontakt) {
 				'rsv': cur_frm.doc.rsv,
 				'rsv_kontakt': cur_frm.doc.rsv_kontakt,
 				'rsv_adresse': cur_frm.doc.rsv_adresse,
-				'rsv_ref': cur_frm.doc.rechtsschutz_ref
+				'rsv_ref': cur_frm.doc.rechtsschutz_ref,
+				'ang': cur_frm.doc.ang,
+				'ang_kontakt': cur_frm.doc.ang_kontakt,
+				'ang_adresse': cur_frm.doc.ang_adresse
 			},
 			callback: function(r) {
 				if(r.message) {
@@ -300,7 +309,7 @@ function new_mandat(anfrage, patient, adresse, kontakt) {
 			}
 		});
 	} else {
-		frappe.msgprint("Bitte tragen Sie zuerst einen Patienten ein.", "Fehlender Patient");
+		frappe.msgprint("Bitte tragen Sie zuerst einen Kunden ein.", "Fehlender Kunde");
 	}
 }
 
@@ -676,6 +685,22 @@ function set_link_filter(frm) {
 			}
 		}
 	};
+	cur_frm.fields_dict['ang_adresse'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.ang
+			}
+		}
+	};
+	cur_frm.fields_dict['ang_kontakt'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.ang
+			}
+		}
+	};
 	cur_frm.fields_dict['mitgliedschaft'].get_query = function(doc) {
 		 return {
 			 filters: {
@@ -884,6 +909,12 @@ function dropdown_steuerung_von_sections(frm) {
 	if (cur_frm.fields_dict.section_person && !cur_frm.fields_dict.section_person.is_collapsed()) {
 		cur_frm.fields_dict.section_person.collapse();
 	}
+	if (cur_frm.fields_dict.section_angehoerige && !cur_frm.fields_dict.section_angehoerige.is_collapsed()) {
+		cur_frm.fields_dict.section_angehoerige.collapse();
+	}
+	if (cur_frm.fields_dict.section_angehoerige_links && !cur_frm.fields_dict.section_angehoerige_links.is_collapsed()) {
+		cur_frm.fields_dict.section_angehoerige_links.collapse();
+	}
 	if (cur_frm.fields_dict.section_rsv && !cur_frm.fields_dict.section_rsv.is_collapsed()) {
 		cur_frm.fields_dict.section_rsv.collapse();
 	}
@@ -906,6 +937,14 @@ function dropdown_steuerung_von_sections(frm) {
 		});
 		cur_frm.fields_dict.section_rsv.collapse_link.on("click", function(){
 			cur_frm.fields_dict.section_kontakt_daten.collapse();
+		});
+	}
+	if (cur_frm.fields_dict.section_angehoerige) {
+		cur_frm.fields_dict.section_angehoerige.collapse_link.on("click", function(){
+			cur_frm.fields_dict.section_angehoerige_links.collapse();
+		});
+		cur_frm.fields_dict.section_angehoerige_links.collapse_link.on("click", function(){
+			cur_frm.fields_dict.section_angehoerige.collapse();
 		});
 	}
 }

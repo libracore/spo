@@ -58,12 +58,13 @@
    "fetch_from": "mitglied.name",
    "fieldname": "customer",
    "fieldtype": "Link",
-   "label": "Customer",
+   "hidden": 1,
+   "label": "Customer (for Link)",
    "options": "Customer"
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2019-11-23 15:28:07.300968",
+ "modified": "2019-12-23 15:38:35.133107",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",

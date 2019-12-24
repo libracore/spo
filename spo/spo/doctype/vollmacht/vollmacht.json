@@ -5,7 +5,11 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "mandat",
+  "kunde_html",
+  "cb_4",
+  "ang_html",
+  "cb_5",
+  "adressat",
   "section_1",
   "rsv",
   "cb_1",
@@ -25,7 +29,17 @@
   "textkonserve_begleitbrief",
   "begleitbrief",
   "amended_from",
-  "fusszeile"
+  "fusszeile",
+  "fold_referenzen",
+  "section_referenzen",
+  "mandat",
+  "customer",
+  "kunden_adresse",
+  "kunden_kontakt",
+  "cb_3",
+  "ang",
+  "ang_adresse",
+  "ang_kontakt"
  ],
  "fields": [
   {
@@ -99,7 +113,8 @@
   },
   {
    "fieldname": "section_2",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Auftrags-, Vollmachts-Erteilung"
   },
   {
    "fieldname": "cb_2",
@@ -145,10 +160,94 @@
    "label": "Fusszeile",
    "options": "Letter Head",
    "reqd": 1
+  },
+  {
+   "fieldname": "kunde_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "depends_on": "eval:doc.todesfall=='1'",
+   "fieldname": "cb_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.todesfall=='1'",
+   "fieldname": "ang_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "fold_referenzen",
+   "fieldtype": "Fold"
+  },
+  {
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
+  },
+  {
+   "fetch_from": "mandat.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Kunde",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mandat.adresse",
+   "fieldname": "kunden_adresse",
+   "fieldtype": "Link",
+   "label": "Kunden Adresse",
+   "options": "Address",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mandat.kontakt",
+   "fieldname": "kunden_kontakt",
+   "fieldtype": "Link",
+   "label": "Kunden Kontakt",
+   "options": "Contact",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "mandat.ang",
+   "fieldname": "ang",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mandat.ang_adresse",
+   "fieldname": "ang_adresse",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige Adresse",
+   "options": "Address",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mandat.ang_kontakt",
+   "fieldname": "ang_kontakt",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige Kontakt",
+   "options": "Contact",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "adressat",
+   "fieldtype": "Small Text",
+   "label": "Adressat"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-11 16:35:25.136402",
+ "modified": "2019-12-24 10:23:05.794261",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",
