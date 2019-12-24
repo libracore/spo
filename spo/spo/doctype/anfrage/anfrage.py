@@ -477,16 +477,28 @@ def get_kunden_data(kunde, adresse, kontakt):
 	kontakt = frappe.get_doc("Contact", kontakt)
 	
 	html = '<div><h3>Kunde:</h3><h4>'
-	html += kunde.customer_name or ''
+	if kunde.customer_name:
+		html += kunde.customer_name
 	html += '</h4><div class="row"><div class="col-sm-6"><p>'
-	html += kontakt.first_name + " " + kontakt.last_name + "<br>" or ''
-	html += kontakt.email_id + "<br>" or ''
-	html += kontakt.phone + "<br>" or ''
-	html += kontakt.mobile_no or ''
+	if kontakt.first_name and kontakt.last_name:
+		html += kontakt.first_name + " " + kontakt.last_name + "<br>"
+	if kontakt.email_id:
+		html += kontakt.email_id + "<br>"
+	if kontakt.phone:
+		html += kontakt.phone + "<br>"
+	if kontakt.mobile_no:
+		html += kontakt.mobile_no
 	html += '</p></div><div class="col-sm-6"><p>'
-	html += adresse.address_line1 + "<br>" or ''
-	html += adresse.address_line2 + '<br>' or ''
-	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton
+	if adresse.address_line1:
+		html += adresse.address_line1 + "<br>"
+	if adresse.address_line2:
+		html += adresse.address_line2 + '<br>'
+	if adresse.plz:
+		html += adresse.plz
+	if adresse.city:
+		html += " " + adresse.city
+	if adresse.kanton:
+		html += " " + adresse.kanton
 	html += '</p></div></div>'
 	
 	return html
@@ -498,16 +510,28 @@ def get_angehoerige_data(ang, adresse, kontakt):
 	kontakt = frappe.get_doc("Contact", kontakt)
 	
 	html = '<div><h3>Angehörige:</h3><h4>'
-	html += ang.customer_name or ''
+	if ang.customer_name:
+		html += ang.customer_name
 	html += '</h4><div class="row"><div class="col-sm-6"><p>'
-	html += kontakt.first_name + " " + kontakt.last_name + "<br>" or ''
-	html += kontakt.email_id + "<br>" or ''
-	html += kontakt.phone + "<br>" or ''
-	html += kontakt.mobile_no or ''
+	if kontakt.first_name and kontakt.last_name:
+		html += kontakt.first_name + " " + kontakt.last_name + "<br>"
+	if kontakt.email_id:
+		html += kontakt.email_id + "<br>"
+	if kontakt.phone:
+		html += kontakt.phone + "<br>"
+	if kontakt.mobile_no:
+		html += kontakt.mobile_no
 	html += '</p></div><div class="col-sm-6"><p>'
-	html += adresse.address_line1 + "<br>" or ''
-	html += adresse.address_line2 + '<br>' or ''
-	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton
+	if adresse.address_line1:
+		html += adresse.address_line1 + "<br>"
+	if adresse.address_line2:
+		html += adresse.address_line2 + '<br>'
+	if adresse.plz:
+		html += adresse.plz
+	if adresse.city:
+		html += " " + adresse.city
+	if adresse.kanton:
+		html += " " + adresse.kanton
 	html += '</p></div></div>'
 	
 	return html
@@ -519,16 +543,28 @@ def get_rsv_data(rsv, adresse, kontakt):
 	kontakt = frappe.get_doc("Contact", kontakt)
 	
 	html = '<div><h3>Auftraggeber:</h3><h4>'
-	html += rsv.customer_name or ''
+	if rsv.customer_name:
+		html += rsv.customer_name
 	html += '</h4><div class="row"><div class="col-sm-6"><p>'
-	html += kontakt.first_name + " " + kontakt.last_name + "<br>" or ''
-	html += kontakt.email_id + "<br>" or ''
-	html += kontakt.phone + "<br>" or ''
-	html += kontakt.mobile_no or ''
+	if kontakt.first_name and kontakt.last_name:
+		html += kontakt.first_name + " " + kontakt.last_name + "<br>"
+	if kontakt.email_id:
+		html += kontakt.email_id + "<br>"
+	if kontakt.phone:
+		html += kontakt.phone + "<br>"
+	if kontakt.mobile_no:
+		html += kontakt.mobile_no
 	html += '</p></div><div class="col-sm-6"><p>'
-	html += adresse.address_line1 + "<br>" or ''
-	html += adresse.address_line2 + '<br>' or ''
-	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton
+	if adresse.address_line1:
+		html += adresse.address_line1 + "<br>"
+	if adresse.address_line2:
+		html += adresse.address_line2 + '<br>'
+	if adresse.plz:
+		html += adresse.plz
+	if adresse.city:
+		html += " " + adresse.city
+	if adresse.kanton:
+		html += " " + adresse.kanton
 	html += '</p></div></div>'
 	
 	return html
