@@ -36,6 +36,7 @@
   "absprung_einstellungen",
   "timer",
   "default_ts",
+  "kostengutschsprache",
   "max_aufwand",
   "zeiten_uebersicht",
   "amended_from",
@@ -240,6 +241,7 @@
   },
   {
    "default": "0",
+   "depends_on": "eval:doc.kostengutschsprache",
    "fieldname": "max_aufwand",
    "fieldtype": "Int",
    "label": "Maximale Aufwandsgrenze (in min)"
@@ -384,11 +386,17 @@
   {
    "fieldname": "kunden_dashboard_html",
    "fieldtype": "HTML"
+  },
+  {
+   "description": "Damit die Mandatsspezifische Aufwandsgrenze erh\u00f6ht werden kann, muss hier die Kostengutsprache als PDF hochgeldaen werden.",
+   "fieldname": "kostengutschsprache",
+   "fieldtype": "Attach",
+   "label": "Kostengutschsprache"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-24 11:42:53.278055",
+ "modified": "2019-12-24 12:25:04.295098",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
