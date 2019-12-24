@@ -31,6 +31,7 @@
   "cb_0",
   "anonymisiert",
   "datum",
+  "todesfall",
   "section_person",
   "kontaktdaten_suchen",
   "patient_vorname",
@@ -50,9 +51,27 @@
   "patient_krankenkasse",
   "section_patienten_links",
   "patient",
+  "customer",
   "patienten_kontakt",
   "patienten_adresse",
   "mitgliedschaft",
+  "section_angehoerige",
+  "ang_vorname",
+  "ang_nachname",
+  "ang_geburtsdatum",
+  "ang_telefon",
+  "ang_mobile",
+  "ang_mail",
+  "cb_angehoerige",
+  "ang_strasse",
+  "ang_adress_zusatz",
+  "ang_plz",
+  "ang_ort",
+  "ang_kanton",
+  "section_angehoerige_links",
+  "ang",
+  "ang_kontakt",
+  "ang_adresse",
   "section_kontakt_daten",
   "rsv_kontaktdaten",
   "section_rsv",
@@ -103,7 +122,7 @@
    "collapsible": 1,
    "fieldname": "section_person",
    "fieldtype": "Section Break",
-   "label": "Angaben zur Person"
+   "label": "Angaben zum Kunden"
   },
   {
    "fieldname": "scroll_top_1",
@@ -159,7 +178,7 @@
   {
    "fieldname": "rechtsschutz_ref",
    "fieldtype": "Data",
-   "label": "Referenznummer"
+   "label": "Auftraggeber Referenznummer"
   },
   {
    "depends_on": "eval:doc.anfrage_typ=='Sonstiges'",
@@ -344,46 +363,46 @@
    "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
    "fieldname": "section_kontakt_daten",
    "fieldtype": "Section Break",
-   "label": "Rechtsschutzversicherung"
+   "label": "Auftraggeber"
   },
   {
    "fieldname": "patient",
    "fieldtype": "Link",
-   "label": "Patient",
+   "label": "Kunde",
    "options": "Customer"
   },
   {
    "depends_on": "eval:doc.patient",
    "fieldname": "patienten_kontakt",
    "fieldtype": "Link",
-   "label": "Patienten Kontakt",
+   "label": "Kunden Kontakt",
    "options": "Contact"
   },
   {
    "depends_on": "eval:doc.patient",
    "fieldname": "patienten_adresse",
    "fieldtype": "Link",
-   "label": "Patienten Adresse",
+   "label": "Kunden Adresse",
    "options": "Address"
   },
   {
    "fieldname": "rsv",
    "fieldtype": "Link",
-   "label": "RSV",
+   "label": "Auftraggeber",
    "options": "Customer"
   },
   {
    "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
    "fieldname": "rsv_kontakt",
    "fieldtype": "Link",
-   "label": "RSV Kontakt",
+   "label": "Auftraggeber Kontakt",
    "options": "Contact"
   },
   {
    "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
    "fieldname": "rsv_adresse",
    "fieldtype": "Link",
-   "label": "RSV Adresse",
+   "label": "Auftraggeber Adresse",
    "options": "Address"
   },
   {
@@ -466,25 +485,141 @@
    "collapsible": 1,
    "fieldname": "section_patienten_links",
    "fieldtype": "Section Break",
-   "label": "Links zu Patienten Daten (oder allgemeine Anfrage Bezugsperson)"
+   "label": "Links zu Kunden Daten"
   },
   {
    "collapsible": 1,
    "depends_on": "eval:doc.anfrage_typ=='Mandats Anfrage'",
    "fieldname": "section_rsv",
    "fieldtype": "Section Break",
-   "label": "Links zu RSV (Rechtsschutzversicherung)"
+   "label": "Links zu Auftraggeber"
   },
   {
    "fieldname": "rsv_kontaktdaten",
    "fieldtype": "HTML",
    "label": "Erfasste Kontaktdaten",
    "options": "<div>Bitte w\u00e4hlen Sie untenstehend eine RSV, eine Adresse und ein Kontakt aus.</div>"
+  },
+  {
+   "fieldname": "todesfall",
+   "fieldtype": "Select",
+   "label": "Anfrage im Zusammenhang mit einem Todesfall?",
+   "options": "Nein\nJa"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.todesfall=='Ja'",
+   "fieldname": "section_angehoerige",
+   "fieldtype": "Section Break",
+   "label": "Angaben Angeh\u00f6rige"
+  },
+  {
+   "fetch_from": "ang_kontakt.first_name",
+   "fieldname": "ang_vorname",
+   "fieldtype": "Data",
+   "label": "Vorname"
+  },
+  {
+   "fetch_from": "ang_kontakt.last_name",
+   "fieldname": "ang_nachname",
+   "fieldtype": "Data",
+   "label": "Nachname"
+  },
+  {
+   "fetch_from": "ang_kontakt.geburtsdatum",
+   "fieldname": "ang_geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fetch_from": "ang_kontakt.phone",
+   "fieldname": "ang_telefon",
+   "fieldtype": "Data",
+   "label": "Telefon"
+  },
+  {
+   "fetch_from": "ang_kontakt.mobile_no",
+   "fieldname": "ang_mobile",
+   "fieldtype": "Data",
+   "label": "Mobile"
+  },
+  {
+   "fetch_from": "ang_kontakt.email_id",
+   "fieldname": "ang_mail",
+   "fieldtype": "Data",
+   "label": "E-Mail"
+  },
+  {
+   "fieldname": "cb_angehoerige",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "ang_adresse.address_line1",
+   "fieldname": "ang_strasse",
+   "fieldtype": "Data",
+   "label": "Strasse und Hausnummer"
+  },
+  {
+   "fetch_from": "ang_adresse.address_line2",
+   "fieldname": "ang_adress_zusatz",
+   "fieldtype": "Data",
+   "label": "Adress Zusatz"
+  },
+  {
+   "fetch_from": "doc.ang_adresse.plz",
+   "fieldname": "ang_plz",
+   "fieldtype": "Data",
+   "label": "PLZ"
+  },
+  {
+   "fetch_from": "ang_adresse.city",
+   "fieldname": "ang_ort",
+   "fieldtype": "Data",
+   "label": "Ort"
+  },
+  {
+   "fetch_from": "ang_adresse.kanton",
+   "fieldname": "ang_kanton",
+   "fieldtype": "Select",
+   "label": "Kanton",
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.todesfall=='Ja'",
+   "fieldname": "section_angehoerige_links",
+   "fieldtype": "Section Break",
+   "label": "Links zu Angeh\u00f6rige"
+  },
+  {
+   "fieldname": "ang",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ang_kontakt",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "ang_adresse",
+   "fieldtype": "Link",
+   "label": "Angeh\u00f6rige Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Customer (for link)",
+   "options": "Customer"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-12-19 16:50:17.542596",
+ "modified": "2019-12-23 15:35:49.332488",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

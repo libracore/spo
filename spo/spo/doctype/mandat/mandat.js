@@ -34,7 +34,7 @@ frappe.ui.form.on('Mandat', {
 			}
 		});
 		
-		set_rsv_html(frm);
+		set_adress_html_felder(frm);
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
@@ -100,7 +100,7 @@ function timesheet_handling(frm) {
 				"doctype": frm.doc.doctype,
 				"reference": frm.doc.name,
 				"time": values.time,
-				"bemerkung": values.arbeit + ": " + values.remark,
+				"bemerkung": values.arbeit + ": " + (values.remark||''),
 				"date": values.datum
 			},
 			"async": false,
@@ -119,6 +119,40 @@ function ts_bearbeiten(ts) {
 	frappe.set_route("Form", "Zeiterfassung");
 }
 
+function set_kunden_html(frm) {
+	if (cur_frm.doc.customer && cur_frm.doc.kontakt && cur_frm.doc.adresse) {
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.get_kunden_data",
+			"args": {
+				"kunde": cur_frm.doc.customer,
+				"adresse": cur_frm.doc.adresse,
+				"kontakt": cur_frm.doc.kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('kunde_html','options', r.message);
+			}
+		});
+	}
+}
+
+function set_angehoerige_html(frm) {
+	if (cur_frm.doc.ang && cur_frm.doc.ang_adresse && cur_frm.doc.ang_kontakt) {
+		frappe.call({
+			"method": "spo.spo.doctype.anfrage.anfrage.get_angehoerige_data",
+			"args": {
+				"ang": cur_frm.doc.ang,
+				"adresse": cur_frm.doc.ang_adresse,
+				"kontakt": cur_frm.doc.ang_kontakt
+			},
+			"async": false,
+			"callback": function(r) {
+				cur_frm.set_df_property('ang_html','options', r.message);
+			}
+		});
+	}
+}
+
 function set_rsv_html(frm) {
 	if (cur_frm.doc.rsv && cur_frm.doc.rsv_adresse && cur_frm.doc.rsv_kontakt) {
 		frappe.call({
@@ -134,4 +168,11 @@ function set_rsv_html(frm) {
 			}
 		});
 	}
+}
+
+
+function set_adress_html_felder(frm) {
+	set_kunden_html(frm);
+	set_angehoerige_html(frm);
+	set_rsv_html(frm);
 }
