@@ -6,7 +6,6 @@
  "engine": "InnoDB",
  "field_order": [
   "info_titel",
-  "mandat",
   "problemstellung",
   "fragestellung_anwalt",
   "beurteilung",
@@ -21,7 +20,10 @@
   "schaden",
   "empfehlung_check",
   "fusszeile",
-  "amended_from"
+  "amended_from",
+  "fold_referenzen",
+  "section_referenzen",
+  "mandat"
  ],
  "fields": [
   {
@@ -125,10 +127,19 @@
    "label": "Fusszeile",
    "options": "Letter Head",
    "reqd": 1
+  },
+  {
+   "fieldname": "fold_referenzen",
+   "fieldtype": "Fold"
+  },
+  {
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-11 16:35:06.357582",
+ "modified": "2019-12-24 11:56:21.786016",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",

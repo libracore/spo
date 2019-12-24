@@ -6,6 +6,11 @@ frappe.ui.form.on('Vollmacht', {
 		check_todesfall(frm);
 		set_kunden_html(frm);
 		set_ang_html(frm)
+		if (cur_frm.doc.todesfall == 1) {
+			fetch_data_from_ang(frm);
+		} else {
+			fetch_data_from_kunde(frm);
+		}
 	},
 	before_save: function(frm) {
 		if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
@@ -49,7 +54,13 @@ frappe.ui.form.on('Vollmacht', {
 		
 		check_todesfall(frm);
 		set_kunden_html(frm);
-		set_ang_html(frm)
+		set_ang_html(frm);
+		
+		if (cur_frm.doc.mandat) {
+			frm.add_custom_button(__("Zurück zum Mandat"), function() {
+				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);
+			});
+		}
 	},
 	todesfall: function(frm) {
 		if (cur_frm.doc.todesfall == 1) {

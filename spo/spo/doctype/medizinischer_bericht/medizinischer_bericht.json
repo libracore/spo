@@ -6,7 +6,6 @@
  "engine": "InnoDB",
  "field_order": [
   "info_titel",
-  "mandat",
   "problemstellung",
   "diagnose",
   "operation",
@@ -33,7 +32,10 @@
   "empfehlung_check",
   "section_1",
   "amended_from",
-  "fusszeile"
+  "fusszeile",
+  "fold_referenzen",
+  "section_referenzen",
+  "mandat"
  ],
  "fields": [
   {
@@ -206,10 +208,19 @@
    "label": "Fusszeile",
    "options": "Letter Head",
    "reqd": 1
+  },
+  {
+   "fieldname": "fold_referenzen",
+   "fieldtype": "Fold"
+  },
+  {
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-11 16:34:46.868006",
+ "modified": "2019-12-24 11:55:32.950729",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",

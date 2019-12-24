@@ -5,11 +5,13 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "mandat",
   "textkonserve",
   "brieftext",
   "fusszeile",
-  "amended_from"
+  "amended_from",
+  "fold_referenzen",
+  "section_referenzen",
+  "mandat"
  ],
  "fields": [
   {
@@ -48,10 +50,19 @@
    "label": "Fusszeile",
    "options": "Letter Head",
    "reqd": 1
+  },
+  {
+   "fieldname": "fold_referenzen",
+   "fieldtype": "Fold"
+  },
+  {
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-14 11:58:20.819122",
+ "modified": "2019-12-24 11:56:59.379291",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Abschlussbericht",
