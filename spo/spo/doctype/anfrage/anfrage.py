@@ -506,7 +506,7 @@ def get_angehoerige_data(ang, adresse, kontakt):
 	html += kontakt.mobile_no or ''
 	html += '</p></div><div class="col-sm-6"><p>'
 	html += adresse.address_line1 + "<br>" or ''
-	html += adresse.address_line2 + '<br>' +  or ''
+	html += adresse.address_line2 + '<br>' or ''
 	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton
 	html += '</p></div></div>'
 	
@@ -527,7 +527,7 @@ def get_rsv_data(rsv, adresse, kontakt):
 	html += kontakt.mobile_no or ''
 	html += '</p></div><div class="col-sm-6"><p>'
 	html += adresse.address_line1 + "<br>" or ''
-	html += adresse.address_line2 + '<br>' +  or ''
+	html += adresse.address_line2 + '<br>' or ''
 	html += str(adresse.plz) + " " + adresse.city + " " + adresse.kanton
 	html += '</p></div></div>'
 	
