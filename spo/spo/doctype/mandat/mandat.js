@@ -35,6 +35,12 @@ frappe.ui.form.on('Mandat', {
 		});
 		
 		set_adress_html_felder(frm);
+		
+		if (cur_frm.doc.anfragen) {
+			frm.add_custom_button(__("Zurück zur Anfrage"), function() {
+				frappe.set_route("Form", "Anfrage", cur_frm.doc.anfragen);
+			});
+		}
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
@@ -131,6 +137,7 @@ function set_kunden_html(frm) {
 			"async": false,
 			"callback": function(r) {
 				cur_frm.set_df_property('kunde_html','options', r.message);
+				cur_frm.set_df_property('kunden_dashboard_html','options', r.message);
 			}
 		});
 	}

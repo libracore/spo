@@ -7,6 +7,7 @@
  "field_order": [
   "section_dashboard",
   "dashboard_html",
+  "kunden_dashboard_html",
   "vorname",
   "nachname",
   "section_rat",
@@ -225,6 +226,7 @@
    "fetch_from": "kontakt.first_name",
    "fieldname": "vorname",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Vorname",
    "read_only": 1
   },
@@ -232,6 +234,7 @@
    "fetch_from": "kontakt.last_name",
    "fieldname": "nachname",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Nachname",
    "read_only": 1
   },
@@ -377,11 +380,15 @@
    "fieldtype": "Data",
    "label": "Auftraggeber Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "kunden_dashboard_html",
+   "fieldtype": "HTML"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-23 16:14:26.117278",
+ "modified": "2019-12-24 11:42:53.278055",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

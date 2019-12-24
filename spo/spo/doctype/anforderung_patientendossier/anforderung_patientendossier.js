@@ -18,6 +18,12 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 		});
 		
 		defaul_texte(frm);
+		
+		if (cur_frm.doc.mandat) {
+			frm.add_custom_button(__("Zurück zum Mandat"), function() {
+				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);
+			});
+		}
 	},
 	onload: function(frm) {
 		defaul_texte(frm);

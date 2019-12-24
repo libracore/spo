@@ -7,6 +7,12 @@ frappe.ui.form.on('Triage', {
 		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
 			timesheet_handling(frm);
 		});
+		
+		if (cur_frm.doc.mandat) {
+			frm.add_custom_button(__("Zurück zum Mandat"), function() {
+				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);
+			});
+		}
 	}
 });
 
