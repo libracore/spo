@@ -56,6 +56,12 @@ def get_data():
 					"label": "Rechnungen",
 					"name": "Sales Invoice",
 					"description": _("Sales Invoice"),
+				},
+				{
+					"type": "doctype",
+					"label": "Rechnungslauf",
+					"name": "Mitglieder Rechnungslauf",
+					"description": _("Mitglieder Rechnungslauf"),
 				}
 			]
 		},
