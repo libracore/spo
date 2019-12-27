@@ -1,0 +1,57 @@
+{
+ "creation": "2019-12-24 12:54:20.319921",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mitgliedschaft",
+  "kunde",
+  "type",
+  "ende"
+ ],
+ "fields": [
+  {
+   "fieldname": "mitgliedschaft",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mitgliedschaft",
+   "options": "Mitgliedschaft"
+  },
+  {
+   "fetch_from": "mitgliedschaft.customer",
+   "fieldname": "kunde",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Kunde",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mitgliedschaft.mitgliedschafts_typ",
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Typ",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mitgliedschaft.ende",
+   "fieldname": "ende",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Ende",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-12-24 13:39:59.681308",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Auslaufende Mitgliedschaften",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
