@@ -274,3 +274,13 @@ def get_zeiten_uebersicht(dt, name):
 										OR `spo_referenz` IN (
 											SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{name}'){referenz_anfrage} ORDER BY `from_time`, `spo_referenz`""".format(name=name, referenz_anfrage=referenz_anfrage), as_dict=True)
 		return alle_zeiten
+		
+@frappe.whitelist()
+def check_ts_owner(ts, user):
+	ts = frappe.get_doc("Timesheet", ts)
+	employee = frappe.get_doc("Employee", ts.employee)
+	user_id = employee.user_id
+	if user_id == user:
+		return True
+	else:
+		return False
