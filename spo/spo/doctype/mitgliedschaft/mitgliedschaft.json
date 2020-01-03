@@ -11,7 +11,8 @@
   "rechnung",
   "cb_1",
   "mitgliedschafts_typ",
-  "ende"
+  "ende",
+  "not_renew"
  ],
  "fields": [
   {
@@ -61,10 +62,16 @@
    "hidden": 1,
    "label": "Customer (for Link)",
    "options": "Customer"
+  },
+  {
+   "default": "0",
+   "fieldname": "not_renew",
+   "fieldtype": "Check",
+   "label": "Nicht verl\u00e4ngern"
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2019-12-23 15:38:35.133107",
+ "modified": "2020-01-03 13:17:56.720284",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",
