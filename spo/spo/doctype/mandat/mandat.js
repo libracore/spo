@@ -121,8 +121,22 @@ function timesheet_handling(frm) {
 }
 
 function ts_bearbeiten(ts) {
-	frappe.route_options = {"timesheet": ts};
-	frappe.set_route("Form", "Zeiterfassung");
+	frappe.call({
+		"method": "spo.utils.timesheet_handlings.check_ts_owner",
+		"args": {
+			"ts": ts,
+			"user": frappe.session.user_email
+		},
+		"async": false,
+		"callback": function(r) {
+			if (r.message) {
+				frappe.route_options = {"timesheet": ts};
+				frappe.set_route("Form", "Zeiterfassung");
+			} else {
+				frappe.msgprint("Sie können nur Ihre eigene Timesheets bearbeiten.", "Nicht Ihr Timesheet");
+			}
+		}
+	});
 }
 
 function set_kunden_html(frm) {
