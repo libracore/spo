@@ -15,5 +15,7 @@ $(document).bind('toolbar_setup', function() {
 // preferred modules for breadcrumbs
 $.extend(frappe.breadcrumbs.preferred, {
 	"Customer": "SPO",
-	"Sales Invoice": "SPO"
+	"Sales Invoice": "SPO",
+	"Address": "SPO",
+	"Address And Contacts": "SPO"
 });

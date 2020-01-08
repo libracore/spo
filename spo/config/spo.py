@@ -32,6 +32,14 @@ def get_data():
 					"description": _("Alle Mandate in Arbeit"),
 					"doctype": "Telefon Triage",
 					"is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "Address And Contacts",
+					"label": "Adressliste",
+					"description": _("Adressliste"),
+					#"doctype": "Telefon Triage",
+					"is_query_report": True
 				}
 			]
 		},
