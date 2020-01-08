@@ -21,7 +21,8 @@ def create_invoice(mitgliedschaft):
 		"items": [
 			{
 				"item_code": mitgliedschaft.mitgliedschafts_typ,
-				"qty": 1
+				"qty": 1,
+				"cost_center": "Main - GöV"
 			}
 		]
 	})

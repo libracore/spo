@@ -12,7 +12,8 @@
   "cb_1",
   "mitgliedschafts_typ",
   "ende",
-  "not_renew"
+  "not_renew",
+  "neue_mitgliedschaft"
  ],
  "fields": [
   {
@@ -68,10 +69,17 @@
    "fieldname": "not_renew",
    "fieldtype": "Check",
    "label": "Nicht verl\u00e4ngern"
+  },
+  {
+   "fieldname": "neue_mitgliedschaft",
+   "fieldtype": "Link",
+   "label": "Verl\u00e4ngerte Mitgliedschaft",
+   "options": "Mitgliedschaft",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2020-01-03 13:17:56.720284",
+ "modified": "2020-01-06 15:47:31.255510",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",

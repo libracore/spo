@@ -13,7 +13,8 @@
   "section_auto_assign",
   "auto_assign",
   "section_rechnungslauf",
-  "rechnungslauf_vorlauf"
+  "rechnungslauf_vorlauf",
+  "rechnungslauf_zahlungsfrist"
  ],
  "fields": [
   {
@@ -71,10 +72,16 @@
    "fieldname": "rechnungslauf_vorlauf",
    "fieldtype": "Int",
    "label": "Vorlauf (in Tagen)"
+  },
+  {
+   "default": "30",
+   "fieldname": "rechnungslauf_zahlungsfrist",
+   "fieldtype": "Int",
+   "label": "Zahlungsfrist"
   }
  ],
  "issingle": 1,
- "modified": "2019-12-24 12:48:31.235247",
+ "modified": "2020-01-07 13:26:25.560476",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",
