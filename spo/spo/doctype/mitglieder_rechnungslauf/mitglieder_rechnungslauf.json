@@ -5,6 +5,11 @@
  "engine": "InnoDB",
  "field_order": [
   "datum",
+  "cb_1",
+  "asap_print",
+  "rechnungen_erstellt",
+  "pdf_erstellt",
+  "section_1",
   "auslaufende_mitgliedschaften",
   "amended_from"
  ],
@@ -32,10 +37,39 @@
    "options": "Mitglieder Rechnungslauf",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "asap_print",
+   "fieldtype": "Check",
+   "label": "Rechnungen direkt verbuchen und drucken"
+  },
+  {
+   "fieldname": "section_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "pdf_erstellt",
+   "fieldtype": "Check",
+   "label": "PDF erstellt",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "rechnungen_erstellt",
+   "fieldtype": "Check",
+   "label": "Rechnungen erstellt",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2020-01-03 13:30:58.358830",
+ "modified": "2020-01-07 20:00:48.324830",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitglieder Rechnungslauf",
