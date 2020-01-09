@@ -153,7 +153,7 @@ def get_dashboard_data(mitglied='', anfrage=''):
 	else:
 		try:
 			callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
-														SELECT `name` FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}')
+														SELECT `name` FROM `tabAnfrage` WHERE `patient` = '{mitglied}')
 														AND `parent` IN (
 															SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mitglied=mitglied), as_list=True)[0][0])
 		except:
