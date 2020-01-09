@@ -39,3 +39,33 @@ def get_kunden_data(kunde, adresse, kontakt):
 	html += '</p></div>'
 	
 	return html
+	
+@frappe.whitelist()
+def get_titelzeile(kontakt, adresse):
+	kontakt = frappe.get_doc("Contact", kontakt)
+	adresse = frappe.get_doc("Address", adresse)
+	titelzeile = '<b>'
+	if kontakt.verstorben == 1:
+		titelzeile += kontakt.salutation + " "
+		titelzeile += kontakt.first_name + " "
+		titelzeile += kontakt.last_name + " (verstorben"
+		if kontakt.verstorben_am:
+			titelzeile += " am " + str(kontakt.verstorben_am) + "), "
+		else:
+			titelzeile += "), "
+		if kontakt.geburtsdatum:
+			titelzeile += "geboren am " + str(kontakt.geburtsdatum) + ", "
+		titelzeile += adresse.address_line1 + " "
+		titelzeile += adresse.plz + " "
+		titelzeile += adresse.city + "</b>"
+		return titelzeile
+	else:
+		titelzeile += kontakt.salutation + " "
+		titelzeile += kontakt.first_name + " "
+		titelzeile += kontakt.last_name + ", "
+		if kontakt.geburtsdatum:
+			titelzeile += "geboren am " + str(kontakt.geburtsdatum) + ", "
+		titelzeile += adresse.address_line1 + " "
+		titelzeile += adresse.plz + " "
+		titelzeile += adresse.city + "</b>"
+		return titelzeile
