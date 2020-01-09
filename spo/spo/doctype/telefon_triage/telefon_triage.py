@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe.utils.data import today
 
 class TelefonTriage(Document):
 	pass
@@ -13,7 +14,8 @@ class TelefonTriage(Document):
 def creat_new_anfrage(mitgliedschaft=None, kontakt=None, adresse=None, kunde=None):
 	#creat new anfrage
 	anfrage = frappe.get_doc({
-		"doctype": "Anfrage"
+		"doctype": "Anfrage",
+		"datum": today()
 	})
 	
 	anfrage.insert(ignore_permissions=True)
