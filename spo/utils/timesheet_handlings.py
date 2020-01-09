@@ -248,7 +248,14 @@ def auto_ts_submit():
 	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
 	for _ts in ts_list:
 		ts = frappe.get_doc("Timesheet", _ts.name)
-		ts.submit()
+		ruckmeldungen = 0
+		for log in ts.time_logs:
+			if log.activity_type != "Pause" and log.activity_type != "Arbeitszeit":
+				ruckmeldungen += log.hours
+		if ruckmeldungen <= ts.twh:
+			ts.submit()
+		#else:
+			#mail versand wenn fehler....muss noch programmiert werden...
 	
 def get_zeiten_uebersicht(dt, name):
 	if dt != 'Mandat':
