@@ -8,10 +8,14 @@
   "kunden_display",
   "cb_2",
   "adressat",
+  "spital",
+  "spital_kontakt",
+  "spital_adresse",
   "cb_3",
   "mahnstufe_1",
   "mahnstufe_2",
   "section_1",
+  "titelzeile",
   "textbaustein",
   "text_ohne_konserve",
   "brieftext",
@@ -136,10 +140,33 @@
   {
    "fieldname": "cb_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "titelzeile",
+   "fieldtype": "Text Editor",
+   "label": "Titelzeile"
+  },
+  {
+   "fieldname": "spital",
+   "fieldtype": "Link",
+   "label": "Spital",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "spital_kontakt",
+   "fieldtype": "Link",
+   "label": "Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "spital_adresse",
+   "fieldtype": "Link",
+   "label": "Adresse",
+   "options": "Address"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-24 09:17:02.960014",
+ "modified": "2020-01-09 14:05:47.968172",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",

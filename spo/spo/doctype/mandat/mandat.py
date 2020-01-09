@@ -13,13 +13,23 @@ class Mandat(Document):
 		if self.is_new() != True:
 			if not self.default_ts:
 				# create start ts buchung
-				handle_timesheet(frappe.session.user, self.doctype, self.name, 0)
+				default_time = get_default_time("Mandat")
+				handle_timesheet(frappe.session.user, self.doctype, self.name, default_time, '', nowdate())
 				self.default_ts = 1
 
 	def onload(self):
 		if self.is_new() != True:
 			if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
 				self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
+	
+def get_default_time(doctype):
+	time = 0
+	defaults = frappe.get_doc("Einstellungen").ts_defaults
+	for default in defaults:
+		if default.dokument == doctype:
+			time = default.default_hours
+			break
+	return time
 	
 @frappe.whitelist()
 def get_dashboard_data(mitglied='', anfrage='', mandat=''):
