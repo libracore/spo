@@ -517,37 +517,37 @@
    "fetch_from": "ang_kontakt.first_name",
    "fieldname": "ang_vorname",
    "fieldtype": "Data",
-   "label": "Vorname"
+   "label": "Vorname (Ang.)"
   },
   {
    "fetch_from": "ang_kontakt.last_name",
    "fieldname": "ang_nachname",
    "fieldtype": "Data",
-   "label": "Nachname"
+   "label": "Nachname (Ang.)"
   },
   {
    "fetch_from": "ang_kontakt.geburtsdatum",
    "fieldname": "ang_geburtsdatum",
    "fieldtype": "Date",
-   "label": "Geburtsdatum"
+   "label": "Geburtsdatum (Ang.)"
   },
   {
    "fetch_from": "ang_kontakt.phone",
    "fieldname": "ang_telefon",
    "fieldtype": "Data",
-   "label": "Telefon"
+   "label": "Telefon (Ang.)"
   },
   {
    "fetch_from": "ang_kontakt.mobile_no",
    "fieldname": "ang_mobile",
    "fieldtype": "Data",
-   "label": "Mobile"
+   "label": "Mobile (Ang.)"
   },
   {
    "fetch_from": "ang_kontakt.email_id",
    "fieldname": "ang_mail",
    "fieldtype": "Data",
-   "label": "E-Mail"
+   "label": "E-Mail (Ang.)"
   },
   {
    "fieldname": "cb_angehoerige",
@@ -557,31 +557,31 @@
    "fetch_from": "ang_adresse.address_line1",
    "fieldname": "ang_strasse",
    "fieldtype": "Data",
-   "label": "Strasse und Hausnummer"
+   "label": "Strasse und Hausnummer (Ang.)"
   },
   {
    "fetch_from": "ang_adresse.address_line2",
    "fieldname": "ang_adress_zusatz",
    "fieldtype": "Data",
-   "label": "Adress Zusatz"
+   "label": "Adress Zusatz (Ang.)"
   },
   {
    "fetch_from": "doc.ang_adresse.plz",
    "fieldname": "ang_plz",
    "fieldtype": "Data",
-   "label": "PLZ"
+   "label": "PLZ (Ang.)"
   },
   {
    "fetch_from": "ang_adresse.city",
    "fieldname": "ang_ort",
    "fieldtype": "Data",
-   "label": "Ort"
+   "label": "Ort (Ang.)"
   },
   {
    "fetch_from": "ang_adresse.kanton",
    "fieldname": "ang_kanton",
    "fieldtype": "Select",
-   "label": "Kanton",
+   "label": "Kanton (Ang.)",
    "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH"
   },
   {
@@ -619,7 +619,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2019-12-23 15:35:49.332488",
+ "modified": "2020-01-09 11:37:15.302234",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
