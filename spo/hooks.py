@@ -118,7 +118,8 @@ scheduler_events = {
 	"daily": [
 		"spo.spo.doctype.anfrage.anfrage.autom_submit",
 		"spo.utils.timesheet_handlings.auto_ts_submit",
-		"spo.spo.doctype.mitglieder_rechnungslauf.mitglieder_rechnungslauf.autom_rechnungslauf"
+		"spo.spo.doctype.mitglieder_rechnungslauf.mitglieder_rechnungslauf.autom_rechnungslauf",
+		"spo.utils.cleanup.cleanup_anfragen"
 	]
 }
 
