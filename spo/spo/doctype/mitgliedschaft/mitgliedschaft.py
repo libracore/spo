@@ -25,13 +25,14 @@ def create_invoice(mitgliedschaft):
 			{
 				"item_code": mitgliedschaft.mitgliedschafts_typ,
 				"qty": 1,
+				"description": frappe.utils.get_datetime(mitgliedschaft.start).strftime('%d.%m.%Y') + " - " + frappe.utils.get_datetime(mitgliedschaft.ende).strftime('%d.%m.%Y'),
 				"cost_center": "Main - GöV"
 			}
 		]
 	})
 	invoice.insert()
 	
-	referencenumber = mitgliedschaft.mitglied.split("-")[2] + invoice.name.split("-")[1] + invoice.name.split("-")[2] 
+	referencenumber = mitgliedschaft.mitglied.split("-")[2] + "00000" + invoice.name.split("-")[1] + invoice.name.split("-")[2] 
 	invoice.update({
 		"esr_reference": esr.get_reference_number(referencenumber),
 		"esr_code": esr.generateCodeline(invoice.grand_total, referencenumber, "012000272")
