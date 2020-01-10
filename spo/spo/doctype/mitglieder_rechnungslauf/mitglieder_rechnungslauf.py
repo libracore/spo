@@ -98,7 +98,7 @@ def background_rechnungslauf(self):
 				loop += 1
 				bind_source = "/assets/spo/sinvs_for_print/{rechnungslauf}/Rechnungslauf_{rechnungslauf}-{loop}.pdf".format(rechnungslauf=self.name, loop=loop)
 				physical_path = "/home/frappe/frappe-bench/sites" + bind_source
-				pdf_batch(sales_invoices, format="Standard", dest=str(physical_path), loop=loop, max_loop=max_loop, name=self.name)
+				pdf_batch(sales_invoices, format="Mitgliederrechnung", dest=str(physical_path), loop=loop, max_loop=max_loop, name=self.name)
 				qty = 0
 			
 				
@@ -106,7 +106,7 @@ def background_rechnungslauf(self):
 			loop += 1
 			bind_source = "/assets/spo/sinvs_for_print/{rechnungslauf}/Rechnungslauf_{rechnungslauf}-{loop}.pdf".format(rechnungslauf=self.name, loop=loop)
 			physical_path = "/home/frappe/frappe-bench/sites" + bind_source
-			pdf_batch(sales_invoices, format="Standard", dest=str(physical_path), loop=loop, max_loop=max_loop, name=self.name)
+			pdf_batch(sales_invoices, format="Mitgliederrechnung", dest=str(physical_path), loop=loop, max_loop=max_loop, name=self.name)
 		
 		frappe.db.sql("""UPDATE `tabMitglieder Rechnungslauf` SET `rechnungen_erstellt` = 1 WHERE `name` = '{name}'""".format(name=self.name), as_list=True)
 	
@@ -118,7 +118,7 @@ def pdf_batch(sales_invoices, format=None, dest=None, loop=0, max_loop=5, name='
 	max_time = 4800
 	args = {
 		'sales_invoices': sales_invoices,
-		'format': "Standard",
+		'format': "Mitgliederrechnung",
 		'dest': dest,
 		'last': last,
 		'name': name
