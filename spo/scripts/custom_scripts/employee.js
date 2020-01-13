@@ -1,6 +1,8 @@
 frappe.ui.form.on('Employee', {
 	validate: function(frm) {
-		calc_monatslohn(frm);	
+		calc_monatslohn(frm);
+		cur_frm.set_value('zeitraum_von', '');
+		cur_frm.set_value('zeitraum_bis', '');		
 	},
 	monatslohn: function(frm) {
 		calc_monatslohn(frm);	
@@ -36,6 +38,7 @@ function calc_monatslohn(frm) {
 
 function arbeitszeit(frm) {
 	if (cur_frm.doc.zeitraum_bis && cur_frm.doc.zeitraum_von) {
+		cur_frm.set_df_property('zeiten_summary','options', '<div>Bitte warten Sie bis Ihre Zeiten berechnet wurden.</div>');
 		frappe.call({
 			"method": "spo.utils.timesheet_handlings.calc_arbeitszeit",
 			"args": {
@@ -45,9 +48,12 @@ function arbeitszeit(frm) {
 			},
 			"callback": function(r) {
 				if (r.message) {
-					cur_frm.set_df_property('zeiten_summary','options', '<div>Sie haben im gewählten Zeitraum <b>' + r.message + 'h</b> gearbeitet.<br>Für detailierte Tagesinformationen öffnen Sie bitte Ihr entsprechendes Timesheet im Zeiterfassungs Manager.</div>');
+					//cur_frm.set_df_property('zeiten_summary','options', '<div><br><br><b>Soll:</b> ' + r.message.sollzeit + 'h<br><b>Ist:</b> ' + r.message.arbeitszeit + 'h<br><b>Differenz:</b> ' + r.message.diff + 'h</div>');
+					cur_frm.set_df_property('zeiten_summary','options', '<div><table style="width: 100%;"><tr><th>Soll</th><th>Ist</th><th>Differenz</th></tr><tr><td>' + r.message.sollzeit + 'h</td><td>' + r.message.arbeitszeit + 'h</td><td>' + r.message.diff + 'h</td></tr></table></div>');
 				}
 			}
 		});
+	} else {
+		cur_frm.set_df_property('zeiten_summary','options', '<div>Sobald Sie ein "Von"- und ein "Bis"-Datum ausgewählt haben, erscheint hier Ihre Zeitenübersicht.</div>');
 	}
 }

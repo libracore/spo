@@ -4,7 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days
+from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days, getdate
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 
 @frappe.whitelist()
@@ -294,7 +294,9 @@ def check_ts_owner(ts, user):
 		
 @frappe.whitelist()
 def calc_arbeitszeit(employee, von, bis):
-	timesheets = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `start_date` >= '{von}' AND `start_date` <= '{bis}' AND `docstatus` != 2""".format(employee=employee, von=von, bis=bis), as_dict=True)
+	employee = frappe.get_doc("Employee", employee)
+	# ermittlung rückgemeldete stunden
+	timesheets = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `start_date` >= '{von}' AND `start_date` <= '{bis}' AND `docstatus` != 2""".format(employee=employee.name, von=von, bis=bis), as_dict=True)
 	arbeitszeit = 0
 	for ts in timesheets:
 		ts = frappe.get_doc("Timesheet", ts.name)
@@ -303,5 +305,67 @@ def calc_arbeitszeit(employee, von, bis):
 				arbeitszeit += log.hours
 			if log.activity_type == 'Pause':
 				arbeitszeit -= log.hours
-	return str(arbeitszeit)
+	
+	# ermittlung geschenkte stunden aufgrund von feiertagen
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}'""".format(von=von, bis=bis), as_list=True)
+	if holidays:
+		holidays = ((holidays[0][0] * 8.4) / 100) * employee.anstellungsgrad
+	else:
+		holidays = 0
+	arbeitszeit += holidays
+	
+	# ermittlung bezogene urlaubstage von privatem urlaub (ganztags)
+	bezogener_urlaub_in_tagen = []
+	bezogene_urlaubs_perioden_ganztags = frappe.db.sql("""SELECT `from_date`, `to_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 0 AND `status` = 'Approved'""".format(employee=employee.name), as_dict=True)
+	for bezogene_urlaubs_periode_ganztags in bezogene_urlaubs_perioden_ganztags:
+		bezogener_urlaub_in_tagen.append(bezogene_urlaubs_periode_ganztags.from_date)
+		bezogener_urlaub_in_tagen.append(bezogene_urlaubs_periode_ganztags.to_date)
+		urlaub_von = add_days(getdate(bezogene_urlaubs_periode_ganztags.from_date), 1)
+		urlaub_bis = getdate(bezogene_urlaubs_periode_ganztags.to_date)
+		while urlaub_von < urlaub_bis:
+			bezogener_urlaub_in_tagen.append(urlaub_von)
+			urlaub_von = add_days(urlaub_von, 1)
+			
+	# ermittlung bezogene urlaubstage von privatem urlaub (halbtags)
+	bezogener_urlaub_in_halbtagen = []
+	bezogene_urlaubs_perioden_halbtags = frappe.db.sql("""SELECT `from_date`, `to_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `from_date` = `to_date`""".format(employee=employee.name), as_dict=True)
+	for bezogene_urlaubs_periode_halbtags in bezogene_urlaubs_perioden_halbtags:
+		bezogener_urlaub_in_halbtagen.append(bezogene_urlaubs_periode_halbtags.from_date)
+		
+	# ermittlung bezogene urlaubstage von privatem urlaub (gemischt)
+	bezogene_urlaubs_perioden_gemischt = frappe.db.sql("""SELECT `from_date`, `to_date`, `half_day_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `from_date` != `to_date`""".format(employee=employee.name), as_dict=True)
+	for bezogene_urlaubs_periode in bezogene_urlaubs_perioden_gemischt:
+		urlaub_von = getdate(bezogene_urlaubs_periode.from_date)
+		urlaub_bis = getdate(bezogene_urlaubs_periode.to_date)
+		halbtag = getdate(bezogene_urlaubs_periode.half_day_date)
+		while urlaub_von <= urlaub_bis:
+			if urlaub_von != halbtag:
+				bezogener_urlaub_in_tagen.append(urlaub_von)
+			else:
+				bezogener_urlaub_in_halbtagen.append(urlaub_von)
+			urlaub_von = add_days(urlaub_von, 1)
+	
+	
+	# ermittlung sollzeit (8.4h/tag exkl. Sa/So)
+	von = getdate(von)
+	bis = getdate(bis)
+	sollzeit = 0
+	while von <= bis:
+		if von.weekday() < 5:
+			sollzeit += 8.4
+			if von in bezogener_urlaub_in_tagen:
+				arbeitszeit += (8.4 / 100) * employee.anstellungsgrad
+			if von in bezogener_urlaub_in_halbtagen:
+				arbeitszeit += (4.2 / 100) * employee.anstellungsgrad
+		von = add_days(von, 1)
+	
+	
+	# berechnung sollzeit anhand anstellungsgrad
+	sollzeit = (sollzeit / 100) * employee.anstellungsgrad
+	
+	return {
+			'arbeitszeit': str(round(arbeitszeit, 3)),
+			'sollzeit': str(round(sollzeit, 3)),
+			'diff': str(round(arbeitszeit - sollzeit, 3))
+		}
 		
