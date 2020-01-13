@@ -291,3 +291,17 @@ def check_ts_owner(ts, user):
 		return True
 	else:
 		return False
+		
+@frappe.whitelist()
+def calc_arbeitszeit(employee, von, bis):
+	timesheets = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `start_date` >= '{von}' AND `start_date` <= '{bis}' AND `docstatus` != 2""".format(employee=employee, von=von, bis=bis), as_dict=True)
+	arbeitszeit = 0
+	for ts in timesheets:
+		ts = frappe.get_doc("Timesheet", ts.name)
+		for log in ts.time_logs:
+			if log.activity_type == 'Arbeitszeit':
+				arbeitszeit += log.hours
+			if log.activity_type == 'Pause':
+				arbeitszeit -= log.hours
+	return str(arbeitszeit)
+		
