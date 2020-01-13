@@ -16,6 +16,9 @@ class Anfrage(Document):
 				# create start ts buchung
 				handle_timesheet(frappe.session.user, self.doctype, self.name, 0, '', self.datum)
 				self.default_ts = 1
+				
+		if self.patient != self.customer:
+			self.customer = self.patient
 		
 	def onload(self):
 		if self.is_new() != True:
