@@ -11,7 +11,7 @@ frappe.ui.form.on('Employee', {
 		calc_monatslohn(frm);	
 	},
 	onload: function(frm) {
-		
+		urlaub(frm);
 	},
 	zeitraum_von: function(frm) {
 		if (cur_frm.doc.zeitraum_bis < cur_frm.doc.zeitraum_von) {
@@ -38,7 +38,7 @@ function calc_monatslohn(frm) {
 
 function arbeitszeit(frm) {
 	if (cur_frm.doc.zeitraum_bis && cur_frm.doc.zeitraum_von) {
-		cur_frm.set_df_property('zeiten_summary','options', '<div>Bitte warten Sie bis Ihre Zeiten berechnet wurden.</div>');
+		cur_frm.set_df_property('zeiten_summary','options', '<br><div>Bitte warten Sie bis Ihre Zeiten berechnet wurden.</div>');
 		frappe.call({
 			"method": "spo.utils.timesheet_handlings.calc_arbeitszeit",
 			"args": {
@@ -48,12 +48,34 @@ function arbeitszeit(frm) {
 			},
 			"callback": function(r) {
 				if (r.message) {
-					//cur_frm.set_df_property('zeiten_summary','options', '<div><br><br><b>Soll:</b> ' + r.message.sollzeit + 'h<br><b>Ist:</b> ' + r.message.arbeitszeit + 'h<br><b>Differenz:</b> ' + r.message.diff + 'h</div>');
-					cur_frm.set_df_property('zeiten_summary','options', '<div><table style="width: 100%;"><tr><th>Soll</th><th>Ist</th><th>Differenz</th></tr><tr><td>' + r.message.sollzeit + 'h</td><td>' + r.message.arbeitszeit + 'h</td><td>' + r.message.diff + 'h</td></tr></table></div>');
+					cur_frm.set_df_property('zeiten_summary','options', '<br><div><table style="width: 100%;"><tr><th>Soll</th><th>Ist</th><th>Differenz</th></tr><tr><td>' + r.message.sollzeit + 'h</td><td>' + r.message.arbeitszeit + 'h</td><td>' + r.message.diff + 'h</td></tr></table></div>');
 				}
 			}
 		});
 	} else {
-		cur_frm.set_df_property('zeiten_summary','options', '<div>Sobald Sie ein "Von"- und ein "Bis"-Datum ausgewählt haben, erscheint hier Ihre Zeitenübersicht.</div>');
+		cur_frm.set_df_property('zeiten_summary','options', '<br><div>Sobald Sie ein "Von"- und ein "Bis"-Datum ausgewählt haben, erscheint hier Ihre Zeitenübersicht.</div>');
 	}
+}
+
+function urlaub(frm) {
+	var leave_details;
+	frappe.call({
+		method: "erpnext.hr.doctype.leave_application.leave_application.get_leave_details",
+		async: false,
+		args: {
+			employee: frm.doc.name,
+			date: frappe.datetime.now_date()
+		},
+		callback: function(r) {
+			if (!r.exc && r.message['leave_allocation']) {
+				leave_details = r.message['leave_allocation'];
+			}
+		}
+	});
+	var html = '<br><table style="width: 100%;"><tr><th>Urlaubsliste</th><th>Bezogen</th><th>Erwarten Freigabe</th><th>Restsaldo</th><th>Total</th></tr>';
+	html = html + '<td>Urlaub</td><td>' + leave_details["Urlaub"]["leaves_taken"] + '</td><td>' + leave_details["Urlaub"]["pending_leaves"] + '</td><td>' + leave_details["Urlaub"]["remaining_leaves"] + '</td><td>' + leave_details["Urlaub"]["total_leaves"] + '</td>';
+	if (leave_details['Persönlich']) {
+		html = html + '<td>Urlaub</td><td>' + leave_details["Persönlich"]["leaves_taken"] + '</td><td>' + leave_details["Persönlich"]["pending_leaves"] + '</td><td>' + leave_details["Persönlich"]["remaining_leaves"] + '</td><td>' + leave_details["Persönlich"]["total_leaves"] + '</td>';
+	}
+	cur_frm.set_df_property('urlaub_overview','options', html);
 }
