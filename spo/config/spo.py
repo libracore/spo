@@ -146,19 +146,19 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Supplier",
-					"label": "Supplier",
+					"label": _("Supplier"),
 					"description": _("Supplier"),
 				},
 				{
 					"type": "doctype",
 					"name": "Purchase Invoice",
-					"label": "Purchase Invoice",
+					"label": _("Purchase Invoice"),
 					"description": _("Purchase Invoice"),
 				},
 				{
 					"type": "doctype",
 					"name": "Payment Proposal",
-					"label": "Payment Proposal",
+					"label": _("Payment Proposal"),
 					"description": _("Payment Proposal"),
 				},
 				{
