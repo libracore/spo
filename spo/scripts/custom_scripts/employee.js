@@ -47,8 +47,10 @@ function arbeitszeit(frm) {
 				"bis": cur_frm.doc.zeitraum_bis
 			},
 			"callback": function(r) {
-				if (r.message) {
+				if (r.message != 'jahr') {
 					cur_frm.set_df_property('zeiten_summary','options', '<br><div><table style="width: 100%;"><tr><th>Soll</th><th>Ist</th><th>Differenz</th></tr><tr><td>' + r.message.sollzeit + 'h</td><td>' + r.message.arbeitszeit + 'h</td><td>' + r.message.diff + 'h</td></tr></table></div>');
+				} else {
+					cur_frm.set_df_property('zeiten_summary','options', '<br><div>Bitte keine Jahres übergreifende abfragem durchführen!</div>');
 				}
 			}
 		});
@@ -73,9 +75,10 @@ function urlaub(frm) {
 		}
 	});
 	var html = '<br><table style="width: 100%;"><tr><th>Urlaubsliste</th><th>Bezogen</th><th>Erwarten Freigabe</th><th>Restsaldo</th><th>Total</th></tr>';
-	html = html + '<td>Urlaub</td><td>' + leave_details["Urlaub"]["leaves_taken"] + '</td><td>' + leave_details["Urlaub"]["pending_leaves"] + '</td><td>' + leave_details["Urlaub"]["remaining_leaves"] + '</td><td>' + leave_details["Urlaub"]["total_leaves"] + '</td>';
+	html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leave_details["Urlaub"]["leaves_taken"] + '</td><td>' + leave_details["Urlaub"]["pending_leaves"] + '</td><td>' + leave_details["Urlaub"]["remaining_leaves"] + '</td><td>' + leave_details["Urlaub"]["total_leaves"] + '</td></tr>';
 	if (leave_details['Persönlich']) {
-		html = html + '<td>Urlaub</td><td>' + leave_details["Persönlich"]["leaves_taken"] + '</td><td>' + leave_details["Persönlich"]["pending_leaves"] + '</td><td>' + leave_details["Persönlich"]["remaining_leaves"] + '</td><td>' + leave_details["Persönlich"]["total_leaves"] + '</td>';
+		html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leave_details["Persönlich"]["leaves_taken"] + '</td><td>' + leave_details["Persönlich"]["pending_leaves"] + '</td><td>' + leave_details["Persönlich"]["remaining_leaves"] + '</td><td>' + leave_details["Persönlich"]["total_leaves"] + '</td></tr>';
 	}
+	html = html + '</table>';
 	cur_frm.set_df_property('urlaub_overview','options', html);
 }

@@ -294,6 +294,9 @@ def check_ts_owner(ts, user):
 		
 @frappe.whitelist()
 def calc_arbeitszeit(employee, von, bis):
+	if getdate(von).year != getdate(bis).year:
+		return 'jahr'
+	
 	employee = frappe.get_doc("Employee", employee)
 	# ermittlung rückgemeldete stunden
 	timesheets = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `start_date` >= '{von}' AND `start_date` <= '{bis}' AND `docstatus` != 2""".format(employee=employee.name, von=von, bis=bis), as_dict=True)
@@ -307,9 +310,17 @@ def calc_arbeitszeit(employee, von, bis):
 				arbeitszeit -= log.hours
 	
 	# ermittlung geschenkte stunden aufgrund von feiertagen
-	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}'""".format(von=von, bis=bis), as_list=True)
+	# --> Ganztage
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0""".format(von=von, bis=bis), as_list=True)
 	if holidays:
 		holidays = ((holidays[0][0] * 8.4) / 100) * employee.anstellungsgrad
+	else:
+		holidays = 0
+	arbeitszeit += holidays
+	# --> Halbtage
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 1""".format(von=von, bis=bis), as_list=True)
+	if holidays:
+		holidays = ((holidays[0][0] * 4.2) / 100) * employee.anstellungsgrad
 	else:
 		holidays = 0
 	arbeitszeit += holidays
