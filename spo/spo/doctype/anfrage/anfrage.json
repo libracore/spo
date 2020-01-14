@@ -461,6 +461,7 @@
   },
   {
    "fetch_from": "patienten_kontakt.email_id",
+   "fetch_if_empty": 1,
    "fieldname": "patient_mail",
    "fieldtype": "Data",
    "label": "E-Mail"
@@ -619,7 +620,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2020-01-09 15:09:26.151947",
+ "modified": "2020-01-14 14:06:33.767851",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
