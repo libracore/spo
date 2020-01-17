@@ -62,7 +62,10 @@ def background_rechnungslauf(self):
 			"mitglied": mitgliedschaft.mitglied,
 			"mitgliedschafts_typ": mitgliedschaft.mitgliedschafts_typ,
 			"start": mitgliedschaft.ende,
-			"ende": add_years(mitgliedschaft.ende, 1)
+			"ende": add_years(mitgliedschaft.ende, 1),
+			"customer": mitgliedschaft.customer,
+			"rechnung_an_dritte": mitgliedschaft.rechnung_an_dritte,
+			"rechnungsempfaenger": mitgliedschaft.rechnungsempfaenger
 		})
 		neue_mitgliedschaft.insert()
 		
@@ -80,40 +83,20 @@ def background_rechnungslauf(self):
 			sinv_to_print.append(rechnung.name)
 			
 	if self.asap_print == 1:
-		# frappe.throw(sinv_to_print)
-		# hier sollte das sammel pdf erstellt werden...
-		#frappe.db.sql("""UPDATE `tabMitglieder Rechnungslauf` SET `rechnungen` = "{rechnungen}" WHERE `name` = '{name}'""".format(rechnungen=sinv_to_print, name=self.name), as_list=True)
-		#download_multi_pdf({"Sales Invoice": sinv_to_print}, "Rechnungslauf", format=None, no_letterhead=0)
-		
-		
-		#now = datetime.now()
-		loop = 0
-		max_loop = math.ceil((len(sinv_to_print) / 100))
 		qty = 0
 		sales_invoices = []
 		for sinv in sinv_to_print:
 			qty += 1
 			sales_invoices.append(sinv)
-			if qty == 100:
-				loop += 1
-				bind_source = "/assets/spo/sinvs_for_print/{rechnungslauf}/Rechnungslauf_{rechnungslauf}-{loop}.pdf".format(rechnungslauf=self.name, loop=loop)
-				physical_path = "/home/frappe/frappe-bench/sites" + bind_source
-				pdf_batch(sales_invoices, format="Mitgliederrechnung", dest=str(physical_path), loop=loop, max_loop=max_loop, name=self.name)
-				qty = 0
-			
-				
-		if qty < 100 and qty > 0:
-			loop += 1
-			bind_source = "/assets/spo/sinvs_for_print/{rechnungslauf}/Rechnungslauf_{rechnungslauf}-{loop}.pdf".format(rechnungslauf=self.name, loop=loop)
+		if qty > 0:
+			bind_source = "/assets/spo/sinvs_for_print/{rechnungslauf}/Rechnungslauf_{rechnungslauf}.pdf".format(rechnungslauf=self.name)
 			physical_path = "/home/frappe/frappe-bench/sites" + bind_source
-			pdf_batch(sales_invoices, format="Mitgliederrechnung", dest=str(physical_path), loop=loop, max_loop=max_loop, name=self.name)
+			pdf_batch(sales_invoices, format="Mitgliederrechnung", dest=str(physical_path), name=self.name)
 		
 		frappe.db.sql("""UPDATE `tabMitglieder Rechnungslauf` SET `rechnungen_erstellt` = 1 WHERE `name` = '{name}'""".format(name=self.name), as_list=True)
 	
-def pdf_batch(sales_invoices, format=None, dest=None, loop=0, max_loop=5, name=''):
-	last = False
-	if loop == max_loop:
-		last = True
+def pdf_batch(sales_invoices, format=None, dest=None, name=''):
+	last = True
 	#start background job...
 	max_time = 4800
 	args = {
@@ -123,7 +106,7 @@ def pdf_batch(sales_invoices, format=None, dest=None, loop=0, max_loop=5, name='
 		'last': last,
 		'name': name
 	}
-	enqueue("spo.spo.doctype.mitglieder_rechnungslauf.mitglieder_rechnungslauf.print_bind", queue='long', job_name='Erstelle PDF {loop} von {max_loop}'.format(loop=loop, max_loop=max_loop), timeout=max_time, **args)
+	enqueue("spo.spo.doctype.mitglieder_rechnungslauf.mitglieder_rechnungslauf.print_bind", queue='long', job_name='Erstelle PDF', timeout=max_time, **args)
 	#print_bind(sinv_to_print, format="Standard", dest=str(physical_path))
 	
 def print_bind(sales_invoices, format=None, dest=None, last=False, name=''):
