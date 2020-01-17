@@ -44,7 +44,8 @@ function arbeitszeit(frm) {
 			"args": {
 				"employee": cur_frm.doc.name,
 				"von": cur_frm.doc.zeitraum_von,
-				"bis": cur_frm.doc.zeitraum_bis
+				"bis": cur_frm.doc.zeitraum_bis,
+				"uebertraege": cur_frm.doc.uebertraege
 			},
 			"callback": function(r) {
 				if (r.message != 'jahr') {
