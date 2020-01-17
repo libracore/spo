@@ -245,11 +245,25 @@ def auto_ts_submit():
 	overwrite_ts_on_submit()
 	#************************************************************************************
 	
-	
+	# correct twh:
+	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
+	for _ts in ts_list:
+		ts = frappe.get_doc("Timesheet", _ts.name)
+		arbeitszeit = 0
+		for log in ts.time_logs:
+			if log.activity_type == "Arbeitszeit":
+				arbeitszeit += log.hours
+			if log.activity_type == "Pause":
+				arbeitszeit -= log.hours
+		ts.twh = arbeitszeit
+		ts.save()
+			
+	# check and submit ts:
 	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
 	for _ts in ts_list:
 		ts = frappe.get_doc("Timesheet", _ts.name)
 		ruckmeldungen = 0
+		arbeitszeit = 0
 		for log in ts.time_logs:
 			if log.activity_type != "Pause" and log.activity_type != "Arbeitszeit":
 				ruckmeldungen += log.hours
