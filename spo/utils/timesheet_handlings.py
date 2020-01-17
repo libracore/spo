@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days, getdate
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
+import json
 
 @frappe.whitelist()
 def handle_timesheet(user, doctype, reference, time, bemerkung='', date=nowdate()):
@@ -293,7 +294,7 @@ def check_ts_owner(ts, user):
 		return False
 		
 @frappe.whitelist()
-def calc_arbeitszeit(employee, von, bis):
+def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 	if getdate(von).year != getdate(bis).year:
 		return 'jahr'
 	
@@ -373,6 +374,14 @@ def calc_arbeitszeit(employee, von, bis):
 	
 	# berechnung sollzeit anhand anstellungsgrad
 	sollzeit = (sollzeit / 100) * employee.anstellungsgrad
+	
+	# berücksichtigung überträge
+	if uebertraege:
+		uebertraege = json.loads(uebertraege)
+		for saldo in uebertraege:
+			#frappe.throw(saldo["uebertrag_auf_jahr"])
+			if saldo["uebertrag_auf_jahr"] == str(bis.year):
+				arbeitszeit += float(saldo["stunden"])
 	
 	return {
 			'arbeitszeit': str(round(arbeitszeit, 3)),
