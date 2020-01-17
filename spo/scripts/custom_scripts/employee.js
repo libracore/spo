@@ -72,14 +72,20 @@ function urlaub(frm) {
 		callback: function(r) {
 			if (!r.exc && r.message['leave_allocation']) {
 				leave_details = r.message['leave_allocation'];
+				if (leave_details['Persönlich'] || leave_details['Urlaub']) {
+					var html = '<br><table style="width: 100%;"><tr><th>Urlaubsliste</th><th>Bezogen</th><th>Erwarten Freigabe</th><th>Restsaldo</th><th>Total</th></tr>';
+					if (leave_details['Urlaub']) {
+					html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leave_details["Urlaub"]["leaves_taken"] + '</td><td>' + leave_details["Urlaub"]["pending_leaves"] + '</td><td>' + leave_details["Urlaub"]["remaining_leaves"] + '</td><td>' + leave_details["Urlaub"]["total_leaves"] + '</td></tr>';
+					}
+					if (leave_details['Persönlich']) {
+						html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leave_details["Persönlich"]["leaves_taken"] + '</td><td>' + leave_details["Persönlich"]["pending_leaves"] + '</td><td>' + leave_details["Persönlich"]["remaining_leaves"] + '</td><td>' + leave_details["Persönlich"]["total_leaves"] + '</td></tr>';
+					}
+					html = html + '</table>';
+					cur_frm.set_df_property('urlaub_overview','options', html);
+				} else {
+					cur_frm.set_df_property('urlaub_overview','options', '<div>Für Sie wurde noch kein Urlaub hinterlegt.</div>');
+				}
 			}
 		}
 	});
-	var html = '<br><table style="width: 100%;"><tr><th>Urlaubsliste</th><th>Bezogen</th><th>Erwarten Freigabe</th><th>Restsaldo</th><th>Total</th></tr>';
-	html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leave_details["Urlaub"]["leaves_taken"] + '</td><td>' + leave_details["Urlaub"]["pending_leaves"] + '</td><td>' + leave_details["Urlaub"]["remaining_leaves"] + '</td><td>' + leave_details["Urlaub"]["total_leaves"] + '</td></tr>';
-	if (leave_details['Persönlich']) {
-		html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leave_details["Persönlich"]["leaves_taken"] + '</td><td>' + leave_details["Persönlich"]["pending_leaves"] + '</td><td>' + leave_details["Persönlich"]["remaining_leaves"] + '</td><td>' + leave_details["Persönlich"]["total_leaves"] + '</td></tr>';
-	}
-	html = html + '</table>';
-	cur_frm.set_df_property('urlaub_overview','options', html);
 }
