@@ -125,14 +125,9 @@ def print_bind(sales_invoices, format=None, dest=None, last=False, name=''):
 		else: # when dest is io.IOBase
 			output.write(dest)
 			print("first return")
+		if last:
+			frappe.db.sql("""UPDATE `tabMitglieder Rechnungslauf` SET `pdf_erstellt` = 1 WHERE `name` = '{name}'""".format(name=name), as_list=True)
 		return
 	else:
 		print("second return")
 		return output
-		
-	if last:
-		frappe.db.sql("""UPDATE `tabMitglieder Rechnungslauf` SET `pdf_erstellt` = 1 WHERE `name` = '{name}'""".format(name=name), as_list=True)
-		
-		
-		
-		

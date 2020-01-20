@@ -46,7 +46,7 @@
    "default": "0",
    "fieldname": "asap_print",
    "fieldtype": "Check",
-   "label": "Rechnungen direkt verbuchen und drucken"
+   "label": "Rechnungen direkt verbuchen und PDF erstellen"
   },
   {
    "fieldname": "section_1",
@@ -69,7 +69,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-01-07 20:00:48.324830",
+ "modified": "2020-01-20 13:02:48.796310",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitglieder Rechnungslauf",
