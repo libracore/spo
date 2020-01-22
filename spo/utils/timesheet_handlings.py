@@ -7,6 +7,7 @@ import frappe
 from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days, getdate
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 import json
+from frappe.utils import flt
 
 @frappe.whitelist()
 def handle_timesheet(user, doctype, reference, time, bemerkung='', date=nowdate()):
@@ -403,3 +404,28 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 			'diff': str(round(arbeitszeit - sollzeit, 3))
 		}
 		
+@frappe.whitelist()
+def get_pending_leaves_for_current_year(employee, date):
+	''' Returns leaves that are pending approval '''
+	urlaub = frappe.db.get_value("Leave Application",
+		filters={
+			"employee": employee,
+			"leave_type": 'Urlaub',
+			"from_date": (">=", getdate(str(getdate(date).year) + '-01-01')),
+			"to_date": ("<=", getdate(str(getdate(date).year) + '-12-31')),
+			"status": "Open"
+		}, fieldname=['SUM(total_leave_days)']) or flt(0)
+		
+	persoenlich = frappe.db.get_value("Leave Application",
+		filters={
+			"employee": employee,
+			"leave_type": 'Persönlich',
+			"from_date": (">=", getdate(str(getdate(date).year) + '-01-01')),
+			"to_date": ("<=", getdate(str(getdate(date).year) + '-12-31')),
+			"status": "Open"
+		}, fieldname=['SUM(total_leave_days)']) or flt(0)
+		
+	return {
+			'urlaub': str(urlaub),
+			'persoenlich': str(persoenlich)
+		}

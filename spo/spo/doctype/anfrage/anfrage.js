@@ -482,6 +482,7 @@ function set_mandatory_and_read_only(frm) {
 			cur_frm.set_df_property('patient_ort','reqd', 0);
 			cur_frm.set_df_property('patient_plz','reqd', 0);
 			cur_frm.set_df_property('patient_mail','reqd', 0);
+			cur_frm.set_df_property('problematik','reqd', 1);
 			if (frm.doc.anonymisiert == 1) {
 				cur_frm.set_df_property('patient_kanton','reqd', 1);
 				cur_frm.set_df_property('patient_nachname','reqd', 0);
@@ -513,7 +514,6 @@ function set_mandatory_and_read_only(frm) {
 				cur_frm.set_df_property('patient_mail','reqd', 0);
 				cur_frm.set_df_property('patient_kanton','reqd', 0);
 				cur_frm.set_df_property('patient_nachname','reqd', 0);
-				//cur_frm.set_df_property('problematik','reqd', 0);
 				cur_frm.set_df_property('problematik','hidden', 1);
 				cur_frm.set_df_property('spo_ombudsstelle','reqd', 0);
 			}
