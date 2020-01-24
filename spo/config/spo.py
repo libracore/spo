@@ -138,5 +138,35 @@ def get_data():
 					"description": _("Zeiterfassungs Manager"),
 				}
 			]
+		},
+		{
+			"label": _("Kreditoren"),
+			"icon": "fa fa-cog",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Supplier",
+					"label": _("Supplier"),
+					"description": _("Supplier"),
+				},
+				{
+					"type": "doctype",
+					"name": "Purchase Invoice",
+					"label": _("Purchase Invoice"),
+					"description": _("Purchase Invoice"),
+				},
+				{
+					"type": "doctype",
+					"name": "Payment Proposal",
+					"label": _("Payment Proposal"),
+					"description": _("Payment Proposal"),
+				},
+				{
+				       "type": "page",
+				       "name": "bank_wizard",
+				       "label": _("Bank Wizard"),
+				       "description": _("Bank Wizard")
+				}
+					]
 		}
 	]
