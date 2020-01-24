@@ -5,12 +5,7 @@ frappe.ui.form.on('Vollmacht', {
 	onload: function(frm) {
 		check_todesfall(frm);
 		set_kunden_html(frm);
-		set_ang_html(frm)
-		if (cur_frm.doc.todesfall == 1) {
-			fetch_data_from_ang(frm);
-		} else {
-			fetch_data_from_kunde(frm);
-		}
+		set_ang_html(frm);
 	},
 	before_save: function(frm) {
 		if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
@@ -94,6 +89,9 @@ function fetch_data_from_ang(frm) {
 					} else if (kontakt.mobile_no) {
 						cur_frm.set_value("telefon", kontakt.mobile_no);
 					}
+					if (!cur_frm.doc.adressat) {
+						cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+					}
 				}
 			}
 		});
@@ -122,6 +120,9 @@ function fetch_data_from_kunde(frm) {
 						cur_frm.set_value("telefon", kontakt.phone);
 					} else if (kontakt.mobile_no) {
 						cur_frm.set_value("telefon", kontakt.mobile_no);
+					}
+					if (!cur_frm.doc.adressat) {
+						cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
 					}
 				}
 			}
@@ -156,6 +157,11 @@ function set_kunden_html(frm) {
 			"async": false,
 			"callback": function(r) {
 				cur_frm.set_df_property('kunde_html','options', r.message);
+				if (cur_frm.doc.todesfall == 1) {
+					fetch_data_from_ang(frm);
+				} else {
+					fetch_data_from_kunde(frm);
+				}
 			}
 		});
 	}
@@ -173,6 +179,11 @@ function set_ang_html(frm) {
 			"async": false,
 			"callback": function(r) {
 				cur_frm.set_df_property('ang_html','options', r.message);
+				if (cur_frm.doc.todesfall == 1) {
+					fetch_data_from_ang(frm);
+				} else {
+					fetch_data_from_kunde(frm);
+				}
 			}
 		});
 	}
