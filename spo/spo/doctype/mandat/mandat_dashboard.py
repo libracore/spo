@@ -10,7 +10,7 @@ def get_data():
          },
          {
             'label': _('Buchhaltung'),
-            'items': ['Purchase Invoice']
+            'items': ['Sales Invoice', 'Purchase Invoice']
          }
       ]
    }

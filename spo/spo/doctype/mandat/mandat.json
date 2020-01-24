@@ -38,6 +38,7 @@
   "default_ts",
   "kostengutschsprache",
   "max_aufwand",
+  "stundensatz",
   "zeiten_uebersicht",
   "amended_from",
   "fold_referenzen",
@@ -244,7 +245,7 @@
    "depends_on": "eval:doc.kostengutschsprache",
    "fieldname": "max_aufwand",
    "fieldtype": "Int",
-   "label": "Maximale Aufwandsgrenze (in min)"
+   "label": "Maximale Aufwandsgrenze (in CHF)"
   },
   {
    "fetch_from": "mitglied.name",
@@ -392,11 +393,19 @@
    "fieldname": "kostengutschsprache",
    "fieldtype": "Attach",
    "label": "Kostengutschsprache"
+  },
+  {
+   "default": "180",
+   "description": "Wert in CHF zur Umrechnung von aufgewendeter Zeit in Minuten zu CHF",
+   "fieldname": "stundensatz",
+   "fieldtype": "Int",
+   "label": "Stundensatz",
+   "permlevel": 1
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2019-12-24 12:25:04.295098",
+ "modified": "2020-01-24 10:16:04.028698",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

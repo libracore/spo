@@ -115,7 +115,7 @@
    "in_list_view": 1,
    "in_preview": 1,
    "label": "Anfrage Typ",
-   "options": "Hotline\nSonstiges\nMandats Anfrage",
+   "options": "Hotline\nSonstiges\nMandats Anfrage\nMedien Anfrage",
    "reqd": 1
   },
   {
@@ -620,7 +620,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2020-01-14 14:06:33.767851",
+ "modified": "2020-01-24 11:00:03.521343",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

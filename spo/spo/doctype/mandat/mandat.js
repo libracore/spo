@@ -65,8 +65,11 @@ function update_dashboard(frm) {
 			}
 			//Limits
 			var _colors = ['#d40000', '#00b000'];
-			if (query.callcenter_verwendet == 0) {
+			var aufwand_in_ch = query.callcenter_verwendet;
+			if (aufwand_in_ch == 0) {
 				_colors = ['#00b000', '#d40000'];
+			} else {
+				aufwand_in_ch = (aufwand_in_ch / 60) * frm.doc.stundensatz;
 			}
 			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
@@ -74,12 +77,12 @@ function update_dashboard(frm) {
 
 				datasets: [
 					{
-						values: [query.callcenter_verwendet, max_aufwand - query.callcenter_verwendet]
+						values: [aufwand_in_ch, max_aufwand - aufwand_in_ch]
 					}
 				],
 
 				},
-				title: "Zeitauswertung (in min)",
+				title: "Auswertung Kostendach (in CHF)",
 				type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
 				colors: _colors,
 				barOptions: {
