@@ -7,6 +7,10 @@ def get_data():
          {
             'label': _('Anforderungen'),
             'items': ['Vollmacht', 'Anforderung Patientendossier', 'Medizinischer Bericht', 'Triage', 'Abschlussbericht']
+         },
+		 {
+            'label': _('Verrechnung'),
+            'items': ['Sales Invoice']
          }
       ]
    }
