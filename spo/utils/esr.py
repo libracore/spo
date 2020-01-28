@@ -1,5 +1,8 @@
 from __future__ import unicode_literals
 import frappe, os, json, math
+from frappe.utils.background_jobs import enqueue
+from PyPDF2 import PdfFileWriter
+import frappe, os, json
 """
 Function for generating ESR-numbers for orange swiss payment slips ("Oranger Einzahlungsschein").
 @param
@@ -54,6 +57,8 @@ def get_reference_number(referenceNumber):
 	
 	return referenceNumber + p2
 	
+# START bereinigungscode
+# bereinigungscode, kann nur von hand ausgefuehrt werden
 def esr_reference_correction():
 	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_list=True)[0][0]
 	loop = 1
@@ -67,3 +72,66 @@ def esr_reference_correction():
 		print("correction done...")
 		loop += 1
 	print("Finished all Sales Invoices (total: {all_sinvs})".format(all_sinvs=all_sinvs))
+	
+# bereinigungscode, kann nur von hand ausgefuehrt werden
+def rechnungsnachdruck():
+	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_list=True)[0][0]
+	sinvs = frappe.db.sql("""SELECT `name` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_dict=True)
+	qty = 0
+	batch = 1
+	to_print = []
+	
+	print("found {all_sinvs} Invoices to print".format(all_sinvs=all_sinvs))
+	print("start printing...")
+	
+	for sinv in sinvs:
+		if qty < 501:
+			qty += 1
+			to_print.append(sinv.name)
+		else:
+			# start background....(500er batch)
+			bind_source = "/assets/spo/sinvs_for_print/NACHDRUCK/batch_{batch}.pdf".format(batch=batch)
+			physical_path = "/home/frappe/frappe-bench/sites" + bind_source
+			pdf_batch(to_print, format="Mitgliederrechnung", dest=str(physical_path), batch=batch)
+			print("start background job {batch}".format(batch=batch))
+			
+			to_print = []
+			qty = 1
+			batch += 1
+			to_print.append(sinv.name)
+			
+	# start background....(rest batch)
+	bind_source = "/assets/spo/sinvs_for_print/NACHDRUCK/batch_{batch}.pdf".format(batch=batch)
+	physical_path = "/home/frappe/frappe-bench/sites" + bind_source
+	pdf_batch(to_print, format="Mitgliederrechnung", dest=str(physical_path), batch=batch)
+	print("start LAST background job {batch}".format(batch=batch))
+	
+def pdf_batch(to_print, format=None, dest=None, batch=None):
+	max_time = 4800
+	args = {
+		'sales_invoices': to_print,
+		'format': "Mitgliederrechnung",
+		'dest': dest
+	}
+	enqueue("spo.utils.esr.print_bind", queue='long', job_name='Erstelle PDF Batch {batch}'.format(batch=batch), timeout=max_time, **args)
+	
+def print_bind(sales_invoices, format=None, dest=None):
+	# Concatenating pdf files
+	output = PdfFileWriter()
+	for sales_invoice in sales_invoices:
+		output = frappe.get_print("Sales Invoice", sales_invoice, format, as_pdf = True, output = output)
+	if dest != None:
+		if isinstance(dest, str): # when dest is a file path
+			destdir = os.path.dirname(dest)
+			if destdir != '' and not os.path.isdir(destdir):
+				os.makedirs(destdir)
+			with open(dest, "wb") as w:
+				output.write(w)
+		else: # when dest is io.IOBase
+			output.write(dest)
+			print("first return")
+		return
+	else:
+		print("second return")
+		return output
+# ENDE bereinigungscode
