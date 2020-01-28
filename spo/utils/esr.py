@@ -53,3 +53,17 @@ def get_reference_number(referenceNumber):
 	p2 = moduloTenRecursive(referenceNumber)
 	
 	return referenceNumber + p2
+	
+def esr_reference_correction():
+	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_list=True)[0][0]
+	loop = 1
+	sinvs = frappe.db.sql("""SELECT `name`, `customer`, `grand_total` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_dict=True)
+	for sinv in sinvs:
+		print("Correct {sinv} ({loop} of {all_sinvs})...".format(sinv=sinv.name, loop=loop, all_sinvs=all_sinvs))
+		referencenumber = "974554" + sinv.customer.split("-")[2] + "0000" + sinv.name.split("-")[1] + sinv.name.split("-")[2] 
+		new_ref = get_reference_number(referencenumber)
+		new_code = generateCodeline(sinv.grand_total, referencenumber, "012000272")
+		update_sinv = frappe.db.sql("""UPDATE `tabSales Invoice` SET `esr_reference` = '{new_ref}', `esr_code` = '{new_code}' WHERE `name` = '{name}'""".format(new_ref=new_ref, new_code=new_code, name=sinv.name), as_list=True)
+		print("correction done...")
+		loop += 1
+	print("Finished all Sales Invoices (total: {all_sinvs})".format(all_sinvs=all_sinvs))
