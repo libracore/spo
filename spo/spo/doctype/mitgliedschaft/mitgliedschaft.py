@@ -39,7 +39,7 @@ def create_invoice(mitgliedschaft):
 	})
 	invoice.insert()
 	
-	referencenumber = mitgliedschaft.mitglied.split("-")[2] + "00000" + invoice.name.split("-")[1] + invoice.name.split("-")[2] 
+	referencenumber = "974554" + mitgliedschaft.mitglied.split("-")[2] + "0000" + invoice.name.split("-")[1] + invoice.name.split("-")[2] 
 	invoice.update({
 		"esr_reference": esr.get_reference_number(referencenumber),
 		"esr_code": esr.generateCodeline(invoice.grand_total, referencenumber, "012000272")
