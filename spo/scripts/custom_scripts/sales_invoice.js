@@ -3,6 +3,10 @@ frappe.ui.form.on('Sales Invoice', {
         frm.add_custom_button(__("Erstelle Mandats-Rechnung"), function() {
             create_mandats_rechnung(frm);
         });
+		if (cur_frm.doc.mandat) {
+			var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
+			df.hidden = 1;
+		}
     }
 });
 
@@ -49,11 +53,14 @@ function get_mandats_positionen(frm, mandat) {
 					cur_frm.refresh_field('items');
 					for (i=0; i<logs.length; i++) {
 						var child = cur_frm.add_child('items');
-						frappe.model.set_value(child.doctype, child.name, 'item_code', 'Buch-XYZ');
+						frappe.model.set_value(child.doctype, child.name, 'item_code', 'Mandatsverrechnung');
 						frappe.model.set_value(child.doctype, child.name, 'qty', logs[i].hours);
 						frappe.model.set_value(child.doctype, child.name, 'spo_description', logs[i].spo_remark);
+						frappe.model.set_value(child.doctype, child.name, 'spo_datum', logs[i].from_time);
 						cur_frm.refresh_field('items');
 					}
+					var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
+					df.hidden = 1;
 				}
 			}
 		}
