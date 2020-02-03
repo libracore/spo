@@ -75,8 +75,8 @@ def esr_reference_correction():
 	
 # bereinigungscode, kann nur von hand ausgefuehrt werden
 def rechnungsnachdruck():
-	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_list=True)[0][0]
-	sinvs = frappe.db.sql("""SELECT `name` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_dict=True)
+	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2 AND `status` != 'Paid'""", as_list=True)[0][0]
+	sinvs = frappe.db.sql("""SELECT `name` FROM `tabSales Invoice` WHERE `docstatus` != 2 AND `status` != 'Paid'""", as_dict=True)
 	qty = 0
 	batch = 1
 	to_print = []
@@ -85,7 +85,7 @@ def rechnungsnachdruck():
 	print("start printing...")
 	
 	for sinv in sinvs:
-		if qty < 501:
+		if qty < 500:
 			qty += 1
 			to_print.append(sinv.name)
 		else:
