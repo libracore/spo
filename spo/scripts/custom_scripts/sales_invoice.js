@@ -7,8 +7,27 @@ frappe.ui.form.on('Sales Invoice', {
 			var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
 			df.hidden = 1;
 		}
-    }
+    },
+	validate: function(frm) {
+		update_esr(frm);
+	}
 });
+
+function update_esr(frm) {
+	frappe.call({
+		"method": "spo.utils.esr.set_esr_reference_and_esr_code",
+		"args": {
+			"sinv": cur_frm.doc.name
+		},
+		"async": false,
+		"callback": function(r) {
+			if (r.message) {
+				cur_frm.set_value('esr_reference', r.message.esr_reference);
+				cur_frm.set_value('esr_code', r.message.esr_code);
+			}
+		}
+	});
+}
 
 function create_mandats_rechnung(frm) {
 	frappe.prompt(
