@@ -17,7 +17,9 @@ function update_esr(frm) {
 	frappe.call({
 		"method": "spo.utils.esr.set_esr_reference_and_esr_code",
 		"args": {
-			"sinv": cur_frm.doc.name
+			"sinv": cur_frm.doc.name,
+			"customer": cur_frm.doc.customer,
+			"grand_total": parseFloat(cur_frm.doc.grand_total)
 		},
 		"async": false,
 		"callback": function(r) {

@@ -58,12 +58,12 @@ def get_reference_number(referenceNumber):
 	return referenceNumber + p2
 	
 @frappe.whitelist()
-def set_esr_reference_and_esr_code(sinv):
+def set_esr_reference_and_esr_code(sinv, customer, grand_total):
 	invoice = frappe.get_doc("Sales Invoice", sinv)
-	referencenumber = "974554" + invoice.customer.split("-")[2] + "0000" + invoice.name.split("-")[1] + invoice.name.split("-")[2] 
+	referencenumber = "974554" + customer.split("-")[2] + "0000" + sinv.split("-")[1] + sinv.split("-")[2] 
 	return {
 		"esr_reference": get_reference_number(referencenumber),
-		"esr_code": generateCodeline(invoice.grand_total, referencenumber, "012000272")
+		"esr_code": generateCodeline(float(grand_total), referencenumber, "012000272")
 	}
 	
 # START bereinigungscode
