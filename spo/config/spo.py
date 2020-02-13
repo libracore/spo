@@ -136,6 +136,14 @@ def get_data():
 					"name": "Zeiterfassung",
 					"label": "Zeiterfassungs Manager",
 					"description": _("Zeiterfassungs Manager"),
+				},
+				{
+					"type": "report",
+					"name": "Timesheets Jahresrapport",
+					"label": "Timesheets Jahresrapport",
+					"description": _("Timesheets Jahresrapport"),
+					#"doctype": "Telefon Triage",
+					"is_query_report": True
 				}
 			]
 		},
