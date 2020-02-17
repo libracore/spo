@@ -310,14 +310,43 @@ def check_ts_owner(ts, user):
 		
 @frappe.whitelist()
 def calc_arbeitszeit(employee, von, bis, uebertraege=None):
+	'''
+		Variablenübersicht:
+		IST = Berechnung IST-Zeit (--> arbeitszeit (ist inkl. uebertraege))
+		Anzahl Feiertage = Berechnung Anzahl Feiertage (--> anzahl_feiertage)
+		Anzahl Urlaubstage = Berechnung Anzahl Urlaubstage (--> anzahl_urlaubstage)
+		Anzahl Mo - Fr = Berechnung Anzahl Mo - Fr (--> anzahl_mo_bis_fr)
+		Anstellungsgrad in % (--> anstellungsgrad)
+		Tagesarbeitszeit (-->tagesarbeitszeit)
+		
+		Sollzeitberechnung:
+		x = ((Anzahl Mo - Fr) * Tagesarbeitszeit) - ((Anzahl Feiertage) * Tagesarbeitszeit)
+		y = x * (Anstellungsgrad in %)
+		z = y - ((Anzahl Urlaubstage) * Tagesarbeitszeit)
+		Sollzeit = z (--> sollzeit)
+	'''
+	#********************************
+	# Verhinderung von Jahresübergreifenden Abfragen
 	if getdate(von).year != getdate(bis).year:
 		return 'jahr'
-	
+	# /Verhinderung von Jahresübergreifenden Abfragen
+	#********************************
+	#********************************
+	# Variablen deklaration
 	employee = frappe.get_doc("Employee", employee)
-	# ermittlung rückgemeldete stunden
-	timesheets = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `start_date` >= '{von}' AND `start_date` <= '{bis}' AND `docstatus` != 2""".format(employee=employee.name, von=von, bis=bis), as_dict=True)
 	arbeitszeit = 0
 	sollzeit = 0
+	anzahl_feiertage = 0
+	anzahl_urlaubstage = 0
+	anzahl_mo_bis_fr = 0
+	anstellungsgrad = employee.anstellungsgrad
+	tagesarbeitszeit = 8.4
+	# /Variablen deklaration
+	#********************************
+	#********************************
+	# Berechnung IST-Zeit
+	# --> arbeitszeit
+	timesheets = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `start_date` >= '{von}' AND `start_date` <= '{bis}' AND `docstatus` != 2""".format(employee=employee.name, von=von, bis=bis), as_dict=True)
 	for ts in timesheets:
 		ts = frappe.get_doc("Timesheet", ts.name)
 		for log in ts.time_logs:
@@ -325,29 +354,36 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 				arbeitszeit += log.hours
 			if log.activity_type == 'Pause':
 				arbeitszeit -= log.hours
-	
-	# ermittlung geschenkte stunden aufgrund von feiertagen
+	# --> berücksichtigung überträge
+	if uebertraege:
+		_bis = getdate(bis)
+		uebertraege = json.loads(uebertraege)
+		for saldo in uebertraege:
+			if saldo["uebertrag_auf_jahr"] == str(_bis.year):
+				arbeitszeit += float(saldo["stunden"])
+	# /Berechnung IST-Zeit
+	#********************************
+	#********************************
+	# Berechnung Anzahl Feiertage
 	# --> Ganztage
 	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0""".format(von=von, bis=bis), as_list=True)
 	if holidays:
-		#holidays = ((holidays[0][0] * 8.4) / 100) * employee.anstellungsgrad
-		holidays = holidays[0][0] * 8.4
+		holidays = holidays[0][0]
 	else:
 		holidays = 0
-	#arbeitszeit += holidays
-	sollzeit -= holidays
-	
+	anzahl_feiertage += holidays
 	# --> Halbtage
 	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 1""".format(von=von, bis=bis), as_list=True)
 	if holidays:
-		#holidays = ((holidays[0][0] * 4.2) / 100) * employee.anstellungsgrad
-		holidays = holidays[0][0] * 4.2
+		holidays = holidays[0][0]
 	else:
 		holidays = 0
-	#arbeitszeit += holidays
-	sollzeit -= holidays
-	
-	# ermittlung bezogene urlaubstage von privatem urlaub (ganztags)
+	anzahl_feiertage += holidays
+	# /Berechnung Anzahl Feiertage
+	#********************************
+	#********************************
+	# Berechnung Anzahl Urlaubstage
+	# --> ganztage
 	bezogener_urlaub_in_tagen = []
 	bezogene_urlaubs_perioden_ganztags = frappe.db.sql("""SELECT `from_date`, `to_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 0 AND `status` = 'Approved'""".format(employee=employee.name), as_dict=True)
 	for bezogene_urlaubs_periode_ganztags in bezogene_urlaubs_perioden_ganztags:
@@ -358,14 +394,12 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 		while urlaub_von < urlaub_bis:
 			bezogener_urlaub_in_tagen.append(urlaub_von)
 			urlaub_von = add_days(urlaub_von, 1)
-			
-	# ermittlung bezogene urlaubstage von privatem urlaub (halbtags)
+	# --> halbtage
 	bezogener_urlaub_in_halbtagen = []
 	bezogene_urlaubs_perioden_halbtags = frappe.db.sql("""SELECT `from_date`, `to_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `from_date` = `to_date`""".format(employee=employee.name), as_dict=True)
 	for bezogene_urlaubs_periode_halbtags in bezogene_urlaubs_perioden_halbtags:
 		bezogener_urlaub_in_halbtagen.append(bezogene_urlaubs_periode_halbtags.from_date)
-		
-	# ermittlung bezogene urlaubstage von privatem urlaub (gemischt)
+	# --> gemischt
 	bezogene_urlaubs_perioden_gemischt = frappe.db.sql("""SELECT `from_date`, `to_date`, `half_day_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `from_date` != `to_date`""".format(employee=employee.name), as_dict=True)
 	for bezogene_urlaubs_periode in bezogene_urlaubs_perioden_gemischt:
 		urlaub_von = getdate(bezogene_urlaubs_periode.from_date)
@@ -377,34 +411,34 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 			else:
 				bezogener_urlaub_in_halbtagen.append(urlaub_von)
 			urlaub_von = add_days(urlaub_von, 1)
-	
-	
-	# ermittlung sollzeit (8.4h/tag exkl. Sa/So)
-	von = getdate(von)
-	bis = getdate(bis)
-	
-	while von <= bis:
-		if von.weekday() < 5:
-			sollzeit += 8.4
-			if von in bezogener_urlaub_in_tagen:
-				#arbeitszeit += (8.4 / 100) * employee.anstellungsgrad
-				sollzeit -= 8.4
-			if von in bezogener_urlaub_in_halbtagen:
-				#arbeitszeit += (4.2 / 100) * employee.anstellungsgrad
-				sollzeit -= 4.2
-		von = add_days(von, 1)
-	
-	
-	# berechnung sollzeit anhand anstellungsgrad
-	sollzeit = (sollzeit / 100) * employee.anstellungsgrad
-	
-	# berücksichtigung überträge
-	if uebertraege:
-		uebertraege = json.loads(uebertraege)
-		for saldo in uebertraege:
-			#frappe.throw(saldo["uebertrag_auf_jahr"])
-			if saldo["uebertrag_auf_jahr"] == str(bis.year):
-				arbeitszeit += float(saldo["stunden"])
+	_von = getdate(von)
+	_bis = getdate(bis)
+	while _von <= _bis:
+		if _von in bezogener_urlaub_in_tagen:
+			anzahl_urlaubstage += 1
+		if _von in bezogener_urlaub_in_halbtagen:
+			anzahl_urlaubstage += 0.5
+		_von = add_days(_von, 1)
+	# /Berechnung Anzahl Urlaubstage
+	#********************************
+	#********************************
+	# Berechnung Anzahl Mo - Fr
+	_von = getdate(von)
+	_bis = getdate(bis)
+	while _von <= _bis:
+		if _von.weekday() < 5:
+			anzahl_mo_bis_fr += 1
+		_von = add_days(_von, 1)
+	# /Berechnung Anzahl Mo - Fr
+	#********************************
+	#********************************
+	# Berechnung Sollzeit
+	x = (anzahl_mo_bis_fr * tagesarbeitszeit) - (anzahl_feiertage * tagesarbeitszeit)
+	y = (x / 100) * anstellungsgrad
+	z = y - (anzahl_urlaubstage * tagesarbeitszeit)
+	sollzeit = z
+	# /Berechnung Sollzeit
+	#********************************
 	
 	return {
 			'arbeitszeit': str(round(arbeitszeit, 3)),
