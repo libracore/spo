@@ -249,6 +249,11 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 	anzahl_mo_bis_fr = 0
 	anstellungsgrad = employee.anstellungsgrad
 	tagesarbeitszeit = 8.4
+	if employee.holiday_list:
+		feiertagsliste = employee.holiday_list
+	else:
+		company = frappe.get_doc("Company", employee.company)
+		feiertagsliste = company.default_holiday_list
 	# /Variablen deklaration
 	#********************************
 	#********************************
@@ -272,22 +277,22 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 	# /Berechnung IST-Zeit
 	#********************************
 	#********************************
-	# Berechnung Anzahl Feiertage
+	# Berechnung Anzahl Feiertage und Krankheitstage (bei längerer Krankheit)
 	# --> Ganztage
-	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0""".format(von=von, bis=bis), as_list=True)
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0 AND `parent` = '{feiertagsliste}'""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_list=True)
 	if holidays:
 		holidays = holidays[0][0]
 	else:
 		holidays = 0
 	anzahl_feiertage += holidays
 	# --> Halbtage
-	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 1""".format(von=von, bis=bis), as_list=True)
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 1 AND `parent` = '{feiertagsliste}'""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_list=True)
 	if holidays:
-		holidays = holidays[0][0]
+		holidays = holidays[0][0] / 2
 	else:
 		holidays = 0
 	anzahl_feiertage += holidays
-	# /Berechnung Anzahl Feiertage
+	# /Berechnung Anzahl Feiertage und Krankheitstage (bei längerer Krankheit)
 	#********************************
 	#********************************
 	# Berechnung Anzahl Urlaubstage

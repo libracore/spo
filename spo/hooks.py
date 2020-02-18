@@ -32,7 +32,8 @@ doctype_js = {
 	"Timesheet" : "scripts/custom_scripts/timesheet.js",
 	"Address" : "scripts/custom_scripts/address.js",
 	"Employee" : "scripts/custom_scripts/employee.js",
-	"Sales Invoice" : "scripts/custom_scripts/sales_invoice.js"
+	"Sales Invoice" : "scripts/custom_scripts/sales_invoice.js",
+	"Holiday List" : "scripts/custom_scripts/holiday_list.js"
 }
 
 # doctype_list_js = {"Timesheet" : "scripts/custom_scripts/timesheet_list.js"}
