@@ -185,14 +185,14 @@ def get_data():
 					"type": "report",
 					"name": "MwSt Deklaration",
 					"label": _("MwSt Deklaration"),
-					"doctype": _("GL Entry"),
+					"doctype": "GL Entry",
                     "is_query_report": True
 				},
                 {
 					"type": "report",
 					"name": "General Ledger",
 					"label": _("General Ledger"),
-					"doctype": _("GL Entry"),
+					"doctype": "GL Entry",
                     "is_query_report": True
 				}
             ]
