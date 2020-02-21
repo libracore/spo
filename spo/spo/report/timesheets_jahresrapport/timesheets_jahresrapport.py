@@ -9,9 +9,9 @@ def execute(filters=None):
 	columns, data = ["Mitarbeiter:Link/Employee:200", "Name:Data:200"], []
 	employee_filter = ''
 	if filters.employee:
-		employee_filter = """ WHERE `name` = '{employee}'""".format(employee=filters.employee)
+		employee_filter = """ AND `name` = '{employee}'""".format(employee=filters.employee)
 		
-	employees = frappe.db.sql("""SELECT `name`, `employee_name`, `anstellungsgrad` FROM `tabEmployee`{employee_filter}""".format(employee_filter=employee_filter), as_dict=True)
+	employees = frappe.db.sql("""SELECT `name`, `employee_name`, `anstellungsgrad` FROM `tabEmployee` WHERE `status` = 'Active'{employee_filter}""".format(employee_filter=employee_filter), as_dict=True)
 	activity_types = frappe.db.sql("""SELECT `name` FROM `tabActivity Type` ORDER BY `name` ASC""", as_dict=True)
 	for act_type in activity_types:
 		columns.append(act_type.name + ":Float:50")
