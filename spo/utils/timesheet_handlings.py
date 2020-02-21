@@ -77,6 +77,9 @@ def update_timesheet(ts, time, doctype, reference, user, bemerkung):
 	type = 'Mandatsarbeit'
 	if doctype == 'Anfrage':
 		type = 'Beratung'
+	default_time = get_default_time(doctype)
+	if time < default_time:
+		time = default_time
 	start = nowdate() + " 00:00:00"
 	row = {}
 	row["activity_type"] = type
