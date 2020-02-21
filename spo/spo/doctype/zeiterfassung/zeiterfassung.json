@@ -97,6 +97,7 @@
    "label": "\u00dcbersicht Arbeitszeiten"
   },
   {
+   "description": "\u00c4nderung bewirkt, dass das <b>Arbeitsende</b> neu berechnet wird.<br>Format: hh:mm:ss<br>Bsp.: 08:00:00",
    "fieldname": "start",
    "fieldtype": "Time",
    "label": "Arbeitsbeginn",
@@ -107,6 +108,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "\u00c4nderung bewirkt, dass die <b>Arbeitszeit</b> neu berechnet wird.<br>Format: hh:mm:ss<br>Bsp.: 08:00:00",
    "fieldname": "ende",
    "fieldtype": "Time",
    "label": "Arbeitsende",
@@ -118,6 +120,7 @@
   },
   {
    "default": "8.4",
+   "description": "\u00c4nderung bewirkt, dass das <b>Arbeitsende</b> neu berechnet wird.<br>Format: h als Dezimalzahl<br>Bsp.: 8h 30min = 8.500",
    "fieldname": "arbeitszeit",
    "fieldtype": "Float",
    "label": "Arbeitszeit",
@@ -253,8 +256,8 @@
  ],
  "hide_toolbar": 1,
  "issingle": 1,
- "modified": "2019-12-16 14:01:04.447726",
- "modified_by": "joel.mesmer@libracore.com",
+ "modified": "2020-02-18 11:48:52.982028",
+ "modified_by": "Administrator",
  "module": "SPO",
  "name": "Zeiterfassung",
  "owner": "Administrator",
