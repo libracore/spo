@@ -35,6 +35,14 @@ def get_data():
 				},
 				{
 					"type": "report",
+					"name": "Alle Anfragen",
+					"label": "Alle Anfragen",
+					"description": _("Anfragen"),
+					"doctype": "Anfrage",
+					"is_query_report": True
+				},
+				{
+					"type": "report",
 					"name": "Address And Contacts",
 					"label": "Adressliste",
 					"description": _("Adressliste"),
