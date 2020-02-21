@@ -32,6 +32,7 @@
   "anonymisiert",
   "datum",
   "todesfall",
+  "urteilsunfaehig",
   "section_person",
   "kontaktdaten_suchen",
   "patient_vorname",
@@ -72,6 +73,40 @@
   "ang",
   "ang_kontakt",
   "ang_adresse",
+  "section_gesetzlicher_vertreter_1",
+  "ges_ver_1_vorname",
+  "ges_ver_1_nachname",
+  "ges_ver_1_geburtsdatum",
+  "ges_ver_1_telefon",
+  "ges_ver_1_mobile",
+  "ges_ver_1_email",
+  "cb_ges_ver_1",
+  "ges_ver_1_strasse",
+  "ges_ver_1_zusatz",
+  "ges_ver_1_plz",
+  "ges_ver_1_ort",
+  "ges_ver_1_kanton",
+  "section_gesetzlicher_vertreter_2",
+  "ges_ver_2_vorname",
+  "ges_ver_2_nachname",
+  "ges_ver_2_geburtsdatum",
+  "ges_ver_2_telefon",
+  "ges_ver_2_mobile",
+  "ges_ver_2_email",
+  "cb_ges_ver_2",
+  "ges_ver_2_strasse",
+  "ges_ver_2_zusatz",
+  "ges_ver_2_plz",
+  "ges_ver_2_ort",
+  "ges_ver_2_kanton",
+  "section_links_gesetzliche_vertreter",
+  "ges_ver_1",
+  "ges_ver_1_contact",
+  "ges_ver_1_address",
+  "cb_ges_ver_links",
+  "ges_ver_2",
+  "ges_ver_2_contact",
+  "ges_ver_2_address",
   "section_kontakt_daten",
   "rsv_kontaktdaten",
   "section_rsv",
@@ -616,11 +651,220 @@
    "hidden": 1,
    "label": "Customer (for link)",
    "options": "Customer"
+  },
+  {
+   "default": "Nein",
+   "fieldname": "urteilsunfaehig",
+   "fieldtype": "Select",
+   "label": "Anfrage im Zusammenhang mit urteilsunf\u00e4higer Person?",
+   "options": "Nein\nJa"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.urteilsunfaehig=='Ja'",
+   "fieldname": "section_gesetzlicher_vertreter_1",
+   "fieldtype": "Section Break",
+   "label": "Gesetzlicher Vertreter 1"
+  },
+  {
+   "fetch_from": "ges_ver_1_contact.first_name",
+   "fieldname": "ges_ver_1_vorname",
+   "fieldtype": "Data",
+   "label": "Vorname (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_contact.last_name",
+   "fieldname": "ges_ver_1_nachname",
+   "fieldtype": "Data",
+   "label": "Nachname (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_contact.geburtsdatum",
+   "fieldname": "ges_ver_1_geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_contact.phone",
+   "fieldname": "ges_ver_1_telefon",
+   "fieldtype": "Data",
+   "label": "Telefon (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_contact.mobile_no",
+   "fieldname": "ges_ver_1_mobile",
+   "fieldtype": "Data",
+   "label": "Mobile (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_contact.email_id",
+   "fieldname": "ges_ver_1_email",
+   "fieldtype": "Data",
+   "label": "E-Mail (Ges.-Ver. 1)"
+  },
+  {
+   "fieldname": "cb_ges_ver_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "ges_ver_1_address.address_line1",
+   "fieldname": "ges_ver_1_strasse",
+   "fieldtype": "Data",
+   "label": "Strasse und Hausnummer (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_address.address_line2",
+   "fieldname": "ges_ver_1_zusatz",
+   "fieldtype": "Data",
+   "label": "Adress Zusatz (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_address.plz",
+   "fieldname": "ges_ver_1_plz",
+   "fieldtype": "Data",
+   "label": "PLZ (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_address.city",
+   "fieldname": "ges_ver_1_ort",
+   "fieldtype": "Data",
+   "label": "Ort (Ges.-Ver. 1)"
+  },
+  {
+   "fetch_from": "ges_ver_1_address.kanton",
+   "fieldname": "ges_ver_1_kanton",
+   "fieldtype": "Select",
+   "label": "Kanton (Ges.-Ver. 1)",
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.urteilsunfaehig=='Ja'",
+   "fieldname": "section_links_gesetzliche_vertreter",
+   "fieldtype": "Section Break",
+   "label": "Links zu Gesetzlicher Vertreter"
+  },
+  {
+   "fieldname": "ges_ver_1",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 1",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ges_ver_1_contact",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 1 Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "ges_ver_1_address",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 1 Adresse",
+   "options": "Address"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.urteilsunfaehig=='Ja'",
+   "fieldname": "section_gesetzlicher_vertreter_2",
+   "fieldtype": "Section Break",
+   "label": "Gesetzlicher Vertreter 2"
+  },
+  {
+   "fetch_from": "ges_ver_2_contact.first_name",
+   "fieldname": "ges_ver_2_vorname",
+   "fieldtype": "Data",
+   "label": "Vorname (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_contact.last_name",
+   "fieldname": "ges_ver_2_nachname",
+   "fieldtype": "Data",
+   "label": "Nachname (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_contact.geburtsdatum",
+   "fieldname": "ges_ver_2_geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_contact.phone",
+   "fieldname": "ges_ver_2_telefon",
+   "fieldtype": "Data",
+   "label": "Telefon (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_contact.mobile_no",
+   "fieldname": "ges_ver_2_mobile",
+   "fieldtype": "Data",
+   "label": "Mobile (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_contact.email_id",
+   "fieldname": "ges_ver_2_email",
+   "fieldtype": "Data",
+   "label": "E-Mail (Ges.-Ver. 2)"
+  },
+  {
+   "fieldname": "cb_ges_ver_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "ges_ver_2_address.address_line1",
+   "fieldname": "ges_ver_2_strasse",
+   "fieldtype": "Data",
+   "label": "Strasse und Hausnummer (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_address.address_line2",
+   "fieldname": "ges_ver_2_zusatz",
+   "fieldtype": "Data",
+   "label": "Adress zusatz (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_address.plz",
+   "fieldname": "ges_ver_2_plz",
+   "fieldtype": "Data",
+   "label": "PLZ (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_address.city",
+   "fieldname": "ges_ver_2_ort",
+   "fieldtype": "Data",
+   "label": "Ort (Ges.-Ver. 2)"
+  },
+  {
+   "fetch_from": "ges_ver_2_address.kanton",
+   "fieldname": "ges_ver_2_kanton",
+   "fieldtype": "Select",
+   "label": "Kanton (Ges.-Ver. 2)"
+  },
+  {
+   "fieldname": "cb_ges_ver_links",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ges_ver_2",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 2",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ges_ver_2_contact",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 2 Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "ges_ver_2_address",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 2 Adresse",
+   "options": "Address"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2020-02-21 10:31:33.690902",
+ "modified": "2020-02-21 13:12:58.856089",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

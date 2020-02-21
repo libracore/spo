@@ -56,6 +56,14 @@
   "ang",
   "ang_kontakt",
   "ang_adresse",
+  "section_ges_ver",
+  "ges_ver_1",
+  "ges_ver_1_kontakt",
+  "ges_ver_1_adresse",
+  "cb_ges_ver",
+  "ges_ver_2",
+  "ges_ver_2_kontakt",
+  "ges_ver_2_adresse",
   "section_referenzen_auftraggeber",
   "rechtsschutz_ref",
   "rsv",
@@ -401,11 +409,57 @@
    "fieldtype": "Int",
    "label": "Stundensatz",
    "permlevel": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_ges_ver",
+   "fieldtype": "Section Break",
+   "label": "Referenzen Gesetzliche Vertreter"
+  },
+  {
+   "fieldname": "ges_ver_1",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 1",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ges_ver_1_kontakt",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 1 Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "ges_ver_1_adresse",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 1 Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "cb_ges_ver",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ges_ver_2",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 2",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ges_ver_2_kontakt",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 2 Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "ges_ver_2_adresse",
+   "fieldtype": "Link",
+   "label": "Gesetzlicher Vertreter 2 Adresse",
+   "options": "Address"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2020-01-24 10:16:04.028698",
+ "modified": "2020-02-21 13:28:58.727693",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

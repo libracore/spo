@@ -259,6 +259,12 @@ frappe.ui.form.on('Anfrage', {
 	ang_plz: function(frm) {
 		get_city_from_pincode(cur_frm.doc.ang_plz, 'ang_ort', 'ang_kanton');
 	},
+	ges_ver_1_plz: function(frm) {
+		get_city_from_pincode(cur_frm.doc.ges_ver_1_plz, 'ges_ver_1_ort', 'ges_ver_1_kanton');
+	},
+	ges_ver_2_plz: function(frm) {
+		get_city_from_pincode(cur_frm.doc.ges_ver_2_plz, 'ges_ver_2_ort', 'ges_ver_2_kanton');
+	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
 	},
@@ -291,7 +297,13 @@ function new_mandat(anfrage, patient, adresse, kontakt) {
 				'rsv_ref': cur_frm.doc.rechtsschutz_ref,
 				'ang': cur_frm.doc.ang,
 				'ang_kontakt': cur_frm.doc.ang_kontakt,
-				'ang_adresse': cur_frm.doc.ang_adresse
+				'ang_adresse': cur_frm.doc.ang_adresse,
+				'ges_ver_1': cur_frm.doc.ges_ver_1,
+				'ges_ver_1_adresse': cur_frm.doc.ges_ver_1_address,
+				'ges_ver_1_kontakt': cur_frm.doc.ges_ver_1_contact,
+				'ges_ver_2': cur_frm.doc.ges_ver_2,
+				'ges_ver_2_adresse': cur_frm.doc.ges_ver_2_address,
+				'ges_ver_2_kontakt': cur_frm.doc.ges_ver_2_contact
 			},
 			callback: function(r) {
 				if(r.message) {
@@ -729,7 +741,39 @@ function set_link_filter(frm) {
 				 "mitglied": frm.doc.patient
 			 }
 		 }
-	}
+	};
+	cur_frm.fields_dict['ges_ver_1_address'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.ges_ver_1
+			}
+		}
+	};
+	cur_frm.fields_dict['ges_ver_1_contact'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.ges_ver_1
+			}
+		}
+	};
+	cur_frm.fields_dict['ges_ver_2_address'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.ges_ver_2
+			}
+		}
+	};
+	cur_frm.fields_dict['ges_ver_2_contact'].get_query = function(doc) {
+		return {
+			filters: {
+				"link_doctype": "Customer",
+				"link_name": frm.doc.ges_ver_2
+			}
+		}
+	};
 }
 
 function _kontaktdaten_suchen(frm) {

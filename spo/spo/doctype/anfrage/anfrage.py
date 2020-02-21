@@ -190,7 +190,7 @@ def check_rechnung(mitgliedschaft):
 		return rechnung.status
 		
 @frappe.whitelist()
-def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rsv=None, rsv_kontakt=None, rsv_adresse=None, rsv_ref=None, ang=None, ang_kontakt=None, ang_adresse=None):
+def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rsv=None, rsv_kontakt=None, rsv_adresse=None, rsv_ref=None, ang=None, ang_kontakt=None, ang_adresse=None, ges_ver_1=None, ges_ver_1_adresse=None, ges_ver_1_kontakt=None, ges_ver_2=None, ges_ver_2_adresse=None, ges_ver_2_kontakt=None):
 	#check if Mandat linked to Anfrage already exist
 	if anfrage:
 		qty = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabMandat` WHERE `anfragen` LIKE '%{anfrage}%'""".format(anfrage=anfrage), as_list=True)[0][0]
@@ -280,6 +280,49 @@ def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rs
 			'ang_adresse': ang_adresse
 		})
 		mandat.save()
+		
+	#If ges_ver_1 available, set link
+	if ges_ver_1:
+		mandat.update({
+			'ges_ver_1': ges_ver_1
+		})
+		mandat.save()
+		
+	#If ges_ver_1_adresse available, set link
+	if ges_ver_1_adresse:
+		mandat.update({
+			'ges_ver_1_adresse': ges_ver_1_adresse
+		})
+		mandat.save()
+		
+	#If ges_ver_1_kontakt available, set link
+	if ges_ver_1_kontakt:
+		mandat.update({
+			'ges_ver_1_kontakt': ges_ver_1_kontakt
+		})
+		mandat.save()
+		
+	#If ges_ver_2 available, set link
+	if ges_ver_2:
+		mandat.update({
+			'ges_ver_2': ges_ver_2
+		})
+		mandat.save()
+		
+	#If ges_ver_2_adresse available, set link
+	if ges_ver_2_adresse:
+		mandat.update({
+			'ges_ver_2_adresse': ges_ver_2_adresse
+		})
+		mandat.save()
+		
+	#If ges_ver_2_kontakt available, set link
+	if ges_ver_2_kontakt:
+		mandat.update({
+			'ges_ver_2_kontakt': ges_ver_2_kontakt
+		})
+		mandat.save()
+		
 	
 	return mandat.name
 
