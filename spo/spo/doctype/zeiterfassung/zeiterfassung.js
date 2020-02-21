@@ -1,4 +1,5 @@
 var not_block = true;
+var freigabe_neukalkulation = false;
 frappe.ui.form.on('Zeiterfassung', {
 	refresh: function (frm) {
 		clear_all(frm);
@@ -55,76 +56,16 @@ frappe.ui.form.on('Zeiterfassung', {
 		}
 	},
 	start: function (frm) {
-		if (cur_frm.doc.start.includes(":")) {
-			if (cur_frm.doc.start.split(":").length == 3) {
-					recalc_end_time(frm);
-			} else {
-				var start = cur_frm.doc.start.replace(":", "");
-				if (start.length == 6) {
-					cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":" + start.split("")[2] + start.split("")[3] + ":" + start.split("")[4] + start.split("")[5]);
-				} else if (start.length == 4) {
-					cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":" + start.split("")[2] + start.split("")[3] + ":00");
-				} else if (start.length == 4) {
-					cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":" + start.split("")[2] + start.split("")[3] + ":00");
-				} else if (start.length == 2) {
-					cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":00:00");
-				} else if (start.length == 1) {
-					cur_frm.set_value('start', "0" + start + ":00:00");
-				}
-			}
-		} else {
-			var start = cur_frm.doc.start.replace(":", "");
-			if (start.length == 6) {
-				cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":" + start.split("")[2] + start.split("")[3] + ":" + start.split("")[4] + start.split("")[5]);
-			} else if (start.length == 4) {
-				cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":" + start.split("")[2] + start.split("")[3] + ":00");
-			} else if (start.length == 4) {
-				cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":" + start.split("")[2] + start.split("")[3] + ":00");
-			} else if (start.length == 2) {
-				cur_frm.set_value('start', start.split("")[0] + start.split("")[1] + ":00:00");
-			} else if (start.length == 1) {
-				cur_frm.set_value('start', "0" + start + ":00:00");
-			}
-		}
+		kontrolle_input_format('start');
 	},
 	ende: function (frm) {
-		if (cur_frm.doc.ende.includes(":")) {
-			if (cur_frm.doc.ende.split(":").length == 3) {
-					if (not_block) {
-						calc_arbeitszeit(cur_frm.doc.start, cur_frm.doc.ende, frm);
-					} else {
-						not_block = true;
-					}
-			} else {
-				var ende = cur_frm.doc.ende.replace(":", "");
-				if (ende.length == 6) {
-					cur_frm.set_value('ende', ende.split("")[0] + ende.split("")[1] + ":" + ende.split("")[2] + ende.split("")[3] + ":" + ende.split("")[4] + ende.split("")[5]);
-				} else if (ende.length == 4) {
-					cur_frm.set_value('ende', ende.split("")[0] + ende.split("")[1] + ":" + ende.split("")[2] + ende.split("")[3] + ":00");
-				} else if (ende.length == 2) {
-					cur_frm.set_value('ende', ende.split("")[0] + ende.split("")[1] + ":00:00");
-				} else if (ende.length == 1) {
-					cur_frm.set_value('ende', "0" + ende + ":00:00");
-				}
-			}
-		} else {
-			var ende = cur_frm.doc.ende.replace(":", "");
-			if (ende.length == 6) {
-				cur_frm.set_value('ende', ende.split("")[0] + ende.split("")[1] + ":" + ende.split("")[2] + ende.split("")[3] + ":" + ende.split("")[4] + ende.split("")[5]);
-			} else if (ende.length == 4) {
-				cur_frm.set_value('ende', ende.split("")[0] + ende.split("")[1] + ":" + ende.split("")[2] + ende.split("")[3] + ":00");
-			} else if (ende.length == 2) {
-				cur_frm.set_value('ende', ende.split("")[0] + ende.split("")[1] + ":00:00");
-			} else if (ende.length == 1) {
-				cur_frm.set_value('ende', "0" + ende + ":00:00");
-			}
-		}
+		kontrolle_input_format('ende');
 	},
 	arbeitszeit: function (frm) {
-		recalc_end_time(frm);
+		neues_arbeitsende();
 	},
 	total_pausen: function (frm) {
-		recalc_end_time(frm);
+		neuberechnung_arbeitszeit();
 	},
 	scroll_to_top1: function (frm) {
 		frappe.utils.scroll_to($(".form-inner-toolbar"));
@@ -170,6 +111,145 @@ frappe.ui.form.on('Zeiterfassung', {
 		});
 	}
 });
+
+function kontrolle_input_format(typ) {
+	var std = "08";
+	var min = "00";
+	var sec = "00";
+	if (cur_frm.doc[typ].includes(":")) {
+		if (cur_frm.doc[typ].split(":").length == 3) {
+			std = parseInt(cur_frm.doc[typ].split(":")[0]);
+			min = parseInt(cur_frm.doc[typ].split(":")[1]);
+			sec = parseInt(cur_frm.doc[typ].split(":")[2]);
+			if (std < 10) {
+				std = "0" + std.toString();
+			} else if (std > 23) {
+				frappe.msgprint("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '" + std.toString() + "' wurde durch '23' ersetzt.");
+				std = "23";
+			} else {
+				std = std.toString();
+			}
+			if (min < 10) {
+				min = "0" + min.toString();
+			} else if (min > 59) {
+				frappe.msgprint("Der Minutenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Minutenwert '" + min.toString() + "' wurde durch '59' ersetzt.");
+				min = "59";
+			} else {
+				min = min.toString();
+			}
+			if (sec < 10) {
+				sec = "0" + sec.toString();
+			} else if (sec > 59) {
+				frappe.msgprint("Der Sekundenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Sekundenwert '" + sec.toString() + "' wurde durch '59' ersetzt.");
+				sec = "59";
+			} else {
+				sec = sec.toString();
+			}
+		} else if (cur_frm.doc[typ].split(":").length == 2) {
+			std = parseInt(cur_frm.doc[typ].split(":")[0]);
+			min = parseInt(cur_frm.doc[typ].split(":")[1]);
+			sec = "00";
+			if (std < 10) {
+				std = "0" + std.toString();
+			} else if (std > 23) {
+				frappe.msgprint("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '" + std.toString() + "' wurde durch '23' ersetzt.");
+				std = "23";
+			} else {
+				std = std.toString();
+			}
+			if (min < 10) {
+				min = "0" + min.toString();
+			} else if (min > 59) {
+				frappe.msgprint("Der Minutenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Minutenwert '" + min.toString() + "' wurde durch '59' ersetzt.");
+				min = "59";
+			} else {
+				min = min.toString();
+			}
+		} else if (cur_frm.doc[typ].split(":").length == 1) {
+			std = parseInt(cur_frm.doc[typ].split(":")[0]);
+			min = "00";
+			sec = "00";
+			if (std < 10) {
+				std = "0" + std.toString();
+			} else if (std > 23) {
+				frappe.msgprint("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '" + std.toString() + "' wurde durch '23' ersetzt.");
+				std = "23";
+			} else {
+				std = std.toString();
+			}
+		} else {
+			std = "08";
+			min = "00";
+			sec = "00";
+			frappe.msgprint("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt.");
+		}
+	} else {
+		std = "08";
+		min = "00";
+		sec = "00";
+		frappe.msgprint("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt.");
+	}
+	cur_frm.set_value(typ, std + ":" + min + ":" + sec);
+	if (typ == 'ende') {
+		neuberechnung_arbeitszeit();
+	}
+	if (typ == 'start') {
+		neues_arbeitsende();
+	}
+}
+
+function round_3(x) {
+  return Number.parseFloat(x).toFixed(3);
+}
+
+function neues_arbeitsende() {
+	var total_arbeitszeit = parseFloat(cur_frm.doc.arbeitszeit + cur_frm.doc.total_pausen);
+	var zu_addierende_std = parseInt(total_arbeitszeit);
+	var rest_exkl_std = parseFloat(round_3(total_arbeitszeit - zu_addierende_std));
+	var zu_addierende_min = parseInt(rest_exkl_std * 60);
+	var rest_exkl_min = parseFloat(round_3((rest_exkl_std * 60) - zu_addierende_min));
+	var zu_addierende_sec = 0;
+	if (rest_exkl_min > 0) {
+		zu_addierende_sec = parseInt(rest_exkl_min * 60);
+	}
+	var neue_std = parseInt(cur_frm.doc.start.split(":")[0]) + zu_addierende_std;
+	var neue_min = parseInt(cur_frm.doc.start.split(":")[1]) + zu_addierende_min;
+	var neue_sec = parseInt(cur_frm.doc.start.split(":")[2]) + zu_addierende_sec;
+	while (neue_sec > 59) {
+		neue_min += 1;
+		neue_sec -= 59;
+	}
+	while (neue_min > 59) {
+		neue_std += 1;
+		neue_min -= 59;
+	}
+	var neues_ende;
+	if (neue_std > 23) {
+		neues_ende = '23:59:59';
+		frappe.msgprint("Die eingegebene Arbeitszeit übersteigt Mitternacht! Die kann7darf nicht sein.<br>Das Arbeitsende wurde auf '23:59:59' festgesetzt.");
+	}
+	if (neue_std < 10) {
+		neue_std = '0' + neue_std.toString();
+	}
+	if (neue_min < 10) {
+		neue_min = '0' + neue_min.toString();
+	}
+	if (neue_sec < 10) {
+		neue_sec = '0' + neue_sec.toString();
+	}
+	var neues_ende = neue_std + ":" + neue_min + ":" + neue_sec;
+	cur_frm.set_value('ende', neues_ende);
+}
+
+function neuberechnung_arbeitszeit() {
+	var ende_in_sec = parseFloat(cur_frm.doc.ende.split(":")[2]) + (parseFloat(cur_frm.doc.ende.split(":")[1]) * 60) + ((parseFloat(cur_frm.doc.ende.split(":")[0]) * 60) * 60);
+	var start_in_sec = parseFloat(cur_frm.doc.start.split(":")[2]) + (parseFloat(cur_frm.doc.start.split(":")[1]) * 60) + ((parseFloat(cur_frm.doc.start.split(":")[0]) * 60) * 60);
+	var diff_in_sec = ende_in_sec - start_in_sec;
+	var diff_in_min = diff_in_sec / 60;
+	var diff_in_std = diff_in_min / 60;
+	cur_frm.set_value('arbeitszeit', diff_in_std - cur_frm.doc.total_pausen);
+	neues_arbeitsende();
+}
 
 function clear_all(frm) {
 	remove_all_rows_of_all_subtables(frm);
@@ -478,74 +558,15 @@ function alles_freigeben(frm) {
 }
 
 function set_default_start_and_end(frm) {
-	var start_zeit = frappe.datetime.now_time();
-	var end_zeit = calc_end_time(start_zeit, 0);
 	var heute = frappe.datetime.now_date();
-	cur_frm.set_value('start', start_zeit);
-	cur_frm.set_value('ende', end_zeit);
+	cur_frm.set_value('start', '08:00:00');
+	cur_frm.set_value('ende', '17:54:00');
 	cur_frm.set_value('datum', heute);
 	
 	var child = cur_frm.add_child('pausen');
 	frappe.model.set_value(child.doctype, child.name, 'from', "12:00:00");
 	frappe.model.set_value(child.doctype, child.name, 'dauer', 1.5);
 	cur_frm.refresh_field('pausen');
-}
-
-function recalc_end_time(frm) {
-	if (cur_frm.doc.start) {
-		var start = cur_frm.doc.start;
-		var diff = 0;
-		if (Number(parseFloat(cur_frm.doc.arbeitszeit).toFixed(3)) != 8.4) {	
-			var diff = Number(parseFloat(cur_frm.doc.arbeitszeit).toFixed(3)) - 8.4;
-		}
-		var ende = calc_end_time(start, diff + cur_frm.doc.total_pausen);
-		not_block = false;
-		cur_frm.set_value('ende', ende);
-	}
-}
-
-function calc_end_time(start_zeit, pausen_dauer) {
-	pausen_dauer = 60 * Number(parseFloat(pausen_dauer).toFixed(1));
-	var stunden = parseInt(start_zeit.split(":")[0]);
-	var end_stunden = stunden + 8;
-	var minuten = (parseInt(start_zeit.split(":")[1]) + 24) + pausen_dauer;
-	while (minuten < 0) {
-		end_stunden = end_stunden - 1;
-		minuten = minuten + 60;
-	}
-	
-	while (minuten >= 60) {
-		end_stunden = end_stunden + 1;
-		minuten = minuten - 60;
-	}
-	var end_minuten = parseInt(minuten);
-	if (end_minuten < 10) {
-		end_minuten = '0' + end_minuten.toString();
-	}
-	var end_zeit = end_stunden.toString() + ":" + end_minuten.toString() + ":" + start_zeit.split(":")[2].toString();
-	if (end_stunden > 23) {
-		end_zeit = "23:59:59";
-	}
-	return end_zeit;
-}
-
-function calc_arbeitszeit(start, end, frm) {
-	start = start.split(":");
-    end = end.split(":");
-    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
-    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
-	
-    var diff = endDate.getTime() - startDate.getTime();
-	var hours = Math.floor(diff / 1000 / 60 / 60);
-	diff -= hours * 1000 * 60 * 60;
-    var minutes = Math.floor(diff / 1000 / 60);
-
-    if (hours < 0)
-       hours = hours + 24;
-   
-    minutes = minutes / 60;
-	var berechnete_stunden = parseFloat(hours + "." + minutes.toString().split(".")[1]) - cur_frm.doc.total_pausen;
-	cur_frm.set_value('arbeitszeit', berechnete_stunden);
 }
 
 function fetch_pausen_von_ts(frm) {
