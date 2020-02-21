@@ -11,19 +11,19 @@ def get_data():
 					"type": "doctype",
 					"name": "Telefon Triage",
 					"label": "Telefon Triage",
-					"description": _("Telefon Triage"),
+					"description": _("Telefon Triage")
 				},
 				{
 					"type": "doctype",
 					"name": "Anfrage",
 					"label": "Anfragen",
-					"description": _("Mandats und oder sonstige Anfragen"),
+					"description": _("Mandats und oder sonstige Anfragen")
 				},
 				{
 					"type": "doctype",
 					"name": "Mandat",
 					"label": "Mandate",
-					"description": _("Führendes Mandats-Dokument"),
+					"description": _("Führendes Mandats-Dokument")
 				},
 				{
 					"type": "report",
@@ -51,25 +51,25 @@ def get_data():
 					"type": "doctype",
 					"name": "Mitgliedschaft",
 					"label": "Mitgliedschaften",
-					"description": _("SPO Mitgliedschaften"),
+					"description": _("SPO Mitgliedschaften")
 				},
 				{
 					"type": "doctype",
 					"name": "Customer",
 					"label": "Kunden",
-					"description": _("Customers"),
+					"description": _("Customers")
 				},
 				{
 					"type": "doctype",
 					"label": "Rechnungen",
 					"name": "Sales Invoice",
-					"description": _("Sales Invoice"),
+					"description": _("Sales Invoice")
 				},
 				{
 					"type": "doctype",
 					"label": "Rechnungslauf",
 					"name": "Mitglieder Rechnungslauf",
-					"description": _("Mitglieder Rechnungslauf"),
+					"description": _("Mitglieder Rechnungslauf")
 				}
 			]
 		},
@@ -81,31 +81,31 @@ def get_data():
 					"type": "doctype",
 					"name": "Anforderung Patientendossier",
 					"label": "Anforderung Patientendossier",
-					"description": _("Anforderung Patientendossier"),
+					"description": _("Anforderung Patientendossier")
 				},
 				{
 					"type": "doctype",
 					"name": "Medizinischer Bericht",
 					"label": "Medizinischer Bericht",
-					"description": _("Medizinischer Bericht"),
+					"description": _("Medizinischer Bericht")
 				},
 				{
 					"type": "doctype",
 					"name": "Triage",
 					"label": "Triage",
-					"description": _("Triage"),
+					"description": _("Triage")
 				},
 				{
 					"type": "doctype",
 					"name": "Vollmacht",
 					"label": "Vollmacht",
-					"description": _("Vollmacht"),
+					"description": _("Vollmacht")
 				},
 				{
 					"type": "doctype",
 					"name": "Abschlussbericht",
 					"label": "Abschlussbericht",
-					"description": _("Abschlussbericht"),
+					"description": _("Abschlussbericht")
 				}
 			]
 		},
@@ -117,13 +117,13 @@ def get_data():
 					"type": "doctype",
 					"name": "Einstellungen",
 					"label": "Defaults",
-					"description": _("Standard Einstellungen"),
+					"description": _("Standard Einstellungen")
 				},
 				{
 					"type": "doctype",
 					"name": "SPO Textbausteine",
 					"label": "Textbausteine",
-					"description": _("Benutzerspezifische Textbausteine"),
+					"description": _("Benutzerspezifische Textbausteine")
 				}
 			]
 		},
@@ -135,7 +135,7 @@ def get_data():
 					"type": "doctype",
 					"name": "Zeiterfassung",
 					"label": "Zeiterfassungs Manager",
-					"description": _("Zeiterfassungs Manager"),
+					"description": _("Zeiterfassungs Manager")
 				},
 				{
 					"type": "report",
@@ -155,19 +155,19 @@ def get_data():
 					"type": "doctype",
 					"name": "Supplier",
 					"label": _("Supplier"),
-					"description": _("Supplier"),
+					"description": _("Supplier")
 				},
 				{
 					"type": "doctype",
 					"name": "Purchase Invoice",
 					"label": _("Purchase Invoice"),
-					"description": _("Purchase Invoice"),
+					"description": _("Purchase Invoice")
 				},
 				{
 					"type": "doctype",
 					"name": "Payment Proposal",
 					"label": _("Payment Proposal"),
-					"description": _("Payment Proposal"),
+					"description": _("Payment Proposal")
 				},
 				{
 				       "type": "page",
@@ -175,6 +175,26 @@ def get_data():
 				       "label": _("Bank Wizard"),
 				       "description": _("Bank Wizard")
 				}
-					]
+            ]
+		},
+		{
+			"label": _("Buchhaltung"),
+			"icon": "fa fa-cog",
+			"items": [
+				{
+					"type": "report",
+					"name": "MwSt Deklaration",
+					"label": _("MwSt Deklaration"),
+					"doctype": "GL Entry",
+                    "is_query_report": True
+				},
+                {
+					"type": "report",
+					"name": "General Ledger",
+					"label": _("General Ledger"),
+					"doctype": "GL Entry",
+                    "is_query_report": True
+				}
+            ]
 		}
 	]
