@@ -1,7 +1,9 @@
-var not_block = true;
-var freigabe_neukalkulation = false;
+var sperre = true;
+var zeit_berechnungs_sperre = false;
 frappe.ui.form.on('Zeiterfassung', {
 	refresh: function (frm) {
+		console.log("setze sperre (refresh)");
+		zeit_berechnungs_sperre = true;
 		clear_all(frm);
 		set_ma_from_user(frm);
 		set_default_start_and_end(frm);
@@ -37,15 +39,22 @@ frappe.ui.form.on('Zeiterfassung', {
 	},
 	timesheet: function (frm) {
 		if (cur_frm.doc.timesheet) {
+			console.log("setze sperre (refresh)");
+			zeit_berechnungs_sperre = true;
 			remove_all_rows_of_all_subtables(frm);
 			get_ts_overview(frm);
 			fetch_pausen_von_ts(frm);
 			fetch_beratungs_und_mandats_arbeiten_von_ts(frm);
 			fetch_diverses_von_ts(frm);
+			setTimeout(function(){
+				console.log("entferne sperre");
+				zeit_berechnungs_sperre = false;
+			}, 1000);
 		} else {
 			remove_all_rows_of_all_subtables(frm);
+			console.log("setze sperre (timesheet)");
+			zeit_berechnungs_sperre = true;
 			set_default_start_and_end(frm);
-			cur_frm.set_value('arbeitszeit', 8.4);
 			cur_frm.set_df_property('overview_html','options', '<div>Bitte zuerst eine(n) Mitarbeiter(in) und ein Timesheet auswählen.</div>');
 			cur_frm.remove_custom_button("Zeiterfassung updaten");
 			if (cur_frm.doc.employee) {
@@ -56,16 +65,32 @@ frappe.ui.form.on('Zeiterfassung', {
 		}
 	},
 	start: function (frm) {
-		kontrolle_input_format('start');
+		if (!zeit_berechnungs_sperre) {
+			zeit_berechnungs_sperre = true;
+			console.log("start wurde geändert...starte validierung....");
+			kontrolle_input_format('start');
+		}
 	},
 	ende: function (frm) {
-		kontrolle_input_format('ende');
+		if (!zeit_berechnungs_sperre) {
+			zeit_berechnungs_sperre = true;
+			console.log("ende wurde geändert...starte validierung....");
+			kontrolle_input_format('ende');
+		}
 	},
 	arbeitszeit: function (frm) {
-		neues_arbeitsende();
+		if (!zeit_berechnungs_sperre) {
+			zeit_berechnungs_sperre = true;
+			console.log("arbeitszeit wurde geändert...");
+			neues_arbeitsende();
+		}
 	},
 	total_pausen: function (frm) {
-		neuberechnung_arbeitszeit();
+		if (!zeit_berechnungs_sperre) {
+			zeit_berechnungs_sperre = true;
+			console.log("pause wurde geändert...");
+			neuberechnung_arbeitszeit();
+		}
 	},
 	scroll_to_top1: function (frm) {
 		frappe.utils.scroll_to($(".form-inner-toolbar"));
@@ -189,11 +214,15 @@ function kontrolle_input_format(typ) {
 		sec = "00";
 		frappe.msgprint("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt.");
 	}
+
 	cur_frm.set_value(typ, std + ":" + min + ":" + sec);
+
 	if (typ == 'ende') {
+		console.log("validierung (ende) abgeschlossen...");
 		neuberechnung_arbeitszeit();
 	}
 	if (typ == 'start') {
+		console.log("validierung (start) abgeschlossen...");
 		neues_arbeitsende();
 	}
 }
@@ -203,6 +232,7 @@ function round_3(x) {
 }
 
 function neues_arbeitsende() {
+	console.log("berechne neues arbeitsende...");
 	var total_arbeitszeit = parseFloat(cur_frm.doc.arbeitszeit + cur_frm.doc.total_pausen);
 	var zu_addierende_std = parseInt(total_arbeitszeit);
 	var rest_exkl_std = parseFloat(round_3(total_arbeitszeit - zu_addierende_std));
@@ -226,7 +256,7 @@ function neues_arbeitsende() {
 	var neues_ende;
 	if (neue_std > 23) {
 		neues_ende = '23:59:59';
-		frappe.msgprint("Die eingegebene Arbeitszeit übersteigt Mitternacht! Die kann7darf nicht sein.<br>Das Arbeitsende wurde auf '23:59:59' festgesetzt.");
+		frappe.msgprint("Die eingegebene Arbeitszeit übersteigt Mitternacht! Das kann/darf nicht sein.<br>Das Arbeitsende wurde auf '23:59:59' festgesetzt.");
 	}
 	if (neue_std < 10) {
 		neue_std = '0' + neue_std.toString();
@@ -238,17 +268,30 @@ function neues_arbeitsende() {
 		neue_sec = '0' + neue_sec.toString();
 	}
 	var neues_ende = neue_std + ":" + neue_min + ":" + neue_sec;
+	
 	cur_frm.set_value('ende', neues_ende);
+
+	console.log("neues ende gesetzt...");
+	setTimeout(function(){
+		console.log("entferne sperre");
+		zeit_berechnungs_sperre = false;
+	}, 1000);
 }
 
 function neuberechnung_arbeitszeit() {
+	console.log("berechne neue arbeitszeit...");
 	var ende_in_sec = parseFloat(cur_frm.doc.ende.split(":")[2]) + (parseFloat(cur_frm.doc.ende.split(":")[1]) * 60) + ((parseFloat(cur_frm.doc.ende.split(":")[0]) * 60) * 60);
 	var start_in_sec = parseFloat(cur_frm.doc.start.split(":")[2]) + (parseFloat(cur_frm.doc.start.split(":")[1]) * 60) + ((parseFloat(cur_frm.doc.start.split(":")[0]) * 60) * 60);
 	var diff_in_sec = ende_in_sec - start_in_sec;
 	var diff_in_min = diff_in_sec / 60;
 	var diff_in_std = diff_in_min / 60;
+	
 	cur_frm.set_value('arbeitszeit', diff_in_std - cur_frm.doc.total_pausen);
-	neues_arbeitsende();
+	console.log("neue arbeitszeit gesetzt...");
+	setTimeout(function(){
+		console.log("entferne sperre");
+		zeit_berechnungs_sperre = false;
+	}, 1000);
 }
 
 function clear_all(frm) {
@@ -558,6 +601,7 @@ function alles_freigeben(frm) {
 }
 
 function set_default_start_and_end(frm) {
+	console.log("setze standard werte....");
 	var heute = frappe.datetime.now_date();
 	cur_frm.set_value('start', '08:00:00');
 	cur_frm.set_value('ende', '17:54:00');
@@ -567,6 +611,12 @@ function set_default_start_and_end(frm) {
 	frappe.model.set_value(child.doctype, child.name, 'from', "12:00:00");
 	frappe.model.set_value(child.doctype, child.name, 'dauer', 1.5);
 	cur_frm.refresh_field('pausen');
+	
+	cur_frm.set_value('arbeitszeit', 8.4);
+	setTimeout(function(){
+		console.log("entferne sperre");
+		zeit_berechnungs_sperre = false;
+	}, 1000);
 }
 
 function fetch_pausen_von_ts(frm) {
