@@ -114,6 +114,12 @@ def get_data():
 					"name": "Abschlussbericht",
 					"label": "Abschlussbericht",
 					"description": _("Abschlussbericht")
+				},
+				{
+					"type": "doctype",
+					"name": "Freies Schreiben",
+					"label": "Freies Schreiben",
+					"description": _("Freies Schreiben")
 				}
 			]
 		},

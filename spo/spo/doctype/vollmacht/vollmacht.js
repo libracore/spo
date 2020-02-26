@@ -6,6 +6,7 @@ frappe.ui.form.on('Vollmacht', {
 		check_todesfall(frm);
 		set_kunden_html(frm);
 		set_ang_html(frm);
+		set_begleitbrief(frm);
 	},
 	before_save: function(frm) {
 		if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
@@ -67,66 +68,74 @@ frappe.ui.form.on('Vollmacht', {
 });
 
 function fetch_data_from_ang(frm) {
-	if (cur_frm.doc.ang_kontakt && cur_frm.doc.ang_adresse) {
-		frappe.call({
-			"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
-			"args": {
-				"adresse": cur_frm.doc.ang_adresse,
-				"kontakt": cur_frm.doc.ang_kontakt
-			},
-			"async": false,
-			"callback": function(r) {
-				if (r) {
-					var adresse = r.message.adresse;
-					var kontakt = r.message.kontakt;
-					
-					cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
-					cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
-					cur_frm.set_value("adresse", adresse.address_line1);
-					cur_frm.set_value("email", kontakt.email_id);
-					if (kontakt.phone) {
-						cur_frm.set_value("telefon", kontakt.phone);
-					} else if (kontakt.mobile_no) {
-						cur_frm.set_value("telefon", kontakt.mobile_no);
-					}
-					if (!cur_frm.doc.adressat) {
-						cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+	if (!cur_frm.doc.daten_von_hand) {
+		if (cur_frm.doc.ang_kontakt && cur_frm.doc.ang_adresse) {
+			frappe.call({
+				"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
+				"args": {
+					"adresse": cur_frm.doc.ang_adresse,
+					"kontakt": cur_frm.doc.ang_kontakt
+				},
+				"async": false,
+				"callback": function(r) {
+					if (r) {
+						var adresse = r.message.adresse;
+						var kontakt = r.message.kontakt;
+						
+						cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
+						cur_frm.set_value("adresse", adresse.address_line1);
+						cur_frm.set_value("email", kontakt.email_id);
+						cur_frm.set_value("plz", adresse.plz);
+						cur_frm.set_value("wohnort", adresse.city);
+						if (kontakt.phone) {
+							cur_frm.set_value("telefon", kontakt.phone);
+						} else if (kontakt.mobile_no) {
+							cur_frm.set_value("telefon", kontakt.mobile_no);
+						}
+						if (!cur_frm.doc.adressat) {
+							cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
 
 function fetch_data_from_kunde(frm) {
-	if (cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
-		frappe.call({
-			"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
-			"args": {
-				"adresse": cur_frm.doc.kunden_adresse,
-				"kontakt": cur_frm.doc.kunden_kontakt
-			},
-			"async": false,
-			"callback": function(r) {
-				if (r) {
-					var adresse = r.message.adresse;
-					var kontakt = r.message.kontakt;
-					
-					cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
-					cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
-					cur_frm.set_value("adresse", adresse.address_line1);
-					cur_frm.set_value("email", kontakt.email_id);
-					if (kontakt.phone) {
-						cur_frm.set_value("telefon", kontakt.phone);
-					} else if (kontakt.mobile_no) {
-						cur_frm.set_value("telefon", kontakt.mobile_no);
-					}
-					if (!cur_frm.doc.adressat) {
-						cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+	if (!cur_frm.doc.daten_von_hand) {
+		if (cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
+			frappe.call({
+				"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
+				"args": {
+					"adresse": cur_frm.doc.kunden_adresse,
+					"kontakt": cur_frm.doc.kunden_kontakt
+				},
+				"async": false,
+				"callback": function(r) {
+					if (r) {
+						var adresse = r.message.adresse;
+						var kontakt = r.message.kontakt;
+						
+						cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
+						cur_frm.set_value("adresse", adresse.address_line1);
+						cur_frm.set_value("email", kontakt.email_id);
+						cur_frm.set_value("plz", adresse.plz);
+						cur_frm.set_value("wohnort", adresse.city);
+						if (kontakt.phone) {
+							cur_frm.set_value("telefon", kontakt.phone);
+						} else if (kontakt.mobile_no) {
+							cur_frm.set_value("telefon", kontakt.mobile_no);
+						}
+						if (!cur_frm.doc.adressat) {
+							cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
 
@@ -213,4 +222,19 @@ function timesheet_handling(frm) {
 	'Arbeitszeit erfassen',
 	'Erfassen'
 	)
+}
+
+function set_begleitbrief(frm) {
+	if (!cur_frm.doc.begleitbrief) {
+		var begleitbrief = '';
+		begleitbrief += '<p>Sehr geehrte ...</p>';
+		begleitbrief += '<p>Wir wenden uns schriftlich an Sie, da wir Sie telefonisch nicht erreichen konnten.</p>';
+		begleitbrief += '<p>Wir wurden von Ihrer Rechtsschutzversicherung (Name der Vers.)  beauftragt die Behandlung vom (Datum und wer/wo) abzuklären.';
+		begleitbrief += 'Damit wir aktiv werden können, sende ich Ihnen die Vollmacht zur Unterschrift. Bitte prüfen Sie das Formular insbesondere das Fettgedruckte auf die Richtigkeit und schicken Sie nach Unterschrift ein Exemplar im beigelegten Couvert wieder zurück an die SPO.';
+		begleitbrief += 'Eine Vollmacht gilt als Kopie und geht zu ihren Akten.</p>';
+		begleitbrief += '<p>Ich wäre sehr froh, wenn Sie mich telefonisch kontaktieren könnten. Sie erreichen mich jeweils mittwochs (10-12 Uhr und 14-16 Uhr) im Büro Zürich unter der Tel. Nr.: 044 252 522.</p>';
+		begleitbrief += '<p>Freundliche Grüsse<br><br><br></p>';
+		begleitbrief += '<p>... ...<br>Beratung SPO</p>';
+		cur_frm.set_value("begleitbrief", begleitbrief);
+	}
 }

@@ -10,6 +10,7 @@
   "fragestellung_anwalt",
   "beurteilung",
   "bemerkung",
+  "druck_bemerkung",
   "fazit",
   "empfehlung",
   "empfehlung_anderes",
@@ -20,6 +21,7 @@
   "schaden",
   "empfehlung_check",
   "fusszeile",
+  "druck_kopfzeile",
   "amended_from",
   "fold_referenzen",
   "section_referenzen",
@@ -136,10 +138,22 @@
    "fieldname": "section_referenzen",
    "fieldtype": "Section Break",
    "label": "Referenzen"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_bemerkung",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Bemerkung\"?"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_kopfzeile",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Kopfzeile\""
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-24 11:56:21.786016",
+ "modified": "2020-02-26 14:01:23.282155",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",
