@@ -70,6 +70,57 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 	kunden_kontakt: function(frm) {
 		set_kunden_html(frm);
 		set_titelzeile(frm);
+	},
+	spital: function(frm) {
+		cur_frm.set_value("spital_kontakt", "");
+		cur_frm.set_value("spital_adresse", "");
+		if (cur_frm.doc.spital) {
+			frappe.db.get_value('Customer', {'name': cur_frm.doc.spital}, ['customer_name', 'customer_type'], (r) => {
+				if (r.customer_type == 'Company') {
+					cur_frm.set_value("adressat", r.customer_name);
+				}
+			});
+		}
+	},
+	spital_kontakt: function(frm) {
+		if (cur_frm.doc.spital_kontakt) {
+			frappe.db.get_value('Contact', {'name': cur_frm.doc.spital_kontakt}, ['salutation', 'first_name', 'last_name'], (kontakt) => {
+				var adresse = '';
+				if (cur_frm.doc.adressat) {
+					adresse = cur_frm.doc.adressat;
+					adresse += '\n';
+				}
+				if (kontakt.salutation) {
+					adresse += kontakt.salutation;
+					adresse += '\n';
+				}
+				adresse += kontakt.first_name;
+				adresse += ' ';
+				adresse += kontakt.last_name;
+				cur_frm.set_value("adressat", adresse);
+			});
+		}
+	},
+	spital_adresse: function(frm) {
+		if (cur_frm.doc.spital_adresse) {
+			frappe.db.get_value('Address', {'name': cur_frm.doc.spital_adresse}, ['address_line1', 'address_line2', 'plz', 'city'], (adressen_link) => {
+				var adresse = '';
+				if (cur_frm.doc.adressat) {
+					adresse = cur_frm.doc.adressat;
+					adresse += '\n';
+				}
+				adresse += adressen_link.address_line1;
+				adresse += '\n';
+				if (adressen_link.address_line2) {
+					adresse += adressen_link.address_line2;
+					adresse += '\n';
+				}
+				adresse += adressen_link.plz;
+				adresse += ' ';
+				adresse += adressen_link.city;
+				cur_frm.set_value("adressat", adresse);
+			});
+		}
 	}
 });
 
