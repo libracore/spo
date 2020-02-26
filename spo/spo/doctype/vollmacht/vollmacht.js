@@ -85,6 +85,8 @@ function fetch_data_from_ang(frm) {
 						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
 						cur_frm.set_value("adresse", adresse.address_line1);
 						cur_frm.set_value("email", kontakt.email_id);
+						cur_frm.set_value("plz", adresse.plz);
+						cur_frm.set_value("wohnort", adresse.city);
 						if (kontakt.phone) {
 							cur_frm.set_value("telefon", kontakt.phone);
 						} else if (kontakt.mobile_no) {
@@ -119,6 +121,8 @@ function fetch_data_from_kunde(frm) {
 						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
 						cur_frm.set_value("adresse", adresse.address_line1);
 						cur_frm.set_value("email", kontakt.email_id);
+						cur_frm.set_value("plz", adresse.plz);
+						cur_frm.set_value("wohnort", adresse.city);
 						if (kontakt.phone) {
 							cur_frm.set_value("telefon", kontakt.phone);
 						} else if (kontakt.mobile_no) {

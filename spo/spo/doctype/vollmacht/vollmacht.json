@@ -16,12 +16,14 @@
   "todesfall",
   "section_2",
   "name_vorname",
+  "plz",
   "geburtsdatum",
   "email",
   "daten_von_hand",
   "cb_2",
   "beziehungsverhaeltniss",
   "adresse",
+  "wohnort",
   "telefon",
   "berater",
   "section_3",
@@ -251,10 +253,20 @@
    "fieldname": "daten_von_hand",
    "fieldtype": "Check",
    "label": "Daten von Hand \u00fcberschreiben"
+  },
+  {
+   "fieldname": "plz",
+   "fieldtype": "Data",
+   "label": "Postleitzahl"
+  },
+  {
+   "fieldname": "wohnort",
+   "fieldtype": "Data",
+   "label": "Wohnort"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-02-26 12:58:49.832537",
+ "modified": "2020-02-26 13:08:58.237555",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",
