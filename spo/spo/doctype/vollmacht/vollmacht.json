@@ -18,6 +18,7 @@
   "name_vorname",
   "geburtsdatum",
   "email",
+  "daten_von_hand",
   "cb_2",
   "beziehungsverhaeltniss",
   "adresse",
@@ -244,10 +245,16 @@
    "fieldname": "adressat",
    "fieldtype": "Small Text",
    "label": "Adressat"
+  },
+  {
+   "default": "0",
+   "fieldname": "daten_von_hand",
+   "fieldtype": "Check",
+   "label": "Daten von Hand \u00fcberschreiben"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-24 10:23:05.794261",
+ "modified": "2020-02-26 12:58:49.832537",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",

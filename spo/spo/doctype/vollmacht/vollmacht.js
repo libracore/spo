@@ -67,66 +67,70 @@ frappe.ui.form.on('Vollmacht', {
 });
 
 function fetch_data_from_ang(frm) {
-	if (cur_frm.doc.ang_kontakt && cur_frm.doc.ang_adresse) {
-		frappe.call({
-			"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
-			"args": {
-				"adresse": cur_frm.doc.ang_adresse,
-				"kontakt": cur_frm.doc.ang_kontakt
-			},
-			"async": false,
-			"callback": function(r) {
-				if (r) {
-					var adresse = r.message.adresse;
-					var kontakt = r.message.kontakt;
-					
-					cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
-					cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
-					cur_frm.set_value("adresse", adresse.address_line1);
-					cur_frm.set_value("email", kontakt.email_id);
-					if (kontakt.phone) {
-						cur_frm.set_value("telefon", kontakt.phone);
-					} else if (kontakt.mobile_no) {
-						cur_frm.set_value("telefon", kontakt.mobile_no);
-					}
-					if (!cur_frm.doc.adressat) {
-						cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+	if (!cur_frm.doc.daten_von_hand) {
+		if (cur_frm.doc.ang_kontakt && cur_frm.doc.ang_adresse) {
+			frappe.call({
+				"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
+				"args": {
+					"adresse": cur_frm.doc.ang_adresse,
+					"kontakt": cur_frm.doc.ang_kontakt
+				},
+				"async": false,
+				"callback": function(r) {
+					if (r) {
+						var adresse = r.message.adresse;
+						var kontakt = r.message.kontakt;
+						
+						cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
+						cur_frm.set_value("adresse", adresse.address_line1);
+						cur_frm.set_value("email", kontakt.email_id);
+						if (kontakt.phone) {
+							cur_frm.set_value("telefon", kontakt.phone);
+						} else if (kontakt.mobile_no) {
+							cur_frm.set_value("telefon", kontakt.mobile_no);
+						}
+						if (!cur_frm.doc.adressat) {
+							cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
 
 function fetch_data_from_kunde(frm) {
-	if (cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
-		frappe.call({
-			"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
-			"args": {
-				"adresse": cur_frm.doc.kunden_adresse,
-				"kontakt": cur_frm.doc.kunden_kontakt
-			},
-			"async": false,
-			"callback": function(r) {
-				if (r) {
-					var adresse = r.message.adresse;
-					var kontakt = r.message.kontakt;
-					
-					cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
-					cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
-					cur_frm.set_value("adresse", adresse.address_line1);
-					cur_frm.set_value("email", kontakt.email_id);
-					if (kontakt.phone) {
-						cur_frm.set_value("telefon", kontakt.phone);
-					} else if (kontakt.mobile_no) {
-						cur_frm.set_value("telefon", kontakt.mobile_no);
-					}
-					if (!cur_frm.doc.adressat) {
-						cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+	if (!cur_frm.doc.daten_von_hand) {
+		if (cur_frm.doc.kunden_kontakt && cur_frm.doc.kunden_adresse) {
+			frappe.call({
+				"method": "spo.spo.doctype.vollmacht.vollmacht.get_fetching_data",
+				"args": {
+					"adresse": cur_frm.doc.kunden_adresse,
+					"kontakt": cur_frm.doc.kunden_kontakt
+				},
+				"async": false,
+				"callback": function(r) {
+					if (r) {
+						var adresse = r.message.adresse;
+						var kontakt = r.message.kontakt;
+						
+						cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
+						cur_frm.set_value("adresse", adresse.address_line1);
+						cur_frm.set_value("email", kontakt.email_id);
+						if (kontakt.phone) {
+							cur_frm.set_value("telefon", kontakt.phone);
+						} else if (kontakt.mobile_no) {
+							cur_frm.set_value("telefon", kontakt.mobile_no);
+						}
+						if (!cur_frm.doc.adressat) {
+							cur_frm.set_value("adressat", kontakt.first_name + " " + kontakt.last_name + "\n" + adresse.address_line1 + "\n" + adresse.plz + " " + adresse.city);
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
 
