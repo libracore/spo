@@ -16,12 +16,16 @@
   "korrespondenz",
   "druck_korrespondenz_bemerkung",
   "bemerkung",
+  "druck_bemerkung",
   "situation_heute",
+  "druck_situation_heute",
   "beurteilung",
   "druck_beurteilung",
   "fragestellung_anwalt",
+  "druck_fragestellung",
   "fazit",
   "beilagen",
+  "druck_beilagen",
   "empfehlung",
   "empfehlung_anderes",
   "section_checkliste",
@@ -217,10 +221,34 @@
    "fieldname": "section_referenzen",
    "fieldtype": "Section Break",
    "label": "Referenzen"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_bemerkung",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Bemerkungen\"?"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_situation_heute",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Situation heute\"?"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_fragestellung",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Fragestellung\"?"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_beilagen",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Beilagen\"?"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-24 11:55:32.950729",
+ "modified": "2020-02-26 13:38:12.066630",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",
