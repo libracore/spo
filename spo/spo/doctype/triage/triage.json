@@ -10,6 +10,7 @@
   "fragestellung_anwalt",
   "beurteilung",
   "bemerkung",
+  "druck_bemerkung",
   "fazit",
   "empfehlung",
   "empfehlung_anderes",
@@ -136,10 +137,16 @@
    "fieldname": "section_referenzen",
    "fieldtype": "Section Break",
    "label": "Referenzen"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_bemerkung",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Bemerkung\"?"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-24 11:56:21.786016",
+ "modified": "2020-02-26 13:50:41.811723",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",
