@@ -9,13 +9,13 @@ frappe.ui.form.on('Vollmacht', {
 		set_begleitbrief(frm);
 	},
 	before_save: function(frm) {
-		if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
+		/* if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
 			var titelzeile_string = '<p><b>Abklärungen im Zusammenhang mit</b> (dem Eingriffes/ der Operation) <b>vom</b> (Datum)  <b>im Spital XY</b> (Ort) <b>samt</b> (Folgen) oder (inkl. Vor- und Nachbehandlung)<b>.</b></p>';
 			cur_frm.set_value('titelzeile', titelzeile_string);
 		} else if (!cur_frm.doc.titelzeile && cur_frm.doc.todesfall) {
 			var titelzeile_string = '<p><b>Abklärung der medizinischen Behandlung vom</b> (Datum) <b>im Spital XY</b> (Ort) <b>samt Folgen im Zusammenhang mit dem Todesfall betreffend Herrn/Frau/des Kindes</b> (fett: † Name, geb*   – gest., Adresse) <b>insbesondere vollständige Einsicht in die damit verbundenen Akten.</b></p>';
 			cur_frm.set_value('titelzeile', titelzeile_string);
-		}
+		} */
 	},
 	refresh: function(frm) {
 		// timer action icon
@@ -57,6 +57,10 @@ frappe.ui.form.on('Vollmacht', {
 				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);
 			});
 		}
+		
+		set_titelzeile(frm);
+		console.log(cur_frm.doc.titelzeile);
+		console.log(cur_frm.doc.todesfall);
 	},
 	todesfall: function(frm) {
 		if (cur_frm.doc.todesfall == 1) {
@@ -236,5 +240,15 @@ function set_begleitbrief(frm) {
 		begleitbrief += '<p>Freundliche Grüsse<br><br><br></p>';
 		begleitbrief += '<p>... ...<br>Beratung SPO</p>';
 		cur_frm.set_value("begleitbrief", begleitbrief);
+	}
+}
+
+function set_titelzeile(frm) {
+	if ((!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall)||(cur_frm.doc.titelzeile == '<div><br></div>' && !cur_frm.doc.todesfall)) {
+		var titelzeile_string = '<p><b>Abklärungen im Zusammenhang mit</b> (dem Eingriffes/ der Operation) <b>vom</b> (Datum)  <b>im Spital XY</b> (Ort) <b>samt</b> (Folgen) oder (inkl. Vor- und Nachbehandlung)<b>.</b></p>';
+		cur_frm.set_value('titelzeile', titelzeile_string);
+	} else if ((!cur_frm.doc.titelzeile && cur_frm.doc.todesfall)||(cur_frm.doc.titelzeile == '<div><br></div>' && cur_frm.doc.todesfall)) {
+		var titelzeile_string = '<p><b>Abklärung der medizinischen Behandlung vom</b> (Datum) <b>im Spital XY</b> (Ort) <b>samt Folgen im Zusammenhang mit dem Todesfall betreffend Herrn/Frau/des Kindes</b> (fett: † Name, geb*   – gest., Adresse) <b>insbesondere vollständige Einsicht in die damit verbundenen Akten.</b></p>';
+		cur_frm.set_value('titelzeile', titelzeile_string);
 	}
 }

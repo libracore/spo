@@ -9,7 +9,9 @@ frappe.ui.form.on('Sales Invoice', {
 		}
     },
 	validate: function(frm) {
-		update_esr(frm);
+		if ((!cur_frm.doc.is_return)&&(cur_frm.doc.company == 'Gönnerverein')) {
+			update_esr(frm);
+		}
 	}
 });
 

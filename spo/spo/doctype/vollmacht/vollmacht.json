@@ -135,6 +135,7 @@
   },
   {
    "fetch_from": "textkonserve.textkonserve",
+   "fetch_if_empty": 1,
    "fieldname": "titelzeile",
    "fieldtype": "Text Editor",
    "label": "Titelzeile"
@@ -153,6 +154,7 @@
   },
   {
    "fetch_from": "textkonserve_begleitbrief.textkonserve",
+   "fetch_if_empty": 1,
    "fieldname": "begleitbrief",
    "fieldtype": "Text Editor",
    "label": "Begleitbrief"
@@ -275,7 +277,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-02-26 14:22:43.096855",
+ "modified": "2020-02-27 08:40:12.211713",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Vollmacht",
