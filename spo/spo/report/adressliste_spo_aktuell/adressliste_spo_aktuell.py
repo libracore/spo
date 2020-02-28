@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from six.moves import range
 from six import iteritems
 import frappe
+from frappe.utils.data import nowdate
 
 
 field_map = {
@@ -30,7 +31,8 @@ def get_columns(filters):
 		"Zusatz",
 		"PLZ",
 		"Ort",
-		"Sprache"
+		"Sprache",
+		"Mitgliedschaft"
 	]
 
 def get_data(filters):
@@ -52,10 +54,11 @@ def get_party_addresses_and_contact(party_type, party, party_group):
 		filters = { "name": party }
 
 	fetch_party_list = frappe.get_list(party_type, filters=filters, fields=["name", party_group], as_list=True)
-	party_list = [d[0] for d in fetch_party_list]
+	party_list = [d[0] for d in fetch_party_list if d[1] == 'Mitglied' or d[1] == 'Newsletter Abo']
 	party_groups = {}
 	for d in fetch_party_list:
-		party_groups[d[0]] = d[1]
+		if d[1] == 'Mitglied' or d[1] == 'Newsletter Abo':
+			party_groups[d[0]] = d[1]
 
 	for d in party_list:
 		party_details.setdefault(d, frappe._dict())
@@ -88,8 +91,14 @@ def get_party_addresses_and_contact(party_type, party, party_group):
 				result.extend(contact)
 				result.extend(address)
 				result.append(frappe.get_doc("Customer", party).language)
-				
-
+				mitgliedschaft = frappe.db.sql("""SELECT `start`, `ende` FROM `tabMitgliedschaft` WHERE `mitglied` = '{mitglied}' AND `ende` >= '{heute}' ORDER BY `ende` DESC LIMIT 1""".format(mitglied=party, heute=nowdate()), as_list=True)
+				try:
+					if mitgliedschaft[0]:
+						result.append(str(mitgliedschaft[0][0]) + " - " + str(mitgliedschaft[0][1]))
+					else:
+						result.append("Keine Mitgliedschaft")
+				except:
+					result.append("Keine Mitgliedschaft")
 				data.append(result)
 	return data
 
