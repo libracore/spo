@@ -76,4 +76,12 @@ function set_link_filter(frm) {
 			}
 		}
 	};
+	cur_frm.fields_dict['textkonserve'].get_query = function(doc) {
+		 return {
+			 filters: {
+				 "mitarbeiter": frappe.user.name,
+				 "dokument": "Freies Schreiben"
+			 }
+		 }
+	}
 }
