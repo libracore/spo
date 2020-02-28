@@ -12,6 +12,7 @@
   "cb_1",
   "adresse",
   "section_inhalt",
+  "textkonserve",
   "text",
   "fusszeile",
   "amended_from"
@@ -55,6 +56,8 @@
    "label": "Inhalt"
   },
   {
+   "fetch_from": "textkonserve.textkonserve",
+   "fetch_if_empty": 1,
    "fieldname": "text",
    "fieldtype": "Text Editor",
    "label": "Freitext"
@@ -74,10 +77,16 @@
    "options": "Freies Schreiben",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "textkonserve",
+   "fieldtype": "Link",
+   "label": "Textkonserve",
+   "options": "SPO Textbausteine"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-02-26 11:54:18.770795",
+ "modified": "2020-02-28 11:08:39.893381",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Freies Schreiben",

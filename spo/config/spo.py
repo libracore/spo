@@ -78,6 +78,14 @@ def get_data():
 					"label": "Rechnungslauf",
 					"name": "Mitglieder Rechnungslauf",
 					"description": _("Mitglieder Rechnungslauf")
+				},
+				{
+					"type": "report",
+					"name": "Adressliste SPO Aktuell",
+					"label": "Adressliste SPO Aktuell",
+					"description": _("Adressliste SPO Aktuell"),
+					"doctype": "Contact",
+					"is_query_report": True
 				}
 			]
 		},
