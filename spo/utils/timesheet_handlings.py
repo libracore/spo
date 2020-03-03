@@ -224,7 +224,7 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 	'''
 		Variablenübersicht:
 		IST = Berechnung IST-Zeit (--> arbeitszeit (ist inkl. uebertraege))
-		Anzahl Feiertage = Berechnung Anzahl Feiertage (--> anzahl_feiertage)
+		Anzahl Feiertage = Berechnung Anzahl Feiertage + Anzahl Krankheitstage (--> anzahl_feiertage)
 		Anzahl Urlaubstage = Berechnung Anzahl Urlaubstage (--> anzahl_urlaubstage)
 		Anzahl Mo - Fr = Berechnung Anzahl Mo - Fr (--> anzahl_mo_bis_fr)
 		Anstellungsgrad in % (--> anstellungsgrad)
@@ -282,19 +282,24 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 	#********************************
 	# Berechnung Anzahl Feiertage und Krankheitstage (bei längerer Krankheit)
 	# --> Ganztage
-	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0 AND `parent` = '{feiertagsliste}'""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_list=True)
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0 AND `parent` = '{feiertagsliste}' AND `percentage_sick` = 0""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_list=True)
 	if holidays:
 		holidays = holidays[0][0]
 	else:
 		holidays = 0
 	anzahl_feiertage += holidays
 	# --> Halbtage
-	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 1 AND `parent` = '{feiertagsliste}'""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_list=True)
+	holidays = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 1 AND `parent` = '{feiertagsliste}' AND `percentage_sick` = 0""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_list=True)
 	if holidays:
 		holidays = holidays[0][0] / 2
 	else:
 		holidays = 0
 	anzahl_feiertage += holidays
+	# --> krankheitstage != 100% (=Ganztage) & != 50% (=Halbtage)
+	holidays = frappe.db.sql("""SELECT `sick_percentage` FROM `tabHoliday` WHERE `holiday_date` >= '{von}' AND `holiday_date` <= '{bis}' AND `half_day` = 0 AND `parent` = '{feiertagsliste}' AND `percentage_sick` = 1""".format(von=von, bis=bis, feiertagsliste=feiertagsliste), as_dict=True)
+	if holidays:
+		for holiday in holidays:
+			anzahl_feiertage += (holiday.sick_percentage / 100)
 	# /Berechnung Anzahl Feiertage und Krankheitstage (bei längerer Krankheit)
 	#********************************
 	#********************************
