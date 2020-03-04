@@ -51,7 +51,9 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 	onload: function(frm) {
 		defaul_texte(frm);
 		set_kunden_html(frm);
-		set_titelzeile(frm);
+		if (cur_frm.is_new()||!cur_frm.doc.titelzeile||cur_frm.doc.titelzeile == "<div><br></div>") {
+			set_titelzeile(frm);
+		}
 	},
 	mahnstufe_1: function(frm) {
 		defaul_texte(frm);
