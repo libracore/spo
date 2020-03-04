@@ -46,7 +46,8 @@ def get_titelzeile(kontakt, adresse):
 	adresse = frappe.get_doc("Address", adresse)
 	titelzeile = '<b>'
 	if kontakt.verstorben == 1:
-		titelzeile += kontakt.salutation + " "
+		if kontakt.salutation:
+			titelzeile += kontakt.salutation + " "
 		titelzeile += kontakt.first_name + " "
 		titelzeile += kontakt.last_name + " (verstorben"
 		if kontakt.verstorben_am:
@@ -60,7 +61,8 @@ def get_titelzeile(kontakt, adresse):
 		titelzeile += adresse.city + "</b>"
 		return titelzeile
 	else:
-		titelzeile += kontakt.salutation + " "
+		if kontakt.salutation:
+			titelzeile += kontakt.salutation + " "
 		titelzeile += kontakt.first_name + " "
 		titelzeile += kontakt.last_name + ", "
 		if kontakt.geburtsdatum:
