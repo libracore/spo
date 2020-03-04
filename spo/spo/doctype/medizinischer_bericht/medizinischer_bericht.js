@@ -13,6 +13,10 @@ frappe.ui.form.on('Medizinischer Bericht', {
 				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);
 			});
 		}
+		fetch_deckblatt_data(frm);
+	},
+	onload: function(frm) {
+		fetch_deckblatt_data(frm);
 	}
 });
 
@@ -42,3 +46,25 @@ function timesheet_handling(frm) {
 	)
 }
 
+function fetch_deckblatt_data(frm) {
+	console.log("1");
+	if (cur_frm.doc.mandat) {
+		console.log("2");
+		frappe.call({
+            "method": "spo.spo.doctype.medizinischer_bericht.medizinischer_bericht.get_deckblat_data",
+            "args": {
+                "mandat": cur_frm.doc.mandat
+            },
+            "callback": function(response) {
+                var details = response.message;
+				console.log(response.message);
+                if (details) {
+                    cur_frm.set_value('klient', details.name_klient + ", " + details.geburtsdatum_klient);
+					cur_frm.set_value('beraterin', details.beraterin);
+					cur_frm.set_value('rsv', details.rsv);
+					cur_frm.set_value('rsv_kontakt', details.rsv_kontakt);
+                }
+            }
+        });
+	}
+}

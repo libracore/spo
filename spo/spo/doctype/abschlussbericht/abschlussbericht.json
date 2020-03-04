@@ -5,6 +5,13 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "kunden_display",
+  "cb_adresse",
+  "adressat",
+  "empfaenger",
+  "empfaenger_kontakt",
+  "empfaenger_adresse",
+  "sb_text",
   "textkonserve",
   "brieftext",
   "fusszeile",
@@ -59,10 +66,45 @@
    "fieldname": "section_referenzen",
    "fieldtype": "Section Break",
    "label": "Referenzen"
+  },
+  {
+   "fieldname": "kunden_display",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "cb_adresse",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "adressat",
+   "fieldtype": "Text",
+   "label": "Adressat"
+  },
+  {
+   "fieldname": "empfaenger",
+   "fieldtype": "Link",
+   "label": "Empf\u00e4nger",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "empfaenger_kontakt",
+   "fieldtype": "Link",
+   "label": "Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "empfaenger_adresse",
+   "fieldtype": "Link",
+   "label": "Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "sb_text",
+   "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-24 11:56:59.379291",
+ "modified": "2020-03-04 15:34:50.191404",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Abschlussbericht",

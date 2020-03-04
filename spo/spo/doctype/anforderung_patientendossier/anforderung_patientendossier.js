@@ -127,7 +127,7 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 });
 
 function defaul_texte(frm) {
-	if (!cur_frm.doc.textbaustein && !cur_frm.doc.text_ohne_konserve) {
+	if (!cur_frm.doc.textbaustein && (!cur_frm.doc.brieftext||cur_frm.doc.brieftext=="<div><br></div>")) {
 		if (!cur_frm.doc.mahnstufe_1  && !cur_frm.doc.mahnstufe_2) {
 			var brieftext_string = '<p><b>Herausgabe Patientendossier - Onkologie, Behandlung seit November 2016</b></p><br>' +
 				'<p>Sehr geehrter Herr Dr. Chaksad</p><br>' +

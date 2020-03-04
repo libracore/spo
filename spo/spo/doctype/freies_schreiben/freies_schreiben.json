@@ -9,6 +9,7 @@
   "empfaenger",
   "kontakt",
   "adressen_link",
+  "mandat",
   "cb_1",
   "adresse",
   "section_inhalt",
@@ -83,10 +84,17 @@
    "fieldtype": "Link",
    "label": "Textkonserve",
    "options": "SPO Textbausteine"
+  },
+  {
+   "description": "Optionale Verlinkung mit Mandat",
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "label": "Mandat",
+   "options": "Mandat"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-02-28 11:08:39.893381",
+ "modified": "2020-03-04 15:08:21.866643",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Freies Schreiben",

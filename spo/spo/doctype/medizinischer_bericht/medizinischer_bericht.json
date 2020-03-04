@@ -6,6 +6,19 @@
  "engine": "InnoDB",
  "field_order": [
   "info_titel",
+  "druck_deckblatt",
+  "sb_deckblatt",
+  "klient",
+  "beraterin",
+  "juristische_beratung",
+  "name_anwalt",
+  "instutition",
+  "mandat_angenommen",
+  "rsv",
+  "rsv_kontakt",
+  "fristwahrung",
+  "gutachter",
+  "sb_inhalt",
   "problemstellung",
   "diagnose",
   "operation",
@@ -24,6 +37,7 @@
   "fragestellung_anwalt",
   "druck_fragestellung",
   "fazit",
+  "druck_fazit",
   "beilagen",
   "druck_beilagen",
   "empfehlung",
@@ -245,10 +259,90 @@
    "fieldname": "druck_beilagen",
    "fieldtype": "Check",
    "label": "Drucken von \"Beilagen\"?"
+  },
+  {
+   "default": "0",
+   "fieldname": "druck_fazit",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Fazit\"?"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_deckblatt",
+   "fieldtype": "Check",
+   "label": "Deckblatt sowie Disclaimer andrucken"
+  },
+  {
+   "depends_on": "eval:doc.druck_deckblatt==1",
+   "fieldname": "sb_deckblatt",
+   "fieldtype": "Section Break",
+   "label": "Deckblatt Details"
+  },
+  {
+   "fieldname": "klient",
+   "fieldtype": "Data",
+   "label": "Klient(in)"
+  },
+  {
+   "fieldname": "beraterin",
+   "fieldtype": "Link",
+   "label": "Berater(in)",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "juristische_beratung",
+   "fieldtype": "Data",
+   "label": "Juristische Beratung"
+  },
+  {
+   "fieldname": "name_anwalt",
+   "fieldtype": "Data",
+   "label": "Name des anwalts"
+  },
+  {
+   "fieldname": "instutition",
+   "fieldtype": "Data",
+   "label": "Instutition"
+  },
+  {
+   "fieldname": "mandat_angenommen",
+   "fieldtype": "Select",
+   "label": "Mandat angenommen",
+   "options": "Ja\nNein"
+  },
+  {
+   "fieldname": "rsv",
+   "fieldtype": "Link",
+   "label": "Rechtsschutzversicherung",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rsv_kontakt",
+   "fieldtype": "Link",
+   "label": "RSV Kontakt",
+   "options": "Contact",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fristwahrung",
+   "fieldtype": "Data",
+   "label": "Fristwahrung"
+  },
+  {
+   "default": "Facharzt f\u00fcr...",
+   "fieldname": "gutachter",
+   "fieldtype": "Data",
+   "label": "Gutachter"
+  },
+  {
+   "fieldname": "sb_inhalt",
+   "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-02-26 13:38:12.066630",
+ "modified": "2020-03-04 16:07:45.428408",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",
