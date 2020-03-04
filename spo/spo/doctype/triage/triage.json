@@ -6,12 +6,16 @@
  "engine": "InnoDB",
  "field_order": [
   "info_titel",
+  "hide_patienten_daten",
+  "druck_disclaimer",
   "problemstellung",
   "fragestellung_anwalt",
   "beurteilung",
+  "druck_beurteilung",
   "bemerkung",
   "druck_bemerkung",
   "fazit",
+  "druck_fazit",
   "empfehlung",
   "empfehlung_anderes",
   "section_checkliste",
@@ -21,7 +25,6 @@
   "schaden",
   "empfehlung_check",
   "fusszeile",
-  "druck_kopfzeile",
   "amended_from",
   "fold_referenzen",
   "section_referenzen",
@@ -147,13 +150,31 @@
   },
   {
    "default": "1",
-   "fieldname": "druck_kopfzeile",
+   "fieldname": "druck_beurteilung",
    "fieldtype": "Check",
-   "label": "Drucken von \"Kopfzeile\""
+   "label": "Drucken von \"Beurteilung\"?"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_fazit",
+   "fieldtype": "Check",
+   "label": "Drucken von \"Fazit\"?"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_patienten_daten",
+   "fieldtype": "Check",
+   "label": "Patienten Daten beim Druck verbergen"
+  },
+  {
+   "default": "1",
+   "fieldname": "druck_disclaimer",
+   "fieldtype": "Check",
+   "label": "Disclaimer drucken"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-02-26 14:01:23.282155",
+ "modified": "2020-03-04 17:17:11.427659",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",

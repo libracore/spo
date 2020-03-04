@@ -17,7 +17,6 @@
   "section_1",
   "titelzeile",
   "textbaustein",
-  "text_ohne_konserve",
   "brieftext",
   "fusszeile",
   "amended_from",
@@ -84,12 +83,6 @@
    "label": "Fusszeile",
    "options": "Letter Head",
    "reqd": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "text_ohne_konserve",
-   "fieldtype": "Check",
-   "label": "Eigener Text ohne Konserve verwenden"
   },
   {
    "fetch_from": "mandat.customer",
@@ -166,7 +159,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-01-09 14:05:47.968172",
+ "modified": "2020-03-04 15:16:32.082750",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",

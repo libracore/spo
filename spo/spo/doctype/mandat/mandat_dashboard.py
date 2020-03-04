@@ -11,6 +11,10 @@ def get_data():
          {
             'label': _('Buchhaltung'),
             'items': ['Sales Invoice', 'Purchase Invoice']
+         },
+         {
+            'label': _('Diverses'),
+            'items': ['Freies Schreiben']
          }
       ]
    }
