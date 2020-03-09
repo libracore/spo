@@ -1,6 +1,8 @@
 // Copyright (c) 2019, libracore and contributors
 // For license information, please see license.txt
 
+var make_default_ts_entry = false;
+
 frappe.ui.form.on('Medizinischer Bericht', {
 	refresh: function(frm) {
 		// timer action icon
@@ -14,9 +16,29 @@ frappe.ui.form.on('Medizinischer Bericht', {
 			});
 		}
 		fetch_deckblatt_data(frm);
+		if (!cur_frm.is_new()&&make_default_ts_entry) {
+			frappe.call({
+				"method": "spo.utils.timesheet_handlings.handle_timesheet",
+				"args": {
+					"user": frappe.session.user_email,
+					"doctype": frm.doc.doctype,
+					"reference": frm.doc.name,
+					"time": 0.00,
+					"date": frappe.datetime.now_date()
+				},
+				"async": false,
+				"callback": function(response) {
+					//done
+				}
+			});
+			make_default_ts_entry = false;
+		}
 	},
 	onload: function(frm) {
 		fetch_deckblatt_data(frm);
+		if (cur_frm.is_new()) {
+			make_default_ts_entry = true;
+		}
 	}
 });
 
@@ -47,9 +69,7 @@ function timesheet_handling(frm) {
 }
 
 function fetch_deckblatt_data(frm) {
-	console.log("1");
 	if (cur_frm.doc.mandat) {
-		console.log("2");
 		frappe.call({
             "method": "spo.spo.doctype.medizinischer_bericht.medizinischer_bericht.get_deckblat_data",
             "args": {
@@ -57,9 +77,10 @@ function fetch_deckblatt_data(frm) {
             },
             "callback": function(response) {
                 var details = response.message;
-				console.log(response.message);
-                if (details) {
-                    cur_frm.set_value('klient', details.name_klient + ", " + details.geburtsdatum_klient);
+				if (details) {
+                    if (!cur_frm.doc.klient) {
+						cur_frm.set_value('klient', details.name_klient + ", " + details.geburtsdatum_klient);
+					}
 					cur_frm.set_value('beraterin', details.beraterin);
 					cur_frm.set_value('rsv', details.rsv);
 					cur_frm.set_value('rsv_kontakt', details.rsv_kontakt);
