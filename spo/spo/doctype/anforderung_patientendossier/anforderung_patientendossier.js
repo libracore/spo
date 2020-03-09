@@ -1,6 +1,8 @@
 // Copyright (c) 2019, libracore and contributors
 // For license information, please see license.txt
 
+var make_default_ts_entry = false;
+
 frappe.ui.form.on('Anforderung Patientendossier', {
 	refresh: function(frm) {
 		// filter for textbaustein based on doctype and user
@@ -47,12 +49,33 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);
 			});
 		}
+		
+		if (!cur_frm.is_new()&&make_default_ts_entry) {
+			frappe.call({
+				"method": "spo.utils.timesheet_handlings.handle_timesheet",
+				"args": {
+					"user": frappe.session.user_email,
+					"doctype": frm.doc.doctype,
+					"reference": frm.doc.name,
+					"time": 0.00,
+					"date": frappe.datetime.now_date()
+				},
+				"async": false,
+				"callback": function(response) {
+					//done
+				}
+			});
+			make_default_ts_entry = false;
+		}
 	},
 	onload: function(frm) {
 		defaul_texte(frm);
 		set_kunden_html(frm);
 		if (cur_frm.is_new()||!cur_frm.doc.titelzeile||cur_frm.doc.titelzeile == "<div><br></div>") {
 			set_titelzeile(frm);
+		}
+		if (cur_frm.is_new()) {
+			make_default_ts_entry = true;
 		}
 	},
 	mahnstufe_1: function(frm) {

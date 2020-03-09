@@ -1,12 +1,17 @@
 // Copyright (c) 2019, libracore and contributors
 // For license information, please see license.txt
 
+var make_default_ts_entry = false;
+
 frappe.ui.form.on('Vollmacht', {
 	onload: function(frm) {
 		check_todesfall(frm);
 		set_kunden_html(frm);
 		set_ang_html(frm);
 		set_begleitbrief(frm);
+		if (cur_frm.is_new()) {
+			make_default_ts_entry = true;
+		}
 	},
 	before_save: function(frm) {
 		/* if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
@@ -22,6 +27,24 @@ frappe.ui.form.on('Vollmacht', {
 		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
 			timesheet_handling(frm);
 		});
+		
+		if (!cur_frm.is_new()&&make_default_ts_entry) {
+			frappe.call({
+				"method": "spo.utils.timesheet_handlings.handle_timesheet",
+				"args": {
+					"user": frappe.session.user_email,
+					"doctype": frm.doc.doctype,
+					"reference": frm.doc.name,
+					"time": 0.00,
+					"date": frappe.datetime.now_date()
+				},
+				"async": false,
+				"callback": function(response) {
+					//done
+				}
+			});
+			make_default_ts_entry = false;
+		}
 		
 		
 		if (!cur_frm.doc.berater) {
@@ -59,8 +82,6 @@ frappe.ui.form.on('Vollmacht', {
 		}
 		
 		set_titelzeile(frm);
-		console.log(cur_frm.doc.titelzeile);
-		console.log(cur_frm.doc.todesfall);
 	},
 	todesfall: function(frm) {
 		if (cur_frm.doc.todesfall == 1) {

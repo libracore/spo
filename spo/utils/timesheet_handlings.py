@@ -10,7 +10,7 @@ import json
 from frappe.utils import flt
 
 @frappe.whitelist()
-def handle_timesheet(user, doctype, reference, time, bemerkung='', date=None):
+def handle_timesheet(user, doctype, reference, time, bemerkung='', date=nowdate()):
 	_date = getdate(date)
 	latest_date = getdate(add_days(nowdate(), -7))
 	if _date < latest_date:
@@ -30,7 +30,7 @@ def handle_timesheet(user, doctype, reference, time, bemerkung='', date=None):
 	elif ts == 'neuanlage':
 		create_timesheet(user, doctype, reference, time, bemerkung, date)
 	else:
-		update_timesheet(ts, time, doctype, reference, user, bemerkung)
+		update_timesheet(ts, time, doctype, reference, user, bemerkung, date)
 	
 def check_if_timesheet_exist(user, date):
 	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=date), as_dict=True)
@@ -67,7 +67,7 @@ def create_timesheet(user, doctype, reference, time, bemerkung, date):
 	})
 	ts.insert(ignore_permissions=True)
 		
-def update_timesheet(ts, time, doctype, reference, user, bemerkung):
+def update_timesheet(ts, time, doctype, reference, user, bemerkung, date=None):
 	#**********************************************************
 	#overwrite the time_log overlap validation of timesheet
 	overwrite_ts_validation()
@@ -80,7 +80,10 @@ def update_timesheet(ts, time, doctype, reference, user, bemerkung):
 	default_time = get_default_time(doctype)
 	if time < default_time:
 		time = default_time
-	start = nowdate() + " 00:00:00"
+	if not date:
+		start = nowdate() + " 00:00:00"
+	else:
+		start = date + " 00:00:00"
 	row = {}
 	row["activity_type"] = type
 	row["hours"] = time

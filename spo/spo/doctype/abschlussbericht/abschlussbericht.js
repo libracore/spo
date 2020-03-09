@@ -1,6 +1,8 @@
 // Copyright (c) 2019, libracore and contributors
 // For license information, please see license.txt
 
+var make_default_ts_entry = false;
+
 frappe.ui.form.on('Abschlussbericht', {
 	refresh: function(frm) {
 		// filter for textbaustein based on doctype and user
@@ -39,9 +41,29 @@ frappe.ui.form.on('Abschlussbericht', {
 			});
 		}
 		set_kunden_html(frm);
+		if (!cur_frm.is_new()&&make_default_ts_entry) {
+			frappe.call({
+				"method": "spo.utils.timesheet_handlings.handle_timesheet",
+				"args": {
+					"user": frappe.session.user_email,
+					"doctype": frm.doc.doctype,
+					"reference": frm.doc.name,
+					"time": 0.00,
+					"date": frappe.datetime.now_date()
+				},
+				"async": false,
+				"callback": function(response) {
+					//done
+				}
+			});
+			make_default_ts_entry = false;
+		}
 	},
 	onload: function(frm) {
 		set_kunden_html(frm);
+		if (cur_frm.is_new()) {
+			make_default_ts_entry = true;
+		}
 	},
 	empfaenger: function(frm) {
 		cur_frm.set_value("empfaenger_kontakt", "");
