@@ -147,6 +147,19 @@ function set_kunden_html(frm) {
 						}
 					});
                 }
+				
+				// fetch auftrtaggeber from mandat as empfaenger
+				if (!cur_frm.doc.adressat) {
+					if (mandat.rsv) {
+						cur_frm.set_value("empfaenger", mandat.rsv);
+					}
+					if (mandat.rsv_kontakt) {
+						cur_frm.set_value("empfaenger_kontakt", mandat.rsv_kontakt);
+					}
+					if (mandat.rsv_adresse) {
+						cur_frm.set_value("empfaenger_adresse", mandat.rsv_adresse);
+					}
+				}
             }
         });
 	} else {
