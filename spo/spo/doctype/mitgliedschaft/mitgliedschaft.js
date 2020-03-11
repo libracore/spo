@@ -23,7 +23,7 @@ function create_invoice(frm) {
 			if (r.message) {
 				cur_frm.set_value('rechnung', r.message);
 				cur_frm.save();
-				frappe.msgprint("Die Rechnung wurde erfolgreich erstellt<br>Bitte nehmen Sie noch die Verbuchung sowie den Versand vor.", "Rechnung wurde erstellt");
+				frappe.msgprint(__("Die Rechnung wurde erfolgreich erstellt<br>Bitte nehmen Sie noch die Verbuchung sowie den Versand vor."), __("Rechnung wurde erstellt"));
 			}
 		}
 	});

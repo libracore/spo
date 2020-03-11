@@ -13,15 +13,6 @@ frappe.ui.form.on('Vollmacht', {
 			make_default_ts_entry = true;
 		}
 	},
-	before_save: function(frm) {
-		/* if (!cur_frm.doc.titelzeile && !cur_frm.doc.todesfall) {
-			var titelzeile_string = '<p><b>Abklärungen im Zusammenhang mit</b> (dem Eingriffes/ der Operation) <b>vom</b> (Datum)  <b>im Spital XY</b> (Ort) <b>samt</b> (Folgen) oder (inkl. Vor- und Nachbehandlung)<b>.</b></p>';
-			cur_frm.set_value('titelzeile', titelzeile_string);
-		} else if (!cur_frm.doc.titelzeile && cur_frm.doc.todesfall) {
-			var titelzeile_string = '<p><b>Abklärung der medizinischen Behandlung vom</b> (Datum) <b>im Spital XY</b> (Ort) <b>samt Folgen im Zusammenhang mit dem Todesfall betreffend Herrn/Frau/des Kindes</b> (fett: † Name, geb*   – gest., Adresse) <b>insbesondere vollständige Einsicht in die damit verbundenen Akten.</b></p>';
-			cur_frm.set_value('titelzeile', titelzeile_string);
-		} */
-	},
 	refresh: function(frm) {
 		// timer action icon
 		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
@@ -225,8 +216,8 @@ function set_ang_html(frm) {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
-		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': __('Datum'), 'reqd': 1, 'default': 'Today'},
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': __('Arbeitszeit (in h)'), 'reqd': 1}  
 	],
 	function(values){
 		frappe.call({
@@ -244,8 +235,8 @@ function timesheet_handling(frm) {
 			}
 		});
 	},
-	'Arbeitszeit erfassen',
-	'Erfassen'
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
 	)
 }
 
@@ -260,7 +251,7 @@ function set_begleitbrief(frm) {
 		begleitbrief += '<p>Ich wäre sehr froh, wenn Sie mich telefonisch kontaktieren könnten. Sie erreichen mich jeweils mittwochs (10-12 Uhr und 14-16 Uhr) im Büro Zürich unter der Tel. Nr.: 044 252 522.</p>';
 		begleitbrief += '<p>Freundliche Grüsse<br><br><br></p>';
 		begleitbrief += '<p>... ...<br>Beratung SPO</p>';
-		cur_frm.set_value("begleitbrief", begleitbrief);
+		cur_frm.set_value("begleitbrief", __(begleitbrief));
 	}
 }
 
@@ -270,6 +261,6 @@ function set_titelzeile(frm) {
 		cur_frm.set_value('titelzeile', titelzeile_string);
 	} else if ((!cur_frm.doc.titelzeile && cur_frm.doc.todesfall)||(cur_frm.doc.titelzeile == '<div><br></div>' && cur_frm.doc.todesfall)) {
 		var titelzeile_string = '<p><b>Abklärung der medizinischen Behandlung vom</b> (Datum) <b>im Spital XY</b> (Ort) <b>samt Folgen im Zusammenhang mit dem Todesfall betreffend Herrn/Frau/des Kindes</b> (fett: † Name, geb*   – gest., Adresse) <b>insbesondere vollständige Einsicht in die damit verbundenen Akten.</b></p>';
-		cur_frm.set_value('titelzeile', titelzeile_string);
+		cur_frm.set_value('titelzeile', __(titelzeile_string));
 	}
 }

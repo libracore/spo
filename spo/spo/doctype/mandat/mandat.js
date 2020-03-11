@@ -73,7 +73,7 @@ function update_dashboard(frm) {
 			}
 			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
-				labels: ["Verwendet", "Ausstehend"],
+				labels: [__("Verwendet"), __("Ausstehend")],
 
 				datasets: [
 					{
@@ -82,7 +82,7 @@ function update_dashboard(frm) {
 				],
 
 				},
-				title: "Auswertung Kostendach (in CHF)",
+				title: __("Auswertung Kostendach (in CHF)"),
 				type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
 				colors: _colors,
 				barOptions: {
@@ -96,10 +96,10 @@ function update_dashboard(frm) {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
-		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
-		{'fieldname': 'arbeit', 'fieldtype': 'Select', 'label': 'Arbeitsinhalt', 'reqd': 1, options: [__('Korrespondenz'), __('Telefonat'), __('Aktenstudium'), __('Organisation der juristischen Beratung'), __('Juristische Beratung'), __('Recherche Facharzt'), __('Organisation Facharzt'), __('Interne fachliche Besprechung'), __('Sonstiges')]},
-		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': 'Bemerkung', 'reqd': 0},
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}		
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': __('Datum'), 'reqd': 1, 'default': 'Today'},
+		{'fieldname': 'arbeit', 'fieldtype': 'Select', 'label': __('Arbeitsinhalt'), 'reqd': 1, options: [__('Korrespondenz'), __('Telefonat'), __('Aktenstudium'), __('Organisation der juristischen Beratung'), __('Juristische Beratung'), __('Recherche Facharzt'), __('Organisation Facharzt'), __('Interne fachliche Besprechung'), __('Sonstiges')]},
+		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': __('Bemerkung'), 'reqd': 0},
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': __('Arbeitszeit (in h)'), 'reqd': 1}		
 	],
 	function(values){
 		frappe.call({
@@ -118,8 +118,8 @@ function timesheet_handling(frm) {
 			}
 		});
 	},
-	'Arbeitszeit erfassen',
-	'Erfassen'
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
 	)
 }
 
@@ -136,7 +136,7 @@ function ts_bearbeiten(ts) {
 				frappe.route_options = {"timesheet": ts};
 				frappe.set_route("Form", "Zeiterfassung");
 			} else {
-				frappe.msgprint("Sie können nur Ihre eigene Timesheets bearbeiten.", "Nicht Ihr Timesheet");
+				frappe.msgprint(__("Sie können nur Ihre eigene Timesheets bearbeiten."), __("Nicht Ihr Timesheet"));
 			}
 		}
 	});

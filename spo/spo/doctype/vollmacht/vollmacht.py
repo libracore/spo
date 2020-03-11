@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe import _
 
 class Vollmacht(Document):
 	pass
@@ -14,7 +15,7 @@ def check_todesfall(mandat):
 	mandat = frappe.get_doc("Mandat", mandat)
 	if mandat.anfragen:
 		anfrage = frappe.get_doc("Anfrage", mandat.anfragen)
-		if anfrage.todesfall == 'Ja':
+		if anfrage.todesfall == _('Ja'):
 			return 1
 		else:
 			return 0

@@ -61,20 +61,20 @@ function neue_anfrage(frm) {
 			}
 		});
 	} else {
-		frappe.msgprint("Bitte suchen Sie zuerst nach einem möglichen Mitglied.", "Fehlender Kunde");
+		frappe.msgprint(__("Bitte suchen Sie zuerst nach einem möglichen Mitglied."), __("Fehlender Kunde"));
 	}
 }
 
 function show_mitglied_suche_in_html(frm) {
-	cur_frm.set_df_property('info_html','options', '<div class="alert alert-info"><strong>Bitte suchen Sie nach einem möglichen Mitglied.</strong></div>');
+	cur_frm.set_df_property('info_html','options', __('<div class="alert alert-info"><strong>Bitte suchen Sie nach einem möglichen Mitglied.</strong></div>'));
 }
 
 function show_mitglied_in_html(frm) {
-	cur_frm.set_df_property('info_html','options', '<div class="alert alert-success"><strong>Mitglied gefunden: </strong>Die gesuchten Daten entsprechen einem gültigen Mitglied.<br>Sie können eine Anfrage eröffnen.</div>');
+	cur_frm.set_df_property('info_html','options', __('<div class="alert alert-success"><strong>Mitglied gefunden: </strong>Die gesuchten Daten entsprechen einem gültigen Mitglied.<br>Sie können eine Anfrage eröffnen.</div>'));
 }
 
 function show_nicht_mitglied_in_html(frm) {
-	cur_frm.set_df_property('info_html','options', '<div class="alert alert-danger"><strong>Achtung: </strong>Die gesuchten Daten entsprechen <b>keinem gültigen Mitglied</b>!<br>Dient die SPO als Ombudstelle? Wenn ja können eine Anfrage eröffnen, ansonsten bitte an die Hotline verweisen.</div>');
+	cur_frm.set_df_property('info_html','options', __('<div class="alert alert-danger"><strong>Achtung: </strong>Die gesuchten Daten entsprechen <b>keinem gültigen Mitglied</b>!<br>Dient die SPO als Ombudstelle? Wenn ja können eine Anfrage eröffnen, ansonsten bitte an die Hotline verweisen.</div>'));
 }
 
 function kontaktdaten_suchen(frm) {
@@ -105,12 +105,12 @@ function kontaktdaten_suchen(frm) {
 				
 				var d = new frappe.ui.Dialog({
 					'fields': [
-						{'fieldname': 'header_1', 'fieldtype': 'Heading', 'label': 'Vollständige Treffer'},
-						{'fieldname': 'full_matches', 'fieldtype': 'HTML', 'options': '<div><p>Keine vollständige Treffer</p></div>'},
-						{'fieldname': 'header_2', 'fieldtype': 'Heading', 'label': 'Zutreffende Kontakte'},
-						{'fieldname': 'alle_kontakte', 'fieldtype': 'HTML', 'options': '<div><p>Keine zutreffende Kontakte</p></div>'},
-						{'fieldname': 'header_3', 'fieldtype': 'Heading', 'label': 'Zutreffende Adressen'},
-						{'fieldname': 'alle_adressen', 'fieldtype': 'HTML', 'options': '<div><p>Keine zutreffende Adressen</p></div>'}
+						{'fieldname': 'header_1', 'fieldtype': 'Heading', 'label': __('Vollständige Treffer')},
+						{'fieldname': 'full_matches', 'fieldtype': 'HTML', 'options': __('<div><p>Keine vollständige Treffer</p></div>')},
+						{'fieldname': 'header_2', 'fieldtype': 'Heading', 'label': __('Zutreffende Kontakte')},
+						{'fieldname': 'alle_kontakte', 'fieldtype': 'HTML', 'options': __('<div><p>Keine zutreffende Kontakte</p></div>')},
+						{'fieldname': 'header_3', 'fieldtype': 'Heading', 'label': __('Zutreffende Adressen')},
+						{'fieldname': 'alle_adressen', 'fieldtype': 'HTML', 'options': __('<div><p>Keine zutreffende Adressen</p></div>')}
 					],
 					primary_action: function(){
 						fetch_match_from_dialog(frm, d);
