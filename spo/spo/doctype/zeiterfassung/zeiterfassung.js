@@ -39,7 +39,7 @@ frappe.ui.form.on('Zeiterfassung', {
 	},
 	timesheet: function (frm) {
 		if (cur_frm.doc.timesheet) {
-			console.log("setze sperre (refresh)");
+			//console.log("setze sperre (refresh)");
 			zeit_berechnungs_sperre = true;
 			remove_all_rows_of_all_subtables(frm);
 			get_ts_overview(frm);
@@ -47,15 +47,15 @@ frappe.ui.form.on('Zeiterfassung', {
 			fetch_beratungs_und_mandats_arbeiten_von_ts(frm);
 			fetch_diverses_von_ts(frm);
 			setTimeout(function(){
-				console.log("entferne sperre");
+				//console.log("entferne sperre");
 				zeit_berechnungs_sperre = false;
 			}, 1000);
 		} else {
 			remove_all_rows_of_all_subtables(frm);
-			console.log("setze sperre (timesheet)");
+			//console.log("setze sperre (timesheet)");
 			zeit_berechnungs_sperre = true;
 			set_default_start_and_end(frm);
-			cur_frm.set_df_property('overview_html','options', '<div>Bitte zuerst eine(n) Mitarbeiter(in) und ein Timesheet auswählen.</div>');
+			cur_frm.set_df_property('overview_html','options', __('<div>Bitte zuerst eine(n) Mitarbeiter(in) und ein Timesheet auswählen.</div>'));
 			cur_frm.remove_custom_button("Zeiterfassung updaten");
 			if (cur_frm.doc.employee) {
 				frm.add_custom_button(__("Zeiterfassung speichern"), function() {
@@ -67,28 +67,28 @@ frappe.ui.form.on('Zeiterfassung', {
 	start: function (frm) {
 		if (!zeit_berechnungs_sperre) {
 			zeit_berechnungs_sperre = true;
-			console.log("start wurde geändert...starte validierung....");
+			//console.log("start wurde geändert...starte validierung....");
 			kontrolle_input_format('start');
 		}
 	},
 	ende: function (frm) {
 		if (!zeit_berechnungs_sperre) {
 			zeit_berechnungs_sperre = true;
-			console.log("ende wurde geändert...starte validierung....");
+			//console.log("ende wurde geändert...starte validierung....");
 			kontrolle_input_format('ende');
 		}
 	},
 	arbeitszeit: function (frm) {
 		if (!zeit_berechnungs_sperre) {
 			zeit_berechnungs_sperre = true;
-			console.log("arbeitszeit wurde geändert...");
+			//console.log("arbeitszeit wurde geändert...");
 			neues_arbeitsende();
 		}
 	},
 	total_pausen: function (frm) {
 		if (!zeit_berechnungs_sperre) {
 			zeit_berechnungs_sperre = true;
-			console.log("pause wurde geändert...");
+			//console.log("pause wurde geändert...");
 			neuberechnung_arbeitszeit();
 		}
 	},
@@ -106,7 +106,7 @@ frappe.ui.form.on('Zeiterfassung', {
 	},
 	edit_submitted_ts: function (frm) {
 		alles_freigeben(frm);
-		frappe.msgprint("Das timesheet wurde entsperrt, Sie können nun Änderungen vornehmen.", "TS entsperrt");
+		frappe.msgprint(__("Das timesheet wurde entsperrt, Sie können nun Änderungen vornehmen."), __("TS entsperrt"));
 		cur_frm.set_df_property('edit_submitted_ts','hidden','1');
 		cur_frm.set_df_property('save_edited_ts','hidden','0');
 	},
@@ -128,7 +128,7 @@ frappe.ui.form.on('Zeiterfassung', {
 			{
 				if (r.message) {
 					cur_frm.set_value('timesheet', r.message);
-					frappe.msgprint("Das Timesheet wurde erstellt.", "Erstellung erfolgreich");
+					frappe.msgprint(__("Das Timesheet wurde erstellt."), __("Erstellung erfolgreich"));
 					get_ts_overview(frm);
 					cur_frm.set_df_property('save_edited_ts','hidden','1');
 				}
@@ -149,7 +149,7 @@ function kontrolle_input_format(typ) {
 			if (std < 10) {
 				std = "0" + std.toString();
 			} else if (std > 23) {
-				frappe.msgprint("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '" + std.toString() + "' wurde durch '23' ersetzt.");
+				frappe.msgprint(__("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '") + std.toString() + __("' wurde durch '23' ersetzt."));
 				std = "23";
 			} else {
 				std = std.toString();
@@ -157,7 +157,7 @@ function kontrolle_input_format(typ) {
 			if (min < 10) {
 				min = "0" + min.toString();
 			} else if (min > 59) {
-				frappe.msgprint("Der Minutenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Minutenwert '" + min.toString() + "' wurde durch '59' ersetzt.");
+				frappe.msgprint(__("Der Minutenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Minutenwert '") + min.toString() + __("' wurde durch '59' ersetzt."));
 				min = "59";
 			} else {
 				min = min.toString();
@@ -165,7 +165,7 @@ function kontrolle_input_format(typ) {
 			if (sec < 10) {
 				sec = "0" + sec.toString();
 			} else if (sec > 59) {
-				frappe.msgprint("Der Sekundenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Sekundenwert '" + sec.toString() + "' wurde durch '59' ersetzt.");
+				frappe.msgprint(__("Der Sekundenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Sekundenwert '") + sec.toString() + __("' wurde durch '59' ersetzt."));
 				sec = "59";
 			} else {
 				sec = sec.toString();
@@ -177,7 +177,7 @@ function kontrolle_input_format(typ) {
 			if (std < 10) {
 				std = "0" + std.toString();
 			} else if (std > 23) {
-				frappe.msgprint("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '" + std.toString() + "' wurde durch '23' ersetzt.");
+				frappe.msgprint(__("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '") + std.toString() + __("' wurde durch '23' ersetzt."));
 				std = "23";
 			} else {
 				std = std.toString();
@@ -185,7 +185,7 @@ function kontrolle_input_format(typ) {
 			if (min < 10) {
 				min = "0" + min.toString();
 			} else if (min > 59) {
-				frappe.msgprint("Der Minutenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Minutenwert '" + min.toString() + "' wurde durch '59' ersetzt.");
+				frappe.msgprint(__("Der Minutenwert einer Zeitangabe kann 59 nicht übersteigen.<br>Der Minutenwert '") + min.toString() + __("' wurde durch '59' ersetzt."));
 				min = "59";
 			} else {
 				min = min.toString();
@@ -197,7 +197,7 @@ function kontrolle_input_format(typ) {
 			if (std < 10) {
 				std = "0" + std.toString();
 			} else if (std > 23) {
-				frappe.msgprint("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '" + std.toString() + "' wurde durch '23' ersetzt.");
+				frappe.msgprint(__("Der Stundenwert einer Zeitangabe kann 23 nicht übersteigen.<br>Der Stundenwert '") + std.toString() + __("' wurde durch '23' ersetzt."));
 				std = "23";
 			} else {
 				std = std.toString();
@@ -206,23 +206,23 @@ function kontrolle_input_format(typ) {
 			std = "08";
 			min = "00";
 			sec = "00";
-			frappe.msgprint("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt.");
+			frappe.msgprint(__("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt."));
 		}
 	} else {
 		std = "08";
 		min = "00";
 		sec = "00";
-		frappe.msgprint("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt.");
+		frappe.msgprint(__("Die Validierung der Eingabe ist fehlgeschlagen.<br>Die Eingabe wurde durch '08:00:00' ersetzt."));
 	}
 
 	cur_frm.set_value(typ, std + ":" + min + ":" + sec);
 
 	if (typ == 'ende') {
-		console.log("validierung (ende) abgeschlossen...");
+		//console.log("validierung (ende) abgeschlossen...");
 		neuberechnung_arbeitszeit();
 	}
 	if (typ == 'start') {
-		console.log("validierung (start) abgeschlossen...");
+		//console.log("validierung (start) abgeschlossen...");
 		neues_arbeitsende();
 	}
 }
@@ -232,7 +232,7 @@ function round_3(x) {
 }
 
 function neues_arbeitsende() {
-	console.log("berechne neues arbeitsende...");
+	//console.log("berechne neues arbeitsende...");
 	var total_arbeitszeit = parseFloat(cur_frm.doc.arbeitszeit + cur_frm.doc.total_pausen);
 	var zu_addierende_std = parseInt(total_arbeitszeit);
 	var rest_exkl_std = parseFloat(round_3(total_arbeitszeit - zu_addierende_std));
@@ -256,7 +256,7 @@ function neues_arbeitsende() {
 	var neues_ende;
 	if (neue_std > 23) {
 		neues_ende = '23:59:59';
-		frappe.msgprint("Die eingegebene Arbeitszeit übersteigt Mitternacht! Das kann/darf nicht sein.<br>Das Arbeitsende wurde auf '23:59:59' festgesetzt.");
+		frappe.msgprint(__("Die eingegebene Arbeitszeit übersteigt Mitternacht! Das kann/darf nicht sein.<br>Das Arbeitsende wurde auf '23:59:59' festgesetzt."));
 	}
 	if (neue_std < 10) {
 		neue_std = '0' + neue_std.toString();
@@ -271,15 +271,15 @@ function neues_arbeitsende() {
 	
 	cur_frm.set_value('ende', neues_ende);
 
-	console.log("neues ende gesetzt...");
+	//console.log("neues ende gesetzt...");
 	setTimeout(function(){
-		console.log("entferne sperre");
+		//console.log("entferne sperre");
 		zeit_berechnungs_sperre = false;
 	}, 1000);
 }
 
 function neuberechnung_arbeitszeit() {
-	console.log("berechne neue arbeitszeit...");
+	//console.log("berechne neue arbeitszeit...");
 	var ende_in_sec = parseFloat(cur_frm.doc.ende.split(":")[2]) + (parseFloat(cur_frm.doc.ende.split(":")[1]) * 60) + ((parseFloat(cur_frm.doc.ende.split(":")[0]) * 60) * 60);
 	var start_in_sec = parseFloat(cur_frm.doc.start.split(":")[2]) + (parseFloat(cur_frm.doc.start.split(":")[1]) * 60) + ((parseFloat(cur_frm.doc.start.split(":")[0]) * 60) * 60);
 	var diff_in_sec = ende_in_sec - start_in_sec;
@@ -287,7 +287,7 @@ function neuberechnung_arbeitszeit() {
 	var diff_in_std = diff_in_min / 60;
 	
 	cur_frm.set_value('arbeitszeit', diff_in_std - cur_frm.doc.total_pausen);
-	console.log("neue arbeitszeit gesetzt...");
+	//console.log("neue arbeitszeit gesetzt...");
 	setTimeout(function(){
 		console.log("entferne sperre");
 		zeit_berechnungs_sperre = false;
@@ -470,7 +470,7 @@ function get_ts_overview(frm) {
 					colors: ['green']
 				});
 				if (r.message.docstatus == 1) {
-					frappe.msgprint("Dieses Timesheet wurde bereits verbucht und kann nur noch betrachtet werden.", "Timesheet bereits verbucht");
+					frappe.msgprint(__("Dieses Timesheet wurde bereits verbucht und kann nur noch betrachtet werden."), __("Timesheet bereits verbucht"));
 					cur_frm.remove_custom_button("Zeiterfassung speichern");
 					alles_sperren(frm);
 					if (frappe.user.has_role("SPO Poweruser")) {
@@ -507,7 +507,7 @@ function save_update_ts(frm) {
 				callback: function(r)
 				{
 					if (r.message == 'ok') {
-						frappe.msgprint("Das Timesheet wurde angepasst.", "Update erfolgreich");
+						frappe.msgprint(__("Das Timesheet wurde angepasst."), __("Update erfolgreich"));
 						get_ts_overview(frm);
 					}
 				}
@@ -530,7 +530,7 @@ function save_update_ts(frm) {
 				{
 					if (r.message) {
 						cur_frm.set_value('timesheet', r.message);
-						frappe.msgprint("Das Timesheet wurde erstellt.", "Erstellung erfolgreich");
+						frappe.msgprint(__("Das Timesheet wurde erstellt."), __("Erstellung erfolgreich"));
 						get_ts_overview(frm);
 					}
 				}
@@ -542,7 +542,7 @@ function save_update_ts(frm) {
 function check_overlapp(frm) {
 	var total_time = cur_frm.doc.arbeitszeit - cur_frm.doc.total_beratung - cur_frm.doc.total_mandatsarbeit - cur_frm.doc.total_diverses;
 	if (total_time < 0) {
-		frappe.msgprint("Die Summe von Beratungen, Mandatsarbeiten und diversen Arbeiten übersteigt Ihre Arbeitszeit.", "Arbeitszeit zu kurz");
+		frappe.msgprint(__("Die Summe von Beratungen, Mandatsarbeiten und diversen Arbeiten übersteigt Ihre Arbeitszeit."), __("Arbeitszeit zu kurz"));
 		return true
 	} else {
 		return false

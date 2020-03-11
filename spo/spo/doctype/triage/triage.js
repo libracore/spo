@@ -43,8 +43,8 @@ frappe.ui.form.on('Triage', {
 
 function timesheet_handling(frm) {
 	frappe.prompt([
-		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': __('Datum'), 'reqd': 1, 'default': 'Today'},
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': __('Arbeitszeit (in h)'), 'reqd': 1}  
 	],
 	function(values){
 		frappe.call({
@@ -62,7 +62,7 @@ function timesheet_handling(frm) {
 			}
 		});
 	},
-	'Arbeitszeit erfassen',
-	'Erfassen'
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
 	)
 }

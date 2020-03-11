@@ -11,6 +11,7 @@ from frappe.utils.background_jobs import enqueue
 #from frappe.utils.print_format import download_multi_pdf
 from PyPDF2 import PdfFileWriter
 import math
+from frappe import _
 
 class MitgliederRechnungslauf(Document):
 	def before_save(self):
@@ -35,7 +36,7 @@ class MitgliederRechnungslauf(Document):
 			}
 			enqueue("spo.spo.doctype.mitglieder_rechnungslauf.mitglieder_rechnungslauf.background_rechnungslauf", queue='long', job_name='Mitglieder Rechnungslauf', timeout=max_time, **args)
 		else:
-			frappe.throw("Es sind keine auslaufende Mitgliedschaften vorhanden.")
+			frappe.throw(_("Es sind keine auslaufende Mitgliedschaften vorhanden."))
 			
 def autom_rechnungslauf():
 	vorlauf = frappe.get_doc("Einstellungen").rechnungslauf_vorlauf

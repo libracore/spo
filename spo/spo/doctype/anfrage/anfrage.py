@@ -330,8 +330,20 @@ def autom_submit():
 	sql_query = """SELECT `name` FROM `tabAnfrage` WHERE `datum` <= '{last_week}' AND `docstatus` = 0""".format(last_week=add_days(nowdate(), -7))
 	anfragen_to_submit = frappe.db.sql(sql_query, as_dict=True)
 	for _anfrage in anfragen_to_submit:
-		anfrage = frappe.get_doc("Anfrage", _anfrage.name)
-		anfrage.submit()
+		try:
+			anfrage = frappe.get_doc("Anfrage", _anfrage.name)
+			anfrage.submit()
+		except:
+			try:
+				anfrage = frappe.get_doc("Anfrage", _anfrage.name)
+				customer = frappe.get_doc("Customer", anfrage.customer)
+				customer.disabled = 0
+				customer.save()
+				anfrage.submit()
+				customer.disabled = 1
+				customer.save()
+			except:
+				pass
 		
 @frappe.whitelist()
 def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, strasse, ort, plz, telefon, mobile, email, patient, kontakt, adresse, adress_zusatz):

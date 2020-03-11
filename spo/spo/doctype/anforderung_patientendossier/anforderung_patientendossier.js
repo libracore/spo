@@ -180,7 +180,7 @@ function defaul_texte(frm) {
 				'<p>Bis heute haben wir von Ihnen die gewünschten Unterlagen nicht erhalten. Wir bitten Sie deshalb ein drittes Mal, um die umgehende Zusendung der uns zustehenden Akten.</p><br>' + 
 				'<p>Sollten wir die gewünschten medizinischen Unterlagen bis <b>spätestens Mitte April 2012</b> immer noch nicht erhalten haben, sehen wir uns leider gezwungen, einen externen Rechtsanwalt zu beauftragen, die Herausgabe der Krankengeschichte auf dem Rechtsweg zu erwirken, unter Kostenfolgen zu Ihren Lasten.</p>' +
 				'<p>Freundliche Grüsse</p>'
-			cur_frm.set_value('brieftext', brieftext_string);
+			cur_frm.set_value('brieftext', __(brieftext_string));
 		}
 	}
 }

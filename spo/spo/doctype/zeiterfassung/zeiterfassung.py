@@ -8,10 +8,11 @@ from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_s
 from frappe.model.document import Document
 import json
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
+from frappe import _
 
 class Zeiterfassung(Document):
 	def validate(self):
-		frappe.throw("Dieses Dokument können Sie nicht speichern.<br>Bitte benutzen Sie die untenstehenden Schaltflächen.", "Kann nicht gepeichert werden")
+		frappe.throw(_("Dieses Dokument können Sie nicht speichern.<br>Bitte benutzen Sie die untenstehenden Schaltflächen."), _("Kann nicht gepeichert werden"))
 		
 
 @frappe.whitelist()
@@ -80,11 +81,11 @@ def fetch_pausen_von_ts(ts):
 	
 	#arbeitszeit & pause
 	for log in ts.time_logs:
-		if log.activity_type == 'Arbeitszeit':
+		if log.activity_type == _('Arbeitszeit'):
 			start = get_time(log.from_time).strftime("%H:%M:%S")
 			ende = get_time(log.to_time).strftime("%H:%M:%S")
 			total_arbeitszeit += log.hours
-		if log.activity_type == 'Pause':
+		if log.activity_type == _('Pause'):
 			pause = {}
 			pause["start"] = get_time(log.from_time).strftime("%H:%M:%S")
 			pause["dauer"] = log.hours
@@ -112,7 +113,7 @@ def fetch_beratungs_und_mandats_arbeiten_von_ts(ts):
 	#Beratung & Mandatsarbeiten
 	for log in ts.time_logs:
 		#Beratung
-		if log.activity_type == 'Beratung':
+		if log.activity_type == _('Beratung'):
 			total_beratung += log.hours
 			beratung = {}
 			beratung["spo_referenz"] = log.spo_referenz
@@ -125,7 +126,7 @@ def fetch_beratungs_und_mandats_arbeiten_von_ts(ts):
 			beratungen.append(beratung)
 		#/Beratung
 		#Mandatsarbeiten
-		if log.activity_type == 'Mandatsarbeit':
+		if log.activity_type == _('Mandatsarbeit'):
 			beratung = {}
 			beratung["spo_referenz"] = log.spo_referenz
 			beratung["arbeit"] = log.spo_remark
@@ -153,7 +154,7 @@ def fetch_diverses_von_ts(ts):
 	
 	#Diverses
 	for log in ts.time_logs:
-		if log.activity_type != 'Beratung' and log.activity_type != 'Mandatsarbeit' and log.activity_type != 'Pause' and log.activity_type != 'Arbeitszeit':
+		if log.activity_type != _('Beratung') and log.activity_type != _('Mandatsarbeit') and log.activity_type != _('Pause') and log.activity_type != _('Arbeitszeit'):
 			total_diverses += log.hours
 			_diverses = {}
 			_diverses["dauer"] = log.hours
@@ -185,7 +186,7 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 	start_datum = _datum + " " + start
 	end_datum = _datum + " " + ende
 	row = {}
-	row["activity_type"] = 'Arbeitszeit'
+	row["activity_type"] = _('Arbeitszeit')
 	row["hours"] = time_diff_in_hours(get_datetime(get_datetime_str(end_datum)), get_datetime(get_datetime_str(start_datum)))
 	row["from_time"] = get_datetime(get_datetime_str(start_datum))
 	row["to_time"] = get_datetime(get_datetime_str(end_datum))
@@ -196,7 +197,7 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 	for pause in pausen:
 		datum = _datum + " " + pause["from"]
 		row = {}
-		row["activity_type"] = 'Pause'
+		row["activity_type"] = _('Pause')
 		row["hours"] = pause['dauer']
 		row["from_time"] = get_datetime(get_datetime_str(datum))
 		ts.append('time_logs', row)
@@ -207,9 +208,9 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 	for beratung in beratungen_mandate:
 		row = {}
 		if beratung["mandat"] == 1:
-			row["activity_type"] = 'Mandatsarbeit'
+			row["activity_type"] = _('Mandatsarbeit')
 		else:
-			row["activity_type"] = 'Beratung'
+			row["activity_type"] = _('Beratung')
 		row["hours"] = beratung['dauer']
 		row["from_time"] = get_datetime(get_datetime_str(datum))
 		row["spo_dokument"] = beratung['spo_dokument']
@@ -238,7 +239,7 @@ def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, workin
 		ts_to_delete.delete()
 		
 	if check_if_ts_exist(ma, datum):
-		frappe.throw("Am gewählten Datum existiert für diese(n) Mitarbeiter(in) bereits ein Timesheet")
+		frappe.throw(_("Am gewählten Datum existiert für diese(n) Mitarbeiter(in) bereits ein Timesheet"))
 	#**********************************************************
 	#overwrite the time_log overlap validation of timesheet
 	overwrite_ts_validation()
@@ -255,7 +256,7 @@ def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, workin
 		"twh": working_hours,
 		"time_logs": [
 			{
-				"activity_type": "Arbeitszeit",
+				"activity_type": _("Arbeitszeit"),
 				"hours": time_diff_in_hours(get_datetime(get_datetime_str(end_datum)), get_datetime(get_datetime_str(start_datum))),
 				"from_time": get_datetime(get_datetime_str(start_datum)),
 				"to_time": get_datetime(get_datetime_str(end_datum))
@@ -280,9 +281,9 @@ def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, workin
 	for beratung in beratungen_mandate:
 		row = {}
 		if beratung["mandat"] == 1:
-			row["activity_type"] = 'Mandatsarbeit'
+			row["activity_type"] = _('Mandatsarbeit')
 		else:
-			row["activity_type"] = 'Beratung'
+			row["activity_type"] = _('Beratung')
 		row["hours"] = beratung['dauer']
 		row["from_time"] = get_datetime(get_datetime_str(datum))
 		row["spo_dokument"] = beratung['spo_dokument']

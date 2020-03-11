@@ -20,7 +20,7 @@ frappe.ui.form.on('Anfrage', {
 		dropdown_steuerung_von_sections(frm);
 				
 		//load dashboard
-		if (frm.doc.anfrage_typ == 'Sonstiges') {
+		if (frm.doc.anfrage_typ == __('Sonstiges')) {
 			update_dashboard(frm);
 		}
 		
@@ -156,7 +156,7 @@ frappe.ui.form.on('Anfrage', {
 			var i;
 			var has_role = false;
 			for (i=0; i < r.message.length; i++) {
-				if (r.message[i] == "Backoffice") {
+				if (r.message[i] == __("Backoffice")) {
 					has_role = true;
 				}
 			}
@@ -192,7 +192,7 @@ frappe.ui.form.on('Anfrage', {
 					}
 				}
 				if (fehler) {
-					frappe.msgprint("Bitte tragen Sie mindestens noch folgende Daten ein:<br>" + fehlende_daten, "Fehlende Daten");
+					frappe.msgprint(__("Bitte tragen Sie mindestens noch folgende Daten ein:<br>") + fehlende_daten, __("Fehlende Daten"));
 				} else {
 					frappe.call({
 						"method": "spo.spo.doctype.anfrage.anfrage.create_new_mitglied",
@@ -217,7 +217,7 @@ frappe.ui.form.on('Anfrage', {
 								cur_frm.set_value('patienten_adresse', r.message.patienten_adresse);
 								nothing_mandatory(frm);
 								cur_frm.save();
-								frappe.msgprint("Das Mitglied <b>" + r.message.patient + "</b> wurde angelegt<br><br>Bitte erfassen Sie noch die entsprechende Mitgliedschaft.", "Mitglied wurde angelegt");
+								frappe.msgprint(__("Das Mitglied <b>") + r.message.patient + __("</b> wurde angelegt<br><br>Bitte erfassen Sie noch die entsprechende Mitgliedschaft."), __("Mitglied wurde angelegt"));
 							}
 						}
 					});
@@ -311,7 +311,7 @@ function new_mandat(anfrage, patient, adresse, kontakt) {
 						frappe.set_route("Form", "Mandat", r.message)
 					} else {
 						frappe.confirm(
-							'Zu dieser Anfrage wurde bereits ein Mandat eröffnet.<br><br>Soll das/die Mandat(e) angezeigt werden?',
+							__('Zu dieser Anfrage wurde bereits ein Mandat eröffnet.<br><br>Soll das/die Mandat(e) angezeigt werden?'),
 							function(){
 								// on yes
 								show_mandat_list_based_on_anfrage();
@@ -325,7 +325,7 @@ function new_mandat(anfrage, patient, adresse, kontakt) {
 			}
 		});
 	} else {
-		frappe.msgprint("Bitte tragen Sie zuerst einen Kunden ein.", "Fehlender Kunde");
+		frappe.msgprint(__("Bitte tragen Sie zuerst einen Kunden ein."), __("Fehlender Kunde"));
 	}
 }
 
@@ -345,10 +345,10 @@ function get_valid_mitgliedschaft_based_on_mitgliedernummer(frm, patient) {
             if (r.message.length >= 1) {
 				cur_frm.set_value('mitgliedschaft', r.message[0].name);
 				if (r.message.length > 1) {
-					frappe.msgprint("<b>Achtung!</b><br>Das Mitglied besitzt mehere gültige Mitgliedschaften, bitte prüfen Sie die autom. Selektion!", "Mehere gültige Mitgliedschaft");
+					frappe.msgprint(__("<b>Achtung!</b><br>Das Mitglied besitzt mehere gültige Mitgliedschaften, bitte prüfen Sie die autom. Selektion!"), __("Mehrere gültige Mitgliedschaften"));
 				}
 			} else {
-				frappe.msgprint("<b>Achtung!</b><br>Das Mitglied besitzt keine gültige Mitgliedschaft!", "Keine gültige Mitgliedschaft");
+				frappe.msgprint(__("<b>Achtung!</b><br>Das Mitglied besitzt keine gültige Mitgliedschaft!"), __("Keine gültige Mitgliedschaft"));
 			}
         }
     });
@@ -364,7 +364,7 @@ function check_mitgliedschaft_ablaufdatum(frm) {
 			"async": false,
 			"callback": function(response) {
 				if (!response.message) {
-					frappe.msgprint("Die hinterlegte Mitgliedschaft ist abgelaufen!", 'Achtung');
+					frappe.msgprint(__("Die hinterlegte Mitgliedschaft ist abgelaufen!"), __('Achtung'));
 				}
 			}
 		});
@@ -388,7 +388,7 @@ function update_dashboard(frm) {
 			} */
 			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
-				labels: ["Verwendet", "Ausstehend"],
+				labels: [__("Verwendet"), __("Ausstehend")],
 
 				datasets: [
 					{
@@ -397,7 +397,7 @@ function update_dashboard(frm) {
 				],
 
 				},
-				title: "Zeitauswertung (in min)",
+				title: __("Zeitauswertung (in min)"),
 				type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
 				colors: _colors,
 				barOptions: {
@@ -483,9 +483,9 @@ function set_mandatory_and_read_only(frm) {
 	if (!frm.doc.__islocal) {
 		cur_frm.set_df_property('patient_kanton','reqd', 1);
 		cur_frm.set_df_property('problematik','reqd', 0);
-		if (frm.doc.anfrage_typ == 'Hotline' || frm.doc.anfrage_typ == 'Medien Anfrage') {
-			if (frm.doc.anfrage_typ == 'Hotline') {
-				cur_frm.set_value('kontakt_via', 'Telefon');
+		if (frm.doc.anfrage_typ == __('Hotline') || frm.doc.anfrage_typ == __('Medien Anfrage')) {
+			if (frm.doc.anfrage_typ == __('Hotline')) {
+				cur_frm.set_value('kontakt_via', __('Telefon'));
 				cur_frm.set_df_property('kontakt_via','read_only', 1);
 			} else {
 				cur_frm.set_df_property('kontakt_via','read_only', 0);
@@ -519,7 +519,7 @@ function set_mandatory_and_read_only(frm) {
 			cur_frm.set_df_property('spo_ombudsstelle','reqd', 1);
 			cur_frm.set_df_property('kontakt_via','reqd', 1);
 			
-			if (frm.doc.anfrage_typ == 'Mandats Anfrage') {
+			if (frm.doc.anfrage_typ == __('Mandats Anfrage')) {
 				cur_frm.set_df_property('patient_vorname','reqd', 0);
 				cur_frm.set_df_property('patient_nachname','reqd', 0);
 				cur_frm.set_df_property('patient_geburtsdatum','reqd', 0);
@@ -534,7 +534,7 @@ function set_mandatory_and_read_only(frm) {
 				cur_frm.set_df_property('spo_ombudsstelle','reqd', 1);
 			}
 		}
-		if (cur_frm.doc.problematik == 'Krankenkasse (Grundversicherung)') {
+		if (cur_frm.doc.problematik == __('Krankenkasse (Grundversicherung)')) {
 			cur_frm.set_df_property('krankenkasse','reqd', 1);
 		}
 	}
@@ -560,7 +560,7 @@ function check_anfrage_daten_vs_stamm_daten(frm) {
 	var assign = true;
 	if (cur_frm.get_docinfo().assignments) {
 		for (i=0; i < cur_frm.get_docinfo().assignments.length; i++) {
-			if (cur_frm.get_docinfo().assignments[i].description.includes("Bitte folgende Änderungen in den Stammdaten vornehmen:")) {
+			if (cur_frm.get_docinfo().assignments[i].description.includes(__("Bitte folgende Änderungen in den Stammdaten vornehmen:"))) {
 				assign = false;
 			}
 		}
@@ -589,7 +589,7 @@ function check_anfrage_daten_vs_stamm_daten(frm) {
 				var assign_to = response.message.assign_to;
 				if (abweichungen != '') {
 					frappe.confirm(
-						'<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>' + abweichungen,
+						__('<p>Sollen folgende Änderungen der zuständigen Abteilung zur Verarbeitung übergeben werden?</p>') + abweichungen,
 						function(){
 							// on yes assign
 							assign_anfrage(frm, assign_to, abweichungen, true);
@@ -613,10 +613,10 @@ function assign_anfrage(frm, assign_to, abweichungen, mutation) {
 				"assign_to": assign_to,
 				"doctype": frm.doc.doctype,
 				"name": frm.doc.name,
-				"description": "Bitte folgende Änderungen in den Stammdaten vornehmen:<br>" + abweichungen
+				"description": __("Bitte folgende Änderungen in den Stammdaten vornehmen:<br>") + abweichungen
 			},
 			"callback": function(response) {
-				frappe.msgprint("Die Stammdaten Änderung wurde zugewiesen.", "Zuweisung erfolgreich");
+				frappe.msgprint(__("Die Stammdaten Änderung wurde zugewiesen."), __("Zuweisung erfolgreich"));
 				nothing_mandatory(frm);
 				cur_frm.save();
 				cur_frm.reload_doc();
@@ -629,10 +629,10 @@ function assign_anfrage(frm, assign_to, abweichungen, mutation) {
 				"assign_to": assign_to,
 				"doctype": frm.doc.doctype,
 				"name": frm.doc.name,
-				"description": "Bitte Kundenstamm anlegen."
+				"description": __("Bitte Kundenstamm anlegen.")
 			},
 			"callback": function(response) {
-				frappe.msgprint("Die Stammdaten Anlage wurde zugewiesen.", "Zuweisung erfolgreich");
+				frappe.msgprint(__("Die Stammdaten Anlage wurde zugewiesen."), __("Zuweisung erfolgreich"));
 				nothing_mandatory(frm);
 				cur_frm.save();
 				cur_frm.reload_doc();
@@ -662,8 +662,8 @@ function timesheet_handling(frm) {
 			}
 		});
 	},
-	'Arbeitszeit erfassen',
-	'Erfassen'
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
 	)
 }
 
@@ -680,7 +680,7 @@ function ts_bearbeiten(ts) {
 				frappe.route_options = {"timesheet": ts};
 				frappe.set_route("Form", "Zeiterfassung");
 			} else {
-				frappe.msgprint("Sie können nur Ihre eigene Timesheets bearbeiten.", "Nicht Ihr Timesheet");
+				frappe.msgprint(__("Sie können nur Ihre eigene Timesheets bearbeiten."), __("Nicht Ihr Timesheet"));
 			}
 		}
 	});
@@ -812,12 +812,12 @@ function _kontaktdaten_suchen(frm) {
 				
 				var d = new frappe.ui.Dialog({
 					'fields': [
-						{'fieldname': 'header_1', 'fieldtype': 'Heading', 'label': 'Vollständige Treffer'},
-						{'fieldname': 'full_matches', 'fieldtype': 'HTML', 'options': '<div><p>Keine vollständige Treffer</p></div>'},
-						{'fieldname': 'header_2', 'fieldtype': 'Heading', 'label': 'Zutreffende Kontakte'},
-						{'fieldname': 'alle_kontakte', 'fieldtype': 'HTML', 'options': '<div><p>Keine zutreffende Kontakte</p></div>'},
-						{'fieldname': 'header_3', 'fieldtype': 'Heading', 'label': 'Zutreffende Adressen'},
-						{'fieldname': 'alle_adressen', 'fieldtype': 'HTML', 'options': '<div><p>Keine zutreffende Adressen</p></div>'}
+						{'fieldname': 'header_1', 'fieldtype': 'Heading', 'label': __('Vollständige Treffer')},
+						{'fieldname': 'full_matches', 'fieldtype': 'HTML', 'options': __('<div><p>Keine vollständige Treffer</p></div>')},
+						{'fieldname': 'header_2', 'fieldtype': 'Heading', 'label': __('Zutreffende Kontakte')},
+						{'fieldname': 'alle_kontakte', 'fieldtype': 'HTML', 'options': __('<div><p>Keine zutreffende Kontakte</p></div>')},
+						{'fieldname': 'header_3', 'fieldtype': 'Heading', 'label': __('Zutreffende Adressen')},
+						{'fieldname': 'alle_adressen', 'fieldtype': 'HTML', 'options': __('<div><p>Keine zutreffende Adressen</p></div>')}
 					],
 					primary_action: function(){
 						fetch_match_from_dialog(frm, d);
