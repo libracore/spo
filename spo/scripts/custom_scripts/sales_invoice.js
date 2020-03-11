@@ -36,13 +36,13 @@ function update_esr(frm) {
 function create_mandats_rechnung(frm) {
 	frappe.prompt(
 		[
-			{'fieldname': 'mandat', 'fieldtype': 'Link', 'label': 'Mandat', 'reqd': 1, 'options': 'Mandat'}  
+			{'fieldname': 'mandat', 'fieldtype': 'Link', 'label': __('Mandat'), 'reqd': 1, 'options': 'Mandat'}  
 		],
 		function(values){
 			get_mandats_positionen(frm, values.mandat);
 		},
-		'Für welches Mandat soll eine Rechnung erstellt werden?',
-		'Lade Mandats-Positionen'
+		__('Für welches Mandat soll eine Rechnung erstellt werden?'),
+		__('Lade Mandats-Positionen')
 	)
 }
 
@@ -58,7 +58,7 @@ function get_mandats_positionen(frm, mandat) {
 			var logs = response.message.logs;
 			var rsv = response.message.rsv;
 			if (!rsv && !cur_frm.doc.customer) {
-				frappe.msgprint("Bitte wählen Sie zuerst einen Kunden aus, da im Mandat keine RSV hinterlegt ist.");
+				frappe.msgprint(__("Bitte wählen Sie zuerst einen Kunden aus, da im Mandat keine RSV hinterlegt ist."));
 				return
 			} else {
 				cur_frm.set_value('mandat', mandat);
@@ -84,6 +84,7 @@ function get_mandats_positionen(frm, mandat) {
 					}
 					var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
 					df.hidden = 1;
+					frappe.msgprint(__("Bitte denken Sie daran, dass Sie prüfen müssen ob zu diesem Mandat Drittleistungen verrechnet werden müssen!"), __('Drittleistungen'));
 				}
 			}
 		}
