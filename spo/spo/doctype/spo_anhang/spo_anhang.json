@@ -1,0 +1,94 @@
+{
+ "creation": "2020-03-16 11:48:19.976937",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_typisierung",
+  "datum",
+  "dokumenten_typ",
+  "cb_1",
+  "kurzbeschrieb",
+  "section_anhang",
+  "anhang",
+  "section_referenzen",
+  "mandat"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_typisierung",
+   "fieldtype": "Section Break",
+   "label": "Typisierung"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "datum",
+   "fieldtype": "Date",
+   "label": "Datum"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "dokumenten_typ",
+   "fieldtype": "Link",
+   "label": "Dokumenten Typ",
+   "options": "SPO Dokumenten Art"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "kurzbeschrieb",
+   "fieldtype": "Text",
+   "label": "Kurzbeschrieb"
+  },
+  {
+   "fieldname": "section_anhang",
+   "fieldtype": "Section Break",
+   "label": "Anhang"
+  },
+  {
+   "fieldname": "anhang",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Anhang",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
+  },
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "label": "Mandat",
+   "options": "Mandat"
+  }
+ ],
+ "modified": "2020-03-16 12:20:03.740036",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "SPO Anhang",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
