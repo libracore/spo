@@ -12,6 +12,8 @@
   "empfaenger_kontakt",
   "empfaenger_adresse",
   "sb_text",
+  "titel_textkonserve",
+  "titelzeile",
   "textkonserve",
   "brieftext",
   "fusszeile",
@@ -101,10 +103,23 @@
   {
    "fieldname": "sb_text",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "titel_textkonserve",
+   "fieldtype": "Link",
+   "label": "Textkonserve",
+   "options": "SPO Textbausteine"
+  },
+  {
+   "fetch_from": "titel_textkonserve.textkonserve",
+   "fetch_if_empty": 1,
+   "fieldname": "titelzeile",
+   "fieldtype": "Text Editor",
+   "label": "Titelzeile"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-04 15:34:50.191404",
+ "modified": "2020-03-16 10:17:41.231879",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Abschlussbericht",
