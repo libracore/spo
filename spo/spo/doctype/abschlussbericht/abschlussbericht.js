@@ -5,15 +5,23 @@ var make_default_ts_entry = false;
 
 frappe.ui.form.on('Abschlussbericht', {
 	refresh: function(frm) {
-		// filter for textbaustein based on doctype and user
+		// filter
+		cur_frm.fields_dict['titel_textkonserve'].get_query = function(doc) {
+			 return {
+				 filters: {
+					 "mitarbeiter": frappe.user.name,
+					 "dokument": "Abschlussbericht - Titelzeile"
+				 }
+			 }
+		};
 		cur_frm.fields_dict['textkonserve'].get_query = function(doc) {
 			 return {
 				 filters: {
 					 "mitarbeiter": frappe.user.name,
-					 "dokument": "Abschlussbericht"
+					 "dokument": "Abschlussbericht - Brieftext"
 				 }
 			 }
-		}
+		};
 		cur_frm.fields_dict['empfaenger_kontakt'].get_query = function(doc) {
 			return {
 				filters: {
