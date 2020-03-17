@@ -66,7 +66,7 @@ def get_data(filters):
 def get_all_customers(filters):
 	query = """SELECT `name`, `customer_group`, `spo_aktuell`, `language` FROM `tabCustomer` WHERE `disabled` = 0"""
 	if not filters.customer_group:
-		query += """ AND (`customer_group` = 'Mitglied' OR `customer_group` = 'Newsletter Abo') LIMIT 100"""
+		query += """ AND (`customer_group` = 'Mitglied' OR `customer_group` = 'Newsletter Abo')"""
 	else:
 		query += """ AND `customer_group` = '{customer_group}'""".format(customer_group=filters.customer_group)
 	return frappe.db.sql(query, as_dict=True)
