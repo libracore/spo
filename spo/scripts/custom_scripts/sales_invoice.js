@@ -36,7 +36,7 @@ function update_esr(frm) {
 function create_mandats_rechnung(frm) {
 	frappe.prompt(
 		[
-			{'fieldname': 'mandat', 'fieldtype': 'Link', 'label': __('Mandat'), 'reqd': 1, 'options': 'Mandat'}  
+			{'fieldname': 'mandat', 'fieldtype': 'Link', 'label': __('Mandat'), 'reqd': 1, 'options': 'Mandat', 'default': cur_frm.doc.mandat}  
 		],
 		function(values){
 			get_mandats_positionen(frm, values.mandat);
