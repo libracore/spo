@@ -16,6 +16,7 @@
   "textkonserve",
   "text",
   "fusszeile",
+  "seitenzahlen",
   "amended_from"
  ],
  "fields": [
@@ -91,10 +92,16 @@
    "fieldtype": "Link",
    "label": "Mandat",
    "options": "Mandat"
+  },
+  {
+   "default": "0",
+   "fieldname": "seitenzahlen",
+   "fieldtype": "Check",
+   "label": "Inkl. Seitenzahlen"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-04 15:08:21.866643",
+ "modified": "2020-03-23 13:04:52.052039",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Freies Schreiben",
