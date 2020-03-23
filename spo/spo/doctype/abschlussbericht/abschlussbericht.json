@@ -17,6 +17,7 @@
   "textkonserve",
   "brieftext",
   "fusszeile",
+  "seitenzahlen",
   "amended_from",
   "fold_referenzen",
   "section_referenzen",
@@ -116,10 +117,16 @@
    "fieldname": "titelzeile",
    "fieldtype": "Text Editor",
    "label": "Titelzeile"
+  },
+  {
+   "default": "0",
+   "fieldname": "seitenzahlen",
+   "fieldtype": "Check",
+   "label": "Inkl. Seitenzahlen"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-16 10:17:41.231879",
+ "modified": "2020-03-23 12:57:50.064276",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Abschlussbericht",

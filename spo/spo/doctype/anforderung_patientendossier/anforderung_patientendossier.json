@@ -19,6 +19,7 @@
   "textbaustein",
   "brieftext",
   "fusszeile",
+  "seitenzahlen",
   "amended_from",
   "fold_referenzen",
   "section_referenzen",
@@ -156,10 +157,16 @@
    "fieldtype": "Link",
    "label": "Adresse",
    "options": "Address"
+  },
+  {
+   "default": "1",
+   "fieldname": "seitenzahlen",
+   "fieldtype": "Check",
+   "label": "Inkl. Seitenzahlen"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-04 15:16:32.082750",
+ "modified": "2020-03-20 10:20:40.171255",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",
