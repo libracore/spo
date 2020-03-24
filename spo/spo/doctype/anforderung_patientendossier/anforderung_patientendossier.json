@@ -78,7 +78,7 @@
    "options": "SPO Textbausteine"
   },
   {
-   "default": "Z\u00fcrich",
+   "default": "Z\u00fcrich (Hochformat)",
    "fieldname": "fusszeile",
    "fieldtype": "Link",
    "label": "Fusszeile",
@@ -166,7 +166,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-20 10:20:40.171255",
+ "modified": "2020-03-24 13:37:52.482752",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anforderung Patientendossier",

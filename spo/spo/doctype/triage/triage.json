@@ -126,7 +126,7 @@
    "label": "Anderes"
   },
   {
-   "default": "Z\u00fcrich",
+   "default": "Z\u00fcrich (Hochformat)",
    "fieldname": "fusszeile",
    "fieldtype": "Link",
    "label": "Fusszeile",
@@ -174,7 +174,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-04 17:17:11.427659",
+ "modified": "2020-03-24 13:38:32.150296",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Triage",
