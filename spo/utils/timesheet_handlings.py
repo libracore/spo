@@ -44,9 +44,14 @@ def check_if_timesheet_exist(user, date):
 			return 'neuanlage'
 	
 def create_timesheet(user, doctype, reference, time, bemerkung, date):
-	default_time = get_default_time(doctype)
-	if time < default_time:
-		time = default_time
+	# check if first timesheet entry of reference
+	existing_ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` != 2 AND `name` IN (
+							SELECT `parent` FROM `tabTimesheet Detail` WHERE `spo_referenz` = '{reference}')""".format(reference=reference), as_dict=True)
+	if not len(existing_ts) > 0:
+		default_time = get_default_time(doctype)
+		if time < default_time:
+			time = default_time
+	
 	start = date + " 00:00:00"
 	type = 'Mandatsarbeit'
 	if doctype == 'Anfrage':
@@ -73,13 +78,18 @@ def update_timesheet(ts, time, doctype, reference, user, bemerkung, date=None):
 	overwrite_ts_validation()
 	#**********************************************************
 	
+	# check if first timesheet entry of reference
+	existing_ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` != 2 AND `name` IN (
+							SELECT `parent` FROM `tabTimesheet Detail` WHERE `spo_referenz` = '{reference}')""".format(reference=reference), as_dict=True)
+	if not len(existing_ts) > 0:
+		default_time = get_default_time(doctype)
+		if time < default_time:
+			time = default_time
+	
 	ts = frappe.get_doc("Timesheet", ts)
 	type = 'Mandatsarbeit'
 	if doctype == 'Anfrage':
 		type = 'Beratung'
-	default_time = get_default_time(doctype)
-	if time < default_time:
-		time = default_time
 	if not date:
 		start = nowdate() + " 00:00:00"
 	else:
