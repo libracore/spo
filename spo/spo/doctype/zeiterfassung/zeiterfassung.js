@@ -26,6 +26,7 @@ frappe.ui.form.on('Zeiterfassung', {
 		set_timesheet_filter(frm);
 		if (cur_frm.doc.employee) {
 			frm.add_custom_button(__("Zeiterfassung speichern"), function() {
+				$('*[data-label="Zeiterfassung%20speichern"]').prop('disabled', true);
 				save_update_ts(frm);
 			});
 		} else {
@@ -59,6 +60,7 @@ frappe.ui.form.on('Zeiterfassung', {
 			cur_frm.remove_custom_button("Zeiterfassung updaten");
 			if (cur_frm.doc.employee) {
 				frm.add_custom_button(__("Zeiterfassung speichern"), function() {
+					$('*[data-label="Zeiterfassung%20speichern"]').prop('disabled', true);
 					save_update_ts(frm);
 				});
 			}
@@ -479,6 +481,7 @@ function get_ts_overview(frm) {
 				} else {
 					cur_frm.remove_custom_button("Zeiterfassung speichern");
 					frm.add_custom_button(__("Zeiterfassung updaten"), function() {
+						$('*[data-label="Zeiterfassung%20updaten"]').prop('disabled', true);
 						save_update_ts(frm);
 					});
 				}
@@ -508,6 +511,7 @@ function save_update_ts(frm) {
 				{
 					if (r.message == 'ok') {
 						frappe.msgprint(__("Das Timesheet wurde angepasst."), __("Update erfolgreich"));
+						activate_btns(frm);
 						get_ts_overview(frm);
 					}
 				}
@@ -531,12 +535,18 @@ function save_update_ts(frm) {
 					if (r.message) {
 						cur_frm.set_value('timesheet', r.message);
 						frappe.msgprint(__("Das Timesheet wurde erstellt."), __("Erstellung erfolgreich"));
+						activate_btns(frm);
 						get_ts_overview(frm);
 					}
 				}
 			});
 		}
 	}
+}
+
+function activate_btns(frm) {
+	$('*[data-label="Zeiterfassung%20updaten"]').prop('disabled', false);
+	$('*[data-label="Zeiterfassung%20speichern"]').prop('disabled', false);
 }
 
 function check_overlapp(frm) {
