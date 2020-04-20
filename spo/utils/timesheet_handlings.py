@@ -193,7 +193,10 @@ def auto_ts_submit():
 			if log.activity_type != "Pause" and log.activity_type != "Arbeitszeit":
 				ruckmeldungen += log.hours
 		if ruckmeldungen <= ts.twh:
-			ts.submit()
+			try:
+				ts.submit()
+			except:
+				continue
 		#else:
 			#mail versand wenn fehler....muss noch programmiert werden...
 	
