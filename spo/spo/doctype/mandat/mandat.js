@@ -41,6 +41,10 @@ frappe.ui.form.on('Mandat', {
 				frappe.set_route("Form", "Anfrage", cur_frm.doc.anfragen);
 			});
 		}
+		
+		frm.add_custom_button(__("Master Freigabe für Mandat erteilen"), function() {
+			master_freigabe(frm);
+		});
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
@@ -199,4 +203,28 @@ function set_adress_html_felder(frm) {
 	set_kunden_html(frm);
 	set_angehoerige_html(frm);
 	set_rsv_html(frm);
+}
+
+function master_freigabe(frm) {
+	frappe.prompt([
+		{'fieldname': 'user', 'fieldtype': 'Link', 'label': 'Benutzer', 'reqd': 1, 'options': 'User'}  
+	],
+	function(values){
+		frappe.call({
+			"method": "spo.spo.doctype.mandat.mandat.share_mandat_and_related_docs",
+			"args": {
+				"mandat": cur_frm.doc.name,
+				"user_to_add": values.user
+			},
+			"async": false,
+			"callback": function(r) {
+				if (r.message=='ok') {
+					cur_frm.reload_doc();
+				}
+			}
+		});
+	},
+	'Master Freigabe erteilen',
+	'Erteilen'
+	);
 }
