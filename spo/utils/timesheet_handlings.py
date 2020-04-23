@@ -181,7 +181,10 @@ def auto_ts_submit():
 			if log.activity_type == "Pause":
 				arbeitszeit -= log.hours
 		ts.twh = arbeitszeit
-		ts.save()
+		try:
+			ts.save()
+		except:
+			continue
 			
 	# check and submit ts:
 	ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
