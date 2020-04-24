@@ -111,17 +111,57 @@ def share_mandat_and_related_docs(mandat, user_to_add):
 		doc_names = frappe.db.sql("""SELECT `name` FROM `tab{doc_type}` WHERE `mandat` = '{mandat}'""".format(doc_type=doc_type, mandat=mandat), as_dict=True)
 		for doc_name in doc_names:
 			doc_name = doc_name.name
-			hash = frappe.generate_hash('DocShare', 10)
-			frappe.db.sql("""INSERT INTO `tabDocShare`
-								(`name`, `creation`, `modified`, `modified_by`, `owner`, `docstatus`, `idx`, `everyone`, `share_name`, `read`, `share`, `write`, `notify_by_email`, `user`, `share_doctype`)
-								VALUES ('{hash}', '{datetime}', '{datetime}', '{user}', '{user}', 0, 0, 0, '{doc_name}', 1, 1, 1, 1, '{user_to_add}', '{doc_type}')""".format(hash=hash, datetime=now_datetime(), user=frappe.session.user, doc_name=doc_name, user_to_add=user_to_add, doc_type=doc_type), as_list=True)
-								
+			# check if already exist and update if neccesary
+			existing = frappe.db.sql("""SELECT `name` FROM `tabDocShare` WHERE `user` = '{user_to_add}' AND `share_doctype` = '{doc_type}' AND `share_name` = '{doc_name}'""".format(user_to_add=user_to_add, doc_type=doc_type, doc_name=doc_name), as_dict=True)
+			if len(existing) > 0:
+				for shared_doc in existing:
+					frappe.db.sql("""UPDATE `tabDocShare` SET `read` = 1, `share` = 1, `write` = 1, `modified` = '{datetime}' WHERE `name` = '{name}'""".format(name=shared_doc.name, datetime=now_datetime()), as_list=True)
+			else:
+				# if not exist, create new
+				hash = frappe.generate_hash('DocShare', 10)
+				frappe.db.sql("""INSERT INTO `tabDocShare`
+									(`name`, `creation`, `modified`, `modified_by`, `owner`, `docstatus`, `idx`, `everyone`, `share_name`, `read`, `share`, `write`, `notify_by_email`, `user`, `share_doctype`)
+									VALUES ('{hash}', '{datetime}', '{datetime}', '{user}', '{user}', 0, 0, 0, '{doc_name}', 1, 1, 1, 1, '{user_to_add}', '{doc_type}')""".format(hash=hash, datetime=now_datetime(), user=frappe.session.user, doc_name=doc_name, user_to_add=user_to_add, doc_type=doc_type), as_list=True)
+			
+			
 	doc_type = 'Mandat'
 	doc_name = mandat
-	hash = frappe.generate_hash('DocShare', 10)
-	frappe.db.sql("""INSERT INTO `tabDocShare`
-						(`name`, `creation`, `modified`, `modified_by`, `owner`, `docstatus`, `idx`, `everyone`, `share_name`, `read`, `share`, `write`, `notify_by_email`, `user`, `share_doctype`)
-						VALUES ('{hash}', '{datetime}', '{datetime}', '{user}', '{user}', 0, 0, 0, '{doc_name}', 1, 1, 1, 1, '{user_to_add}', '{doc_type}')""".format(hash=hash, datetime=now_datetime(), user=frappe.session.user, doc_name=doc_name, user_to_add=user_to_add, doc_type=doc_type), as_list=True)
-						
+	# check if already exist and update if neccesary
+	existing = frappe.db.sql("""SELECT `name` FROM `tabDocShare` WHERE `user` = '{user_to_add}' AND `share_doctype` = '{doc_type}' AND `share_name` = '{doc_name}'""".format(user_to_add=user_to_add, doc_type=doc_type, doc_name=doc_name), as_dict=True)
+	if len(existing) > 0:
+		for shared_doc in existing:
+			frappe.db.sql("""UPDATE `tabDocShare` SET `read` = 1, `share` = 1, `write` = 1, `modified` = '{datetime}' WHERE `name` = '{name}'""".format(name=shared_doc.name, datetime=now_datetime()), as_list=True)
+	else:
+		# if not exist, create new
+		hash = frappe.generate_hash('DocShare', 10)
+		frappe.db.sql("""INSERT INTO `tabDocShare`
+							(`name`, `creation`, `modified`, `modified_by`, `owner`, `docstatus`, `idx`, `everyone`, `share_name`, `read`, `share`, `write`, `notify_by_email`, `user`, `share_doctype`)
+							VALUES ('{hash}', '{datetime}', '{datetime}', '{user}', '{user}', 0, 0, 0, '{doc_name}', 1, 1, 1, 1, '{user_to_add}', '{doc_type}')""".format(hash=hash, datetime=now_datetime(), user=frappe.session.user, doc_name=doc_name, user_to_add=user_to_add, doc_type=doc_type), as_list=True)
+							
+	frappe.db.commit()
+	return 'ok'
+	
+@frappe.whitelist()
+def remove_share_of_mandat_and_related_docs(mandat, user_to_remove):
+	related_docs = ['Vollmacht', 'Anforderung Patientendossier', 'Medizinischer Bericht', 'Triage', 'Abschlussbericht', 'Freies Schreiben', 'SPO Anhang']
+	for related_doc in related_docs:
+		doc_type = related_doc
+		doc_names = frappe.db.sql("""SELECT `name` FROM `tab{doc_type}` WHERE `mandat` = '{mandat}'""".format(doc_type=doc_type, mandat=mandat), as_dict=True)
+		for doc_name in doc_names:
+			doc_name = doc_name.name
+			# check if already exist and update
+			existing = frappe.db.sql("""SELECT `name` FROM `tabDocShare` WHERE `user` = '{user_to_remove}' AND `share_doctype` = '{doc_type}' AND `share_name` = '{doc_name}'""".format(user_to_remove=user_to_remove, doc_type=doc_type, doc_name=doc_name), as_dict=True)
+			if len(existing) > 0:
+				for shared_doc in existing:
+					frappe.db.sql("""UPDATE `tabDocShare` SET `read` = 0, `share` = 0, `write` = 0, `modified` = '{datetime}' WHERE `name` = '{name}'""".format(name=shared_doc.name, datetime=now_datetime()), as_list=True)
+			
+	doc_type = 'Mandat'
+	doc_name = mandat
+	# check if already exist and update
+	existing = frappe.db.sql("""SELECT `name` FROM `tabDocShare` WHERE `user` = '{user_to_remove}' AND `share_doctype` = '{doc_type}' AND `share_name` = '{doc_name}'""".format(user_to_remove=user_to_remove, doc_type=doc_type, doc_name=doc_name), as_dict=True)
+	if len(existing) > 0:
+		for shared_doc in existing:
+			frappe.db.sql("""UPDATE `tabDocShare` SET `read` = 0, `share` = 0, `write` = 0, `modified` = '{datetime}' WHERE `name` = '{name}'""".format(name=shared_doc.name, datetime=now_datetime()), as_list=True)
+							
 	frappe.db.commit()
 	return 'ok'
