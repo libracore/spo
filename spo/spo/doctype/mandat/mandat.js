@@ -42,9 +42,12 @@ frappe.ui.form.on('Mandat', {
 			});
 		}
 		
-		frm.add_custom_button(__("Master Freigabe für Mandat erteilen"), function() {
-			master_freigabe(frm);
-		});
+		frm.add_custom_button(__("Erteilen"), function() {
+			master_freigabe_erteilen(frm);
+		}, __("Master Freigabe für Mandat"));
+		frm.add_custom_button(__("Entfernen"), function() {
+			master_freigabe_entfernen(frm);
+		}, __("Master Freigabe für Mandat"));
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
@@ -205,7 +208,7 @@ function set_adress_html_felder(frm) {
 	set_rsv_html(frm);
 }
 
-function master_freigabe(frm) {
+function master_freigabe_erteilen(frm) {
 	frappe.prompt([
 		{'fieldname': 'user', 'fieldtype': 'Link', 'label': 'Benutzer', 'reqd': 1, 'options': 'User'}  
 	],
@@ -226,5 +229,29 @@ function master_freigabe(frm) {
 	},
 	'Master Freigabe erteilen',
 	'Erteilen'
+	);
+}
+
+function master_freigabe_entfernen(frm) {
+	frappe.prompt([
+		{'fieldname': 'user', 'fieldtype': 'Link', 'label': 'Benutzer', 'reqd': 1, 'options': 'User'}  
+	],
+	function(values){
+		frappe.call({
+			"method": "spo.spo.doctype.mandat.mandat.remove_share_of_mandat_and_related_docs",
+			"args": {
+				"mandat": cur_frm.doc.name,
+				"user_to_remove": values.user
+			},
+			"async": false,
+			"callback": function(r) {
+				if (r.message=='ok') {
+					cur_frm.reload_doc();
+				}
+			}
+		});
+	},
+	'Master Freigabe entfernen',
+	'Entfernen'
 	);
 }
