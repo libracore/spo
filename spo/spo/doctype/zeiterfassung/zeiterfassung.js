@@ -513,6 +513,9 @@ function save_update_ts(frm) {
 						frappe.msgprint(__("Das Timesheet wurde angepasst."), __("Update erfolgreich"));
 						activate_btns(frm);
 						get_ts_overview(frm);
+					} else {
+						activate_btns(frm);
+						fehler_handling(r.message);
 					}
 				}
 			});
@@ -532,15 +535,34 @@ function save_update_ts(frm) {
 				},
 				callback: function(r)
 				{
-					if (r.message) {
+					if (r.message.includes("TS-20")) {
 						cur_frm.set_value('timesheet', r.message);
 						frappe.msgprint(__("Das Timesheet wurde erstellt."), __("Erstellung erfolgreich"));
 						activate_btns(frm);
 						get_ts_overview(frm);
+					} else {
+						activate_btns(frm);
+						fehler_handling(r.message);
 					}
 				}
 			});
 		}
+	}
+}
+
+function fehler_handling(fehler) {
+	if (fehler == "KeyError('activity_type',)") {
+		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Activity Type' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+	} else if (fehler == "KeyError('spo_dokument',)") {
+		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'SPO Dokument' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+	} else if (fehler == "KeyError('spo_referenz',)") {
+		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'SPO Referenz' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+	} else if (fehler == "KeyError('dauer',)") {
+		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Dauer' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+	} else if (fehler == "KeyError('arbeit',)") {
+		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Arbeit' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+	} else {
+		frappe.msgprint(__("Der Vrogang wurde unerwartet abgebrochen.<br>Bitte melden Sie folgenden Fehler an libracore:<br>" + fehler), __("Vorgang abgebrochen"));
 	}
 }
 
