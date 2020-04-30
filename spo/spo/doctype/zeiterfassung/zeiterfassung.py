@@ -174,62 +174,64 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 	#overwrite the time_log overlap validation of timesheet
 	overwrite_ts_validation()
 	#**********************************************************
-	
-	ts = frappe.get_doc("Timesheet", ts)
-	if ts.employee != ma:
-		frappe.throw("Das ist nicht Ihr Timesheet. Dieses Timesheet kann nur von {employee_name} bearbeitet werden.".format(employee_name=ts.employee_name))
-	ts.twh = working_hours
-	ts.time_logs = []
-	_datum = datum
-	
-	#Arbeitszeit
-	start_datum = _datum + " " + start
-	end_datum = _datum + " " + ende
-	row = {}
-	row["activity_type"] = _('Arbeitszeit')
-	row["hours"] = time_diff_in_hours(get_datetime(get_datetime_str(end_datum)), get_datetime(get_datetime_str(start_datum)))
-	row["from_time"] = get_datetime(get_datetime_str(start_datum))
-	row["to_time"] = get_datetime(get_datetime_str(end_datum))
-	ts.append('time_logs', row)
-	#/Arbeitszeit
-	#Pausen
-	pausen = json.loads(pausen)
-	for pause in pausen:
-		datum = _datum + " " + pause["from"]
+	try:
+		ts = frappe.get_doc("Timesheet", ts)
+		if ts.employee != ma:
+			frappe.throw("Das ist nicht Ihr Timesheet. Dieses Timesheet kann nur von {employee_name} bearbeitet werden.".format(employee_name=ts.employee_name))
+		ts.twh = working_hours
+		ts.time_logs = []
+		_datum = datum
+		
+		#Arbeitszeit
+		start_datum = _datum + " " + start
+		end_datum = _datum + " " + ende
 		row = {}
-		row["activity_type"] = _('Pause')
-		row["hours"] = pause['dauer']
-		row["from_time"] = get_datetime(get_datetime_str(datum))
+		row["activity_type"] = _('Arbeitszeit')
+		row["hours"] = time_diff_in_hours(get_datetime(get_datetime_str(end_datum)), get_datetime(get_datetime_str(start_datum)))
+		row["from_time"] = get_datetime(get_datetime_str(start_datum))
+		row["to_time"] = get_datetime(get_datetime_str(end_datum))
 		ts.append('time_logs', row)
-	#/Pausen
-	#Beratungen/Mandate
-	beratungen_mandate = json.loads(beratungen_mandate)
-	datum = _datum + " 00:00:00"
-	for beratung in beratungen_mandate:
-		row = {}
-		if beratung["mandat"] == 1:
-			row["activity_type"] = _('Mandatsarbeit')
-		else:
-			row["activity_type"] = _('Beratung')
-		row["hours"] = beratung['dauer']
-		row["from_time"] = get_datetime(get_datetime_str(datum))
-		row["spo_dokument"] = beratung['spo_dokument']
-		row["spo_referenz"] = beratung['spo_referenz']
-		row["spo_remark"] = beratung['arbeit']
-		ts.append('time_logs', row)
-	#/Beratungen/Mandate
-	#Diverses
-	diverses = json.loads(diverses)
-	datum = _datum + " 00:00:00"
-	for div in diverses:
-		row = {}
-		row["activity_type"] = div["activity_type"]
-		row["hours"] = div['dauer']
-		row["from_time"] = get_datetime(get_datetime_str(datum))
-		ts.append('time_logs', row)
-	#/Diverses
-	ts.save(ignore_permissions=True)
-	return "ok"
+		#/Arbeitszeit
+		#Pausen
+		pausen = json.loads(pausen)
+		for pause in pausen:
+			datum = _datum + " " + pause["from"]
+			row = {}
+			row["activity_type"] = _('Pause')
+			row["hours"] = pause['dauer']
+			row["from_time"] = get_datetime(get_datetime_str(datum))
+			ts.append('time_logs', row)
+		#/Pausen
+		#Beratungen/Mandate
+		beratungen_mandate = json.loads(beratungen_mandate)
+		datum = _datum + " 00:00:00"
+		for beratung in beratungen_mandate:
+			row = {}
+			if beratung["mandat"] == 1:
+				row["activity_type"] = _('Mandatsarbeit')
+			else:
+				row["activity_type"] = _('Beratung')
+			row["hours"] = beratung['dauer']
+			row["from_time"] = get_datetime(get_datetime_str(datum))
+			row["spo_dokument"] = beratung['spo_dokument']
+			row["spo_referenz"] = beratung['spo_referenz']
+			row["spo_remark"] = beratung['arbeit']
+			ts.append('time_logs', row)
+		#/Beratungen/Mandate
+		#Diverses
+		diverses = json.loads(diverses)
+		datum = _datum + " 00:00:00"
+		for div in diverses:
+			row = {}
+			row["activity_type"] = div["activity_type"]
+			row["hours"] = div['dauer']
+			row["from_time"] = get_datetime(get_datetime_str(datum))
+			ts.append('time_logs', row)
+		#/Diverses
+		ts.save(ignore_permissions=True)
+		return "ok"
+	except Exception as error:
+		return error
 	
 @frappe.whitelist()
 def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, working_hours, ts_to_delete):
@@ -244,65 +246,68 @@ def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, workin
 	#overwrite the time_log overlap validation of timesheet
 	overwrite_ts_validation()
 	#**********************************************************
-	_datum = datum
-	#Arbeitszeit
-	start_datum = _datum + " " + start
-	end_datum = _datum + " " + ende
-	ts = frappe.get_doc({
-		"doctype": "Timesheet",
-		"employee": ma,
-		"start_date": datum,
-		"end_date": datum,
-		"twh": working_hours,
-		"time_logs": [
-			{
-				"activity_type": _("Arbeitszeit"),
-				"hours": time_diff_in_hours(get_datetime(get_datetime_str(end_datum)), get_datetime(get_datetime_str(start_datum))),
-				"from_time": get_datetime(get_datetime_str(start_datum)),
-				"to_time": get_datetime(get_datetime_str(end_datum))
-			}
-		]
-	})
-	ts.insert()
-	#/Arbeitszeit
-	#Pausen
-	pausen = json.loads(pausen)
-	for pause in pausen:
-		datum = _datum + " " + pause["from"]
-		row = {}
-		row["activity_type"] = 'Pause'
-		row["hours"] = pause['dauer']
-		row["from_time"] = get_datetime(get_datetime_str(datum))
-		ts.append('time_logs', row)
-	#/Pausen
-	#Beratungen/Mandate
-	beratungen_mandate = json.loads(beratungen_mandate)
-	datum = _datum + " 00:00:00"
-	for beratung in beratungen_mandate:
-		row = {}
-		if beratung["mandat"] == 1:
-			row["activity_type"] = _('Mandatsarbeit')
-		else:
-			row["activity_type"] = _('Beratung')
-		row["hours"] = beratung['dauer']
-		row["from_time"] = get_datetime(get_datetime_str(datum))
-		row["spo_dokument"] = beratung['spo_dokument']
-		row["spo_referenz"] = beratung['spo_referenz']
-		row["spo_remark"] = beratung['arbeit']
-		ts.append('time_logs', row)
-	#/Beratungen/Mandate
-	#Diverses
-	diverses = json.loads(diverses)
-	datum = _datum + " 00:00:00"
-	for div in diverses:
-		row = {}
-		row["activity_type"] = div["activity_type"]
-		row["hours"] = div['dauer']
-		row["from_time"] = get_datetime(get_datetime_str(datum))
-		ts.append('time_logs', row)
-	#/Diverses
-	ts.save(ignore_permissions=True)
-	return ts.name
+	try:
+		_datum = datum
+		#Arbeitszeit
+		start_datum = _datum + " " + start
+		end_datum = _datum + " " + ende
+		ts = frappe.get_doc({
+			"doctype": "Timesheet",
+			"employee": ma,
+			"start_date": datum,
+			"end_date": datum,
+			"twh": working_hours,
+			"time_logs": [
+				{
+					"activity_type": _("Arbeitszeit"),
+					"hours": time_diff_in_hours(get_datetime(get_datetime_str(end_datum)), get_datetime(get_datetime_str(start_datum))),
+					"from_time": get_datetime(get_datetime_str(start_datum)),
+					"to_time": get_datetime(get_datetime_str(end_datum))
+				}
+			]
+		})
+		ts.insert()
+		#/Arbeitszeit
+		#Pausen
+		pausen = json.loads(pausen)
+		for pause in pausen:
+			datum = _datum + " " + pause["from"]
+			row = {}
+			row["activity_type"] = 'Pause'
+			row["hours"] = pause['dauer']
+			row["from_time"] = get_datetime(get_datetime_str(datum))
+			ts.append('time_logs', row)
+		#/Pausen
+		#Beratungen/Mandate
+		beratungen_mandate = json.loads(beratungen_mandate)
+		datum = _datum + " 00:00:00"
+		for beratung in beratungen_mandate:
+			row = {}
+			if beratung["mandat"] == 1:
+				row["activity_type"] = _('Mandatsarbeit')
+			else:
+				row["activity_type"] = _('Beratung')
+			row["hours"] = beratung['dauer']
+			row["from_time"] = get_datetime(get_datetime_str(datum))
+			row["spo_dokument"] = beratung['spo_dokument']
+			row["spo_referenz"] = beratung['spo_referenz']
+			row["spo_remark"] = beratung['arbeit']
+			ts.append('time_logs', row)
+		#/Beratungen/Mandate
+		#Diverses
+		diverses = json.loads(diverses)
+		datum = _datum + " 00:00:00"
+		for div in diverses:
+			row = {}
+			row["activity_type"] = div["activity_type"]
+			row["hours"] = div['dauer']
+			row["from_time"] = get_datetime(get_datetime_str(datum))
+			ts.append('time_logs', row)
+		#/Diverses
+		ts.save(ignore_permissions=True)
+		return ts.name
+	except Exception as error:
+		return error
 	
 def check_if_ts_exist(ma, datum):
 	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{ma}' AND `start_date` = '{datum}'""".format(ma=ma, datum=datum), as_dict=True)
