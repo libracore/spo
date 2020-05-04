@@ -489,11 +489,62 @@ function get_ts_overview(frm) {
 		}
 	});
 }
-
+/* -------------------------------------------------------------------------------------- */
+/* NEUER ZM WORKFLOW */
+/* -------------------------------------------------------------------------------------- */
 function save_update_ts(frm) {
 	var overlapp = check_overlapp(frm);
 	if (!overlapp) {
+		var _args;
 		if(cur_frm.doc.timesheet) {
+			var _args = {
+					"new": false,
+					"employee": cur_frm.doc.employee,
+					"ts": cur_frm.doc.timesheet,
+					"pausen": cur_frm.doc.pausen,
+					"date": cur_frm.doc.datum,
+					"start": cur_frm.doc.start,
+					"ende": cur_frm.doc.ende,
+					"beratungen_mandate": cur_frm.doc.beratungen_mandate,
+					"diverses": cur_frm.doc.diverses,
+					"working_hours": cur_frm.doc.arbeitszeit
+				};
+		} else {
+			var _args = {
+					"new": true,
+					"employee": cur_frm.doc.employee,
+					"pausen": cur_frm.doc.pausen,
+					"date": cur_frm.doc.datum,
+					"start": cur_frm.doc.start,
+					"ende": cur_frm.doc.ende,
+					"beratungen_mandate": cur_frm.doc.beratungen_mandate,
+					"diverses": cur_frm.doc.diverses,
+					"working_hours": cur_frm.doc.arbeitszeit
+				};
+		}
+		frappe.call({
+			method: "spo.spo.doctype.zeiterfassung.zeiterfassung.save_or_update_decision",
+			args: _args,
+			callback: function(r)
+			{
+				if (r.message.includes("TS-20")) {
+					if(cur_frm.doc.timesheet) {
+						frappe.msgprint(__("Das Timesheet wurde angepasst."), __("Update erfolgreich"));
+						activate_btns(frm);
+						get_ts_overview(frm);
+					} else {
+						cur_frm.set_value('timesheet', r.message);
+						frappe.msgprint(__("Das Timesheet wurde erstellt."), __("Erstellung erfolgreich"));
+						activate_btns(frm);
+						get_ts_overview(frm);
+					}
+				} else {
+					activate_btns(frm);
+					fehler_handling(r.message);
+				}
+			}
+		});
+		/* if(cur_frm.doc.timesheet) {
 			frappe.call({
 				method: "spo.spo.doctype.zeiterfassung.zeiterfassung.update_ts",
 				args:{
@@ -546,7 +597,7 @@ function save_update_ts(frm) {
 					}
 				}
 			});
-		}
+		} */
 	}
 }
 
@@ -561,6 +612,12 @@ function fehler_handling(fehler) {
 		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Dauer' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
 	} else if (fehler == "KeyError('arbeit',)") {
 		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Arbeit' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+	} else if (fehler == "An diesem Datum existiert bereits ein Tiesheet für diese(n) Mitarbeiter(inn)!") {
+		frappe.msgprint(__("An diesem Datum existiert bereits ein Tiesheet für diese(n) Mitarbeiter(inn)!"), __("Vorgang abgebrochen"));
+	} else if (fehler == "An diesem Datum existiert noch kein ungebuchtes Tiesheet für diese(n) Mitarbeiter(inn)!") {
+		frappe.msgprint(__("An diesem Datum existiert noch kein ungebuchtes Tiesheet für diese(n) Mitarbeiter(inn)!"), __("Vorgang abgebrochen"));
+	} else if (fehler == "Fehler! An diesem Datum existieren mehr als ein Timesheet für diese(n) Mitarbeiter(inn)!") {
+		frappe.msgprint(__("Fehler! An diesem Datum existieren mehr als ein Timesheet für diese(n) Mitarbeiter(inn)!"), __("Vorgang abgebrochen"));
 	} else {
 		frappe.msgprint(__("Der Vrogang wurde unerwartet abgebrochen.<br>Bitte melden Sie folgenden Fehler an libracore:<br>" + fehler), __("Vorgang abgebrochen"));
 	}
