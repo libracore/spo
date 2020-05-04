@@ -7,7 +7,14 @@ import frappe
 from frappe.model.document import Document
 
 class MedizinischerBericht(Document):
-	pass
+	def validate(self):
+		# fix of ISS-00169
+		for ausgangslage in self.ausgangslage:
+			ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("<div>", "").replace("</div>", "")
+			ausgangslage.bemerkung = ausgangslage.bemerkung.replace("<div>", "").replace("</div>", "")
+		for korrespondenz in self.korrespondenz:
+			korrespondenz.wortlaut = korrespondenz.wortlaut.replace("<div>", "").replace("</div>", "")
+			korrespondenz.bemerkung = korrespondenz.bemerkung.replace("<div>", "").replace("</div>", "")
 
 @frappe.whitelist()
 def get_deckblat_data(mandat):
