@@ -24,7 +24,8 @@ def get_mandat_logs(mandat):
 								OR `spo_referenz` IN (
 									SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{reference}')
 								OR `spo_referenz` IN (
-									SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{reference}'){referenz_anfrage}""".format(reference=mandat.name, referenz_anfrage=referenz_anfrage), as_dict=True)
+									SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{reference}'){referenz_anfrage}
+								ORDER BY `from_time` ASC""".format(reference=mandat.name, referenz_anfrage=referenz_anfrage), as_dict=True)
 	return {
 			'logs': logs,
 			'rsv': mandat.rsv

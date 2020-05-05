@@ -603,15 +603,15 @@ function save_update_ts(frm) {
 
 function fehler_handling(fehler) {
 	if (fehler == "KeyError('activity_type',)") {
-		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Activity Type' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+		frappe.msgprint(__("Der Vorgang wurde abgebrochen, da das Pflichtfeld 'Activity Type' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
 	} else if (fehler == "KeyError('spo_dokument',)") {
-		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'SPO Dokument' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+		frappe.msgprint(__("Der Vorgang wurde abgebrochen, da das Pflichtfeld 'SPO Dokument' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
 	} else if (fehler == "KeyError('spo_referenz',)") {
-		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'SPO Referenz' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+		frappe.msgprint(__("Der Vorgang wurde abgebrochen, da das Pflichtfeld 'SPO Referenz' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
 	} else if (fehler == "KeyError('dauer',)") {
-		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Dauer' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+		frappe.msgprint(__("Der Vorgang wurde abgebrochen, da das Pflichtfeld 'Dauer' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
 	} else if (fehler == "KeyError('arbeit',)") {
-		frappe.msgprint(__("Der Vrogang wurde abgebrochen, da das Pflichtfeld 'Arbeit' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
+		frappe.msgprint(__("Der Vorgang wurde abgebrochen, da das Pflichtfeld 'Arbeit' nicht ausgefüllt wurde."), __("Vorgang abgebrochen"));
 	} else if (fehler == "An diesem Datum existiert bereits ein Tiesheet für diese(n) Mitarbeiter(inn)!") {
 		frappe.msgprint(__("An diesem Datum existiert bereits ein Tiesheet für diese(n) Mitarbeiter(inn)!"), __("Vorgang abgebrochen"));
 	} else if (fehler == "An diesem Datum existiert noch kein ungebuchtes Tiesheet für diese(n) Mitarbeiter(inn)!") {
@@ -619,7 +619,7 @@ function fehler_handling(fehler) {
 	} else if (fehler == "Fehler! An diesem Datum existieren mehr als ein Timesheet für diese(n) Mitarbeiter(inn)!") {
 		frappe.msgprint(__("Fehler! An diesem Datum existieren mehr als ein Timesheet für diese(n) Mitarbeiter(inn)!"), __("Vorgang abgebrochen"));
 	} else {
-		frappe.msgprint(__("Der Vrogang wurde unerwartet abgebrochen.<br>Bitte melden Sie folgenden Fehler an libracore:<br>" + fehler), __("Vorgang abgebrochen"));
+		frappe.msgprint(__("Der Vorgang wurde unerwartet abgebrochen.<br>Bitte melden Sie folgenden Fehler an libracore:<br>" + fehler), __("Vorgang abgebrochen"));
 	}
 }
 
