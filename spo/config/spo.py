@@ -10,25 +10,25 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Telefon Triage",
-					"label": "Telefon Triage",
+					"label": _("Telefon Triage"),
 					"description": _("Telefon Triage")
 				},
 				{
 					"type": "doctype",
 					"name": "Anfrage",
-					"label": "Anfragen",
+					"label": _("Anfragen"),
 					"description": _("Mandats und oder sonstige Anfragen")
 				},
 				{
 					"type": "doctype",
 					"name": "Mandat",
-					"label": "Mandate",
+					"label": _("Mandate"),
 					"description": _("Führendes Mandats-Dokument")
 				},
 				{
 					"type": "report",
 					"name": "Alle Mandate in Arbeit",
-					"label": "Alle Mandate in Arbeit",
+					"label": _("Alle Mandate in Arbeit"),
 					"description": _("Alle Mandate in Arbeit"),
 					"doctype": "Telefon Triage",
 					"is_query_report": True
@@ -36,7 +36,7 @@ def get_data():
 				{
 					"type": "report",
 					"name": "Alle Anfragen",
-					"label": "Alle Anfragen",
+					"label": _("Alle Anfragen"),
 					"description": _("Anfragen"),
 					"doctype": "Anfrage",
 					"is_query_report": True
@@ -44,7 +44,7 @@ def get_data():
 				{
 					"type": "report",
 					"name": "Address And Contacts",
-					"label": "Adressliste",
+					"label": _("Adressliste"),
 					"description": _("Adressliste"),
 					#"doctype": "Telefon Triage",
 					"is_query_report": True
@@ -58,31 +58,31 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Mitgliedschaft",
-					"label": "Mitgliedschaften",
+					"label": _("Mitgliedschaften"),
 					"description": _("SPO Mitgliedschaften")
 				},
 				{
 					"type": "doctype",
 					"name": "Customer",
-					"label": "Kunden",
+					"label": _("Kunden"),
 					"description": _("Customers")
 				},
 				{
 					"type": "doctype",
-					"label": "Rechnungen",
+					"label": _("Rechnungen"),
 					"name": "Sales Invoice",
 					"description": _("Sales Invoice")
 				},
 				{
 					"type": "doctype",
-					"label": "Rechnungslauf",
+					"label": _("Rechnungslauf"),
 					"name": "Mitglieder Rechnungslauf",
 					"description": _("Mitglieder Rechnungslauf")
 				},
 				{
 					"type": "report",
 					"name": "Adressliste SPO Aktuell",
-					"label": "Adressliste SPO Aktuell",
+					"label": _("Adressliste SPO Aktuell"),
 					"description": _("Adressliste SPO Aktuell"),
 					"doctype": "Contact",
 					"is_query_report": True
@@ -96,37 +96,37 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Anforderung Patientendossier",
-					"label": "Anforderung Patientendossier",
+					"label": _("Anforderung Patientendossier"),
 					"description": _("Anforderung Patientendossier")
 				},
 				{
 					"type": "doctype",
 					"name": "Medizinischer Bericht",
-					"label": "Medizinischer Bericht",
+					"label": _("Medizinischer Bericht"),
 					"description": _("Medizinischer Bericht")
 				},
 				{
 					"type": "doctype",
 					"name": "Triage",
-					"label": "Triage",
+					"label": _("Triage"),
 					"description": _("Triage")
 				},
 				{
 					"type": "doctype",
 					"name": "Vollmacht",
-					"label": "Vollmacht",
+					"label": _("Vollmacht"),
 					"description": _("Vollmacht")
 				},
 				{
 					"type": "doctype",
 					"name": "Abschlussbericht",
-					"label": "Abschlussbericht",
+					"label": _("Abschlussbericht"),
 					"description": _("Abschlussbericht")
 				},
 				{
 					"type": "doctype",
 					"name": "Freies Schreiben",
-					"label": "Freies Schreiben",
+					"label": _("Freies Schreiben"),
 					"description": _("Freies Schreiben")
 				}
 			]
@@ -138,13 +138,13 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Einstellungen",
-					"label": "Defaults",
+					"label": _("Defaults"),
 					"description": _("Standard Einstellungen")
 				},
 				{
 					"type": "doctype",
 					"name": "SPO Textbausteine",
-					"label": "Textbausteine",
+					"label": _("Textbausteine"),
 					"description": _("Benutzerspezifische Textbausteine")
 				}
 			]
@@ -156,13 +156,13 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Zeiterfassung",
-					"label": "Zeiterfassungs Manager",
+					"label": _("Zeiterfassungs Manager"),
 					"description": _("Zeiterfassungs Manager")
 				},
 				{
 					"type": "report",
 					"name": "Timesheets Jahresrapport",
-					"label": "Timesheets Jahresrapport",
+					"label": _("Timesheets Jahresrapport"),
 					"description": _("Timesheets Jahresrapport"),
 					#"doctype": "Telefon Triage",
 					"is_query_report": True

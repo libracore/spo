@@ -3,10 +3,18 @@
 
 from __future__ import unicode_literals
 import frappe
+from frappe import _
 
 def execute(filters=None):
 	columns, data = [], []
-	columns = ['Mandat:Data:150', 'Vorname:Data:150', 'Nachname:Data:150', 'Auftraggeber:Data:150', 'Referenz:Data:150', 'Beraterin:Data:150']
+	columns = [
+		{"label": _("Mandat"), "fieldname": "Mandat", "fieldtype": "Data", "width": 150},
+		{"label": _("Vorname"), "fieldname": "Vorname", "fieldtype": "Data", "width": 150},
+		{"label": _("Nachname"), "fieldname": "Nachname", "fieldtype": "Data", "width": 150},
+		{"label": _("Auftraggeber"), "fieldname": "Auftraggeber", "fieldtype": "Data", "width": 150},
+		{"label": _("Referenz"), "fieldname": "Referenz", "fieldtype": "Data", "width": 150},
+		{"label": _("Beraterin"), "fieldname": "Beraterin", "fieldtype": "Data", "width": 150}
+	]
 	data = frappe.db.sql("""SELECT
 								`name`,
 								`vorname`,
