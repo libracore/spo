@@ -109,7 +109,7 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 	},
 	spital_kontakt: function(frm) {
 		if (cur_frm.doc.spital_kontakt) {
-			frappe.db.get_value('Contact', {'name': cur_frm.doc.spital_kontakt}, ['salutation', 'first_name', 'last_name'], (kontakt) => {
+			frappe.db.get_value('Contact', {'name': cur_frm.doc.spital_kontakt}, ['salutation', 'first_name', 'last_name', 'designation'], (kontakt) => {
 				var adresse = '';
 				if (cur_frm.doc.adressat) {
 					adresse = cur_frm.doc.adressat;
@@ -122,6 +122,10 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 				adresse += kontakt.first_name;
 				adresse += ' ';
 				adresse += kontakt.last_name;
+				if (kontakt.designation) {
+					adresse += '\n';
+					adresse += kontakt.designation;
+				}
 				cur_frm.set_value("adressat", adresse);
 			});
 		}
