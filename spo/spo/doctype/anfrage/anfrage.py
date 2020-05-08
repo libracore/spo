@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.utils.data import today, add_days, nowdate, get_datetime_str
-from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time, get_zeiten_uebersicht
+from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time, get_zeiten_uebersicht, create_default_ts_entry
 from frappe.utils import validate_email_address
 
 class Anfrage(Document):
@@ -14,7 +14,8 @@ class Anfrage(Document):
 		if self.is_new() != True:
 			if not self.default_ts:
 				# create start ts buchung
-				handle_timesheet(frappe.session.user, self.doctype, self.name, 0, '', self.datum)
+				#handle_timesheet(frappe.session.user, self.doctype, self.name, 0, '', self.datum)
+				create_default_ts_entry(frappe.session.user, self.doctype, self.name, self.datum)
 				self.default_ts = 1
 				
 		if self.patient != self.customer:

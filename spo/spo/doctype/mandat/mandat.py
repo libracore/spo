@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time, get_zeiten_uebersicht
+from spo.utils.timesheet_handlings import handle_timesheet, get_total_ts_time, get_zeiten_uebersicht, create_default_ts_entry
 from frappe.utils.data import today, add_days, nowdate, get_datetime_str, now_datetime
 
 class Mandat(Document):
@@ -13,8 +13,9 @@ class Mandat(Document):
 		if self.is_new() != True:
 			if not self.default_ts:
 				# create start ts buchung
-				default_time = get_default_time("Mandat")
-				handle_timesheet(frappe.session.user, self.doctype, self.name, default_time, '', nowdate())
+				#default_time = get_default_time("Mandat")
+				#handle_timesheet(frappe.session.user, self.doctype, self.name, default_time, '', nowdate())
+				create_default_ts_entry(frappe.session.user, self.doctype, self.name, nowdate())
 				self.default_ts = 1
 
 	def onload(self):

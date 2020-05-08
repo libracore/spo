@@ -5,6 +5,10 @@ frappe.ui.form.on('Freies Schreiben', {
 	refresh: function(frm) {
 		//Set filter to link fields
 		set_link_filter(frm);
+		// timer action icon
+		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
+			timesheet_handling(frm);
+		});
 	},
 	empfaenger: function(frm) {
 		cur_frm.set_value("kontakt", "");
@@ -84,4 +88,30 @@ function set_link_filter(frm) {
 			 }
 		 }
 	}
+}
+
+function timesheet_handling(frm) {
+	frappe.prompt([
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
+	],
+	function(values){
+		frappe.call({
+			"method": "spo.utils.timesheet_handlings.create_ts_entry",
+			"args": {
+				"user": frappe.session.user_email,
+				"doctype": frm.doc.doctype,
+				"record": frm.doc.name,
+				"time": values.time,
+				"datum": values.datum
+			},
+			"async": false,
+			"callback": function(response) {
+				//done
+			}
+		});
+	},
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
+	)
 }
