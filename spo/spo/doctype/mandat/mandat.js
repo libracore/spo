@@ -101,23 +101,24 @@ function update_dashboard(frm) {
 	});
 }
 
+
 function timesheet_handling(frm) {
 	frappe.prompt([
-		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': __('Datum'), 'reqd': 1, 'default': 'Today'},
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
 		{'fieldname': 'arbeit', 'fieldtype': 'Select', 'label': __('Arbeitsinhalt'), 'reqd': 1, options: [__('Korrespondenz'), __('Telefonat'), __('Aktenstudium'), __('Organisation der juristischen Beratung'), __('Juristische Beratung'), __('Recherche Facharzt'), __('Organisation Facharzt'), __('Interne fachliche Besprechung'), __('Sonstiges')]},
 		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': __('Bemerkung'), 'reqd': 0},
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': __('Arbeitszeit (in h)'), 'reqd': 1}		
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
 	],
 	function(values){
 		frappe.call({
-			"method": "spo.utils.timesheet_handlings.handle_timesheet",
+			"method": "spo.utils.timesheet_handlings.create_ts_entry",
 			"args": {
 				"user": frappe.session.user_email,
 				"doctype": frm.doc.doctype,
-				"reference": frm.doc.name,
+				"record": frm.doc.name,
 				"time": values.time,
-				"bemerkung": values.arbeit + ": " + (values.remark||''),
-				"date": values.datum
+				"datum": values.datum,
+				"bemerkung": values.arbeit + ": " + (values.remark||'')
 			},
 			"async": false,
 			"callback": function(response) {

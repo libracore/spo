@@ -133,13 +133,13 @@ function timesheet_handling(frm) {
 	],
 	function(values){
 		frappe.call({
-			"method": "spo.utils.timesheet_handlings.handle_timesheet",
+			"method": "spo.utils.timesheet_handlings.create_ts_entry",
 			"args": {
 				"user": frappe.session.user_email,
 				"doctype": frm.doc.doctype,
-				"reference": frm.doc.name,
+				"record": frm.doc.name,
 				"time": values.time,
-				"date": values.datum
+				"datum": values.datum
 			},
 			"async": false,
 			"callback": function(response) {
@@ -147,8 +147,8 @@ function timesheet_handling(frm) {
 			}
 		});
 	},
-	'Arbeitszeit erfassen',
-	'Erfassen'
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
 	)
 }
 

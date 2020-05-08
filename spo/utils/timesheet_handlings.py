@@ -411,3 +411,124 @@ def get_pending_leaves_for_current_year(employee, date):
 			'urlaub': str(urlaub),
 			'persoenlich': str(persoenlich)
 		}
+
+def create_default_ts_entry(user, doctype, record, datum):
+	#**********************************************************
+	#overwrite the time_log overlap validation of timesheet
+	overwrite_ts_validation()
+	#**********************************************************
+	
+	datum = getdate(datum)
+	latest_date = getdate(add_days(nowdate(), -7))
+	if datum < latest_date:
+		frappe.throw("Die Erfassung der standardzeit in Ihrem Timesheet konnte nicht erfasst werden, da das Datum weiter zurück als 7 Tage liegt.")
+	user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
+	if not user:
+		frappe.throw("Es wurde kein Mitarbeiterstamm gefunden!")
+	else:
+		user = user[0][0]
+	time = get_default_time(doctype)
+	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 1 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=datum.strftime("%Y-%m-%d")), as_dict=True)
+	if len(ts) > 0:
+		frappe.throw("Das Timesheet vom {datum} ist bereits verbucht.".format(datum=datum))
+	else:
+		ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=datum.strftime("%Y-%m-%d")), as_dict=True)
+		if len(ts) > 0:
+			ts = frappe.get_doc("Timesheet", ts[0].name)
+			type = 'Mandatsarbeit'
+			if doctype == 'Anfrage':
+				type = 'Beratung'
+			start = datum.strftime("%Y-%m-%d") + " 00:00:00"
+			row = {}
+			row["activity_type"] = type
+			row["hours"] = time
+			row["from_time"] = get_datetime(get_datetime_str(start))
+			row["to_time"] = add_to_date(get_datetime(get_datetime_str(start)), hours=time)
+			row["spo_dokument"] = doctype
+			row["spo_referenz"] = record
+			row['spo_remark'] = ''
+			ts.append('time_logs', row)
+			ts.save(ignore_permissions=True)
+		else:
+			start = datum.strftime("%Y-%m-%d") + " 00:00:00"
+			type = 'Mandatsarbeit'
+			if doctype == 'Anfrage':
+				type = 'Beratung'
+			ts = frappe.get_doc({
+				"doctype": "Timesheet",
+				"employee": user,
+				"time_logs": [
+					{
+						"activity_type": type,
+						"hours": time,
+						"spo_dokument": doctype,
+						"spo_referenz": record,
+						"from_time": get_datetime(get_datetime_str(start)),
+						"spo_remark": ''
+					}
+				]
+			})
+			ts.insert(ignore_permissions=True)
+			
+	frappe.db.commit()
+	
+@frappe.whitelist()
+def create_ts_entry(user, doctype, record, datum, time, bemerkung=''):
+	#**********************************************************
+	#overwrite the time_log overlap validation of timesheet
+	overwrite_ts_validation()
+	#**********************************************************
+	time = float(time)
+	datum = getdate(datum)
+	latest_date = getdate(add_days(nowdate(), -7))
+	if datum < latest_date:
+		frappe.throw("Die Erfassung der standardzeit in Ihrem Timesheet konnte nicht erfasst werden, da das Datum weiter zurück als 7 Tage liegt.")
+	user = frappe.db.sql("""SELECT `name` FROM `tabEmployee` WHERE `user_id` = '{user}'""".format(user=user), as_list=True)
+	if not user:
+		frappe.throw("Es wurde kein Mitarbeiterstamm gefunden!")
+	else:
+		user = user[0][0]
+	#time = get_default_time(doctype)
+	ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 1 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=datum.strftime("%Y-%m-%d")), as_dict=True)
+	if len(ts) > 0:
+		frappe.throw("Das Timesheet vom {datum} ist bereits verbucht.".format(datum=datum))
+	else:
+		ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=datum.strftime("%Y-%m-%d")), as_dict=True)
+		if len(ts) > 0:
+			ts = frappe.get_doc("Timesheet", ts[0].name)
+			type = 'Mandatsarbeit'
+			if doctype == 'Anfrage':
+				type = 'Beratung'
+			start = datum.strftime("%Y-%m-%d") + " 00:00:00"
+			row = {}
+			row["activity_type"] = type
+			row["hours"] = time
+			row["from_time"] = get_datetime(get_datetime_str(start))
+			row["to_time"] = add_to_date(get_datetime(get_datetime_str(start)), hours=time)
+			row["spo_dokument"] = doctype
+			row["spo_referenz"] = record
+			row['spo_remark'] = bemerkung
+			ts.append('time_logs', row)
+			ts.save(ignore_permissions=True)
+		else:
+			start = datum.strftime("%Y-%m-%d") + " 00:00:00"
+			type = 'Mandatsarbeit'
+			if doctype == 'Anfrage':
+				type = 'Beratung'
+			ts = frappe.get_doc({
+				"doctype": "Timesheet",
+				"employee": user,
+				"time_logs": [
+					{
+						"activity_type": type,
+						"hours": time,
+						"spo_dokument": doctype,
+						"spo_referenz": record,
+						"from_time": get_datetime(get_datetime_str(start)),
+						"spo_remark": ''
+					}
+				]
+			})
+			ts.insert(ignore_permissions=True)
+			
+	frappe.db.commit()
