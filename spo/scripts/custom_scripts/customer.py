@@ -4,7 +4,8 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils.data import nowdate, add_years
+from frappe.utils.data import nowdate, add_years, now_datetime
+from frappe import _
 
 @frappe.whitelist()
 def check_contact(customer):
@@ -67,3 +68,48 @@ def create_mandat(customer):
 	})
 	mandat.insert()
 	return mandat.name
+	
+@frappe.whitelist()
+def get_spenden(customer):
+	current_year = int(now_datetime().strftime('%Y'))
+	last_year = current_year - 1
+	second_last_year = current_year - 2
+	third_last_year = current_year -  3
+	fourth_last_year = current_year - 4
+	fifth_last_year = current_year - 5
+	
+	all_payment_entries_current = """SELECT `name` FROM `tabPayment Entry` WHERE `payment_type` = 'Receive' AND `party` = '{customer}' AND `docstatus` = 1 AND YEAR(`posting_date`) = '{year}'""".format(customer=customer, year=current_year)
+	all_payment_entries_current_1 = """SELECT `name` FROM `tabPayment Entry` WHERE `payment_type` = 'Receive' AND `party` = '{customer}' AND `docstatus` = 1 AND YEAR(`posting_date`) = '{year}'""".format(customer=customer, year=last_year)
+	all_payment_entries_current_2 = """SELECT `name` FROM `tabPayment Entry` WHERE `payment_type` = 'Receive' AND `party` = '{customer}' AND `docstatus` = 1 AND YEAR(`posting_date`) = '{year}'""".format(customer=customer, year=second_last_year)
+	all_payment_entries_current_3 = """SELECT `name` FROM `tabPayment Entry` WHERE `payment_type` = 'Receive' AND `party` = '{customer}' AND `docstatus` = 1 AND YEAR(`posting_date`) = '{year}'""".format(customer=customer, year=third_last_year)
+	all_payment_entries_current_4 = """SELECT `name` FROM `tabPayment Entry` WHERE `payment_type` = 'Receive' AND `party` = '{customer}' AND `docstatus` = 1 AND YEAR(`posting_date`) = '{year}'""".format(customer=customer, year=fourth_last_year)
+	all_payment_entries_current_5 = """SELECT `name` FROM `tabPayment Entry` WHERE `payment_type` = 'Receive' AND `party` = '{customer}' AND `docstatus` = 1 AND YEAR(`posting_date`) = '{year}'""".format(customer=customer, year=fifth_last_year)
+	
+	spende_current = frappe.db.sql("""SELECT SUM(`amount`) AS 'amount' FROM `tabPayment Entry Deduction` WHERE `parent` IN ({payment_query}) AND `parentfield` = 'deductions' AND `account` IN ('3000 - Spenden - SPO', '3000 - Einzelmitglieder - GöV', '3050 - Spenden - GöV')""".format(payment_query=all_payment_entries_current), as_dict=True)
+	spende_current_1 = frappe.db.sql("""SELECT SUM(`amount`) AS 'amount'  FROM `tabPayment Entry Deduction` WHERE `parent` IN ({payment_query}) AND `parentfield` = 'deductions' AND `account` IN ('3000 - Spenden - SPO', '3000 - Einzelmitglieder - GöV', '3050 - Spenden - GöV')""".format(payment_query=all_payment_entries_current_1), as_dict=True)
+	spende_current_2 = frappe.db.sql("""SELECT SUM(`amount`) AS 'amount'  FROM `tabPayment Entry Deduction` WHERE `parent` IN ({payment_query}) AND `parentfield` = 'deductions' AND `account` IN ('3000 - Spenden - SPO', '3000 - Einzelmitglieder - GöV', '3050 - Spenden - GöV')""".format(payment_query=all_payment_entries_current_2), as_dict=True)
+	spende_current_3 = frappe.db.sql("""SELECT SUM(`amount`) AS 'amount'  FROM `tabPayment Entry Deduction` WHERE `parent` IN ({payment_query}) AND `parentfield` = 'deductions' AND `account` IN ('3000 - Spenden - SPO', '3000 - Einzelmitglieder - GöV', '3050 - Spenden - GöV')""".format(payment_query=all_payment_entries_current_3), as_dict=True)
+	spende_current_4 = frappe.db.sql("""SELECT SUM(`amount`) AS 'amount'  FROM `tabPayment Entry Deduction` WHERE `parent` IN ({payment_query}) AND `parentfield` = 'deductions' AND `account` IN ('3000 - Spenden - SPO', '3000 - Einzelmitglieder - GöV', '3050 - Spenden - GöV')""".format(payment_query=all_payment_entries_current_4), as_dict=True)
+	spende_current_5 = frappe.db.sql("""SELECT SUM(`amount`) AS 'amount'  FROM `tabPayment Entry Deduction` WHERE `parent` IN ({payment_query}) AND `parentfield` = 'deductions' AND `account` IN ('3000 - Spenden - SPO', '3000 - Einzelmitglieder - GöV', '3050 - Spenden - GöV')""".format(payment_query=all_payment_entries_current_5), as_dict=True)
+	
+	spenden_aktuelles_jahr = 0
+	total = 0
+	
+	if spende_current[0].amount:
+		spenden_aktuelles_jahr += spende_current[0].amount * -1
+		total += spende_current[0].amount * -1
+	if spende_current_1[0].amount:
+		total += spende_current_1[0].amount * -1
+	if spende_current_2[0].amount:
+		total += spende_current_2[0].amount * -1
+	if spende_current_3[0].amount:
+		total += spende_current_3[0].amount * -1
+	if spende_current_4[0].amount:
+		total += spende_current_4[0].amount * -1
+	if spende_current_5[0].amount:
+		total += spende_current_5[0].amount * -1
+		
+	return {
+			"aktuell": spenden_aktuelles_jahr,
+			"total": total
+		}
