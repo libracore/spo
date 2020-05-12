@@ -86,6 +86,14 @@ def get_data():
 					"description": _("Adressliste SPO Aktuell"),
 					"doctype": "Contact",
 					"is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "Spendenübersicht",
+					"label": _("Spendenübersicht"),
+					"description": _("Spendenübersicht"),
+					"doctype": "Payment Entry",
+					"is_query_report": True
 				}
 			]
 		},
