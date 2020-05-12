@@ -27,6 +27,8 @@ frappe.ui.form.on('Zeiterfassung', {
 			   },
 			   callback: function(response) {
 					var ts_datum = response.message.start_date;
+					cur_frm.disable_save();
+					hide_indicator(frm);
 					if (ts_datum) {
 						cur_frm.set_value('datum', ts_datum);
 					}
@@ -485,7 +487,7 @@ function get_ts_overview(frm) {
 					datasets: [
 						{ values: [r.message.arbeitszeit, r.message.total_beratungszeit, r.message.total_mandatszeit, r.message.total_diverses, diff_zu_arbeitszeit] }
 					]
-				}
+				};
 				new frappe.Chart( "#chart", {
 					data: data,
 					type: 'pie',
