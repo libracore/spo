@@ -2,27 +2,39 @@ var sperre = true;
 var zeit_berechnungs_sperre = false;
 frappe.ui.form.on('Zeiterfassung', {
 	refresh: function (frm) {
-		console.log("setze sperre (refresh)");
-		zeit_berechnungs_sperre = true;
-		clear_all(frm);
-		set_ma_from_user(frm);
-		set_default_start_and_end(frm);
-		set_subtable_filter(frm);
-		cur_frm.disable_save();
-		hide_indicator(frm);
-		if (frappe.user.has_role("SPO Poweruser")) {
-			cur_frm.set_df_property('employee','read_only','0');
+		// normal:
+		if (!frappe.route_options.timesheet) {
+			console.log("setze sperre (refresh)");
+			zeit_berechnungs_sperre = true;
+			clear_all(frm);
+			set_ma_from_user(frm);
+			set_default_start_and_end(frm);
+			set_subtable_filter(frm);
+			cur_frm.disable_save();
+			hide_indicator(frm);
+			if (frappe.user.has_role("SPO Poweruser")) {
+				cur_frm.set_df_property('employee','read_only','0');
+			}
+			
+		// wenn von absprung (zB aus Mandat), datum aus TS von routing setzen:
+		} else {
+			var ts_from_route = frappe.route_options.timesheet;
+			frappe.call({
+			   method: "frappe.client.get",
+			   args: {
+					"doctype": "Timesheet",
+					"name": ts_from_route
+			   },
+			   callback: function(response) {
+					var ts_datum = response.message.start_date;
+					if (ts_datum) {
+						cur_frm.set_value('datum', ts_datum);
+					}
+			   }
+			});
 		}
 	},
 	employee: function (frm) {
-		if (frappe.route_options.timesheet) {
-			//remove_all_rows_of_all_subtables(frm);
-			var ts_from_route = frappe.route_options.timesheet;
-			frappe.route_options = {};
-			setTimeout(function(){
-				cur_frm.set_value('timesheet', ts_from_route);
-			}, 1000);
-		}
 		set_timesheet_filter(frm);
 		if (cur_frm.doc.employee) {
 			frm.add_custom_button(__("Zeiterfassung speichern"), function() {
@@ -35,8 +47,17 @@ frappe.ui.form.on('Zeiterfassung', {
 		hide_indicator(frm);
 	},
 	datum: function (frm) {
-		cur_frm.set_value('timesheet', '');
-		set_timesheet_filter(frm);
+		// wenn von absprung (zB aus Mandat), timesheet aus routing setzen:
+		if (frappe.route_options.timesheet) {
+			var ts_from_route = frappe.route_options.timesheet;
+			frappe.route_options = {};
+			cur_frm.set_value('timesheet', ts_from_route);
+			
+			//normal:
+		} else {
+			cur_frm.set_value('timesheet', '');
+			set_timesheet_filter(frm);
+		}
 	},
 	timesheet: function (frm) {
 		if (cur_frm.doc.timesheet) {
