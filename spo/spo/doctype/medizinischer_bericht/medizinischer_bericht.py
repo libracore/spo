@@ -7,25 +7,26 @@ import frappe
 from frappe.model.document import Document
 
 class MedizinischerBericht(Document):
-	def validate(self):
-		for ausgangslage in self.ausgangslage:
-			if ausgangslage.krankengeschichte:
-				ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("<br>", "")
-				ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("</div>", "<br>")
-				ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("<div>", "")
-			if ausgangslage.bemerkung:
-				ausgangslage.bemerkung = ausgangslage.bemerkung.replace("<br>", "")
-				ausgangslage.bemerkung = ausgangslage.bemerkung.replace("</div>", "<br>")
-				ausgangslage.bemerkung = ausgangslage.bemerkung.replace("<div>", "")
-		for korrespondenz in self.korrespondenz:
-			if korrespondenz.wortlaut:
-				korrespondenz.wortlaut = korrespondenz.wortlaut.replace("<br>", "")
-				korrespondenz.wortlaut = korrespondenz.wortlaut.replace("</div>", "<br>")
-				korrespondenz.wortlaut = korrespondenz.wortlaut.replace("<div>", "")
-			if korrespondenz.bemerkung:
-				korrespondenz.bemerkung = korrespondenz.bemerkung.replace("<br>", "")
-				korrespondenz.bemerkung = korrespondenz.bemerkung.replace("</div>", "<br>")
-				korrespondenz.bemerkung = korrespondenz.bemerkung.replace("<div>", "")
+	pass
+	# def validate(self):
+		# for ausgangslage in self.ausgangslage:
+			# if ausgangslage.krankengeschichte:
+				# ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("<br>", "")
+				# ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("</div>", "<br>")
+				# ausgangslage.krankengeschichte = ausgangslage.krankengeschichte.replace("<div>", "")
+			# if ausgangslage.bemerkung:
+				# ausgangslage.bemerkung = ausgangslage.bemerkung.replace("<br>", "")
+				# ausgangslage.bemerkung = ausgangslage.bemerkung.replace("</div>", "<br>")
+				# ausgangslage.bemerkung = ausgangslage.bemerkung.replace("<div>", "")
+		# for korrespondenz in self.korrespondenz:
+			# if korrespondenz.wortlaut:
+				# korrespondenz.wortlaut = korrespondenz.wortlaut.replace("<br>", "")
+				# korrespondenz.wortlaut = korrespondenz.wortlaut.replace("</div>", "<br>")
+				# korrespondenz.wortlaut = korrespondenz.wortlaut.replace("<div>", "")
+			# if korrespondenz.bemerkung:
+				# korrespondenz.bemerkung = korrespondenz.bemerkung.replace("<br>", "")
+				# korrespondenz.bemerkung = korrespondenz.bemerkung.replace("</div>", "<br>")
+				# korrespondenz.bemerkung = korrespondenz.bemerkung.replace("<div>", "")
 
 @frappe.whitelist()
 def get_deckblat_data(mandat):
