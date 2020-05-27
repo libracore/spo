@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe.utils.data import formatdate
 
 class AnforderungPatientendossier(Document):
 	pass
@@ -51,11 +52,11 @@ def get_titelzeile(kontakt, adresse):
 		titelzeile += kontakt.first_name + " "
 		titelzeile += kontakt.last_name + " (verstorben"
 		if kontakt.verstorben_am:
-			titelzeile += " am " + str(kontakt.verstorben_am) + "), "
+			titelzeile += " am " + formatdate(kontakt.verstorben_am) + "), "
 		else:
 			titelzeile += "), "
 		if kontakt.geburtsdatum:
-			titelzeile += "geboren am " + str(kontakt.geburtsdatum) + ", "
+			titelzeile += "geboren am " + formatdate(kontakt.geburtsdatum) + ", "
 		titelzeile += adresse.address_line1 + " "
 		titelzeile += adresse.plz + " "
 		titelzeile += adresse.city + "</b>"
@@ -66,7 +67,7 @@ def get_titelzeile(kontakt, adresse):
 		titelzeile += kontakt.first_name + " "
 		titelzeile += kontakt.last_name + ", "
 		if kontakt.geburtsdatum:
-			titelzeile += "geboren am " + str(kontakt.geburtsdatum) + ", "
+			titelzeile += "geboren am " + formatdate(kontakt.geburtsdatum) + ", "
 		titelzeile += adresse.address_line1 + " "
 		titelzeile += adresse.plz + " "
 		titelzeile += adresse.city + "</b>"
