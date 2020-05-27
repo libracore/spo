@@ -62,6 +62,13 @@ function arbeitszeit(frm) {
 
 function urlaub(frm) {
 	var leave_details;
+	var persoenlich_bezogen = 0;
+	var persoenlich_rest = 0;
+	var persoenlich_total = 0;
+	var urlaub_bezogen = 0;
+	var urlaub_rest = 0;
+	var urlaub_total = 0;
+	var html = '';
 	frappe.call({
 		method: "erpnext.hr.doctype.leave_application.leave_application.get_leave_details",
 		async: false,
@@ -72,27 +79,9 @@ function urlaub(frm) {
 		callback: function(r) {
 			if (!r.exc && r.message['leave_allocation']) {
 				leave_details = r.message['leave_allocation'];
-				var leaves_taken = 0;
 				if (leave_details['Persönlich'] || leave_details['Urlaub']) {
-					var html = '<br><table style="width: 100%; text-align: center;"><tr><th>Urlaubsliste</th><th>Bezogen</th><th>Restsaldo</th><th>Total</th></tr>';
-					if (leave_details['Urlaub']) {
-					frappe.call({
-							method: "spo.scripts.custom_scripts.leave_day_calculations.get_leaves_taken",
-							async: false,
-							args: {
-								employee: frm.doc.name,
-								leave_type: 'Urlaub'
-							},
-							callback: function(r) {
-								leaves_taken = 0;
-								if (r.message) {
-									leaves_taken = r.message;
-									html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + leaves_taken + '</td><td>' + (leave_details["Urlaub"]["total_leaves"] - leaves_taken) + '</td><td>' + leave_details["Urlaub"]["total_leaves"] + '</td></tr>';
-								}
-							}
-						});
-					}
 					if (leave_details['Persönlich']) {
+						persoenlich_total = leave_details['Persönlich']['total_leaves'];
 						frappe.call({
 							method: "spo.scripts.custom_scripts.leave_day_calculations.get_leaves_taken",
 							async: false,
@@ -101,16 +90,41 @@ function urlaub(frm) {
 								leave_type: 'Persönlich'
 							},
 							callback: function(r) {
-								leaves_taken = 0;
 								if (r.message) {
-									leaves_taken = r.message;
-									html = html + '<tr style="text-align: center;"><td>Persönlich</td><td>' + leaves_taken + '</td><td>' + (leave_details["Persönlich"]["total_leaves"] - leaves_taken) + '</td><td>' + leave_details["Persönlich"]["total_leaves"] + '</td></tr>';
+									persoenlich_bezogen = r.message;
 								}
 							}
 						});
 					}
-					html = html + '</table>';
-					cur_frm.set_df_property('urlaub_overview','options', html);
+					if (leave_details['Urlaub']) {
+						urlaub_total = leave_details['Urlaub']['total_leaves'];
+						frappe.call({
+							method: "spo.scripts.custom_scripts.leave_day_calculations.get_leaves_taken",
+							async: false,
+							args: {
+								employee: frm.doc.name,
+								leave_type: 'Urlaub'
+							},
+							callback: function(r) {
+								if (r.message) {
+									urlaub_bezogen = r.message;
+								}
+							}
+						});
+					}
+					html = '<br><table style="width: 100%; text-align: center !important;"><tr><th style="text-align: center !important;">Urlaubsliste</th><th style="text-align: center !important;">Bezogen</th><th style="text-align: center !important;">Restsaldo</th><th style="text-align: center !important;">Total</th></tr>';
+					if (persoenlich_total > 0) {
+						html = html + '<tr style="text-align: center;"><td>Persönlich</td><td>' + persoenlich_bezogen + '</td><td>' + (persoenlich_total - persoenlich_bezogen) + '</td><td>' + persoenlich_total + '</td></tr>';
+					}
+					if (urlaub_total > 0) {
+						html = html + '<tr style="text-align: center;"><td>Urlaub</td><td>' + urlaub_bezogen + '</td><td>' + (urlaub_total - urlaub_bezogen) + '</td><td>' + urlaub_total + '</td></tr>';
+					}
+					if ((persoenlich_total + urlaub_total) < 1) {
+						cur_frm.set_df_property('urlaub_overview','options', '<div>Für Sie wurde noch kein Urlaub hinterlegt.</div>');
+					} else {
+						html = html + '</table>';
+						cur_frm.set_df_property('urlaub_overview','options', html);
+					}
 				} else {
 					cur_frm.set_df_property('urlaub_overview','options', '<div>Für Sie wurde noch kein Urlaub hinterlegt.</div>');
 				}
