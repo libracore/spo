@@ -166,3 +166,33 @@ def remove_share_of_mandat_and_related_docs(mandat, user_to_remove):
 							
 	frappe.db.commit()
 	return 'ok'
+
+@frappe.whitelist()
+def get_facharzt_table(customer=None, type=None):
+	results = []
+	filter = ''
+	if customer or type:
+		filter = ' WHERE '
+	if customer:
+		filter += " `customer_name` LIKE '%{customer}%'".format(customer=customer)
+	if type:
+		if customer:
+			filter += " AND `customer_group` = '{type}'".format(type=type)
+		else:
+			filter += " `customer_group` = '{type}'".format(type=type)
+			
+	#search facharzt
+	facharzt_results = frappe.db.sql("""SELECT
+											`name` AS `reference`,
+											`name` AS `Link Name`,
+											`customer_name` AS `Facharzt`,
+											`customer_group` AS `Type`
+											FROM `tabCustomer`{filter}""".format(filter=filter), as_dict=True)
+											
+	for facharzt_result in facharzt_results:
+		results.append(facharzt_result)
+	
+	if results:
+		return results
+	else:
+		return False
