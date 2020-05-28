@@ -136,6 +136,12 @@ def get_data():
 					"name": "Freies Schreiben",
 					"label": _("Freies Schreiben"),
 					"description": _("Freies Schreiben")
+				},
+				{
+					"type": "doctype",
+					"name": "Facharzt Bericht",
+					"label": _("Facharzt Bericht"),
+					"description": _("Facharzt Bericht")
 				}
 			]
 		},

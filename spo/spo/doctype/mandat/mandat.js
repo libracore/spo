@@ -60,7 +60,7 @@ frappe.ui.form.on('Mandat', {
 			'fields': [
 				{'fieldname': 'customer', 'fieldtype': 'Data', 'label': 'Facharzt'},
 				{'fieldname': 'cb_1', 'fieldtype': 'Column Break'},
-				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Customer Group', 'label': 'Type', 'default': 'Arzt'},
+				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Customer Group', 'label': 'Type', 'reqd': 1},
 				{'fieldname': 'sb_1', 'fieldtype': 'Section Break'},
 				{'fieldname': 'result', 'fieldtype': 'HTML'}
 			],
@@ -70,6 +70,7 @@ frappe.ui.form.on('Mandat', {
 		var $wrapper;
 		var $results;
 		var $placeholder;
+		var $second_placeholder;
 		var method = "spo.spo.doctype.mandat.mandat.get_facharzt_table";
 		var columns = (["Link Name", "Facharzt", "Type"]);
 		
@@ -78,7 +79,7 @@ frappe.ui.form.on('Mandat', {
 				customer: d.fields_dict.customer.input.value,
 				type: d.fields_dict.type.input.value
 			};
-			get_facharzt_table(frm, $results, $placeholder, method, args, columns);
+			get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
 		}
 		
 		d.fields_dict["type"].df.onchange = () => {
@@ -86,7 +87,7 @@ frappe.ui.form.on('Mandat', {
 				customer: d.fields_dict.customer.input.value,
 				type: d.fields_dict.type.input.value
 			};
-			get_facharzt_table(frm, $results, $placeholder, method, args, columns);
+			get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
 		}
 		
 		$wrapper = d.fields_dict.result.$wrapper.append(`<div class="results"
@@ -98,6 +99,13 @@ frappe.ui.form.on('Mandat', {
 					<span class="text-center" style="margin-top: -40px;">
 						<i class="fa fa-2x fa-table text-extra-muted"></i>
 						<p class="text-extra-muted">Kein Facharzt gefunden</p>
+					</span>
+				</div>`);
+				
+		$second_placeholder = $(`<div class="multiselect-empty-state">
+					<span class="text-center" style="margin-top: -40px;">
+						<i class="fa fa-2x fa-table text-extra-muted"></i>
+						<p class="text-extra-muted">Bitte Type auswählen</p>
 					</span>
 				</div>`);
 		
@@ -115,7 +123,7 @@ frappe.ui.form.on('Mandat', {
 			type: d.fields_dict.type.input.value
 		};
 		
-		get_facharzt_table(frm, $results, $placeholder, method, args, columns);
+		get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
 		d.show();
 	}
 });
@@ -142,25 +150,15 @@ var set_primary_action = function(frm, dialog, $results) {
 				'title': __('Welche Aktion möchten Sie durchführen?')
 			});
 			confirm_dialog.fields_dict["create_new"].df.click = () => {
-				//**************************
-				//daten zum weiter arbeiten
-				console.log(facharzt);
-				console.log(mandat);
-				frappe.msgprint(__("Neuen Bericht erstellen"));
-				//**************************
 				confirm_dialog.hide();
 				dialog.hide();
+				create_facharzt_bericht(frm, mandat, facharzt);
 			}
 			
 			confirm_dialog.fields_dict["read"].df.click = () => {
-				//**************************
-				//daten zum weiter arbeiten
-				console.log(facharzt);
-				console.log(mandat);
-				frappe.msgprint(__("Bestehende(r) Bericht(e) öffnen"));
-				//**************************
 				confirm_dialog.hide();
 				dialog.hide();
+				show_facharzt_bericht_list(frm, mandat, facharzt);
 			}
 			
 			confirm_dialog.show();
@@ -173,23 +171,27 @@ var set_primary_action = function(frm, dialog, $results) {
 	});
 };
 
-var get_facharzt_table = function(frm, $results, $placeholder, method, args, columns) {
+var get_facharzt_table = function(frm, $results, $placeholder, $second_placeholder, method, args, columns) {
 	var me = this;
 	$results.empty();
-	frappe.call({
-		method: method,
-		args: args,
-		callback: function(data) {
-			if(data.message){
-				$results.append(make_list_row(columns));
-				for(let i=0; i<data.message.length; i++){
-					$results.append(make_list_row(columns, data.message[i]));
+	if (args.type) {
+		frappe.call({
+			method: method,
+			args: args,
+			callback: function(data) {
+				if(data.message){
+					$results.append(make_list_row(columns));
+					for(let i=0; i<data.message.length; i++){
+						$results.append(make_list_row(columns, data.message[i]));
+					}
+				} else {
+					$results.append($placeholder);
 				}
-			}else {
-				$results.append($placeholder);
 			}
-		}
-	});
+		});
+	} else {
+		$results.append($second_placeholder);
+	}
 }
 
 var make_list_row= function(columns, result={}) {
@@ -445,4 +447,24 @@ function master_freigabe_entfernen(frm) {
 	'Master Freigabe entfernen',
 	'Entfernen'
 	);
+}
+
+function create_facharzt_bericht(frm, mandat, facharzt) {
+	frappe.call({
+		method: 'spo.spo.doctype.mandat.mandat.create_new_facharzt_bericht',
+		args: {
+			'mandat': mandat,
+			'facharzt': facharzt
+		},
+		callback: function(r) {
+			if(r.message) {
+				frappe.set_route("Form", "Facharzt Bericht", r.message)
+			} 
+		}
+	});
+}
+
+function show_facharzt_bericht_list(frm, mandat, facharzt) {
+	frappe.route_options = {"mandat": ["=", mandat], 'facharzt': ["=", facharzt]};
+	frappe.set_route("List", "Facharzt Bericht");
 }

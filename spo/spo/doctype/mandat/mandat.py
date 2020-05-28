@@ -196,3 +196,13 @@ def get_facharzt_table(customer=None, type=None):
 		return results
 	else:
 		return False
+		
+@frappe.whitelist()
+def create_new_facharzt_bericht(mandat, facharzt):
+	facharzt_bericht = frappe.get_doc({
+		"doctype": "Facharzt Bericht",
+		"mandat": mandat,
+		"facharzt": facharzt
+	})
+	facharzt_bericht.insert(ignore_permissions=True)
+	return facharzt_bericht.name
