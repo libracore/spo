@@ -687,6 +687,41 @@ function ts_bearbeiten(ts) {
 }
 
 function set_link_filter(frm) {
+	cur_frm.fields_dict['patient'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
+	cur_frm.fields_dict['ang'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
+	cur_frm.fields_dict['ges_ver_1'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
+	cur_frm.fields_dict['ges_ver_2'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
+	cur_frm.fields_dict['rsv'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
 	cur_frm.fields_dict['patienten_kontakt'].get_query = function(doc) {
 		return {
 			filters: {

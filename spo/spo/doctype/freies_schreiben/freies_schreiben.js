@@ -72,6 +72,13 @@ function set_link_filter(frm) {
 			}
 		}
 	};
+	cur_frm.fields_dict['empfaenger'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
 	cur_frm.fields_dict['adressen_link'].get_query = function(doc) {
 		return {
 			filters: {

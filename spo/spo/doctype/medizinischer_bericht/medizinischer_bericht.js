@@ -10,6 +10,14 @@ frappe.ui.form.on('Medizinischer Bericht', {
 			timesheet_handling(frm);
 		});
 		
+		cur_frm.fields_dict['rsv'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
+		
 		if (cur_frm.doc.mandat) {
 			frm.add_custom_button(__("Zurück zum Mandat"), function() {
 				frappe.set_route("Form", "Mandat", cur_frm.doc.mandat);

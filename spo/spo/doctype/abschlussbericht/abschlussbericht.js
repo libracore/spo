@@ -38,6 +38,13 @@ frappe.ui.form.on('Abschlussbericht', {
 				}
 			}
 		};
+		cur_frm.fields_dict['empfaenger'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
 		// timer action icon
 		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
 			timesheet_handling(frm);
