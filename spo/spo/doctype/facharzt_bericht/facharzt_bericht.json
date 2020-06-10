@@ -5,7 +5,16 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "adressat",
+  "cb_1",
+  "facharzt_kontakt",
+  "facharzt_adresse",
+  "cb_2",
+  "section_bericht",
   "bericht",
+  "section_rechnungsformular",
+  "betrag",
+  "iban",
   "section_referenzen",
   "mandat",
   "facharzt",
@@ -31,7 +40,7 @@
   {
    "fieldname": "bericht",
    "fieldtype": "Text Editor",
-   "label": "Bericht"
+   "label": "Schreiben"
   },
   {
    "collapsible": 1,
@@ -47,9 +56,60 @@
    "in_standard_filter": 1,
    "label": "Facharzt Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "adressat",
+   "fieldtype": "Small Text",
+   "label": "Adressat"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "facharzt.customer_primary_contact",
+   "fetch_if_empty": 1,
+   "fieldname": "facharzt_kontakt",
+   "fieldtype": "Link",
+   "label": "Facharzt Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fetch_from": "facharzt.customer_primary_address",
+   "fetch_if_empty": 1,
+   "fieldname": "facharzt_adresse",
+   "fieldtype": "Link",
+   "label": "Facharzt Adresse",
+   "options": "Address"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_bericht",
+   "fieldtype": "Section Break",
+   "label": "Schreiben"
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_rechnungsformular",
+   "fieldtype": "Section Break",
+   "label": "Rechnungsformular"
+  },
+  {
+   "fieldname": "betrag",
+   "fieldtype": "Currency",
+   "label": "Betrag in SFr"
+  },
+  {
+   "fieldname": "iban",
+   "fieldtype": "Data",
+   "label": "Konto-Nummer/IBAN"
   }
  ],
- "modified": "2020-05-28 12:31:08.927487",
+ "modified": "2020-05-29 11:42:11.636675",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Facharzt Bericht",
