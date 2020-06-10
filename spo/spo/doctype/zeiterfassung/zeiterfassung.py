@@ -472,7 +472,7 @@ def update_existing_ts(ts, employee, date, start, ende, working_hours, pausen, b
 		row["from_time"] = get_datetime(get_datetime_str(start_datum))
 		row["to_time"] = get_datetime(get_datetime_str(end_datum))
 		ts.append('time_logs', row)
-		ts.save(ignore_permissions=True)
+		#ts.save(ignore_permissions=True)
 		
 		#/Arbeitszeit
 		#Pausen

@@ -655,6 +655,7 @@ function check_overlapp(frm) {
 	var total_time = cur_frm.doc.arbeitszeit - cur_frm.doc.total_beratung - cur_frm.doc.total_mandatsarbeit - cur_frm.doc.total_diverses;
 	if (total_time < 0) {
 		frappe.msgprint(__("Die Summe von Beratungen, Mandatsarbeiten und diversen Arbeiten übersteigt Ihre Arbeitszeit."), __("Arbeitszeit zu kurz"));
+		activate_btns(frm);
 		return true
 	} else {
 		return false
