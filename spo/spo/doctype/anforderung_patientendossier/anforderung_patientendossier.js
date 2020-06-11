@@ -17,7 +17,8 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 		cur_frm.fields_dict['spital'].get_query = function(doc) {
 			 return {
 				 filters: {
-					 "customer_group": "Spital"
+					 "customer_group": "Spital",
+					 "disabled": 0
 				 }
 			 }
 		}

@@ -9,6 +9,27 @@ frappe.ui.form.on('Mitgliedschaft', {
 				create_invoice(frm);
 			});
 		}
+		cur_frm.fields_dict['mitglied'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
+		cur_frm.fields_dict['customer'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
+		cur_frm.fields_dict['rechnungsempfaenger'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
 	}
 });
 

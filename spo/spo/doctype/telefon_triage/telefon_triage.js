@@ -272,6 +272,13 @@ function check_mitgliedschaft(frm) {
 }
 
 function set_link_filter(frm) {
+	cur_frm.fields_dict['kunde'].get_query = function(doc) {
+		return {
+			filters: {
+				"disabled": 0
+			}
+		}
+	};
 	cur_frm.fields_dict['kontakt'].get_query = function(doc) {
 		return {
 			filters: {

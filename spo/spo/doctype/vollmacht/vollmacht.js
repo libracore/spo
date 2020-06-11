@@ -62,6 +62,22 @@ frappe.ui.form.on('Vollmacht', {
 			 }
 		}
 		
+		cur_frm.fields_dict['customer'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
+		
+		cur_frm.fields_dict['ang'].get_query = function(doc) {
+			return {
+				filters: {
+					"disabled": 0
+				}
+			}
+		};
+		
 		check_todesfall(frm);
 		set_kunden_html(frm);
 		set_ang_html(frm);
