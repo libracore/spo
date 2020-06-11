@@ -5,11 +5,16 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "facharzt_anschrift",
   "adressat",
-  "cb_1",
   "facharzt_kontakt",
   "facharzt_adresse",
+  "cb_1",
   "cb_2",
+  "patienten_anschrift_titel",
+  "patienten_anschrift",
+  "patienten_kontakt",
+  "patienten_adresse",
   "section_bericht",
   "bericht",
   "section_rechnungsformular",
@@ -18,7 +23,9 @@
   "section_referenzen",
   "mandat",
   "facharzt",
-  "facharzt_name"
+  "facharzt_name",
+  "cb_3",
+  "patient"
  ],
  "fields": [
   {
@@ -59,8 +66,7 @@
   },
   {
    "fieldname": "adressat",
-   "fieldtype": "Small Text",
-   "label": "Adressat"
+   "fieldtype": "Small Text"
   },
   {
    "fieldname": "cb_1",
@@ -107,9 +113,48 @@
    "fieldname": "iban",
    "fieldtype": "Data",
    "label": "Konto-Nummer/IBAN"
+  },
+  {
+   "fieldname": "facharzt_anschrift",
+   "fieldtype": "Heading",
+   "label": "Facharzt Anschrift"
+  },
+  {
+   "fieldname": "patienten_anschrift_titel",
+   "fieldtype": "Heading",
+   "label": "Patienten Anschrift"
+  },
+  {
+   "fieldname": "patienten_anschrift",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "patienten_kontakt",
+   "fieldtype": "Link",
+   "label": "Patienten Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "patienten_adresse",
+   "fieldtype": "Link",
+   "label": "Patienten Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "mandat.customer",
+   "fieldname": "patient",
+   "fieldtype": "Link",
+   "label": "Patient",
+   "options": "Customer",
+   "read_only": 1,
+   "reqd": 1
   }
  ],
- "modified": "2020-05-29 11:42:11.636675",
+ "modified": "2020-06-11 09:26:59.463088",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Facharzt Bericht",
