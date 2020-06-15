@@ -13,7 +13,8 @@
   "section_anhang",
   "anhang",
   "section_referenzen",
-  "mandat"
+  "mandat",
+  "facharzt_bericht"
  ],
  "fields": [
   {
@@ -81,9 +82,15 @@
    "in_standard_filter": 1,
    "label": "Bezeichnung",
    "reqd": 1
+  },
+  {
+   "fieldname": "facharzt_bericht",
+   "fieldtype": "Link",
+   "label": "Facharzt Bericht",
+   "options": "Facharzt Bericht"
   }
  ],
- "modified": "2020-04-23 11:22:54.425166",
+ "modified": "2020-05-28 10:26:26.099114",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "SPO Anhang",

@@ -48,12 +48,204 @@ frappe.ui.form.on('Mandat', {
 		frm.add_custom_button(__("Entfernen"), function() {
 			master_freigabe_entfernen(frm);
 		}, __("Master Freigabe für Mandat"));
+		frm.add_custom_button('Facharzt Bericht', function () {
+			frm.trigger('get_facharzt');
+		});
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
+	},
+	get_facharzt: function (frm) {
+		var d = new frappe.ui.Dialog({
+			'fields': [
+				{'fieldname': 'customer', 'fieldtype': 'Data', 'label': 'Facharzt'},
+				{'fieldname': 'cb_1', 'fieldtype': 'Column Break'},
+				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Customer Group', 'label': 'Type', 'reqd': 1},
+				{'fieldname': 'sb_1', 'fieldtype': 'Section Break'},
+				{'fieldname': 'result', 'fieldtype': 'HTML'}
+			],
+			'title': __("Suchmaske Facharzt")
+		});
+		
+		var $wrapper;
+		var $results;
+		var $placeholder;
+		var $second_placeholder;
+		var method = "spo.spo.doctype.mandat.mandat.get_facharzt_table";
+		var columns = (["Link Name", "Facharzt", "Type"]);
+		
+		d.fields_dict["customer"].df.onchange = () => {
+			var args = {
+				customer: d.fields_dict.customer.input.value,
+				type: d.fields_dict.type.input.value
+			};
+			get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
+		}
+		
+		d.fields_dict["type"].df.onchange = () => {
+			var args = {
+				customer: d.fields_dict.customer.input.value,
+				type: d.fields_dict.type.input.value
+			};
+			get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
+		}
+		
+		$wrapper = d.fields_dict.result.$wrapper.append(`<div class="results"
+			style="border: 1px solid #d1d8dd; border-radius: 3px; height: 300px; overflow: auto;"></div>`);
+			
+		$results = $wrapper.find('.results');
+		
+		$placeholder = $(`<div class="multiselect-empty-state">
+					<span class="text-center" style="margin-top: -40px;">
+						<i class="fa fa-2x fa-table text-extra-muted"></i>
+						<p class="text-extra-muted">Kein Facharzt gefunden</p>
+					</span>
+				</div>`);
+				
+		$second_placeholder = $(`<div class="multiselect-empty-state">
+					<span class="text-center" style="margin-top: -40px;">
+						<i class="fa fa-2x fa-table text-extra-muted"></i>
+						<p class="text-extra-muted">Bitte Type auswählen</p>
+					</span>
+				</div>`);
+		
+		$results.on('click', '.list-item--head :checkbox', (e) => {
+			$results.find('.list-item-container .list-row-check')
+				.prop("checked", ($(e.target).is(':checked')));
+		});
+		
+		$results.empty();
+		$results.append($placeholder);
+		set_primary_action(frm, d, $results);
+		
+		var args = {
+			customer: d.fields_dict.customer.input.value,
+			type: d.fields_dict.type.input.value
+		};
+		
+		get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
+		d.show();
 	}
 });
 
+var set_primary_action = function(frm, dialog, $results) {
+	var me = this;
+	dialog.set_primary_action(__('Weiter'), function() {
+		let checked_value = get_checked_values($results);
+		if(checked_value.length == 1){
+			var facharzt = checked_value[0].reference;
+			var mandat = cur_frm.doc.name;
+			var customer_name = checked_value[0].facharzt;
+			var customer_type = checked_value[0].customer_type;
+			var confirm_dialog = new frappe.ui.Dialog({
+				'fields': [
+					{'fieldname': 'customer', 'fieldtype': 'Data', 'label': 'Ausgewählter Facharzt', 'default': customer_name, 'read_only': 1},
+					{'fieldname': 'cb_1', 'fieldtype': 'Column Break'},
+					{'fieldname': 'type', 'fieldtype': 'Data', 'label': 'Type', 'default': customer_type, 'read_only': 1},
+					{'fieldname': 'sb_1', 'fieldtype': 'Section Break'},
+					{'fieldname': 'create_new', 'fieldtype': 'Button', 'label': 'Neuer Bericht erstellen'},
+					{'fieldname': 'cb_2', 'fieldtype': 'Column Break'},
+					{'fieldname': 'read', 'fieldtype': 'Button', 'label': 'Bestehende(r) Bericht(e) öffnen'}
+				],
+				'title': __('Welche Aktion möchten Sie durchführen?')
+			});
+			confirm_dialog.fields_dict["create_new"].df.click = () => {
+				confirm_dialog.hide();
+				dialog.hide();
+				create_facharzt_bericht(frm, mandat, facharzt);
+			}
+			
+			confirm_dialog.fields_dict["read"].df.click = () => {
+				confirm_dialog.hide();
+				dialog.hide();
+				show_facharzt_bericht_list(frm, mandat, facharzt);
+			}
+			
+			confirm_dialog.show();
+			
+		} else if (checked_value.length > 1) {
+			frappe.msgprint(__("Bitte selektieren Sie <b>nur</b> ein Facharzt"));
+		} else {
+			frappe.msgprint(__("Bitte selektieren Sie einen Facharzt"));
+		}
+	});
+};
+
+var get_facharzt_table = function(frm, $results, $placeholder, $second_placeholder, method, args, columns) {
+	var me = this;
+	$results.empty();
+	if (args.type) {
+		frappe.call({
+			method: method,
+			args: args,
+			callback: function(data) {
+				if(data.message){
+					$results.append(make_list_row(columns));
+					for(let i=0; i<data.message.length; i++){
+						$results.append(make_list_row(columns, data.message[i]));
+					}
+				} else {
+					$results.append($placeholder);
+				}
+			}
+		});
+	} else {
+		$results.append($second_placeholder);
+	}
+}
+
+var make_list_row= function(columns, result={}) {
+	var me = this;
+	// Make a head row by default (if result not passed)
+	let head = Object.keys(result).length === 0;
+	let contents = ``;
+	columns.forEach(function(column) {
+		var column_value = '-';
+		if (result[column]) {
+			column_value = result[column];
+		}
+		contents += `<div class="list-item__content ellipsis">
+			${
+				head ? `<span class="ellipsis">${__(frappe.model.unscrub(column))}</span>`
+				:(column !== "name" ? `<span class="ellipsis">${__(column_value)}</span>`
+					: `<a class="list-id ellipsis">
+						${__(result[column])}</a>`)
+			}
+		</div>`;
+	})
+
+	let $row = $(`<div class="list-item">
+		<div class="list-item__content" style="flex: 0 0 10px;">
+			<input type="checkbox" class="list-row-check" ${result.checked ? 'checked' : ''}>
+		</div>
+		${contents}
+	</div>`);
+
+	$row = list_row_data_items(head, $row, result);
+	return $row;
+};
+
+var list_row_data_items = function(head, $row, result) {
+	head ? $row.addClass('list-item--head')
+		: $row = $(`<div class="list-item-container"
+			data-reference= "${result.reference}"
+			data-customername = "${result.Facharzt}"
+			data-customertype = "${result.Type}">
+			</div>`).append($row);
+	return $row
+};
+
+var get_checked_values= function($results) {
+	return $results.find('.list-item-container').map(function() {
+		let checked_values = {};
+		if ($(this).find('.list-row-check:checkbox:checked').length > 0 ) {
+			checked_values['reference'] = $(this).attr('data-reference');
+			checked_values['facharzt'] = $(this).attr('data-customername');
+			checked_values['customer_type'] = $(this).attr('data-customertype');
+			return checked_values
+		}
+	}).get();
+};
 
 function update_dashboard(frm) {
 	frappe.call({
@@ -255,4 +447,24 @@ function master_freigabe_entfernen(frm) {
 	'Master Freigabe entfernen',
 	'Entfernen'
 	);
+}
+
+function create_facharzt_bericht(frm, mandat, facharzt) {
+	frappe.call({
+		method: 'spo.spo.doctype.mandat.mandat.create_new_facharzt_bericht',
+		args: {
+			'mandat': mandat,
+			'facharzt': facharzt
+		},
+		callback: function(r) {
+			if(r.message) {
+				frappe.set_route("Form", "Facharzt Bericht", r.message)
+			} 
+		}
+	});
+}
+
+function show_facharzt_bericht_list(frm, mandat, facharzt) {
+	frappe.route_options = {"mandat": ["=", mandat], 'facharzt': ["=", facharzt]};
+	frappe.set_route("List", "Facharzt Bericht");
 }

@@ -1,0 +1,179 @@
+{
+ "autoname": "format:FAB-{YYYY}-{######}",
+ "creation": "2020-05-28 10:19:36.553384",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "facharzt_anschrift",
+  "adressat",
+  "facharzt_kontakt",
+  "facharzt_adresse",
+  "cb_1",
+  "cb_2",
+  "patienten_anschrift_titel",
+  "patienten_anschrift",
+  "patienten_kontakt",
+  "patienten_adresse",
+  "section_bericht",
+  "bericht",
+  "section_rechnungsformular",
+  "betrag",
+  "iban",
+  "section_referenzen",
+  "mandat",
+  "facharzt",
+  "facharzt_name",
+  "cb_3",
+  "patient"
+ ],
+ "fields": [
+  {
+   "fieldname": "mandat",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Mandat",
+   "options": "Mandat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "facharzt",
+   "fieldtype": "Link",
+   "label": "Facharzt",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bericht",
+   "fieldtype": "Text Editor",
+   "label": "Schreiben"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_referenzen",
+   "fieldtype": "Section Break",
+   "label": "Referenzen"
+  },
+  {
+   "fetch_from": "facharzt.customer_name",
+   "fieldname": "facharzt_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Facharzt Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "adressat",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "facharzt.customer_primary_contact",
+   "fetch_if_empty": 1,
+   "fieldname": "facharzt_kontakt",
+   "fieldtype": "Link",
+   "label": "Facharzt Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fetch_from": "facharzt.customer_primary_address",
+   "fetch_if_empty": 1,
+   "fieldname": "facharzt_adresse",
+   "fieldtype": "Link",
+   "label": "Facharzt Adresse",
+   "options": "Address"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_bericht",
+   "fieldtype": "Section Break",
+   "label": "Schreiben"
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_rechnungsformular",
+   "fieldtype": "Section Break",
+   "label": "Rechnungsformular"
+  },
+  {
+   "fieldname": "betrag",
+   "fieldtype": "Currency",
+   "label": "Betrag in SFr"
+  },
+  {
+   "fieldname": "iban",
+   "fieldtype": "Data",
+   "label": "Konto-Nummer/IBAN"
+  },
+  {
+   "fieldname": "facharzt_anschrift",
+   "fieldtype": "Heading",
+   "label": "Facharzt Anschrift"
+  },
+  {
+   "fieldname": "patienten_anschrift_titel",
+   "fieldtype": "Heading",
+   "label": "Patienten Anschrift"
+  },
+  {
+   "fieldname": "patienten_anschrift",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "patienten_kontakt",
+   "fieldtype": "Link",
+   "label": "Patienten Kontakt",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "patienten_adresse",
+   "fieldtype": "Link",
+   "label": "Patienten Adresse",
+   "options": "Address"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "mandat.customer",
+   "fieldname": "patient",
+   "fieldtype": "Link",
+   "label": "Patient",
+   "options": "Customer",
+   "read_only": 1,
+   "reqd": 1
+  }
+ ],
+ "modified": "2020-06-11 09:26:59.463088",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Facharzt Bericht",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
