@@ -43,10 +43,9 @@ def get_data():
 				},
 				{
 					"type": "report",
-					"name": "Address And Contacts",
+					"name": "SPO Adressliste",
 					"label": _("Adressliste"),
 					"description": _("Adressliste"),
-					#"doctype": "Telefon Triage",
 					"is_query_report": True
 				}
 			]
