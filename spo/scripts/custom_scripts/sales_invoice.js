@@ -80,6 +80,8 @@ function get_mandats_positionen(frm, mandat) {
 						frappe.model.set_value(child.doctype, child.name, 'qty', logs[i].hours);
 						frappe.model.set_value(child.doctype, child.name, 'spo_description', logs[i].spo_remark);
 						frappe.model.set_value(child.doctype, child.name, 'spo_datum', logs[i].from_time);
+						frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
+						frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
 						cur_frm.refresh_field('items');
 					}
 					var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
