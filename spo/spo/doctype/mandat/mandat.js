@@ -60,7 +60,7 @@ frappe.ui.form.on('Mandat', {
 			'fields': [
 				{'fieldname': 'customer', 'fieldtype': 'Data', 'label': 'Facharzt'},
 				{'fieldname': 'cb_1', 'fieldtype': 'Column Break'},
-				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Customer Group', 'label': 'Type', 'reqd': 1},
+				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Customer Group', 'label': 'Type'},//, 'reqd': 1},
 				{'fieldname': 'sb_1', 'fieldtype': 'Section Break'},
 				{'fieldname': 'result', 'fieldtype': 'HTML'}
 			],
@@ -174,7 +174,7 @@ var set_primary_action = function(frm, dialog, $results) {
 var get_facharzt_table = function(frm, $results, $placeholder, $second_placeholder, method, args, columns) {
 	var me = this;
 	$results.empty();
-	if (args.type) {
+	//if (args.type) {
 		frappe.call({
 			method: method,
 			args: args,
@@ -189,9 +189,9 @@ var get_facharzt_table = function(frm, $results, $placeholder, $second_placehold
 				}
 			}
 		});
-	} else {
+	/* } else {
 		$results.append($second_placeholder);
-	}
+	} */
 }
 
 var make_list_row= function(columns, result={}) {
