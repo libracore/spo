@@ -17,6 +17,7 @@
   "patienten_adresse",
   "section_bericht",
   "bericht",
+  "fusszeile",
   "section_rechnungsformular",
   "betrag",
   "iban",
@@ -152,9 +153,17 @@
    "options": "Customer",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "default": "Z\u00fcrich (Hochformat)",
+   "fieldname": "fusszeile",
+   "fieldtype": "Link",
+   "label": "Fusszeile",
+   "options": "Letter Head",
+   "reqd": 1
   }
  ],
- "modified": "2020-06-11 09:26:59.463088",
+ "modified": "2020-06-19 13:42:20.872940",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Facharzt Bericht",
