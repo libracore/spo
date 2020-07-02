@@ -229,6 +229,13 @@ def get_data():
 					"label": _("General Ledger"),
 					"doctype": "GL Entry",
                     "is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "Rechnungsabgrenzung",
+					"label": _("Rechnungsabgrenzung"),
+					"doctype": "Sales Invoice",
+                    "is_query_report": True
 				}
             ]
 		}
