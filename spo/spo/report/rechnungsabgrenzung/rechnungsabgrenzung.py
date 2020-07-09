@@ -43,6 +43,7 @@ def get_data(filters):
 								AND `posting_date` >= '{start_year_1}'
 								AND `posting_date` <= '{end_year_1}'
 								AND `grand_total` > 0
+								AND `outstanding_amount` <= 0
 								AND `company` = '{company}'""".format(start_year_1=start_year_1, end_year_1=end_year_1, company=filters.company), as_dict=True)
 	
 	for sinv in sinvs:
