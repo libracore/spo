@@ -90,7 +90,7 @@
   {
    "fieldname": "mitglied",
    "fieldtype": "Link",
-   "label": "Mitgliedschaft",
+   "label": "Kunde",
    "options": "Customer"
   },
   {
@@ -459,7 +459,7 @@
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2020-02-21 13:28:58.727693",
+ "modified": "2020-07-17 10:50:56.842641",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

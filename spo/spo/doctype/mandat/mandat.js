@@ -51,6 +51,23 @@ frappe.ui.form.on('Mandat', {
 		frm.add_custom_button('Facharzt Bericht', function () {
 			frm.trigger('get_facharzt');
 		});
+		
+		cur_frm.fields_dict['kontakt'].get_query = function(doc) {
+          return {
+            filters: {
+        	  "link_doctype": "Customer",
+        	  "link_name": frm.doc.mitglied
+            }
+          }
+        };
+		cur_frm.fields_dict['adresse'].get_query = function(doc) {
+          return {
+            filters: {
+        	  "link_doctype": "Customer",
+        	  "link_name": frm.doc.mitglied
+            }
+          }
+        };
 	},
 	absprung_einstellungen: function(frm) {
 		frappe.set_route("Form", "Einstellungen");
