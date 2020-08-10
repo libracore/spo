@@ -4,7 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days, getdate
+from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days, getdate, date_diff
 from erpnext.projects.doctype.timesheet.timesheet import Timesheet
 import json
 from frappe.utils import flt
@@ -322,44 +322,54 @@ def calc_arbeitszeit(employee, von, bis, uebertraege=None):
 	# /Berechnung Anzahl Feiertage und Krankheitstage (bei längerer Krankheit)
 	#********************************
 	#********************************
-	# Berechnung Anzahl Urlaubstage
-	# --> ganztage
-	bezogener_urlaub_in_tagen = []
-	bezogene_urlaubs_perioden_ganztags = frappe.db.sql("""SELECT `from_date`, `to_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 0 AND `status` = 'Approved'""".format(employee=employee.name), as_dict=True)
-	for bezogene_urlaubs_periode_ganztags in bezogene_urlaubs_perioden_ganztags:
-		bezogener_urlaub_in_tagen.append(bezogene_urlaubs_periode_ganztags.from_date)
-		bezogener_urlaub_in_tagen.append(bezogene_urlaubs_periode_ganztags.to_date)
-		urlaub_von = add_days(getdate(bezogene_urlaubs_periode_ganztags.from_date), 1)
-		urlaub_bis = getdate(bezogene_urlaubs_periode_ganztags.to_date)
-		while urlaub_von < urlaub_bis:
-			bezogener_urlaub_in_tagen.append(urlaub_von)
-			urlaub_von = add_days(urlaub_von, 1)
-	# --> halbtage
-	bezogener_urlaub_in_halbtagen = []
-	bezogene_urlaubs_perioden_halbtags = frappe.db.sql("""SELECT `from_date`, `to_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `from_date` = `to_date`""".format(employee=employee.name), as_dict=True)
-	for bezogene_urlaubs_periode_halbtags in bezogene_urlaubs_perioden_halbtags:
-		bezogener_urlaub_in_halbtagen.append(bezogene_urlaubs_periode_halbtags.from_date)
-	# --> gemischt
-	bezogene_urlaubs_perioden_gemischt = frappe.db.sql("""SELECT `from_date`, `to_date`, `half_day_date` FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `from_date` != `to_date`""".format(employee=employee.name), as_dict=True)
-	for bezogene_urlaubs_periode in bezogene_urlaubs_perioden_gemischt:
-		urlaub_von = getdate(bezogene_urlaubs_periode.from_date)
-		urlaub_bis = getdate(bezogene_urlaubs_periode.to_date)
-		halbtag = getdate(bezogene_urlaubs_periode.half_day_date)
-		while urlaub_von <= urlaub_bis:
-			if urlaub_von != halbtag:
-				bezogener_urlaub_in_tagen.append(urlaub_von)
+	# Berechnung Anzahl Urlaubstage (Ganz)
+	# --> innerhalb periode
+	innerhalb = frappe.db.sql("""SELECT `total_leave_days` FROM `tabLeave Application` WHERE `from_date` >= '{von}' AND `to_date` <= '{bis}' AND `employee` = '{employee}' AND `half_day` = 0 AND `status` = 'Approved' AND `docstatus` = 1""".format(von=von, bis=bis, employee=employee.name), as_dict=True)
+	if innerhalb:
+		for bezogene_urlaubs_tage in innerhalb:
+			anzahl_urlaubstage += bezogene_urlaubs_tage.total_leave_days
+	#frappe.throw(str(bezogene_urlaubs_tage))
+	# --> start ausserhalb periode
+	ausserhalb = frappe.db.sql("""SELECT `to_date` FROM `tabLeave Application` WHERE `from_date` < '{von}' AND `to_date` <= '{bis}' AND `to_date` >= '{von}' AND `employee` = '{employee}' AND `half_day` = 0 AND `status` = 'Approved' AND `docstatus` = 1""".format(von=von, bis=bis, employee=employee.name), as_dict=True)
+	if ausserhalb:
+		for bezogene_urlaubs_tage in ausserhalb:
+			anzahl_urlaubstage += date_diff(bezogene_urlaubs_tage.to_date, von) + 1
+	# --> ende ausserhalb periode
+	ende_ausserhalb = frappe.db.sql("""SELECT `from_date` FROM `tabLeave Application` WHERE `from_date` >= '{von}' AND `from_date` <= '{bis}' AND `to_date` > '{bis}' AND `employee` = '{employee}' AND `half_day` = 0 AND `status` = 'Approved' AND `docstatus` = 1""".format(von=von, bis=bis, employee=employee.name), as_dict=True)
+	if ende_ausserhalb:
+		for bezogene_urlaubs_tage in ende_ausserhalb:
+			anzahl_urlaubstage += date_diff(bis, bezogene_urlaubs_tage.from_date) + 1
+	# --> start und ende ausserhalb periode
+	# sollte es nie geben.
+	# /Berechnung Anzahl Urlaubstage (Ganz)
+	#********************************
+	#********************************
+	# Berechnung Anzahl Urlaubstage (Halb)
+	# --> innerhalb periode
+	halbe_innerhalb = frappe.db.sql("""SELECT `total_leave_days` FROM `tabLeave Application` WHERE `from_date` >= '{von}' AND `to_date` <= '{bis}' AND `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `docstatus` = 1""".format(von=von, bis=bis, employee=employee.name), as_dict=True)
+	if halbe_innerhalb:
+		for bezogene_urlaubs_tage in halbe_innerhalb:
+			anzahl_urlaubstage += bezogene_urlaubs_tage.total_leave_days
+	#frappe.throw(str(bezogene_urlaubs_tage))
+	# --> start ausserhalb periode
+	halbe_ausserhalb = frappe.db.sql("""SELECT `to_date`, `half_day_date` FROM `tabLeave Application` WHERE `from_date` < '{von}' AND `to_date` <= '{bis}' AND `to_date` >= '{von}' AND `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `docstatus` = 1""".format(von=von, bis=bis, employee=employee.name), as_dict=True)
+	if halbe_ausserhalb:
+		for bezogene_urlaubs_tage in halbe_ausserhalb:
+			if getdate(bezogene_urlaubs_tage.half_day_date) >= getdate(von):
+				anzahl_urlaubstage += date_diff(bezogene_urlaubs_tage.to_date, von) + 0.5
 			else:
-				bezogener_urlaub_in_halbtagen.append(urlaub_von)
-			urlaub_von = add_days(urlaub_von, 1)
-	_von = getdate(von)
-	_bis = getdate(bis)
-	while _von <= _bis:
-		if _von in bezogener_urlaub_in_tagen:
-			anzahl_urlaubstage += 1
-		if _von in bezogener_urlaub_in_halbtagen:
-			anzahl_urlaubstage += 0.5
-		_von = add_days(_von, 1)
-	# /Berechnung Anzahl Urlaubstage
+				anzahl_urlaubstage += date_diff(bezogene_urlaubs_tage.to_date, von) + 1
+	# --> ende ausserhalb periode
+	halbe_ende_ausserhalb = frappe.db.sql("""SELECT `from_date`, `half_day_date` FROM `tabLeave Application` WHERE `from_date` >= '{von}' AND `from_date` <= '{bis}' AND `to_date` > '{bis}' AND `employee` = '{employee}' AND `half_day` = 1 AND `status` = 'Approved' AND `docstatus` = 1""".format(von=von, bis=bis, employee=employee.name), as_dict=True)
+	if halbe_ende_ausserhalb:
+		for bezogene_urlaubs_tage in halbe_ende_ausserhalb:
+			if getdate(bezogene_urlaubs_tage.half_day_date) <= getdate(bis):
+				anzahl_urlaubstage += date_diff(bis, bezogene_urlaubs_tage.from_date) + 0.5
+			else:
+				anzahl_urlaubstage += date_diff(bis, bezogene_urlaubs_tage.from_date) + 1
+	# --> start und ende ausserhalb periode
+	# sollte es nie geben.
+	# /Berechnung Anzahl Urlaubstage (Halb)
 	#********************************
 	#********************************
 	# Berechnung Anzahl Mo - Fr
