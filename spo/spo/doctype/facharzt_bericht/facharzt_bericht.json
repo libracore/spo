@@ -42,7 +42,7 @@
    "fieldname": "facharzt",
    "fieldtype": "Link",
    "label": "Facharzt",
-   "options": "Customer",
+   "options": "Supplier",
    "reqd": 1
   },
   {
@@ -57,7 +57,7 @@
    "label": "Referenzen"
   },
   {
-   "fetch_from": "facharzt.customer_name",
+   "fetch_from": "facharzt.supplier_name",
    "fieldname": "facharzt_name",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -74,16 +74,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "facharzt.customer_primary_contact",
-   "fetch_if_empty": 1,
    "fieldname": "facharzt_kontakt",
    "fieldtype": "Link",
    "label": "Facharzt Kontakt",
    "options": "Contact"
   },
   {
-   "fetch_from": "facharzt.customer_primary_address",
-   "fetch_if_empty": 1,
    "fieldname": "facharzt_adresse",
    "fieldtype": "Link",
    "label": "Facharzt Adresse",
@@ -163,7 +159,7 @@
    "reqd": 1
   }
  ],
- "modified": "2020-06-19 13:42:20.872940",
+ "modified": "2020-08-14 13:01:19.428954",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Facharzt Bericht",

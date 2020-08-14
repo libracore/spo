@@ -174,20 +174,20 @@ def get_facharzt_table(customer=None, type=None):
 	if customer or type:
 		filter = ' WHERE '
 	if customer:
-		filter += " `customer_name` LIKE '%{customer}%'".format(customer=customer)
+		filter += " `supplier_name` LIKE '%{customer}%'".format(customer=customer)
 	if type:
 		if customer:
-			filter += " AND `customer_group` = '{type}'".format(type=type)
+			filter += " AND `supplier_group` = '{type}'".format(type=type)
 		else:
-			filter += " `customer_group` = '{type}'".format(type=type)
+			filter += " `supplier_group` = '{type}'".format(type=type)
 			
 	#search facharzt
 	facharzt_results = frappe.db.sql("""SELECT
 											`name` AS `reference`,
 											`name` AS `Link Name`,
-											`customer_name` AS `Facharzt`,
-											`customer_group` AS `Type`
-											FROM `tabCustomer`{filter}""".format(filter=filter), as_dict=True)
+											`supplier_name` AS `Facharzt`,
+											`supplier_group` AS `Type`
+											FROM `tabSupplier`{filter}""".format(filter=filter), as_dict=True)
 											
 	for facharzt_result in facharzt_results:
 		results.append(facharzt_result)

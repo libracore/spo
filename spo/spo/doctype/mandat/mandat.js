@@ -77,7 +77,7 @@ frappe.ui.form.on('Mandat', {
 			'fields': [
 				{'fieldname': 'customer', 'fieldtype': 'Data', 'label': 'Facharzt'},
 				{'fieldname': 'cb_1', 'fieldtype': 'Column Break'},
-				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Customer Group', 'label': 'Type'},//, 'reqd': 1},
+				{'fieldname': 'type', 'fieldtype': 'Link', 'options': 'Supplier Group', 'label': 'Type'},//, 'reqd': 1},
 				{'fieldname': 'sb_1', 'fieldtype': 'Section Break'},
 				{'fieldname': 'result', 'fieldtype': 'HTML'}
 			],

@@ -29,7 +29,7 @@ function set_filters(frm) {
 	cur_frm.fields_dict['facharzt_kontakt'].get_query = function(doc) {
 		return {
 			filters: {
-				"link_doctype": "Customer",
+				"link_doctype": "Supplier",
 				"link_name": cur_frm.doc.facharzt
 			}
 		}
@@ -37,7 +37,7 @@ function set_filters(frm) {
 	cur_frm.fields_dict['facharzt_adresse'].get_query = function(doc) {
 		return {
 			filters: {
-				"link_doctype": "Customer",
+				"link_doctype": "Supplier",
 				"link_name": cur_frm.doc.facharzt
 			}
 		}
@@ -67,7 +67,8 @@ function set_facharzt_adressat(frm) {
 			"facharzt": cur_frm.doc.facharzt,
 			"facharzt_name": cur_frm.doc.facharzt_name,
 			"kontakt": cur_frm.doc.facharzt_kontakt,
-			"adresse": cur_frm.doc.facharzt_adresse
+			"adresse": cur_frm.doc.facharzt_adresse,
+			"typ": "Supplier"
 		},
 		"async": false,
 		"callback": function(r) {
@@ -86,7 +87,8 @@ function set_patient_adressat(frm) {
 			"facharzt": cur_frm.doc.patient,
 			"facharzt_name": 'Bitte Vor- und Nachnamen eintragen',
 			"kontakt": cur_frm.doc.patienten_kontakt,
-			"adresse": cur_frm.doc.patienten_adresse
+			"adresse": cur_frm.doc.patienten_adresse,
+			"typ": "Customer"
 		},
 		"async": false,
 		"callback": function(r) {

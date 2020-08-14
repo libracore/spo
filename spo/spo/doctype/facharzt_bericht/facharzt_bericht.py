@@ -10,14 +10,14 @@ class FacharztBericht(Document):
 	pass
 
 @frappe.whitelist()
-def get_adressat(facharzt=None, facharzt_name=None, kontakt=None, adresse=None):
+def get_adressat(facharzt=None, facharzt_name=None, kontakt=None, adresse=None, typ='Supplier'):
 	try:
 		if facharzt:
 			if kontakt:
 				kontakt = frappe.get_doc("Contact", kontakt)
 			else:
 				try:
-					_kontakt = frappe.get_all('Dynamic Link', filters={'link_doctype': 'Customer', 'link_name': facharzt, 'parenttype': 'Contact'}, fields=['parent'])[0].parent
+					_kontakt = frappe.get_all('Dynamic Link', filters={'link_doctype': typ, 'link_name': facharzt, 'parenttype': 'Contact'}, fields=['parent'])[0].parent
 					kontakt = frappe.get_doc("Contact", _kontakt)
 				except:
 					kontakt = None
@@ -25,7 +25,7 @@ def get_adressat(facharzt=None, facharzt_name=None, kontakt=None, adresse=None):
 				adresse = frappe.get_doc("Address", adresse)
 			else:
 				try:
-					_adresse = frappe.get_all('Dynamic Link', filters={'link_doctype': 'Customer', 'link_name': facharzt, 'parenttype': 'Address'}, fields=['parent'])[0].parent
+					_adresse = frappe.get_all('Dynamic Link', filters={'link_doctype': typ, 'link_name': facharzt, 'parenttype': 'Address'}, fields=['parent'])[0].parent
 					adresse = frappe.get_doc("Address", _adresse)
 				except:
 					adresse = None
