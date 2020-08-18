@@ -93,6 +93,14 @@ def get_data():
 					"description": _("Spendenübersicht"),
 					"doctype": "Payment Entry",
 					"is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "Aktive Mitglieder per Stichtag",
+					"label": _("Aktive Mitglieder per Stichtag"),
+					"description": _("Aktive Mitglieder per Stichtag"),
+					"doctype": "Mitgliedschaft",
+					"is_query_report": True
 				}
 			]
 		},
