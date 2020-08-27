@@ -13,15 +13,22 @@ field_map = {
 }
 
 def execute(filters=None):
-	columns, data = get_columns(filters), get_data(filters)
+	customer_data = get_data('Customer')
+	supplier_data = get_data('Supplier')
+	columns = get_columns()
+	data = []
+	for _customer_data in customer_data:
+		data.append(_customer_data)
+	for _supplier_data in supplier_data:
+		data.append(_supplier_data)
+	
 	return columns, data
 
-def get_columns(filters):
-	party_type = filters.get("party_type")
-	party_type_value = get_party_group(party_type)
+def get_columns():
 	return [
-		"{party_type}:Link/{party_type}".format(party_type=party_type),
-		"{party_value_type}::150".format(party_value_type = frappe.unscrub(str(party_type_value))),
+		"Customer:Link/Customer:150",
+		"Supplier:Link/Supplier:150",
+		"Group::150",
 		"Address Line 1",
 		"Address Line 2",
 		"City",
@@ -37,9 +44,9 @@ def get_columns(filters):
 		"Is Primary Contact:Check"
 	]
 
-def get_data(filters):
-	party_type = filters.get("party_type")
-	party = filters.get("party_name")
+def get_data(party_type):
+	#party_type = filters.get("party_type")
+	party = None #filters.get("party_name")
 	party_group = get_party_group(party_type)
 
 	return get_party_addresses_and_contact(party_type, party, party_group)
@@ -71,25 +78,46 @@ def get_party_addresses_and_contact(party_type, party, party_group):
 		addresses = details.get("address", [])
 		contacts  = details.get("contact", [])
 		if not any([addresses, contacts]):
-			result = [party]
-			result.append(party_groups[party])
-			result.extend(add_blank_columns_for("Contact"))
-			result.extend(add_blank_columns_for("Address"))
-			data.append(result)
+			if party_type == 'Customer':
+				result = [party]
+				result.append('---')
+				result.append(party_groups[party])
+				result.extend(add_blank_columns_for("Contact"))
+				result.extend(add_blank_columns_for("Address"))
+				data.append(result)
+			else:
+				result = ['---']
+				result.append(party)
+				result.append(party_groups[party])
+				result.extend(add_blank_columns_for("Contact"))
+				result.extend(add_blank_columns_for("Address"))
+				data.append(result)
 		else:
 			addresses = list(map(list, addresses))
 			contacts = list(map(list, contacts))
 
 			max_length = max(len(addresses), len(contacts))
 			for idx in range(0, max_length):
-				result = [party]
-				result.append(party_groups[party])
-				address = addresses[idx] if idx < len(addresses) else add_blank_columns_for("Address")
-				contact = contacts[idx] if idx < len(contacts) else add_blank_columns_for("Contact")
-				result.extend(address)
-				result.extend(contact)
+				if party_type == 'Customer':
+					result = [party]
+					result.append('---')
+					result.append(party_groups[party])
+					address = addresses[idx] if idx < len(addresses) else add_blank_columns_for("Address")
+					contact = contacts[idx] if idx < len(contacts) else add_blank_columns_for("Contact")
+					result.extend(address)
+					result.extend(contact)
 
-				data.append(result)
+					data.append(result)
+				else:
+					result = ['---']
+					result.append(party)
+					result.append(party_groups[party])
+					address = addresses[idx] if idx < len(addresses) else add_blank_columns_for("Address")
+					contact = contacts[idx] if idx < len(contacts) else add_blank_columns_for("Contact")
+					result.extend(address)
+					result.extend(contact)
+
+					data.append(result)
 	return data
 
 def get_party_details(party_type, party_list, doctype, party_details):
