@@ -49,7 +49,7 @@ function arbeitszeit(frm) {
 			},
 			"callback": function(r) {
 				if (r.message != 'jahr') {
-					cur_frm.set_df_property('zeiten_summary','options', '<br><div><table style="width: 100%;"><tr><th>Soll</th><th>Ist</th><th>Differenz</th></tr><tr><td>' + r.message.sollzeit + 'h</td><td>' + r.message.arbeitszeit + 'h</td><td>' + r.message.diff + 'h</td></tr></table></div>');
+					cur_frm.set_df_property('zeiten_summary','options', '<br><div><table style="width: 100%;"><tr><th>Soll</th><th>Ist (inkl. Übertrag)</th><th>Differenz</th></tr><tr><td>' + r.message.sollzeit + 'h</td><td>' + r.message.arbeitszeit + 'h</td><td>' + r.message.diff + 'h</td></tr></table></div>');
 				} else {
 					cur_frm.set_df_property('zeiten_summary','options', '<br><div>Bitte keine Jahres übergreifende abfragem durchführen!</div>');
 				}
