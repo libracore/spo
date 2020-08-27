@@ -10,6 +10,10 @@ frappe.ui.form.on('Facharzt Bericht', {
 		if (!cur_frm.doc.patienten_anschrift) {
 			set_patient_adressat(frm);
 		}
+		// timer action icon
+		cur_frm.page.add_action_icon(__("fa fa-history"), function() {
+			timesheet_handling(frm);
+		});
 	},
 	facharzt_kontakt: function(frm) {
 		set_facharzt_adressat(frm);
@@ -98,4 +102,32 @@ function set_patient_adressat(frm) {
 			}
 		}
 	});
+}
+
+function timesheet_handling(frm) {
+	frappe.prompt([
+		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1},
+		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': __('Bemerkung'), 'reqd': 0}
+	],
+	function(values){
+		frappe.call({
+			"method": "spo.utils.timesheet_handlings.create_ts_entry",
+			"args": {
+				"user": frappe.session.user_email,
+				"doctype": frm.doc.doctype,
+				"record": frm.doc.name,
+				"time": values.time,
+				"datum": values.datum,
+				"bemerkung": (values.remark||'')
+			},
+			"async": false,
+			"callback": function(response) {
+				//done
+			}
+		});
+	},
+	__('Arbeitszeit erfassen'),
+	__('Erfassen')
+	)
 }

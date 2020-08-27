@@ -53,7 +53,8 @@ frappe.ui.form.on('Medizinischer Bericht', {
 function timesheet_handling(frm) {
 	frappe.prompt([
 		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1},
+		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': __('Bemerkung'), 'reqd': 0}
 	],
 	function(values){
 		frappe.call({
@@ -63,7 +64,8 @@ function timesheet_handling(frm) {
 				"doctype": frm.doc.doctype,
 				"record": frm.doc.name,
 				"time": values.time,
-				"datum": values.datum
+				"datum": values.datum,
+				"bemerkung": (values.remark||'')
 			},
 			"async": false,
 			"callback": function(response) {

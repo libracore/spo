@@ -535,7 +535,7 @@ def create_ts_entry(user, doctype, record, datum, time, bemerkung=''):
 						"spo_dokument": doctype,
 						"spo_referenz": record,
 						"from_time": get_datetime(get_datetime_str(start)),
-						"spo_remark": ''
+						"spo_remark": bemerkung
 					}
 				]
 			})
