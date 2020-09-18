@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.utils.data import getdate, add_days
+from erpnext.hr.doctype.leave_application.leave_application import get_leave_details
 
 def execute(filters=None):
 	columns, data = ["Mitarbeiter:Link/Employee:200", "Name:Data:200"], []
@@ -45,6 +46,11 @@ def execute(filters=None):
 		prozentuale_feiertage = 0
 		feiertage = 0
 		urlaub = 0
+		urlaub_total = 0.00
+		_urlaub_total = get_leave_details(employee=employee.name, date=getdate(filters.to_date))
+		if _urlaub_total['leave_allocation']:
+			for ut in _urlaub_total['leave_allocation']:
+				urlaub_total += float(_urlaub_total['leave_allocation'][ut]['total_leaves'])
 		gleitzeit = 0
 		emp_soll = sollzeit # --> Allgemeine Sollzeit
 		if employee.date_of_joining > getdate(filters.from_date):
@@ -110,6 +116,7 @@ def execute(filters=None):
 			else:
 				urlaub = 0
 			data_to_append.append(urlaub)
+			data_to_append.append(urlaub_total)
 			
 			# Sollzeit:
 			_sollzeit = emp_soll - (feiertage * 8.4)
@@ -135,6 +142,7 @@ def execute(filters=None):
 			data_to_append.append(0.00)
 			data_to_append.append(0.00)
 			data_to_append.append(0.00)
+			data_to_append.append(0.00)
 			
 			#übertrag aus vorjahr
 			uebertrag = 0
@@ -153,6 +161,7 @@ def execute(filters=None):
 	columns.append("Summe Rückmeldungen:Float")
 	columns.append("Feiertage:Float")
 	columns.append("Bezogener Urlaub:Float")
+	columns.append("Total Urlaub:Float")
 	columns.append("Sollzeit:Float")
 	columns.append("Übertrag:Float")
 	columns.append("Gleitzeit:Float")
