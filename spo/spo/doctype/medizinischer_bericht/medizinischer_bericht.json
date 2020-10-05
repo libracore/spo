@@ -309,7 +309,7 @@
    "fieldname": "mandat_angenommen",
    "fieldtype": "Select",
    "label": "Mandat angenommen",
-   "options": "Ja\nNein"
+   "options": "\nJa\nNein"
   },
   {
    "fieldname": "rsv",
@@ -342,7 +342,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-03-24 13:38:16.409694",
+ "modified": "2020-10-05 11:35:06.242800",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",

@@ -114,7 +114,7 @@ function fetch_data_from_ang(frm) {
 						var adresse = r.message.adresse;
 						var kontakt = r.message.kontakt;
 						
-						cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+						cur_frm.set_value("name_vorname", kontakt.last_name + ", " + kontakt.first_name);
 						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
 						cur_frm.set_value("adresse", adresse.address_line1);
 						cur_frm.set_value("email", kontakt.email_id);
@@ -150,7 +150,7 @@ function fetch_data_from_kunde(frm) {
 						var adresse = r.message.adresse;
 						var kontakt = r.message.kontakt;
 						
-						cur_frm.set_value("name_vorname", kontakt.first_name + " " + kontakt.last_name);
+						cur_frm.set_value("name_vorname", kontakt.last_name + ", " + kontakt.first_name);
 						cur_frm.set_value("geburtsdatum", kontakt.geburtsdatum);
 						cur_frm.set_value("adresse", adresse.address_line1);
 						cur_frm.set_value("email", kontakt.email_id);
