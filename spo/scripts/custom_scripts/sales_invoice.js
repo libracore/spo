@@ -78,12 +78,12 @@ function get_mandats_positionen(frm, mandat) {
 						var child = cur_frm.add_child('items');
 						var beschreibung = '';
 						if (logs[i].spo_dokument) {
-							beschreibung = beschreibung + logs[i].spo_dokument + "; ";
+							beschreibung = beschreibung + __(logs[i].spo_dokument) + "; ";
 						}
 						if (logs[i].spo_remark) {
 							beschreibung = beschreibung + logs[i].spo_remark;
 						} else {
-							beschreibung = beschreibung + 'erstellt';
+							beschreibung = beschreibung + __('erstellt');
 						}
 						frappe.model.set_value(child.doctype, child.name, 'item_code', 'Mandatsverrechnung');
 						frappe.model.set_value(child.doctype, child.name, 'qty', logs[i].hours);

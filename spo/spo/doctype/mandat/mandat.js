@@ -327,7 +327,7 @@ function timesheet_handling(frm) {
 				"record": frm.doc.name,
 				"time": values.time,
 				"datum": values.datum,
-				"bemerkung": values.arbeit + ": " + (values.remark||'')
+				"bemerkung": __(values.arbeit) + ": " + (values.remark||'')
 			},
 			"async": false,
 			"callback": function(response) {
