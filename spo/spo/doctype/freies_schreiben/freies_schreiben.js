@@ -10,9 +10,15 @@ frappe.ui.form.on('Freies Schreiben', {
 			timesheet_handling(frm);
 		});
 	},
+	validate: function(frm) {
+		if (!cur_frm.doc.customer) {
+			cur_frm.set_value("customer", cur_frm.doc.empfaenger);
+		}
+	},
 	empfaenger: function(frm) {
 		cur_frm.set_value("kontakt", "");
 		cur_frm.set_value("adressen_link", "");
+		cur_frm.set_value("customer", cur_frm.doc.empfaenger);
 		if (cur_frm.doc.empfaenger) {
 			frappe.db.get_value('Customer', {'name': cur_frm.doc.empfaenger}, ['customer_name', 'customer_type'], (r) => {
 				if (r.customer_type == 'Company') {

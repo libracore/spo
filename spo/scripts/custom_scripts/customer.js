@@ -4,7 +4,8 @@ cur_frm.dashboard.add_transactions([
 		'items': [
 			'Anfrage',
 			'Mandat',
-			'Mitgliedschaft'
+			'Mitgliedschaft',
+			'Freies Schreiben'
 		]
 	}
 ]);
