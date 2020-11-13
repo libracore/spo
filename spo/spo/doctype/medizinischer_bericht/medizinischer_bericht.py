@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe.utils.data import formatdate
 
 class MedizinischerBericht(Document):
 	pass
@@ -36,7 +37,7 @@ def get_deckblat_data(mandat):
 		if mandat.kontakt:
 			patienten_kontakt = frappe.get_doc("Contact", mandat.kontakt)
 			data["name_klient"] = patienten_kontakt.first_name + " " + patienten_kontakt.last_name
-			data["geburtsdatum_klient"] = patienten_kontakt.geburtsdatum
+			data["geburtsdatum_klient"] = formatdate(string_date=patienten_kontakt.geburtsdatum, format_string='dd.mm.yyyy')
 		else:
 			data["name_klient"] = ''
 			data["geburtsdatum_klient"] = ''
