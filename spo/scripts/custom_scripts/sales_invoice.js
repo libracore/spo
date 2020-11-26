@@ -57,10 +57,15 @@ function get_mandats_positionen(frm, mandat) {
 			console.log(response.message.logs);
 			var logs = response.message.logs;
 			var rsv = response.message.rsv;
+			var rate = response.message.rate;
+			if (!rate || rate <= 0) {
+				rate = false;
+			}
 			if (!rsv && !cur_frm.doc.customer) {
 				frappe.msgprint(__("Bitte wählen Sie zuerst einen Kunden aus, da im Mandat keine RSV hinterlegt ist."));
 				return
 			} else {
+				frappe.msgprint(__("Bitte warten Sie, die Mandatspositionen werden geladen..."), __('Bitte warten...'));
 				cur_frm.set_value('mandat', mandat);
 				if (rsv) {
 					cur_frm.set_value('customer', rsv);
@@ -73,7 +78,6 @@ function get_mandats_positionen(frm, mandat) {
 					{
 						cur_frm.get_field("items").grid.grid_rows[i].remove();
 					}
-					cur_frm.refresh_field('items');
 					for (i=0; i<logs.length; i++) {
 						var child = cur_frm.add_child('items');
 						var beschreibung = '';
@@ -91,11 +95,27 @@ function get_mandats_positionen(frm, mandat) {
 						frappe.model.set_value(child.doctype, child.name, 'spo_datum', logs[i].from_time);
 						frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
 						frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
-						cur_frm.refresh_field('items');
 					}
-					var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
-					df.hidden = 1;
-					frappe.msgprint(__("Bitte denken Sie daran, dass Sie prüfen müssen ob zu diesem Mandat Drittleistungen verrechnet werden müssen!"), __('Drittleistungen'));
+					if (rate) {
+						cur_frm.save().then(() => {
+							var line_items = cur_frm.doc.items;
+							line_items.forEach(function(entry) {
+								 entry.rate = rate;
+							});
+							var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
+							df.hidden = 1;
+							
+							cur_frm.save().then(() => {
+								frappe.msgprint(__("Die Mandatspositionen wurden erfolgreich geladen.<br>Bitte denken Sie daran, dass Sie prüfen müssen ob zu diesem Mandat Drittleistungen verrechnet werden müssen!"), __('Drittleistungen'));
+							});
+						});
+					} else {
+						var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
+						df.hidden = 1;
+						cur_frm.save().then(() => {
+							frappe.msgprint(__("Die Mandatspositionen wurden erfolgreich geladen.<br>Bitte denken Sie daran, dass Sie prüfen müssen ob zu diesem Mandat Drittleistungen verrechnet werden müssen!"), __('Drittleistungen'));
+						});
+					}
 				}
 			}
 		}

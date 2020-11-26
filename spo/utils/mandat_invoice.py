@@ -28,5 +28,6 @@ def get_mandat_logs(mandat):
 								ORDER BY `from_time`, `idx` ASC""".format(reference=mandat.name, referenz_anfrage=referenz_anfrage), as_dict=True)
 	return {
 			'logs': logs,
-			'rsv': mandat.rsv
+			'rsv': mandat.rsv,
+			'rate': mandat.stundensatz
 		}
