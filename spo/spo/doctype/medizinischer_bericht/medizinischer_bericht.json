@@ -7,6 +7,7 @@
  "field_order": [
   "info_titel",
   "druck_deckblatt",
+  "druck_deckblatt_light",
   "sb_deckblatt",
   "klient",
   "beraterin",
@@ -339,10 +340,17 @@
   {
    "fieldname": "sb_inhalt",
    "fieldtype": "Section Break"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval:doc.druck_deckblatt=='0'",
+   "fieldname": "druck_deckblatt_light",
+   "fieldtype": "Check",
+   "label": "Deckblatt-Light andrucken"
   }
  ],
  "is_submittable": 1,
- "modified": "2020-11-13 13:44:03.202844",
+ "modified": "2020-11-27 11:14:34.335535",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Medizinischer Bericht",
