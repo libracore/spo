@@ -114,7 +114,7 @@ def print_bind(sales_invoices, format=None, dest=None, last=False, name=''):
 	# Concatenating pdf files
 	output = PdfFileWriter()
 	for sales_invoice in sales_invoices:
-		output = frappe.get_print("Sales Invoice", sales_invoice, format, as_pdf = True, output = output)
+		output = frappe.get_print("Sales Invoice", sales_invoice, format, as_pdf = True, output = output, ignore_zugferd=True)
 		print("append to output")
 	if dest != None:
 		if isinstance(dest, str): # when dest is a file path
