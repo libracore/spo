@@ -34,7 +34,7 @@ frappe.ui.form.on('Mitglieder Rechnungslauf', {
 
 function download(frm) {
   var element = document.createElement('a');
-  element.setAttribute('href', '/assets/spo/sinvs_for_print/Rechnungslauf_' + frm.doc.name + '.pdf');
+  element.setAttribute('href', '/assets/spo/sinvs_for_print/' + frm.doc.name + '/Rechnungslauf_' + frm.doc.name + '.pdf');
   element.setAttribute('download', 'Rechnungslauf_' + frm.doc.name);
 
   element.style.display = 'none';
