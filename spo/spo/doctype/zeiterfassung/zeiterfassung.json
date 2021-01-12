@@ -39,9 +39,12 @@
   "total_mandatsarbeit",
   "section_diverses",
   "diverses",
+  "section_total_diverses",
   "total_differenz",
   "total_diverses",
-  "scroll_to_top4"
+  "scroll_to_top4",
+  "cb_6",
+  "add_fallbesprechung"
  ],
  "fields": [
   {
@@ -252,11 +255,25 @@
    "fieldtype": "Button",
    "hidden": 1,
    "label": "Save edited TS"
+  },
+  {
+   "fieldname": "cb_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "add_fallbesprechung",
+   "fieldtype": "Button",
+   "hidden": 1,
+   "label": "Interne Fallbesprechung"
+  },
+  {
+   "fieldname": "section_total_diverses",
+   "fieldtype": "Section Break"
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
- "modified": "2020-02-18 11:48:52.982028",
+ "modified": "2021-01-12 09:44:13.235932",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Zeiterfassung",

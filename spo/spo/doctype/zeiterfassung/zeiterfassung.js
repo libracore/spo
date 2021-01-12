@@ -43,8 +43,10 @@ frappe.ui.form.on('Zeiterfassung', {
 				$('*[data-label="Zeiterfassung%20speichern"]').prop('disabled', true);
 				save_update_ts(frm);
 			});
+            cur_frm.set_df_property('add_fallbesprechung','hidden',0);
 		} else {
 			cur_frm.remove_custom_button("Zeiterfassung speichern");
+            cur_frm.set_df_property('add_fallbesprechung','hidden',1);
 		}
 		hide_indicator(frm);
 	},
@@ -86,7 +88,10 @@ frappe.ui.form.on('Zeiterfassung', {
 					$('*[data-label="Zeiterfassung%20speichern"]').prop('disabled', true);
 					save_update_ts(frm);
 				});
-			}
+                cur_frm.set_df_property('add_fallbesprechung','hidden',0);
+			} else {
+                cur_frm.set_df_property('add_fallbesprechung','hidden',1);
+            }
 		}
 	},
 	start: function (frm) {
@@ -159,7 +164,10 @@ frappe.ui.form.on('Zeiterfassung', {
 				}
 			}
 		});
-	}
+	},
+    add_fallbesprechung: function (frm) {
+        add_interne_fallbesprechung(frm);
+    }
 });
 
 function kontrolle_input_format(typ) {
@@ -688,6 +696,7 @@ function alles_sperren(frm) {
 	diverses_activity_type.read_only = 1;
 	diverses_dauer.read_only = 1;
 	cur_frm.remove_custom_button("Zeiterfassung updaten");
+    cur_frm.set_df_property('add_fallbesprechung','hidden',1);
 }
 
 function alles_freigeben(frm) {
@@ -840,4 +849,35 @@ function count_total_diverses(frm) {
 		cur_frm.refresh_field("total_diverses");
 	}
 	setTimeout(function(){ cur_frm.refresh_field("total_diverses"); }, 1000);
+}
+
+function add_interne_fallbesprechung(frm) {
+    frappe.prompt([
+        {'fieldname': 'mandat', 'fieldtype': 'Link', 'label': 'Mandat', 'reqd': 1, 'options': 'Mandat'},
+        {'fieldname': 'dauer', 'fieldtype': 'Float', 'label': 'Dauer', 'reqd': 1}        
+    ],
+    function(values){
+        console.log(values);
+        var mandat = values.mandat;
+        var dauer = values.dauer;
+        // add row
+        var child = cur_frm.add_child('beratungen_mandate');
+        // add mandat to row
+        frappe.model.set_value(child.doctype, child.name, 'spo_referenz', mandat);
+        // add dauer to row
+        frappe.model.set_value(child.doctype, child.name, 'dauer', dauer);
+        // add arbeit to row
+        frappe.model.set_value(child.doctype, child.name, 'arbeit', 'Interne Fallbesprechung');
+        // add doctype to row
+        frappe.model.set_value(child.doctype, child.name, 'spo_dokument', 'Mandat');
+        // check mandat cb
+        frappe.model.set_value(child.doctype, child.name, 'mandat', 1);
+        // uncheck beratung cb
+        frappe.model.set_value(child.doctype, child.name, 'beratung', 0);
+        // refresh table
+        cur_frm.refresh_field('beratungen_mandate');
+    },
+    __('Details'),
+    __('Hinzufügen')
+    )
 }
