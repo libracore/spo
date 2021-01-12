@@ -185,7 +185,13 @@ def get_data():
 					"name": "Timesheets Jahresrapport",
 					"label": _("Timesheets Jahresrapport"),
 					"description": _("Timesheets Jahresrapport"),
-					#"doctype": "Telefon Triage",
+					"is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "Mitarbeiter Deckungsbeitrag",
+					"label": _("Mitarbeiter Deckungsbeitrag"),
+					"description": _("Mitarbeiter Deckungsbeitrag"),
 					"is_query_report": True
 				}
 			]

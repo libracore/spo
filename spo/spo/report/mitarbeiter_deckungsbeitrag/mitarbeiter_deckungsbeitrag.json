@@ -1,0 +1,28 @@
+{
+ "add_total_row": 0,
+ "creation": "2021-01-12 10:53:20.986377",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Z\u00fcrich (Hochformat)",
+ "modified": "2021-01-12 10:53:20.986377",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Mitarbeiter Deckungsbeitrag",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Sales Invoice",
+ "report_name": "Mitarbeiter Deckungsbeitrag",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Buchhaltung HR"
+  },
+  {
+   "role": "SPO Poweruser"
+  }
+ ]
+}
