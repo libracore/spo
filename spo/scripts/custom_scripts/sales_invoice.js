@@ -95,6 +95,7 @@ function get_mandats_positionen(frm, mandat) {
 						frappe.model.set_value(child.doctype, child.name, 'spo_datum', logs[i].from_time);
 						frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
 						frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'employee', logs[i].employee_name);
 					}
 					if (rate) {
 						cur_frm.save().then(() => {
