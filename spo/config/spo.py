@@ -47,6 +47,13 @@ def get_data():
 					"label": _("Adressliste"),
 					"description": _("Adressliste"),
 					"is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "SPO Fallbibliothek",
+					"label": _("Fallbibliothek"),
+					"description": _("Fallbibliothek"),
+					"is_query_report": True
 				}
 			]
 		},
