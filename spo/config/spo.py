@@ -257,6 +257,13 @@ def get_data():
 					"label": _("Rechnungsabgrenzung"),
 					"doctype": "Sales Invoice",
                     "is_query_report": True
+				},
+				{
+					"type": "report",
+					"name": "Abgleich Konten 1200-1201",
+					"label": _("Abgleich Konten 1200-1201"),
+					"doctype": "Mandat",
+                    "is_query_report": True
 				}
             ]
 		}
