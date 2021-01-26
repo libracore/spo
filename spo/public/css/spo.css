@@ -1,0 +1,7 @@
+.dt-row.vrow.extend-row {
+    position: relative !important;
+    top: auto !important;
+}
+.dt-row.extend-row {
+    height: unset !important;
+}
