@@ -1,0 +1,77 @@
+{
+ "allow_copy": 1,
+ "creation": "2021-02-03 12:00:00.711715",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "problemstellung",
+  "fragestellung_anwalt",
+  "beurteilung",
+  "bemerkung",
+  "fazit",
+  "empfehlung"
+ ],
+ "fields": [
+  {
+   "fieldname": "problemstellung",
+   "fieldtype": "Text Editor",
+   "label": "Problemstellung"
+  },
+  {
+   "fieldname": "fragestellung_anwalt",
+   "fieldtype": "Text Editor",
+   "label": "Fragestellung"
+  },
+  {
+   "fieldname": "beurteilung",
+   "fieldtype": "Text Editor",
+   "label": "Beurteilung"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text Editor",
+   "label": "Bemerkung"
+  },
+  {
+   "fieldname": "fazit",
+   "fieldtype": "Text Editor",
+   "label": "Fazit"
+  },
+  {
+   "fieldname": "empfehlung",
+   "fieldtype": "Select",
+   "label": "Empfehlung",
+   "options": "Jur. Vorgehen empfohlen\nJur. Vorgehen nicht empfohlen\nAnderes"
+  }
+ ],
+ "hide_toolbar": 1,
+ "modified": "2021-02-03 12:55:03.881724",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Triage Anonym",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

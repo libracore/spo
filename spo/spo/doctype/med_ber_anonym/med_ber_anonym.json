@@ -1,0 +1,141 @@
+{
+ "allow_copy": 1,
+ "creation": "2021-02-03 13:00:18.459635",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "instutition",
+  "mandat_angenommen",
+  "gutachter",
+  "problemstellung",
+  "diagnose",
+  "operation",
+  "arzt",
+  "verantwortlicher_arzt_sicht_patient",
+  "ausgangslage",
+  "korrespondenz",
+  "bemerkung",
+  "situation_heute",
+  "beurteilung",
+  "fragestellung_anwalt",
+  "fazit",
+  "empfehlung"
+ ],
+ "fields": [
+  {
+   "fieldname": "instutition",
+   "fieldtype": "Data",
+   "label": "Institution"
+  },
+  {
+   "fieldname": "mandat_angenommen",
+   "fieldtype": "Select",
+   "label": "Mandat angenommen",
+   "options": "\nJa\nNein"
+  },
+  {
+   "fieldname": "gutachter",
+   "fieldtype": "Data",
+   "label": "Gutachter"
+  },
+  {
+   "fieldname": "problemstellung",
+   "fieldtype": "Text Editor",
+   "label": "Problemstellung"
+  },
+  {
+   "fieldname": "diagnose",
+   "fieldtype": "Text Editor",
+   "label": "Diagnose/n"
+  },
+  {
+   "fieldname": "operation",
+   "fieldtype": "Text Editor",
+   "label": "Operation/en"
+  },
+  {
+   "fieldname": "arzt",
+   "fieldtype": "Text Editor",
+   "label": "Behandelnder Arzt"
+  },
+  {
+   "fieldname": "verantwortlicher_arzt_sicht_patient",
+   "fieldtype": "Data",
+   "label": "Verantwortlicher Arzt aus Sicht der Patientin / des Patienten"
+  },
+  {
+   "fieldname": "ausgangslage",
+   "fieldtype": "Table",
+   "label": "Ausgangslage",
+   "options": "Medizinischer Bericht Ausgangslage"
+  },
+  {
+   "fieldname": "korrespondenz",
+   "fieldtype": "Table",
+   "label": "Nur falls n\u00f6tig: Korrespondenz (Haftpflichtversicherung etc)",
+   "options": "Medizinischer Bericht Korrspondenz"
+  },
+  {
+   "fieldname": "bemerkung",
+   "fieldtype": "Text Editor",
+   "label": "Bemerkung"
+  },
+  {
+   "fieldname": "situation_heute",
+   "fieldtype": "Text Editor",
+   "label": "Situation heute"
+  },
+  {
+   "fieldname": "beurteilung",
+   "fieldtype": "Text Editor",
+   "label": "Beurteilung"
+  },
+  {
+   "fieldname": "fragestellung_anwalt",
+   "fieldtype": "Text Editor",
+   "label": "Fragestellung"
+  },
+  {
+   "fieldname": "fazit",
+   "fieldtype": "Text Editor",
+   "label": "Fazit"
+  },
+  {
+   "fieldname": "empfehlung",
+   "fieldtype": "Select",
+   "label": "Empfehlung",
+   "options": "Jur. Vorgehen empfohlen\nJur. Vorgehen nicht empfohlen\nAnderes"
+  }
+ ],
+ "hide_toolbar": 1,
+ "modified": "2021-02-03 13:29:30.047942",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Med Ber Anonym",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
