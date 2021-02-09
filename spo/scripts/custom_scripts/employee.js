@@ -27,6 +27,62 @@ frappe.ui.form.on('Employee', {
 	}
 });
 
+frappe.ui.form.on("Anstellungsgrade", "von", function(frm, cdt, cdn) {
+    var anstellungsgrad = locals[cdt][cdn];
+    if (anstellungsgrad.von && anstellungsgrad.bis) {
+        // kontrolle selbes jahr
+        var von_jahr = new Date(anstellungsgrad.von).getFullYear();
+        var bis_jahr = new Date(anstellungsgrad.bis).getFullYear();
+        if (von_jahr != bis_jahr) {
+            anstellungsgrad.von = '';
+            frappe.msgprint(__("Bitte keine Jahresübergreifende Einträge erstellen"), __("Fehler"));
+            cur_frm.refresh_field('anstellungsgrade');
+        }
+    }
+});
+
+frappe.ui.form.on("Anstellungsgrade", "bis", function(frm, cdt, cdn) {
+    var anstellungsgrad = locals[cdt][cdn];
+    if (anstellungsgrad.von && anstellungsgrad.bis) {
+        // kontrolle selbes jahr
+        var von_jahr = new Date(anstellungsgrad.von).getFullYear();
+        var bis_jahr = new Date(anstellungsgrad.bis).getFullYear();
+        if (von_jahr != bis_jahr) {
+            anstellungsgrad.bis = '';
+            frappe.msgprint(__("Bitte keine Jahresübergreifende Einträge erstellen"), __("Fehler"));
+            cur_frm.refresh_field('anstellungsgrade');
+        }
+    }
+});
+
+frappe.ui.form.on("Urlaubslisten", "von", function(frm, cdt, cdn) {
+    var urlaubsliste = locals[cdt][cdn];
+    if (urlaubsliste.von && urlaubsliste.bis) {
+        // kontrolle selbes jahr
+        var von_jahr = new Date(urlaubsliste.von).getFullYear();
+        var bis_jahr = new Date(urlaubsliste.bis).getFullYear();
+        if (von_jahr != bis_jahr) {
+            urlaubsliste.von = '';
+            frappe.msgprint(__("Bitte keine Jahresübergreifende Einträge erstellen"), __("Fehler"));
+            cur_frm.refresh_field('urlaubslisten');
+        }
+    }
+});
+
+frappe.ui.form.on("Urlaubslisten", "bis", function(frm, cdt, cdn) {
+    var urlaubsliste = locals[cdt][cdn];
+    if (urlaubsliste.von && urlaubsliste.bis) {
+        // kontrolle selbes jahr
+        var von_jahr = new Date(urlaubsliste.von).getFullYear();
+        var bis_jahr = new Date(urlaubsliste.bis).getFullYear();
+        if (von_jahr != bis_jahr) {
+            urlaubsliste.bis = '';
+            frappe.msgprint(__("Bitte keine Jahresübergreifende Einträge erstellen"), __("Fehler"));
+            cur_frm.refresh_field('urlaubslisten');
+        }
+    }
+});
+
 function calc_monatslohn(frm) {
 	if (cur_frm.doc.anstellung == 'Festanstellung') {
 		var monatslohn = (cur_frm.doc.monatslohn / 100) * cur_frm.doc.anstellungsgrad;
@@ -45,7 +101,9 @@ function arbeitszeit(frm) {
 				"employee": cur_frm.doc.name,
 				"von": cur_frm.doc.zeitraum_von,
 				"bis": cur_frm.doc.zeitraum_bis,
-				"uebertraege": cur_frm.doc.uebertraege
+				"uebertraege": cur_frm.doc.uebertraege,
+                "anstellungsgrade": cur_frm.doc.anstellungsgrade,
+                "urlaubslisten": cur_frm.doc.urlaubslisten
 			},
 			"callback": function(r) {
 				if (r.message != 'jahr') {
