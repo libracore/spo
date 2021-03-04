@@ -285,7 +285,7 @@ function update_dashboard(frm) {
 			if (aufwand_in_ch == 0) {
 				_colors = ['#00b000', '#d40000'];
 			} else {
-				aufwand_in_ch = (aufwand_in_ch / 60) * frm.doc.stundensatz;
+				aufwand_in_ch = ((aufwand_in_ch / 60) * frm.doc.stundensatz) - cur_frm.doc.facharzthonorar;
 			}
 			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
@@ -316,10 +316,15 @@ function timesheet_handling(frm) {
 		{'fieldname': 'datum', 'fieldtype': 'Date', 'label': 'Datum', 'reqd': 1, 'default': 'Today'},
 		{'fieldname': 'arbeit', 'fieldtype': 'Select', 'label': __('Arbeitsinhalt'), 'reqd': 1, options: [__('Korrespondenz'), __('Telefonat'), __('Aktenstudium'), __('Organisation der juristischen Beratung'), __('Juristische Beratung'), __('Recherche Facharzt'), __('Organisation Facharzt'), __('Interne fachliche Besprechung'), __('Sonstiges')]},
 		{'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': __('Bemerkung'), 'reqd': 0},
-		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1}  
+		{'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1},
+		{'fieldname': 'nicht_verrechnen', 'fieldtype': 'Check', 'label': 'Nicht verrechnen', 'default': 0}
 	],
 	function(values){
-		frappe.call({
+		var bemerkung = __(values.arbeit) + ": " + (values.remark||'');
+        if (values.nicht_verrechnen == 1) {
+            bemerkung = 'Nicht verrechnen! ' + bemerkung;
+        }
+        frappe.call({
 			"method": "spo.utils.timesheet_handlings.create_ts_entry",
 			"args": {
 				"user": frappe.session.user_email,
@@ -327,7 +332,8 @@ function timesheet_handling(frm) {
 				"record": frm.doc.name,
 				"time": values.time,
 				"datum": values.datum,
-				"bemerkung": __(values.arbeit) + ": " + (values.remark||'')
+				"bemerkung": bemerkung,
+                "nicht_verrechnen": values.nicht_verrechnen
 			},
 			"async": false,
 			"callback": function(response) {

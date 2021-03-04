@@ -39,6 +39,7 @@
   "kostengutschsprache",
   "max_aufwand",
   "stundensatz",
+  "facharzthonorar",
   "zeiten_uebersicht",
   "amended_from",
   "fold_referenzen",
@@ -455,11 +456,16 @@
    "fieldtype": "Link",
    "label": "Gesetzlicher Vertreter 2 Adresse",
    "options": "Address"
+  },
+  {
+   "fieldname": "facharzthonorar",
+   "fieldtype": "Currency",
+   "label": "Facharzthonorar"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2020-07-17 10:50:56.842641",
+ "modified": "2021-03-04 08:49:43.585073",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
