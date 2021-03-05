@@ -503,6 +503,7 @@
    "label": "E-Mail"
   },
   {
+   "fetch_from": "patienten_kontakt.mobile_no",
    "fieldname": "patient_mobile",
    "fieldtype": "Data",
    "label": "Mobile"
@@ -872,7 +873,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2020-05-27 12:01:16.698395",
+ "modified": "2021-03-05 14:27:59.601731",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
