@@ -376,7 +376,8 @@ function update_dashboard(frm) {
 		"method": "spo.spo.doctype.anfrage.anfrage.get_dashboard_data",
 		"args": {
 			"mitglied": frm.doc.patient,
-			"anfrage": frm.doc.name
+			"anfrage": frm.doc.name,
+            "mitgliedschaft": frm.doc.mitgliedschaft
 		},
 		"async": true,
 		"callback": function(response) {

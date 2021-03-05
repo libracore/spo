@@ -143,7 +143,7 @@ def check_mitgliedschaft_ablaufdatum(mitgliedschaft):
         return False
 
 @frappe.whitelist()
-def get_dashboard_data(mitglied='', anfrage=''):
+def get_dashboard_data(mitglied='', anfrage='', mitgliedschaft=''):
     # Zeitbalken
     callcenter_limit = frappe.get_single("Einstellungen").limite_callcenter_anfrage
     callcenter_verwendet = 0.000
@@ -155,14 +155,24 @@ def get_dashboard_data(mitglied='', anfrage=''):
             callcenter_verwendet = 0
         callcenter_verwendet = callcenter_verwendet * 60
     else:
-        try:
-            callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
-                                                        SELECT `name` FROM `tabAnfrage` WHERE `patient` = '{mitglied}')
-                                                        AND `parent` IN (
-                                                            SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mitglied=mitglied), as_list=True)[0][0])
-        except:
-            callcenter_verwendet = 0
-        callcenter_verwendet = callcenter_verwendet * 60
+        if not mitgliedschaft:
+            try:
+                callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
+                                                            SELECT `name` FROM `tabAnfrage` WHERE `patient` = '{mitglied}')
+                                                            AND `parent` IN (
+                                                                SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mitglied=mitglied), as_list=True)[0][0])
+            except:
+                callcenter_verwendet = 0
+            callcenter_verwendet = callcenter_verwendet * 60
+        else:
+            try:
+                callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
+                                                            SELECT `name` FROM `tabAnfrage` WHERE `patient` = '{mitglied}' AND `mitgliedschaft` = '{mitgliedschaft}')
+                                                            AND `parent` IN (
+                                                                SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mitglied=mitglied, mitgliedschaft=mitgliedschaft), as_list=True)[0][0])
+            except:
+                callcenter_verwendet = 0
+            callcenter_verwendet = callcenter_verwendet * 60
 
     limite_unterbruch = frappe.get_single("Einstellungen").limite_unterbruch
 
@@ -176,7 +186,7 @@ def get_dashboard_data(mitglied='', anfrage=''):
 
     return {
             "callcenter_limit": callcenter_limit,
-            "callcenter_verwendet": callcenter_verwendet,
+            "callcenter_verwendet": round(callcenter_verwendet),
             "mitgliedschaften": mitgliedschaften,
             "limite_unterbruch": limite_unterbruch
         }
