@@ -285,7 +285,7 @@ function update_dashboard(frm) {
 			if (aufwand_in_ch == 0) {
 				_colors = ['#00b000', '#d40000'];
 			} else {
-				aufwand_in_ch = ((aufwand_in_ch / 60) * frm.doc.stundensatz) - cur_frm.doc.facharzthonorar;
+				aufwand_in_ch = ((aufwand_in_ch / 60) * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
 			}
 			let limit_chart = new frappe.Chart( "#limit", { // or DOM element
 				data: {
