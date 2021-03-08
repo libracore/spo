@@ -3,12 +3,9 @@
 
 from __future__ import unicode_literals
 import frappe
-#from frappe.utils.data import getdate, add_days
+from frappe import _
 from erpnext.hr.doctype.leave_application.leave_application import get_leave_details
-
 from frappe.utils.data import nowdate, add_to_date, get_datetime, get_datetime_str, time_diff_in_hours, get_time, add_days, getdate, date_diff
-#from erpnext.projects.doctype.timesheet.timesheet import Timesheet
-#import json
 from frappe.utils import flt
 from spo.utils.arbeitszeituebersicht_berechnung import berechnung_ist_zeit, anzahl_feiertage_und_krankheitstage, berechnung_anzahl_urlaubstage_ganz, berechnung_anzahl_mo_bis_fr, berechnung_sollzeit
 
@@ -124,15 +121,9 @@ def execute(filters=None):
             data_to_append.append(urlaub)
             data_to_append.append(urlaub_total)
             
-            # Sollzeit:
-            # _sollzeit = emp_soll - (feiertage * 8.4)
-            # _sollzeit = (_sollzeit / 100) * employee.anstellungsgrad
-            # _sollzeit = _sollzeit - (urlaub * 8.4)
-            
             _sollzeit = get_sollzeit(employee.name, filters.from_date, filters.to_date)
             
             data_to_append.append(_sollzeit)
-            #data_to_append.append(get_sollzeit(employee.name, filters.from_date, filters.to_date))
             
             #übertrag aus vorjahr
             uebertrag = 0
@@ -196,7 +187,6 @@ def get_sollzeit(employee, von, bis):
     employee = frappe.get_doc("Employee", employee)
     anstellungsgrade = employee.anstellungsgrade
     urlaubslisten = employee.urlaubslisten
-    #frappe.throw(str(anstellungsgrade))
     
     tagesarbeitszeit = 8.4
     
@@ -214,13 +204,12 @@ def get_sollzeit(employee, von, bis):
             if getdate(urlaubsliste.von).year == getdate(von).year:
                 feiertagsliste = urlaubsliste.holiday_list
         if not feiertagsliste:
-            frappe.throw(_("Sie haben für die gewählte Periode keine Urlaubsliste hinterlegt"))
+            frappe.throw(_("Sie haben für die gewählte Periode im Mitarbeiterstamm {ma} keine Urlaubsliste hinterlegt".format(ma=employee.name)))
     
     
     
     anstellungsgrade_gewaehltes_jahr = []
     anstellungsgrad_gefunden = False
-    #anstellungsgrade = json.loads(anstellungsgrade)
     for _anstellungsgrad in anstellungsgrade:
         if getdate(von).year == getdate(_anstellungsgrad.von).year:
             anstellungsgrad_gefunden = True
@@ -232,7 +221,7 @@ def get_sollzeit(employee, von, bis):
             anzahl_mo_bis_fr = berechnung_anzahl_mo_bis_fr(von, bis)
             anzahl_feiertage = anzahl_feiertage_und_krankheitstage(von, bis, feiertagsliste)
         else:
-            frappe.throw(_("Sie haben für die gewählte Periode keinen Anstellungsgrad hinterlegt"))
+            frappe.throw(_("Sie haben für die gewählte Periode im Mitarbeiterstamm {ma} keinen Anstellungsgrad hinterlegt".format(ma=employee.name)))
     else:
         if len(anstellungsgrade_gewaehltes_jahr) > 1:
             anstellungsgrad = []
