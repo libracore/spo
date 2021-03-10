@@ -157,18 +157,19 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 function defaul_texte(frm) {
 	if (!cur_frm.doc.textbaustein && (!cur_frm.doc.brieftext||cur_frm.doc.brieftext=="<div><br></div>")) {
 		if (!cur_frm.doc.mahnstufe_1  && !cur_frm.doc.mahnstufe_2) {
-			var brieftext_string = '<p><b>Herausgabe Patientendossier - Onkologie, Behandlung seit November 2016</b></p><br>' +
-				'<p>Sehr geehrter Herr Dr. Chaksad</p><br>' +
-				'<p>Herr M. … wandte sich an die Stiftung SPO Patientenschutz und bat uns für ihn folgende Unterlagen zu verlangen:</p><br>' +
-				'<ul><li><b>vollständiges Patientendossier seit 21.11.2016 mit:</b>' +
-				'<ul><li>Verlaufsberichte Chemotherapie (ambulant und stationär)</li>' +
-				'<li>Untersuchungsberichte / Konsiliarberichte (Medizin/Chirurgie)</li>' +
-				'<li>Pflegedokumentation (Pflegebericht, Überwachungsblätter und Kardex)</li>' +
-				'<li>Verordnungsblätter</li>' +
-				'<li>Laborbefunde, Ultrschallberichte, Röntgenbefunde und Röntgenbilder auf CD</li>' +
-				'<li>Verlegungsbericht Onkologie -> Viszeralchirurgie.</li></ul></li></ul><br>' +
+			var brieftext_string = '<p><b>Herausgabe Patientendossier - betreffend Operation vom 22.09.2019, Femurkopfendoprothese links</b></p><br>' +
+				'<p>Sehr geehrter Herr Dr. X</p><br>' +
+				'<p>Frau yz wandte sich an die Stiftung SPO Patientenorganisation und bat uns, für sie folgende Unterlagen zu verlangen:</p><br>' +
+				'<p><b>vollständiges Patientendossier seit 21.09.2019 mit:</b></p><br>' +
+				'<ul><li>Untersuchungs- und Sprechstundenberichte</li>' +
+				'<li>OP-Aufklärung</li>' +
+				'<li>OP-Bericht</li>' +
+				'<li>Arztverlaufsbericht, Austrittsbericht</li>' +
+				'<li>Röntgenbefunde und Röntgenbilder auf Datenträger oder mit E-Zugangscode</li></ul><br>' +
 				'<p>Wir danken Ihnen für die baldige Zusendung.</p><br>' +
-				'<p>Freundliche Grüsse</p>'
+				'<p>Freundliche Grüsse</p><br>' +
+				'<p>Name Beraterin, Beratung</p><br><br>' +
+				'<p>Vollmacht Frau yz</p><br>'
 			cur_frm.set_value('brieftext', brieftext_string);
 		} else if (cur_frm.doc.mahnstufe_1 && !cur_frm.doc.mahnstufe_2) {
 			var brieftext_string = '<p><b>Herausgabe des vollständigen Patientendossiers</b></p><br>' +
