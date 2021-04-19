@@ -107,6 +107,8 @@
    "label": "Betrag in SFr"
   },
   {
+   "fetch_from": "facharzt.iban",
+   "fetch_if_empty": 1,
    "fieldname": "iban",
    "fieldtype": "Data",
    "label": "Konto-Nummer/IBAN"
@@ -159,7 +161,7 @@
    "reqd": 1
   }
  ],
- "modified": "2020-08-14 13:01:19.428954",
+ "modified": "2021-04-19 10:03:07.954686",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Facharzt Bericht",
