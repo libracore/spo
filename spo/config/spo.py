@@ -260,8 +260,8 @@ def get_data():
 				},
 				{
 					"type": "report",
-					"name": "Abgleich Konten 1200-1201",
-					"label": _("Abgleich Konten 1200-1201"),
+					"name": "Abgleich Facharztexpertisen",
+					"label": _("Abgleich Facharztexpertisen"),
 					"doctype": "Mandat",
                     "is_query_report": True
 				}
