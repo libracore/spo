@@ -10,7 +10,8 @@
   "referenz",
   "spo_dokument",
   "mandat",
-  "beratung"
+  "beratung",
+  "nicht_verrechnen"
  ],
  "fields": [
   {
@@ -58,10 +59,16 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Arbeit"
+  },
+  {
+   "default": "0",
+   "fieldname": "nicht_verrechnen",
+   "fieldtype": "Check",
+   "label": "Nicht verrechnen"
   }
  ],
  "istable": 1,
- "modified": "2019-12-19 15:49:41.110002",
+ "modified": "2021-06-07 21:44:28.497433",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "SPO Zeiterfassung Beratung Mandate",

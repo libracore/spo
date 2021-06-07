@@ -790,6 +790,7 @@ function fetch_beratungs_und_mandats_arbeiten_von_ts(frm) {
 					frappe.model.set_value(child.doctype, child.name, 'spo_dokument', fetch.beratungen[i].spo_dokument);
 					frappe.model.set_value(child.doctype, child.name, 'beratung', fetch.beratungen[i].beratung);
 					frappe.model.set_value(child.doctype, child.name, 'mandat', fetch.beratungen[i].mandat);
+					frappe.model.set_value(child.doctype, child.name, 'nicht_verrechnen', fetch.beratungen[i].nicht_verrechnen);
 				}
 				cur_frm.refresh_field('beratungen_mandate');
 			}

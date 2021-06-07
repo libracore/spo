@@ -123,6 +123,7 @@ def fetch_beratungs_und_mandats_arbeiten_von_ts(ts):
 			beratung["spo_dokument"] = log.spo_dokument
 			beratung["beratung"] = 1
 			beratung["mandat"] = 0
+			beratung["nicht_verrechnen"] = 0
 			beratungen.append(beratung)
 		#/Beratung
 		#Mandatsarbeiten
@@ -135,6 +136,7 @@ def fetch_beratungs_und_mandats_arbeiten_von_ts(ts):
 			beratung["spo_dokument"] = log.spo_dokument
 			beratung["mandat"] = 1
 			beratung["beratung"] = 0
+			beratung["nicht_verrechnen"] = log.nicht_verrechnen
 			beratungen.append(beratung)
 			total_mandatsarbeit += log.hours
 		#/Mandatsarbeiten
@@ -217,6 +219,7 @@ def update_ts(ma, ts, datum, start, ende, pausen, beratungen_mandate, diverses, 
 			row["spo_dokument"] = beratung['spo_dokument']
 			row["spo_referenz"] = beratung['spo_referenz']
 			row["spo_remark"] = beratung['arbeit']
+			row["nicht_verrechnen"] = beratung['nicht_verrechnen']
 			ts.append('time_logs', row)
 		#/Beratungen/Mandate
 		#Diverses
@@ -293,6 +296,7 @@ def save_ts(ma, datum, start, ende, pausen, beratungen_mandate, diverses, workin
 			row["spo_dokument"] = beratung['spo_dokument']
 			row["spo_referenz"] = beratung['spo_referenz']
 			row["spo_remark"] = beratung['arbeit']
+			row["nicht_verrechnen"] = beratung['nicht_verrechnen']
 			ts.append('time_logs', row)
 		#/Beratungen/Mandate
 		#Diverses
@@ -423,6 +427,7 @@ def save_new_ts(employee, date, start, ende, working_hours, pausen, beratungen_m
 			row["spo_dokument"] = beratung['spo_dokument']
 			row["spo_referenz"] = beratung['spo_referenz']
 			row["spo_remark"] = beratung['arbeit']
+			row["nicht_verrechnen"] = beratung['nicht_verrechnen']
 			ts.append('time_logs', row)
 		#/Beratungen/Mandate
 		#Diverses
@@ -499,6 +504,7 @@ def update_existing_ts(ts, employee, date, start, ende, working_hours, pausen, b
 			row["spo_dokument"] = beratung['spo_dokument']
 			row["spo_referenz"] = beratung['spo_referenz']
 			row["spo_remark"] = beratung['arbeit']
+			row["nicht_verrechnen"] = beratung['nicht_verrechnen']
 			ts.append('time_logs', row)
 		#/Beratungen/Mandate
 		#Diverses
