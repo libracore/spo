@@ -1,4 +1,4 @@
-# Copyright (c) 2020, libracore and contributors
+# Copyright (c) 2020-2021, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -71,7 +71,15 @@ def get_data(from_date, to_date):
                          AND `account` LIKE "3140%SPO";""".format(from_date=from_date, to_date=to_date)
     betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
     summe_6p1 += betrag
-    data.append({'description': '', 'account': '3140', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
+    # 3150
+    sql_query = """SELECT 1.077 * IFNULL(SUM(`credit` - `debit`), 0) AS `amount` 
+                   FROM `tabGL Entry` 
+                   WHERE `posting_date` >= "{from_date}" 
+                         AND `posting_date` <= "{to_date}" 
+                         AND `account` LIKE "3150%SPO";""".format(from_date=from_date, to_date=to_date)
+    betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
+    summe_6p1 += betrag
+    data.append({'description': '', 'account': '3150', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
     # total 6.1%
     tax_6p1 = summe_6p1 * 0.061
     data.append({'description': '', 'account': '<b>Total</b>', 'amount': "<b>CHF {:,.2f}</b>".format(summe_6p1).replace(",", "'"), 
