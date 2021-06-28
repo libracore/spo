@@ -481,6 +481,8 @@ def create_ts_entry(user, doctype, record, datum, time, bemerkung='', nicht_verr
             type = 'Mandatsarbeit'
             if doctype == 'Anfrage':
                 type = 'Beratung'
+            if doctype == 'Meldestelle':
+                type = 'Meldestelle'
             start = datum.strftime("%Y-%m-%d") + " 00:00:00"
             row = {}
             row["activity_type"] = type
@@ -498,6 +500,8 @@ def create_ts_entry(user, doctype, record, datum, time, bemerkung='', nicht_verr
             type = 'Mandatsarbeit'
             if doctype == 'Anfrage':
                 type = 'Beratung'
+            if doctype == 'Meldestelle':
+                type = 'Meldestelle'
             ts = frappe.get_doc({
                 "doctype": "Timesheet",
                 "employee": user,

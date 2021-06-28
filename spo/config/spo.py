@@ -160,6 +160,18 @@ def get_data():
 			]
 		},
 		{
+			"label": _("Meldestelle"),
+			"icon": "fa fa-cog",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Meldestelle",
+					"label": _("Meldestelle"),
+					"description": _("Meldestelle")
+				}
+			]
+		},
+		{
 			"label": _("Einstellungen"),
 			"icon": "fa fa-cog",
 			"items": [

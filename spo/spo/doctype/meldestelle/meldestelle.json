@@ -1,0 +1,155 @@
+{
+ "creation": "2021-06-28 12:47:49.722854",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "status",
+  "section_applicant",
+  "applicant_name",
+  "contact_number",
+  "contact_mail",
+  "heading_1",
+  "from_time",
+  "to_time",
+  "section_message",
+  "topic",
+  "message",
+  "section_reporting_point",
+  "customer",
+  "contact",
+  "address",
+  "section_timesheet_overview",
+  "timelogs",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "collapsible": 1,
+   "fieldname": "section_applicant",
+   "fieldtype": "Section Break",
+   "label": "Applicant"
+  },
+  {
+   "fieldname": "applicant_name",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number"
+  },
+  {
+   "fieldname": "contact_mail",
+   "fieldtype": "Data",
+   "label": "Contact E-Mail"
+  },
+  {
+   "fieldname": "topic",
+   "fieldtype": "Data",
+   "label": "Topic"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Long Text",
+   "label": "Message"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_reporting_point",
+   "fieldtype": "Section Break",
+   "label": "Reporting point"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "depends_on": "eval:doc.customer",
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "label": "Contact",
+   "options": "Contact"
+  },
+  {
+   "depends_on": "eval:doc.customer",
+   "fieldname": "address",
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Meldestelle",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Created\nIn progress\nTo be charged\nCompleted"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_timesheet_overview",
+   "fieldtype": "Section Break",
+   "label": "Timesheet Overview"
+  },
+  {
+   "fieldname": "timelogs",
+   "fieldtype": "HTML",
+   "label": "Timelogs"
+  },
+  {
+   "fieldname": "heading_1",
+   "fieldtype": "Heading",
+   "label": "Availability"
+  },
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Time",
+   "label": "From"
+  },
+  {
+   "fieldname": "to_time",
+   "fieldtype": "Time",
+   "label": "To"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_message",
+   "fieldtype": "Section Break",
+   "label": "Message"
+  }
+ ],
+ "modified": "2021-06-28 13:22:01.348381",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Meldestelle",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
