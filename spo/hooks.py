@@ -121,7 +121,8 @@ scheduler_events = {
 		"spo.utils.timesheet_handlings.auto_ts_submit",
 		"spo.spo.doctype.mitglieder_rechnungslauf.mitglieder_rechnungslauf.autom_rechnungslauf",
 		"spo.utils.cleanup.cleanup_anfragen",
-		"spo.utils.cleanup.cleanup_anonyme_ansichten"
+		"spo.utils.cleanup.cleanup_anonyme_ansichten",
+        "spo.spo.doctype.customer_deactivation_log.customer_deactivation_log.daily_check"
 	]
 }
 

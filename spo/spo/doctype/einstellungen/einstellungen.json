@@ -14,7 +14,11 @@
   "auto_assign",
   "section_rechnungslauf",
   "rechnungslauf_vorlauf",
-  "rechnungslauf_zahlungsfrist"
+  "rechnungslauf_zahlungsfrist",
+  "section_customer_deactivation",
+  "execution_day",
+  "execution_month",
+  "reminder_recipients"
  ],
  "fields": [
   {
@@ -78,10 +82,38 @@
    "fieldname": "rechnungslauf_zahlungsfrist",
    "fieldtype": "Int",
    "label": "Zahlungsfrist"
+  },
+  {
+   "fieldname": "section_customer_deactivation",
+   "fieldtype": "Section Break",
+   "label": "Customer Deactivation"
+  },
+  {
+   "default": "1",
+   "fieldname": "execution_day",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Execution Day",
+   "reqd": 1
+  },
+  {
+   "default": "10",
+   "fieldname": "execution_month",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Execution Month",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reminder_recipients",
+   "fieldtype": "Table",
+   "label": "Reminder Recipients",
+   "options": "SPO Reminder Recipients",
+   "reqd": 1
   }
  ],
  "issingle": 1,
- "modified": "2020-01-07 13:26:25.560476",
+ "modified": "2021-07-07 11:01:27.778658",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",

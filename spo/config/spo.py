@@ -108,6 +108,12 @@ def get_data():
 					"description": _("Aktive Mitglieder per Stichtag"),
 					"doctype": "Mitgliedschaft",
 					"is_query_report": True
+				},
+				{
+					"type": "doctype",
+					"label": _("Customer Deactivation Log"),
+					"name": "Customer Deactivation Log",
+					"description": _("Customer Deactivation Log")
 				}
 			]
 		},

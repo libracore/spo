@@ -1,0 +1,59 @@
+{
+ "creation": "2021-07-01 16:53:11.435863",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "sales_invoice",
+  "mitgliedschaft",
+  "status",
+  "error"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Sales Invoice",
+   "options": "Sales Invoice"
+  },
+  {
+   "fieldname": "mitgliedschaft",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mitgliedschaft",
+   "options": "Mitgliedschaft"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Status"
+  },
+  {
+   "fieldname": "error",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Error"
+  }
+ ],
+ "istable": 1,
+ "modified": "2021-07-07 08:57:51.722262",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Customer Deactivation Neg Log Table",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

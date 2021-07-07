@@ -1,0 +1,51 @@
+{
+ "creation": "2021-07-01 16:05:15.450873",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "executed_on",
+  "deactivations",
+  "errors"
+ ],
+ "fields": [
+  {
+   "fieldname": "deactivations",
+   "fieldtype": "Table",
+   "label": "Deactivations",
+   "options": "Customer Deactivation Log Table"
+  },
+  {
+   "fieldname": "executed_on",
+   "fieldtype": "Datetime",
+   "label": "Executed On"
+  },
+  {
+   "fieldname": "errors",
+   "fieldtype": "Table",
+   "label": "Errors",
+   "options": "Customer Deactivation Neg Log Table"
+  }
+ ],
+ "modified": "2021-07-01 16:53:39.477111",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Customer Deactivation Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
