@@ -1,9 +1,14 @@
 frappe.ui.form.on('Sales Invoice', {
 	refresh: function(frm) {
-        frm.add_custom_button(__("Erstelle Mandats-Rechnung"), function() {
-            create_mandats_rechnung(frm);
-        });
-		if (cur_frm.doc.mandat) {
+        if (!cur_frm.doc.mandat&&!cur_frm.doc.meldestelle) {
+            frm.add_custom_button(__("Erstelle Mandats-Rechnung"), function() {
+                create_mandats_rechnung(frm);
+            }, __("Erstelle"));
+            frm.add_custom_button(__("Erstelle Meldestelle-Rechnung"), function() {
+                create_meldestelle_rechnung(frm);
+            }, __("Erstelle"));
+        }
+		if (cur_frm.doc.mandat||cur_frm.doc.meldestelle) {
 			var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
 			df.hidden = 1;
 		}
@@ -43,6 +48,19 @@ function create_mandats_rechnung(frm) {
 		},
 		__('Für welches Mandat soll eine Rechnung erstellt werden?'),
 		__('Lade Mandats-Positionen')
+	)
+}
+
+function create_meldestelle_rechnung(frm) {
+	frappe.prompt(
+		[
+			{'fieldname': 'meldestelle', 'fieldtype': 'Link', 'label': __('Meldestelle'), 'reqd': 1, 'options': 'Meldestelle', 'default': cur_frm.doc.meldestelle}  
+		],
+		function(values){
+			get_meldestelle_positionen(frm, values.meldestelle);
+		},
+		__('Für welche Meldestelle Meldung soll eine Rechnung erstellt werden?'),
+		__('Lade Meldestelle-Positionen')
 	)
 }
 
@@ -119,6 +137,62 @@ function get_mandats_positionen(frm, mandat) {
 					}
 				}
 			}
+		}
+	});
+}
+
+function get_meldestelle_positionen(frm, meldestelle) {
+	frappe.call({
+		"method": "spo.utils.meldestelle_invoice.get_logs",
+		"args": {
+			"meldestelle": meldestelle
+		},
+		"async": false,
+		"callback": function(response) {
+			console.log(response.message.logs);
+            var logs = response.message.logs;
+            var customer = response.message.customer;
+            if (!customer && !cur_frm.doc.customer) {
+				frappe.msgprint(__("Bitte wählen Sie zuerst einen Kunden aus, da in der Meldestellen Meldung kein Ersteller hinterlegt ist."));
+				return
+			} else {
+                cur_frm.set_value('customer', customer);
+                if (logs) {
+                    frappe.msgprint(__("Bitte warten Sie, die Meldestellenpositionen werden geladen..."), __('Bitte warten...'));
+                    cur_frm.set_value('meldestelle', meldestelle);
+                    var i;
+                    var tbl = cur_frm.doc.items || [];
+                    var i = tbl.length;
+                    while (i--)
+                    {
+                        cur_frm.get_field("items").grid.grid_rows[i].remove();
+                    }
+                    for (i=0; i<logs.length; i++) {
+                        var child = cur_frm.add_child('items');
+                        var beschreibung = '';
+                        if (logs[i].spo_dokument) {
+                            beschreibung = beschreibung + __(logs[i].spo_dokument) + "; ";
+                        }
+                        if (logs[i].spo_remark) {
+                            beschreibung = beschreibung + logs[i].spo_remark;
+                        } else {
+                            beschreibung = beschreibung + __('erstellt');
+                        }
+                        frappe.model.set_value(child.doctype, child.name, 'item_code', 'Meldestelle');
+                        frappe.model.set_value(child.doctype, child.name, 'qty', logs[i].hours);
+                        frappe.model.set_value(child.doctype, child.name, 'spo_description', beschreibung);
+                        frappe.model.set_value(child.doctype, child.name, 'spo_datum', logs[i].from_time);
+                        frappe.model.set_value(child.doctype, child.name, 'income_account', '3150 - Beratungseinnahmen Meldestelle 6.1% - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'employee', logs[i].employee_name);
+                    }
+                    var df = frappe.meta.get_docfield("Sales Invoice Item","description", cur_frm.doc.name);
+                    df.hidden = 1;
+                    cur_frm.save().then(() => {
+                        frappe.msgprint(__("Die Meldestellenpositionen wurden erfolgreich geladen."), __('Meldestellenpositionen'));
+                    });
+                }
+            }
 		}
 	});
 }

@@ -26,6 +26,12 @@ def get_data():
 					"description": _("Führendes Mandats-Dokument")
 				},
 				{
+					"type": "doctype",
+					"name": "Meldestelle",
+					"label": _("Meldestelle"),
+					"description": _("Führendes Meldestelle-Dokument")
+				},
+				{
 					"type": "report",
 					"name": "Alle Mandate in Arbeit",
 					"label": _("Alle Mandate in Arbeit"),

@@ -208,7 +208,7 @@ def auto_ts_submit():
 
 def get_zeiten_uebersicht(dt, name):
     if dt != 'Mandat':
-        alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time` FROM `tabTimesheet Detail` WHERE `spo_referenz` = '{name}' ORDER BY `from_time`""".format(name=name), as_dict=True)
+        alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time`, `spo_referenz`, `spo_dokument`, `spo_remark` FROM `tabTimesheet Detail` WHERE `spo_referenz` = '{name}' ORDER BY `from_time`""".format(name=name), as_dict=True)
         return alle_zeiten
     else:
         mandat = frappe.get_doc("Mandat", name)
