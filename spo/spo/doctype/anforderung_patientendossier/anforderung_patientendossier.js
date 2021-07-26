@@ -133,22 +133,32 @@ frappe.ui.form.on('Anforderung Patientendossier', {
 	},
 	spital_adresse: function(frm) {
 		if (cur_frm.doc.spital_adresse) {
-			frappe.db.get_value('Address', {'name': cur_frm.doc.spital_adresse}, ['address_line1', 'address_line2', 'plz', 'city'], (adressen_link) => {
-				var adresse = '';
-				if (cur_frm.doc.adressat) {
-					adresse = cur_frm.doc.adressat;
-					adresse += '\n';
-				}
-				adresse += adressen_link.address_line1;
-				adresse += '\n';
-				if (adressen_link.address_line2) {
-					adresse += adressen_link.address_line2;
-					adresse += '\n';
-				}
-				adresse += adressen_link.plz;
-				adresse += ' ';
-				adresse += adressen_link.city;
-				cur_frm.set_value("adressat", adresse);
+			frappe.db.get_value('Address', {'name': cur_frm.doc.spital_adresse}, ['address_line1', 'address_line2', 'plz', 'city', 'override_customer_name', 'new_address_heading'], (adressen_link) => {
+				
+                // special handling if override_customer_name in address
+                if (adressen_link.override_customer_name == 1) {
+                    frappe.db.get_value('Customer', {'name': cur_frm.doc.spital}, ['customer_name', 'customer_type'], (r) => {
+                        if (r.customer_type == 'Company') {
+                            cur_frm.set_value("adressat", cur_frm.doc.adressat.replace(r.customer_name, adressen_link.new_address_heading));
+                        }
+                    });
+                }
+                
+                var adresse = '';
+                if (cur_frm.doc.adressat) {
+                    adresse = cur_frm.doc.adressat;
+                    adresse += '\n';
+                }
+                adresse += adressen_link.address_line1;
+                adresse += '\n';
+                if (adressen_link.address_line2) {
+                    adresse += adressen_link.address_line2;
+                    adresse += '\n';
+                }
+                adresse += adressen_link.plz;
+                adresse += ' ';
+                adresse += adressen_link.city;
+                cur_frm.set_value("adressat", adresse);
 			});
 		}
 	}
