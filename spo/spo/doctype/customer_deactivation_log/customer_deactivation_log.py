@@ -44,6 +44,7 @@ def check_affected_sinvs(relevant_date):
                                 AND `payment_reminder_level` = 1
                                 AND `exclude_from_payment_reminder_until` = '{relevant_date}'""".format(relevant_date=relevant_date), as_dict=True)
     if len(sinvs) > 0:
+        accounts_frozen_upto = remove_accounts_frozen_upto()
         positiv_log = []
         negativ_log = []
         for sinv in sinvs:
@@ -54,6 +55,7 @@ def check_affected_sinvs(relevant_date):
                 negativ_log.append(proceeded_sinv)
                 
         create_log_record(positiv_log, negativ_log)
+        reset_accounts_frozen_upto(accounts_frozen_upto)
             
 def proceed_sinv(sinv):
     try:
@@ -135,3 +137,13 @@ def get_recipients():
         recipients.append(_recipient.email)
     return recipients
     
+def remove_accounts_frozen_upto():
+    origin_value = frappe.db.get_single_value('Accounts Settings', 'acc_frozen_upto')
+    frappe.client.set_value('Accounts Settings', 'Accounts Settings', 'acc_frozen_upto', '')
+    frappe.db.commit()
+    return origin_value
+    
+def reset_accounts_frozen_upto(origin_value):
+    frappe.client.set_value('Accounts Settings', 'Accounts Settings', 'acc_frozen_upto', origin_value)
+    frappe.db.commit()
+    return
