@@ -22,6 +22,7 @@ def _create_reporting(**kwargs):
     '''
     
     reported_data = kwargs
+    
     try:
         new_reporting = frappe.get_doc({
             "doctype": "Meldestelle",
@@ -35,17 +36,12 @@ def _create_reporting(**kwargs):
         new_reporting.insert(ignore_permissions=True)
         frappe.db.commit()
         
-        status = '200 OK'
-        answer = {
-                "code": 200,
-                "message": "OK"
-            }
+        frappe.respond_as_web_page("Ihre Meldung wurde erfasst", "Vielen Dank für Ihre Meldung.<br>Sie wird schnellst möglich verarbeitet.", success="green", primary_action="https://spo-meldestelle.ch/", primary_label="Zurück")
 
-    except Exception as err:
-        status = '400 Bad Request'
-        answer = {
-                "code": 400,
-                "message": "{err}".format(err=err)
-            }
+    except KeyError as missing_key:
+        err_descr = "Fehlender Parameter: {err}".format(err=missing_key)
+        frappe.respond_as_web_page("Bad Request", err_descr, http_status_code=400, indicator_color="red", primary_action="https://spo-meldestelle.ch/", primary_label="Zurück")
         
-    return [status, answer]
+    except Exception as err:
+        err_descr = "{err}".format(err=err)
+        frappe.respond_as_web_page("Bad Request", err_descr, http_status_code=400, indicator_color="red", primary_action="https://spo-meldestelle.ch/", primary_label="Zurück")
