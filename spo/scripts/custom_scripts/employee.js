@@ -17,13 +17,25 @@ frappe.ui.form.on('Employee', {
 		if (cur_frm.doc.zeitraum_bis < cur_frm.doc.zeitraum_von) {
 			cur_frm.set_value('zeitraum_bis', cur_frm.doc.zeitraum_von);
 		}
-		arbeitszeit(frm);
+        if ((cur_frm.doc.zeitraum_von >= cur_frm.doc.date_of_joining)&&(cur_frm.doc.zeitraum_bis >= cur_frm.doc.date_of_joining)) {
+            arbeitszeit(frm);
+        } else {
+            cur_frm.set_value('zeitraum_von', cur_frm.doc.date_of_joining);
+            cur_frm.set_value('zeitraum_bis', cur_frm.doc.date_of_joining);
+            frappe.msgprint(__("Sie können nur Abfragen nach Ihrem Eintrittsdatum ausführen."), __("Fehler"));
+        }
 	},
 	zeitraum_bis: function(frm) {
 		if (cur_frm.doc.zeitraum_bis < cur_frm.doc.zeitraum_von) {
 			cur_frm.set_value('zeitraum_bis', cur_frm.doc.zeitraum_von);
 		}
-		arbeitszeit(frm);
+        if ((cur_frm.doc.zeitraum_von >= cur_frm.doc.date_of_joining)&&(cur_frm.doc.zeitraum_bis >= cur_frm.doc.date_of_joining)) {
+            arbeitszeit(frm);
+        } else {
+            cur_frm.set_value('zeitraum_von', cur_frm.doc.date_of_joining);
+            cur_frm.set_value('zeitraum_bis', cur_frm.doc.date_of_joining);
+            frappe.msgprint(__("Sie können nur Abfragen nach Ihrem Eintrittsdatum ausführen."), __("Fehler"));
+        }
 	}
 });
 

@@ -18,17 +18,10 @@ def execute(filters=None):
     employees = frappe.db.sql("""SELECT `name`, `employee_name`, `anstellungsgrad`, `company`, `holiday_list`, `anstellung`, `date_of_joining` FROM `tabEmployee` WHERE `status` = 'Active'{employee_filter}""".format(employee_filter=employee_filter), as_dict=True)
     activity_types = frappe.db.sql("""SELECT `name` FROM `tabActivity Type` ORDER BY `name` ASC""", as_dict=True)
     for act_type in activity_types:
-        columns.append(act_type.name + ":Float:50")
-
-    #Allgemeine Sollzeit
-    von = getdate(filters.from_date)
-    bis = getdate(filters.to_date)
-    sollzeit = 0
-
-    while von <= bis:
-        if von.weekday() < 5:
-            sollzeit += 8.4
-        von = add_days(von, 1)
+        if act_type.name == 'Arbeitszeit':
+            columns.append("Präsenzzeit:Float:50")
+        else:
+            columns.append(act_type.name + ":Float:50")
         
     '''	
         Sollzeitberechnung (gem. DaTa):
@@ -39,6 +32,11 @@ def execute(filters=None):
     '''
 
     for employee in employees:
+        # brücksichtigung von Eintrittsdatum
+        filters_from_date = filters.from_date
+        if employee.date_of_joining > getdate(filters.from_date):
+            filters_from_date = employee.date_of_joining
+        
         data_to_append = []
         data_to_append.append(employee.name)
         data_to_append.append(employee.employee_name)
@@ -55,21 +53,11 @@ def execute(filters=None):
             for ut in _urlaub_total['leave_allocation']:
                 urlaub_total += float(_urlaub_total['leave_allocation'][ut]['total_leaves'])
         gleitzeit = 0
-        emp_soll = sollzeit # --> Allgemeine Sollzeit
-        if employee.date_of_joining > getdate(filters.from_date):
-            #Emp spezifische Sollzeit
-            von = getdate(employee.date_of_joining)
-            bis = getdate(filters.to_date)
-            emp_soll = 0
-            while von <= bis:
-                if von.weekday() < 5:
-                    emp_soll += 8.4
-                von = add_days(von, 1)
         
         # Timelogs:
         for act_type in activity_types:
             time_logs = frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `activity_type` = '{act_type}' AND DATE(`from_time`) >= '{von}' AND DATE(`from_time`) <= '{bis}' AND `parent` IN (
-                                            SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `docstatus` != 2)""".format(von=filters.from_date, bis=filters.to_date, act_type=act_type.name, employee=employee.name), as_list=True)
+                                            SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `docstatus` != 2)""".format(von=filters_from_date, bis=filters.to_date, act_type=act_type.name, employee=employee.name), as_list=True)
             if time_logs[0][0]:
                 data_to_append.append(time_logs[0][0])
                 if act_type.name == 'Arbeitszeit':
@@ -90,19 +78,19 @@ def execute(filters=None):
             if employee.holiday_list:
                 default_holiday_list = employee.holiday_list
 
-            ganze_feiertage = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `half_day` = 0 AND `holiday_date` BETWEEN '{von}' AND '{bis}' AND `parent` = '{default_holiday_list}' AND `percentage_sick` = 0""".format(von=filters.from_date, bis=filters.to_date, default_holiday_list=default_holiday_list), as_list=True)
+            ganze_feiertage = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `half_day` = 0 AND `holiday_date` BETWEEN '{von}' AND '{bis}' AND `parent` = '{default_holiday_list}' AND `percentage_sick` = 0""".format(von=filters_from_date, bis=filters.to_date, default_holiday_list=default_holiday_list), as_list=True)
             if ganze_feiertage[0][0]:
                 ganze_feiertage = ganze_feiertage[0][0]
             else:
                 ganze_feiertage = 0
                 
-            halbe_feiertage = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `half_day` = 1 AND `holiday_date` BETWEEN '{von}' AND '{bis}' AND `parent` = '{default_holiday_list}' AND `percentage_sick` = 0""".format(von=filters.from_date, bis=filters.to_date, default_holiday_list=default_holiday_list), as_list=True)
+            halbe_feiertage = frappe.db.sql("""SELECT COUNT(`name`) FROM `tabHoliday` WHERE `half_day` = 1 AND `holiday_date` BETWEEN '{von}' AND '{bis}' AND `parent` = '{default_holiday_list}' AND `percentage_sick` = 0""".format(von=filters_from_date, bis=filters.to_date, default_holiday_list=default_holiday_list), as_list=True)
             if halbe_feiertage[0][0]:
                 halbe_feiertage = halbe_feiertage[0][0] / 2
             else:
                 halbe_feiertage = 0
                 
-            prozentuale_feiertage = frappe.db.sql("""SELECT SUM(`sick_percentage`) FROM `tabHoliday` WHERE `holiday_date` BETWEEN '{von}' AND '{bis}' AND `parent` = '{default_holiday_list}' AND `percentage_sick` = 1""".format(von=filters.from_date, bis=filters.to_date, default_holiday_list=default_holiday_list), as_list=True)
+            prozentuale_feiertage = frappe.db.sql("""SELECT SUM(`sick_percentage`) FROM `tabHoliday` WHERE `holiday_date` BETWEEN '{von}' AND '{bis}' AND `parent` = '{default_holiday_list}' AND `percentage_sick` = 1""".format(von=filters_from_date, bis=filters.to_date, default_holiday_list=default_holiday_list), as_list=True)
             if prozentuale_feiertage[0][0]:
                 prozentuale_feiertage = ((8.4 / 100) * prozentuale_feiertage[0][0]) / 8.4
             else:
@@ -113,7 +101,7 @@ def execute(filters=None):
         
         
             # Urlaub:
-            urlaub = frappe.db.sql("""SELECT SUM(`total_leave_days`) FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `status` = 'Approved' AND `docstatus` = 1 AND `from_date` BETWEEN '{von}' AND '{bis}'""".format(employee=employee.name, von=filters.from_date, bis=filters.to_date), as_list=True)
+            urlaub = frappe.db.sql("""SELECT SUM(`total_leave_days`) FROM `tabLeave Application` WHERE `employee` = '{employee}' AND `status` = 'Approved' AND `docstatus` = 1 AND `from_date` BETWEEN '{von}' AND '{bis}'""".format(employee=employee.name, von=filters_from_date, bis=filters.to_date), as_list=True)
             if urlaub[0][0]:
                 urlaub = urlaub[0][0]
             else:
@@ -121,7 +109,7 @@ def execute(filters=None):
             data_to_append.append(urlaub)
             data_to_append.append(urlaub_total)
             
-            _sollzeit = get_sollzeit(employee.name, filters.from_date, filters.to_date)
+            _sollzeit = get_sollzeit(employee.name, filters_from_date, filters.to_date)
             
             data_to_append.append(_sollzeit)
             
@@ -129,7 +117,7 @@ def execute(filters=None):
             uebertrag = 0
             uebertraege = frappe.db.sql("""SELECT `uebertrag_auf_jahr`, `stunden` FROM `tabVorjahressaldo` WHERE `parent` = '{employee}'""".format(employee=employee.name), as_dict=True)
             for _uebertrag in uebertraege:
-                if getdate(filters.from_date).strftime("%Y") == _uebertrag["uebertrag_auf_jahr"]:
+                if getdate(filters_from_date).strftime("%Y") == _uebertrag["uebertrag_auf_jahr"]:
                     uebertrag += float(_uebertrag["stunden"])
             
             data_to_append.append(uebertrag)
@@ -149,7 +137,7 @@ def execute(filters=None):
             uebertrag = 0
             uebertraege = frappe.db.sql("""SELECT `uebertrag_auf_jahr`, `stunden` FROM `tabVorjahressaldo` WHERE `parent` = '{employee}'""".format(employee=employee.name), as_dict=True)
             for _uebertrag in uebertraege:
-                if getdate(filters.from_date).strftime("%Y") == _uebertrag["uebertrag_auf_jahr"]:
+                if getdate(filters_from_date).strftime("%Y") == _uebertrag["uebertrag_auf_jahr"]:
                     uebertrag += float(_uebertrag["stunden"])
             data_to_append.append(uebertrag)
             

@@ -9,7 +9,7 @@ def execute(filters=None):
     columns, data = [
         {"label": _("Mitarbeiter"), "fieldname": "employee", "fieldtype": "Link", "options": "Employee"},
         {"label": _("Name"), "fieldname": "employee_name", "fieldtype": "Data"},
-        {"label": _("Arbeitszeit"), "fieldname": "arbeitszeit", "fieldtype": "Float"},
+        {"label": _("Summe Arbeitszeit"), "fieldname": "arbeitszeit", "fieldtype": "Float"},
         {"label": _("Verrechenbar"), "fieldname": "verrechenbar", "fieldtype": "Float"},
         {"label": _("Markiert als NV"), "fieldname": "markiert_als_nv", "fieldtype": "Float"},
         {"label": _("NV in %"), "fieldname": "nv_in_prozent", "fieldtype": "Data"},
@@ -31,8 +31,12 @@ def execute(filters=None):
         
         timesheets_query = """SELECT `name` FROM `tabTimesheet` WHERE `employee` = '{employee}' AND `docstatus` != '2' AND `start_date` BETWEEN '{start}' AND '{ende}'""".format(employee=employee.name, start=start, ende=ende)
         _arbeitszeit = frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `parent` IN ({timesheets_query}) AND `activity_type` = 'Arbeitszeit'""".format(timesheets_query=timesheets_query), as_list=True)
+        pausenzeit = frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `parent` IN ({timesheets_query}) AND `activity_type` = 'Pause'""".format(timesheets_query=timesheets_query), as_list=True)
         if _arbeitszeit[0][0]:
-            arbeitszeit = _arbeitszeit[0][0]
+            if pausenzeit[0][0]:
+                arbeitszeit = float(_arbeitszeit[0][0]) - float(pausenzeit[0][0])
+            else:
+                arbeitszeit = float(_arbeitszeit[0][0])
         else:
             arbeitszeit = 0.00
         _data.append(arbeitszeit)
