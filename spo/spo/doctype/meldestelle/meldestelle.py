@@ -8,3 +8,22 @@ from frappe.model.document import Document
 
 class Meldestelle(Document):
 	pass
+
+
+@frappe.whitelist(allow_guest=True)
+def new_request():
+    try:
+        data = frappe.local.form_dict
+        nr = frappe.get_doc({
+            "doctype": "Meldestelle",
+            "mandant": data.mandant,
+            "report_from": data.fname + " " + data.lname,
+            "phone": data.phone,
+            "email": data.email,
+            "availability": data.availability,
+            "report": data.report
+        })
+        nr.insert(ignore_permissions=True)
+        return True
+    except:
+        return False

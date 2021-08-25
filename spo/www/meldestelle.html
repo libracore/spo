@@ -1,0 +1,92 @@
+<!-- Google reCaptcha -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<!-- mainContent-area start -->
+<section class="mainContent-area">
+    <div class="container">
+        <div class="mainContent_box">
+            <div class="content_left">
+                <div class="left-text">
+                    <h2>Herzlich Willkommen</h2>
+                    <h4>bei der Meldestelle der SPO Patientenorganisation</h4>
+                    <h5>
+                     Hier können Sie sicher und anonym unerwünschtes Verhalten oder mögliche Grenzüberschreitungen im Spitalalltag melden. Ihre Meldung gelangt über eine verschlüsselte Website an die SPO Patientenorganisation.
+                    </h5>
+                    <div class="green_divider"></div>
+                    <p>
+                    Die SPO ist eine unabhängige Organisation im Gesundheitswesen. Ihre Meldung und alle die Meldung betreffenden Gesprächsinhalte werden streng vertraulich behandelt. Ihre Identität und sämtliche Informationen, welche Rückschlüsse auf Ihre Identität zulassen, bleiben ausschliesslich bei der SPO und werden dem Spital nicht weitergeleitet. Wir garantieren Ihnen damit absolute Anonymität.
+                    </p>
+                    <p>Mit Ihrer Meldung helfen Sie dabei, Missstände im Spitalalltag zu verbessern, ohne Ihre Identität gegenüber dem Spital preiszugeben.</p>
+                </div>
+            </div>
+            <div class="content_right d-md-block">
+                <div class="right_box">
+                    <h5><a href="https://www.spo.ch/" target="_blank">Über die SPO Patientenorganisation</a></h5>
+                    
+                        <p>Schweizerische Stiftung<br>
+                        SPO Patientenorganisation<br>
+                        Häringstrasse 20<br>
+                        8001 Zürich<br>
+                        Tel: 044 252 54 22<br>
+                        <a href="https://www.spo.ch/" target="_blank">www.spo.ch</a></p>
+                </div>
+                <div class="right_box fqa">
+                    <h5>FAQ</h5>
+                    <ul>
+                        <li><a href="">Was verstehen wir unter möglichen Grenzüberschreitungen?</a></li>
+                        <li><a href="">Wie wird meine Anonymität gewährleistet?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="left-form">
+            <h5>Wir danken Ihnen für Ihre Mithilfe.</h5>
+            <form>
+                <input type="text" name="fname" placeholder="Vorname" required />
+                <input type="text" name="lname" placeholder="Nachname" required />
+                <input type="text" name="availability" placeholder="Wann sind Sie am besten erreichbar?" required />
+                <input type="tel" name="phone" placeholder="Telefonnummer bei Rückfragen" required />
+                <input type="email" name="email" placeholder="E-Mail bei Rückfragen" required />
+                <textarea name="report" rows="5" required>Ihre Meldung</textarea>
+                <div name="g-recaptcha" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
+                <div name="recaptcha-error" id="recaptcha-error" style="color: red; display: none;">Bitte bestätigen Sie, dass Sie kein Roboter sind.</div>
+                <input type="submit" value="SENDEN" />
+            </form>
+        </div>
+        <div class="d-md-none">
+            <div class="right_box">
+                <h5><a href="https://www.spo.ch/" target="_blank">Über die SPO Patientenorganisation</a></h5>
+                
+                    <p>Schweizerische Stiftung<br>
+                    SPO Patientenorganisation<br>
+                    Häringstrasse 20<br>
+                    8001 Zürich<br>
+                    Tel: 044 252 54 22<br>
+                    <a href="https://www.spo.ch/" target="_blank">www.spo.ch</a></p>
+            </div>
+            <div class="right_box fqa">
+                <h5>FAQ</h5>
+                <ul>
+                    <li><a href="">Was verstehen wir unter möglichen Grenzüberschreitungen?</a></li>
+                    <li><a href="">Wie wird meine Anonymität gewährleistet?</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- success Modal -->
+<div id="success_modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="success_modal_close" class="close">&times;</span>
+        <p>Vielen Dank für Ihre Meldung.<br>Sie wird schnellst möglich bearbeitet.</p>
+    </div>
+</div>
+<!-- error Modal -->
+<div id="error_modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="error_modal_close" class="close">&times;</span>
+        <p>Oops! Da ist etwas schief gelaufen.<br>Bitte kontaktieren Sie wenn möglich die SPO</p>
+    </div>
+</div>
+<!-- mainContent-area end -->
