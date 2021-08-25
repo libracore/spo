@@ -75,19 +75,7 @@ function buildJsonFormData(form) {
 var correctCaptcha = function(response) {
     //recaptcha passed validation
     if (response.length != 0) {
-        fetch('https://www.google.com/recaptcha/api/siteverify', {
-            method: 'POST',
-            body: {
-                "secret": "6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L",
-                "response": response
-            }
-        })
-        .then(r => r.json())
-        .then(r => {
-            if (r.success) {
-                document.getElementById("recaptcha-error").style.display = "none";
-            }
-        })
+        document.getElementById("recaptcha-error").style.display = "none";
     }
 };
 
