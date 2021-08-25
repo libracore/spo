@@ -1,6 +1,12 @@
 document.querySelector('nav').remove();
 document.querySelector('footer').remove();
 
+var onloadCallback = function() {
+    grecaptcha.render('g-recaptcha', {
+        'sitekey' : '6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L'
+    });
+};
+
 function handleSubmit(event, form) {
     event.preventDefault();
     var response = grecaptcha.getResponse();
