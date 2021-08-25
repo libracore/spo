@@ -13,7 +13,7 @@ function handleSubmit(event, form) {
         //recaptcha passed validation
         document.getElementById("recaptcha-error").style.display = "none";
         const jsonFormData = buildJsonFormData(form);
-        fetch('http://192.168.0.206/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
+        fetch('https://spo.libracore.ch/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
