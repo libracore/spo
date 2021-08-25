@@ -16,7 +16,7 @@ def new_request():
     try:
         data = frappe.local.form_dict    
         payload = {'secret': '6LfJyw4cAAAAAMARDEfjxiBke-8pQIWbmDnmnFoi', 'response': data['g-recaptcha']}
-        r = requests.get("https://www.google.com/recaptcha/api/siteverify", params=payload)
+        r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=payload)
         if r.success:
             nr = frappe.get_doc({
                 "doctype": "Meldestelle",
