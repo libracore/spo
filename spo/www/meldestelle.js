@@ -13,7 +13,9 @@ function handleSubmit(event, form) {
     console.log(response);
     //recaptcha failed validation
     if (response.length == 0) {
-        document.getElementById("recaptcha-error").style.display = "block";
+        var recaptcha_error = document.getElementById("recaptcha-error");
+        recaptcha_error.innerHTML = 'Bitte bestätigen Sie, dass Sie kein Roboter sind.';
+        recaptcha_error.style.display = "block";
         return false;
     } else {
         //recaptcha passed validation
@@ -30,7 +32,7 @@ function handleSubmit(event, form) {
         .then(r => r.json())
         .then(r => {
             console.log(r);
-            if (r.message) {
+            if (r.message.success) {
                 var modal = document.getElementById("success_modal");
                 var span = document.getElementById("success_modal_close");
                 span.onclick = function() {
@@ -47,17 +49,24 @@ function handleSubmit(event, form) {
                 }
                 modal.style.display = "block";
             } else {
-                var modal = document.getElementById("error_modal");
-                var span = document.getElementById("error_modal_close");
-                span.onclick = function() {
-                    modal.style.display = "none";
-                }
-                window.onclick = function(event) {
-                    if (event.target == modal) {
+                if (r.message.error == 'reCAPTCHA') {
+                    grecaptcha.reset();
+                    var recaptcha_error = document.getElementById("recaptcha-error");
+                    recaptcha_error.innerHTML = 'Die reCAPTCHA Validierung ist fehlgeschlagen, bitte versuchen Sie es erneut.';
+                    recaptcha_error.style.display = "block";
+                } else {
+                    var modal = document.getElementById("error_modal");
+                    var span = document.getElementById("error_modal_close");
+                    span.onclick = function() {
                         modal.style.display = "none";
                     }
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+                    modal.style.display = "block";
                 }
-                modal.style.display = "block";
             }
         })
     }

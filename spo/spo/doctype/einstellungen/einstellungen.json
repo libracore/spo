@@ -18,7 +18,9 @@
   "section_customer_deactivation",
   "execution_day",
   "execution_month",
-  "reminder_recipients"
+  "reminder_recipients",
+  "section_meldestelle",
+  "recaptcha_secret"
  ],
  "fields": [
   {
@@ -110,10 +112,20 @@
    "label": "Reminder Recipients",
    "options": "SPO Reminder Recipients",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_meldestelle",
+   "fieldtype": "Section Break",
+   "label": "Meldestelle"
+  },
+  {
+   "fieldname": "recaptcha_secret",
+   "fieldtype": "Data",
+   "label": "reCAPTCHA Secret Key"
   }
  ],
  "issingle": 1,
- "modified": "2021-07-07 11:01:27.778658",
+ "modified": "2021-08-26 00:43:22.878785",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",
