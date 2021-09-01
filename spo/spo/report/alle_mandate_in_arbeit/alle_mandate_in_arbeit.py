@@ -22,5 +22,5 @@ def execute(filters=None):
 								`auftraggeber_name`,
 								`rechtsschutz_ref`,
 								`owner`
-							FROM `tabMandat`""", as_list=True)
+							FROM `tabMandat` WHERE `docstatus` = 0""", as_list=True)
 	return columns, data
