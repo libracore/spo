@@ -183,6 +183,7 @@ function set_kunden_html(frm) {
 						"async": false,
 						"callback": function(r) {
 							cur_frm.set_df_property('kunden_display','options', r.message);
+                            set_titelzeile(frm, mandat);
 						}
 					});
                 }
@@ -204,4 +205,19 @@ function set_kunden_html(frm) {
 	} else {
 		cur_frm.set_df_property('kunden_display','options', '<div><h4>Kein verknüpftes Mandat</h4><p>');
 	}
+}
+
+function set_titelzeile(frm, mandat) {
+	frappe.call({
+        "method": "spo.spo.doctype.anforderung_patientendossier.anforderung_patientendossier.get_titelzeile",
+        "args": {
+            "adresse": mandat.adresse,
+            "kontakt": mandat.kontakt
+        },
+        "async": false,
+        "callback": function(r) {
+            console.log(r.message);
+            cur_frm.set_value('titelzeile', r.message);
+        }
+    });
 }
