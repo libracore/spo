@@ -60,8 +60,8 @@ def execute(filters=None):
             nv_in_prozent = (100 / verrechenbar) * markiert_als_nv
         _data.append(round(nv_in_prozent, 2))
         
-        # nicht verrechnete zeiten aus anfragen ohne mandat aber it mitgliedschaft
-        anf_ausschluss_query = """SELECT `anfragen` FROM `tabMandat`"""
+        # nicht verrechnete zeiten aus anfragen ohne mandat aber mit mitgliedschaft
+        anf_ausschluss_query = """SELECT `anfragen` FROM `tabMandat` WHERE `anfragen` IS NOT NULL"""
         anf_query = """SELECT `name` FROM `tabAnfrage` WHERE `mitgliedschaft` IS NOT NULL AND `name` NOT IN ({anf_ausschluss_query})""".format(anf_ausschluss_query=anf_ausschluss_query)
         _verrechnet_zusatz = frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `parent` IN ({timesheets_query}) AND `activity_type` = 'Beratung' AND `spo_referenz` IN ({anf_query})""".format(timesheets_query=timesheets_query, anf_query=anf_query), as_list=True)
         if _verrechnet_zusatz[0][0]:
