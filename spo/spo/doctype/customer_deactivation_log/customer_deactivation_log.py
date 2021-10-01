@@ -17,8 +17,8 @@ def daily_check():
     today = getdate(now())
     
     # check for execution
-    if str(month) == today.strftime("%-m"):
-        if str(day) == today.strftime("%-d"):
+    if str(month) == today.strftime("%m"):
+        if str(day) == today.strftime("%d"):
             relevant_date = today.strftime("%Y-%m-%d")
             check_affected_sinvs(relevant_date)
             return
