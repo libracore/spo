@@ -58,7 +58,8 @@ def check_affected_sinvs(relevant_date):
                 negativ_log.append(proceeded_sinv)
                 
         create_log_record(positiv_log, negativ_log)
-        reset_accounts_frozen_upto(accounts_frozen_upto)
+        if accounts_frozen_upto:
+            reset_accounts_frozen_upto(accounts_frozen_upto)
             
 def proceed_sinv(sinv):
     try:
@@ -142,11 +143,14 @@ def get_recipients():
     
 def remove_accounts_frozen_upto():
     origin_value = frappe.db.get_single_value('Accounts Settings', 'acc_frozen_upto')
-    frappe.client.set_value('Accounts Settings', 'Accounts Settings', 'acc_frozen_upto', '')
-    frappe.db.commit()
-    return origin_value
+    if origin_value:
+        frappe.db.sql("""UPDATE `tabSingles` SET `value` = '' WHERE `doctype` = 'Accounts Settings' AND `field` = 'acc_frozen_upto'""", as_list=True)
+        frappe.db.commit()
+        return origin_value
+    else:
+        return False
     
 def reset_accounts_frozen_upto(origin_value):
-    frappe.client.set_value('Accounts Settings', 'Accounts Settings', 'acc_frozen_upto', origin_value)
+    frappe.db.sql("""UPDATE `tabSingles` SET `value` = '{origin_value}' WHERE `doctype` = 'Accounts Settings' AND `field` = 'acc_frozen_upto'""".format(origin_value=origin_value), as_list=True)
     frappe.db.commit()
     return
