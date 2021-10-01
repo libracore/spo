@@ -11,14 +11,17 @@ class CustomerDeactivationLog(Document):
 	pass
 
 
-def daily_check():
+def daily_check(today=False):
     month = frappe.get_single("Einstellungen").execution_month
     day = frappe.get_single("Einstellungen").execution_day
-    today = getdate(now())
+    if not today:
+        today = getdate(now())
+    else:
+        today = getdate(today)
     
     # check for execution
-    if str(month) == today.strftime("%m"):
-        if str(day) == today.strftime("%d"):
+    if int(str(month)) == int(today.strftime("%m")):
+        if int(str(day)) == int(today.strftime("%d")):
             relevant_date = today.strftime("%Y-%m-%d")
             check_affected_sinvs(relevant_date)
             return
@@ -117,7 +120,7 @@ def create_log_record(positiv_log, negativ_log):
     log.insert()
     
 def cancel_linked_payment_reminder(sinv):
-    pr = frappe.db.sql("""SELECT `parent` FROM `tabPayment Reminder Invoice` WHERE `sales_invoice` = '{sinv}'""".format(sinv=sinv), as_dict=True)
+    pr = frappe.db.sql("""SELECT `parent` FROM `tabPayment Reminder Invoice` WHERE `sales_invoice` = '{sinv}' AND `docstatus` = 1""".format(sinv=sinv), as_dict=True)
     if len(pr) > 0:
         pr = frappe.get_doc("Payment Reminder", pr[0].parent)
         pr.cancel()
