@@ -90,3 +90,63 @@
     </div>
 </div>
 <!-- mainContent-area end -->
+
+<!-- The FAQ Modal -->
+        <div id="faq_modal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close-faq" onclick="close_faq();">&times;</span>
+            <h1>FAQ</h1>
+            <h2>Was verstehen wir unter möglichen Grenzüberschreitungen?</h2>
+            <p>Grundsätzlich können alle Sachverhalte gemeldet werden, die als Grenzüberschreitung empfunden werden. Hier führen wir Ihnen einige Beispiele auf:</p>
+            <ul>
+                <li>&#9679; Verstösse gegen Arbeitssicherheit, Arbeitszeit, fehlerhafte Arbeitsverträge</li>
+                <li>&#9679; Gefährdung des Patientenwohls, Bevorzugung von Patienten, Vertuschung von Behandlungsfehlern </li>
+                <li>&#9679; Probleme mit Führungsstil von Vorgesetzten, systematische Probleme in Abläufen</li>
+                <li>&#9679; Unzureichende Informationsweitergabe</li>
+                <li>&#9679; Falsche Honorare, Spesen und variable Entschädigung von Ärzten</li>
+                <li>&#9679; Finanzielle Zuwendungen, Geschenke oder andere Bevorteilungen</li>
+                <li>&#9679; Sexismus, Rassismus, Mobbing, Diskriminierung von Mitarbeitenden und/oder Patienten</li>
+                <li>&#9679; Fehlerhafte Abrechnungen, falsche Dokumentation, Kodierung</li>
+                <li>&#9679; Datensicherheit, Datenschutz</li>
+                <li>&#9679; Systematische Fehler in der Beschaffung oder im Einkauf</li>
+            </ul>
+            <p>Wenn Sie unsicher sind, ob Ihre Beobachtung gemeldet werden soll, zögern Sie nicht, sich bei uns zu melden. Wir unterstützen Sie gerne und entscheiden dann gemeinsam, ob der Sachverhalt gemeldet werden sollte. </p>
+
+            <h2>Wie handle ich, wenn ich mir hinsichtlich einer Meldung unsicher bin?</h2>
+            <p>Wenn Sie sich unsicher sind, ob Sie einen beobachteten Sachverhalt melden sollten oder einen Verdacht hinsichtlich eines Fehlverhaltens anderer Spitalmitarbeiter haben, raten wir Ihnen dringend, sich in jedem Fall bei uns zu melden. Gerne unterstützen wir Sie in einem persönlichen Gespräch darin, Ihren Verdacht zu überprüfen. Auch eine nicht gesicherte Beobachtung hilft dem Spital, Probleme frühzeitig zu erkennen und anzugehen. Das Spital erfährt zu keinem Zeitpunkt, wer den Fall gemeldet hat. </p>
+
+            <h2>Wie läuft die Meldung ab?</h2>
+            <p>Nach Absenden der Meldung via Online-Formular kontaktieren wir Sie innerhalb von zwei Werktagen telefonisch zu einem von Ihnen angegebenen Zeitpunkt, um den Eingang Ihrer Meldung zu bestätigen und eventuelle Rückfragen zu stellen. </p>
+
+            <h2>Was passiert mit meiner Meldung? </h2>
+            <p>Die Meldung wird in zusammengefasster und anonymisierter Form von Seiten der SPO an das Spital kommuniziert. Das Spital entscheidet nach dem Gespräch mit der SPO über etwaige Massnahmen und Schritte und kommuniziert diese gegenüber der SPO. Die SPO informiert die Person, welche die Meldung gemacht hat, über die entsprechende Schritte.</p>
+
+            <h2>Wie wird meine Anonymität gewährleistet?</h2>
+            <p>Der Schutz Ihrer Identität und sämtlicher Gesprächsinhalte hat bei der SPO oberste Priorität. Sämtliche Mitarbeiter der SPO unterstehen der Schweigepflicht. Ihre Meldung wird gegenüber dem Spital so kommuniziert, dass keinerlei Rückschlüsse möglich darüber möglich sind, von wem die Meldung ausgegangen bist. 
+Ihre schriftliche Meldung gelangt verschlüsselt über ein eigens für die SPO entwickeltes System zu uns. Das System erfüllt die maximalen Anforderungen an den Datenschutz. Das Spital erhält ein anonymisiertes Protokoll, welches von der SPO selbst auf Basis Ihrer Meldung und des Gesprächs angefertigt wird. 
+Mehr zum Datenschutz finden Sie in der Datenschutzrichtlinie.   </p>
+          </div>
+
+        </div>
+
+        <script>
+        // Get the modal
+        var modal = document.getElementById("faq_modal");
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+        
+        function open_faq() {
+            modal.style.display = "block";
+        }
+        
+        function close_faq() {
+            modal.style.display = "none";
+        }
+        </script>
