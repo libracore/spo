@@ -395,4 +395,19 @@ footer span {
   text-decoration: none;
   cursor: pointer;
 } 
+
+/* The Close FAQ Button */
+.close-faq {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-faq:hover,
+.close-faq:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 /*----------------------------------*/
