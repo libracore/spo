@@ -484,8 +484,8 @@ function set_mandatory_and_read_only(frm) {
 	if (!frm.doc.__islocal) {
 		cur_frm.set_df_property('patient_kanton','reqd', 1);
 		cur_frm.set_df_property('problematik','reqd', 0);
-		if (frm.doc.anfrage_typ == __('Hotline') || frm.doc.anfrage_typ == __('Medien Anfrage') || frm.doc.anfrage_typ == __('Anfrage ohne Mitgliedschaft')) {
-			if (frm.doc.anfrage_typ == __('Hotline') || frm.doc.anfrage_typ == __('Anfrage ohne Mitgliedschaft')) {
+		if (frm.doc.anfrage_typ == __('Hotline') || frm.doc.anfrage_typ == __('Medien Anfrage')) {
+			if (frm.doc.anfrage_typ == __('Hotline')) {
 				cur_frm.set_value('kontakt_via', 'Telefon');
 				cur_frm.set_df_property('kontakt_via','read_only', 1);
 			} else {
