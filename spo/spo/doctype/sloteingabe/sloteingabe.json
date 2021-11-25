@@ -1,0 +1,77 @@
+{
+ "autoname": "Slot.#####",
+ "creation": "2021-11-11 08:14:31.165560",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "year",
+  "month",
+  "day",
+  "button_set_slots",
+  "sloteingaben"
+ ],
+ "fields": [
+  {
+   "fieldname": "month",
+   "fieldtype": "Int",
+   "label": "Monat"
+  },
+  {
+   "default": "2021",
+   "fieldname": "year",
+   "fieldtype": "Int",
+   "label": "Jahr"
+  },
+  {
+   "fieldname": "sloteingaben",
+   "fieldtype": "Table",
+   "label": "Sloteingaben",
+   "options": "Sloteingabe Details"
+  },
+  {
+   "fieldname": "day",
+   "fieldtype": "Int",
+   "label": "Tag"
+  },
+  {
+   "fieldname": "button_set_slots",
+   "fieldtype": "Button",
+   "label": "Bef\u00fclle Slots"
+  }
+ ],
+ "modified": "2021-11-25 16:31:09.003457",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Sloteingabe",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

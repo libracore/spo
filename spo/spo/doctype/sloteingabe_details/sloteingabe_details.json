@@ -1,0 +1,67 @@
+{
+ "creation": "2021-11-11 08:28:34.092180",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "time",
+  "objective1",
+  "objective2",
+  "objective3",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Datum"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Uhrzeit"
+  },
+  {
+   "fieldname": "objective1",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Thema 1",
+   "options": "Beratungsthema"
+  },
+  {
+   "fieldname": "objective2",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Thema 2",
+   "options": "Beratungsthema"
+  },
+  {
+   "fieldname": "objective3",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Thema 3",
+   "options": "Beratungsthema"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "frei\nreserviert\nbezahlt"
+  }
+ ],
+ "istable": 1,
+ "modified": "2021-11-25 16:31:52.636764",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Sloteingabe Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
