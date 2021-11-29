@@ -2,9 +2,17 @@
 <html lang="de">
     <head>
         <title>SPO - Schweizerische Patientengesellschaft</title>
-        <link href="pages/jquery.snippet.min.css" rel="stylesheet">
-        <link href="pages/onlinetermin.css" rel="stylesheet">
+        <link href="/assets/css/frappe-web-b4.css" rel="stylesheet">
+        <link href="jquery.snippet.min.css" rel="stylesheet">
+        <link href="onlinetermin.css" rel="stylesheet">
         <meta charset='utf-8' />
+        <!--alter code, als noch funktionierte:
+        <link href="css/bootstrap.min.css" rel="stylesheet"> ersetzt durch assets/css/frappe-web-b4.css
+        <link href="css/jquery.snippet.min.css" rel="stylesheet"> unsicher obs braucht
+        <link href="css/styles.css" rel="stylesheet"> neu in onlinetermin
+        <link href="css/main.css" rel="stylesheet"> neu in onlinetermin
+        <link href="css/calendar.css" rel="stylesheet"> neu in onlinetermin
+        -->
         
     <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -166,9 +174,20 @@
       
   
         <!--JS und library-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-        <script src="pages/jquery.snippet.min.js"></script>
-        <script src="pages/jquery.easyWizard.js"></script>
-        <script src="pages/onlinetermin.js"></script>
+        <script src="/assets/frappe/js/lib/jquery/jquery.min.js"></script>
+        <script src="/assets/frappe/js/bootstrap-4-web.min.js"></script>
+        <script src="/assets/frappe/js/lib/fullcalendar"></script>
+        <script src="jquery.snippet.min.js"></script>
+        <script src="jquery.easyWizard.js"></script>
+        <script src="onlinetermin.js"></script>
+        <!--alter code als noch funktionierte:
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> ersetzt durch frappe jquery
+        <script src="js/bootstrap.min.js"></script> ersetzt durch bootstrap von frappe
+        <script src="js/jquery.snippet.min.js"></script>
+        <script src="../lib/jquery.easyWizard.js"></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/calendar.js"></script>
+        -->
     </body>
 </html>
