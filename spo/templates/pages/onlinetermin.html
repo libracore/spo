@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <title>SPO - Schweizerische Patientengesellschaft</title>
+        <link href="pages/jquery.snippet.min.css" rel="stylesheet">
+        <link href="pages/onlinetermin.css" rel="stylesheet">
+        <meta charset='utf-8' />
+        
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+    </script>
+        
+    </head>
+    <body data-spy="scroll" data-target=".navbar" data-offset="150">
+        <div id="wrapper" class="span10">
+            <header>
+                <h1>SPO</h1>
+                <p class="lead muted">SPO - hier wenn Sie uns brauchen</p>
+                <h3>Beratung / Termin Buchen</h3>
+                <form id="myWizard2" type="get" action="" class="form-horizontal">
+                    <!--Mitglied/nicht -->
+                    <section class="step" data-step-title="Seite">
+                        <div class="control-group">
+                            <p>Es ist wichtig, dass sich Mitglieder mit Ihrer Customer-Nr. anmelden, da sonst der Termin <b>nicht bestätigt</b> werden kann.
+                            Falls Sie Ihre Customer-Nr. nicht kennen, kontaktieren Sie uns: 044 252 54 22</p>
+                            <!--button Mitglied-->
+                            <div class="center">
+                                <button class="btn">Mitglied</button>
+                            </div>
+                            <div class="center">
+                                <button class="btn">Nicht-Mitglied</button>
+                            <!--button Nichtmitglied-->
+                            </div>
+                        </div>
+                    </section>
+                    <!--Mitglieder login-->
+                    <section class="step" data-step-title="Seite">
+                        <div class="control-group">
+                            <p>Ihr Kontingent für kostenfreie Beratung Beträgt aktuell: XY Min<br>
+                            Falls Sie <b>weniger als 30 Min </b> Kontingent übrig haben, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
+                            <div class="center">
+                                <label class="control-label" for="inputCustomnr">Customer-Nr.</label>
+                                <div class="controls" style="margin-left: 10px">
+                                    <input type="text" id="inputCustomnr" placeholder="Customer-Nr." class="input-xlarge" title="Customer-Nr. ist zwingend!" minlength="10" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="center">
+                                <label class="control-label" for="inputSurname">Nachname</label>
+                                <div class="controls" style="margin-left: 10px">
+                                    <input type="text" id="inputSurname" placeholder="Nachname" class="input-xlarge" title="Nachname ist zwingend!" required />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!--Personalien Nichtmitglieder-->
+                    <section class="step" data-step-title="Seite">
+                        <div class="control-group">
+                            <label class="control-label" for="inputFirstname">Anrede</label>
+                            <div class="controls">
+                                <select>
+                                    <option>Herr</option>
+                                    <option>Frau</option>
+                                    <option>Familie</option>
+                                </select>
+                            </div>
+                        </div>                      
+                        <div class="control-group">
+                            <label class="control-label" for="inputFirstname">Vorname</label>
+                            <div class="controls">
+                                <input type="text" id="inputFirstname" placeholder="Vorname" class="input-xlarge" title="Der Vorname ist zwingend!" required/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputSurname">Nachname</label>
+                            <div class="controls">
+                                <input type="text" id="inputSurname" placeholder="Nachname" class="input-xlarge" title="Der Nachname ist zwingend!" required>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputEmail">E-Mail</label>
+                            <div class="controls">
+                                <input type="text" id="inputEmail" placeholder="E-mail" class="input-xlarge" title="Die Email ist zwingend!" required>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPhone">Telefon</label>
+                            <div class="controls">
+                                <input type="text" id="inputPhone" placeholder="Telefon" class="input-xlarge" title="Die Telefonnummer ist zwingend!" pattern="[0-9]{10}" required>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputStreet">Strasse / Postfach</label>
+                            <div class="controls">
+                                <input type="text" id="inputStreet" placeholder="Strasse" class="input-xlarge" title="Die Strasse ist zwingend!" required>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputZIP">Postleitzahl</label>
+                            <div class="controls">
+                                <input type="text" id="inputZIP" placeholder="Postleitzahl" class="input-xlarge" title="Die Postleitzahlist zwingend!" required>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputCity">Ort</label>
+                            <div class="controls">
+                                <input type="text" id="inputCity" placeholder="Ort" class="input-xlarge" title="Der Ort ist zwingend!" required>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputBirthdate">Geburtsdatum</label>
+                            <div class="controls">
+                                <input type="date" id="inputDate" placeholder="E-mail" class="input-xlarge" >
+                            </div>
+                        </div>
+                    </section>
+                    <!--Beratungsart, Kontaktart, Thema-->
+                    <section class="step" data-step-title="Seite">
+                        <div class="control-group">
+                            <label class="control-label" for="inputFirstname">Beratung</label>
+                            <div class="controls">
+                                <select>
+                                    <option>Ersteinschätzung</option>
+                                    <option>Beratung</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputFirstname">Kontaktart</label>
+                            <div class="controls">
+                                <select>
+                                    <option>Telefongespräch</option>
+                                    <option>Online Meeting</option>
+                                    <option>Termin vor Ort</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputFirstname">Themenbereich</label>
+                            <div class="controls">
+                                <select>
+                                    <option>Medizin</option>
+                                    <option>Zahnmedizin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </header
+        </div>
+        
+    
+    <button onclick="hide_content()">Finde Termin</button>
+    
+    
+      <body class="calendar">
+        <div id='calendar' style="block"></div>
+      </body>
+      
+  
+        <!--JS und library-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+        <script src="pages/jquery.snippet.min.js"></script>
+        <script src="pages/jquery.easyWizard.js"></script>
+        <script src="pages/onlinetermin.js"></script>
+    </body>
+</html>
