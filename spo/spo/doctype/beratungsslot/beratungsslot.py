@@ -11,3 +11,4 @@ class Beratungsslot(Document):
 
 @frappe.whitelist()
 def get_slots():
+    return
