@@ -1,140 +1,94 @@
-/*script.js, ab Zeile 71 calendar, ab 135 main ersetzt durch fullcalendar(für kalender,riesig)*/
-$(function() {
-    $('#navbar').affix({
-        offset: {
-            top: 200
-        }
-    });
+// navigation
+function start() {
+    document.getElementById("step0").style.display = "block";
+    document.getElementById("step1").style.display = "none";
+    document.getElementById("step2").style.display = "none";
+    document.getElementById("step3").style.display = "none";
+    document.getElementById("step4").style.display = "none";
+    document.getElementById("step5").style.display = "none";
+    document.getElementById("step6").style.display = "none";
+    document.getElementById("step7").style.display = "none";
+    document.getElementById("step8").style.display = "none";
+}
 
-    $("pre.html").snippet("html", {style:'matlab'});
-    $("pre.css").snippet("css", {style:'matlab'});
-    $("pre.javascript").snippet("javascript", {style:'matlab'});
+function is_member() {
+    document.getElementById("step0").style.display = "none";
+    document.getElementById("step1").style.display = "block";
+}
 
-    $('#myWizard').easyWizard({
-        buttonsClass: 'btn',
-        submitButtonClass: 'btn btn-info'
-    });
+function is_nonmember() {
+    document.getElementById("step0").style.display = "none";
+    document.getElementById("step2").style.display = "block";
+}
 
-    $('#myWizard2').easyWizard({
-        buttonsClass: 'btn',
-        submitButtonClass: 'btn btn-info',
-        before: function(wizardObj, currentStepObj, nextStepObj) {
-            /*var r = true;
-            wizardObj.find('input, textarea').each(function() {
-                if(!this.checkValidity()) {
-                    r = false;
-                }
-            });
-            
-            return r;*/
-        },
-        after: function(wizardObj, prevStepObj, currentStepObj) {
-            /*alert('Hello, I\'am the after callback');*/
-        },
-        beforeSubmit: function(wizardObj) {
-            /*alert('Hello, I\'am the beforeSubmit callback');*/
-            /*hier kalender von hide zu show, und header hide?*/
-        }
-    });
-
-/*Um eigene Buttons zu verwenden, Problem: haben 1 Form, nicht pro Slide, mywizard3 ist form id*/
-    $('#myWizard3').easyWizard({
-        showSteps: false,
-        showButtons: false,
-        submitButton: false
-    });
-    $('#myWizard3Pager .previous a').bind('click', function(e) {
-        e.preventDefault();
-        $('#myWizard3').easyWizard('prevStep');
-    });
-    $('#myWizard3Pager .page a').bind('click', function(e) {
-        e.preventDefault();
-        $('#myWizard3').easyWizard('goToStep', $(this).attr('rel'));
-    });
-    $('#myWizard3Pager .next a').bind('click', function(e) {
-        e.preventDefault();
-        $('#myWizard3').easyWizard('nextStep');
-    });
-});
-
-/*neu hinzugefügt*/
-function hide_content() {
-    var x = document.getElementById("calendar");
-    if (x.style.display === "none") {
-        x.style.display = "block";
+function select_option_from_member() {
+    var customer_nr = document.getElementById("customer_nr").value;
+    var customer_lastname = document.getElementById("customer_lastname").value;
+    if (!customer_nr) {
+        document.getElementById("customer_nr").style.border = "1px solid red;"
+        document.getElementById("customer_nr").focus();
+    } else if (!customer_lastname) {
+        document.getElementById("customer_lastname").style.border = "1px solid red;"
+        document.getElementById("customer_lastname").focus();
     } else {
-        x.style.display = "none";
+        // all good, go to next step
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("step3").style.display = "block";
     }
 }
 
+function select_option_from_nonmember() {
+    document.getElementById("step2").style.display = "none";
+    document.getElementById("step3").style.display = "block";
+}
 
-/*calender.js */
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
+function select_slot() {
+    document.getElementById("step3").style.display = "none";
+    
+    // call server to get available slots
+    frappe.call({
+        'method': 'spo.spo.doctype.beratungsslot.beratungsslot.get_slots',
+        'callback': function(response) {
+            var slots = response.message;
+            
+            document.getElementById("step4").style.display = "block";
+            
+            load_calendar(slots);
+        }
+    });
+}
 
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    initialDate: '2021-10-03',
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
-    events: [
-    {
-        title: '08:00',
-        start: '2021-10-01 '
-      },
-      {
-        title: '09:00',
-        start: '2021-10-01'
-      },
-      {
-        title: '16:00',
-        start: '2021-10-01'
-      },
-            {
-        title: '10:00',
-        start: '2021-10-05'
-      },
-            {
-        title: '13:00',
-        start: '2021-10-05'
-      },
-            {
-        title: '15:00',
-        start: '2021-10-05'
-      },
-      {
-        title: '08:00',
-        start: '2021-10-07'
-      },
-            {
-        title: '09:00',
-        start: '2021-10-07'
-      },
-      {
-        title: '11:00',
-        start: '2021-10-12'
-      },
-      {
-        title: '13:00',
-        start: '2021-10-07'
-      },
-      {
-        title: '15:00',
-        start: '2021-10-12',
+function select_payment() {
+    document.getElementById("step4").style.display = "none";
+    document.getElementById("step5").style.display = "block";
+}
 
-      }
-    ]
-  });
+function pay_by_qr() {
+    document.getElementById("step5").style.display = "none";
+    document.getElementById("step6").style.display = "block";
+}
 
-  calendar.render();
-});
+function pay_stripe() {
+    document.getElementById("step5").style.display = "none";
+    document.getElementById("step7").style.display = "block";
+}
 
-/*main.js des kalenders ersetzt durch /assets/frappe/js/lib/fullcalendar*/
-/*!
-FullCalendar v5.10.1
-Docs & License: https://fullcalendar.io/
-(c) 2021 Adam Shaw
-*/
+function done() {
+    document.getElementById("step6").style.display = "none";
+    document.getElementById("step7").style.display = "none";
+    document.getElementById("step8").style.display = "block";
+}
+
+function load_calendar(events) {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      'initialView': 'dayGridMonth',
+      'headerToolbar': {
+          'left': 'prev,next today',
+          'center': 'title',
+          'right': 'dayGridMonth,timeGridWeek,timeGrudDay'
+        },
+        'events': events
+    });
+    calendar.render();
+}

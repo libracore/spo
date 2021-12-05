@@ -9,6 +9,11 @@ from frappe.model.document import Document
 class Beratungsslot(Document):
 	pass
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_slots():
-    return
+    slots = [
+        {'title': 'Beratung', 'start': '2021-12-06T08:00:00', 'end': '2021-12-06T08:30:00'},
+        {'title': 'Beratung', 'start': '2021-12-06T09:00:00', 'end': '2021-12-06T09:30:00'},
+        {'title': 'Beratung', 'start': '2021-12-06T10:00:00', 'end': '2021-12-06T10:30:00'},
+    ]
+    return slots
