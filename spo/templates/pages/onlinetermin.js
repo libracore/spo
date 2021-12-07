@@ -21,6 +21,13 @@ function is_nonmember() {
     document.getElementById("step2").style.display = "block";
 }
 
+function start_over() {
+    document.getElementById("step0").style.display = "block";
+    document.getElementById("step1").style.display = "none";
+    document.getElementById("step2").style.display = "none";
+}
+
+
 function select_option_from_member() {
     var customer_nr = document.getElementById("customer_nr").value;
     var customer_lastname = document.getElementById("customer_lastname").value;
@@ -115,3 +122,27 @@ function load_calendar(events) {
     });
     calendar.render();
 }
+
+//change triggers
+/*
+hide selection vor Ort if Erstgespräch
+//jQuery('select[name=viewSelector]').change(function(){
+	//if option value="f1", hide choices f1
+	var fieldsetName = $(this).val();
+	$('select[name=choices]').hide().filter('#f1'.show();
+});*/
+
+function filter() {
+	var keyword = document.getElementById("selector").value;
+	var choices = document.getElementById("choices");
+	for (var i = 0; i < choices.length; i++) {
+		if (!choices#f1) {
+			choices.options[i].style.display = 'none';
+		} else {
+			choices.options[i].style.display = 'list-item';
+		}
+	}
+
+
+
+
