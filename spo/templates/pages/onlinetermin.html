@@ -105,24 +105,43 @@
         <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
     </div>
     
-    <div id="step3" style="display: none; "><!-- step 3: select options -->
+    <div id="step3" style="display: none; "><!-- step 3: select button -->
         <h2>Optionen wählen</h2>
     
+        <button class="btn btn-primary" onclick="select_evaluation();">Ersteinschätzung</button>   
+        <button class="btn btn-primary" onclick="select_consultation();">Beratung</button>   
+        
+        <div id="step4" style="display: none; "><!-- step 4: select options -->
+        <h2>Optionen wählen</h2>
         <div class="control-group">
-            <label class="control-label" for="inputFirstname">Beratung</label>
+            <label class="control-label" for="inputFirstname">Kontaktart</label>
             <div class="controls">
-                <select id="selector">
-                    <option>Ersteinschätzung</option>
-                    <option>Beratung</option>
+                <select>
+                    <option>Telefongespräch</option>
+                    <option>Online Meeting</option>
                 </select>
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="inputFirstname">Themenbereich</label>
+            <div class="controls">
+                <select>
+                    <option>Medizin</option>
+                    <option>Zahnmedizin</option>
+                </select>
+            </div>
+        </div>
+    
+        <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
+    </div>
+         <div id="step5" style="display: none; "><!-- step 5: select options -->
+        <h2>Optionen wählen</h2>
+        <div class="control-group">
             <label class="control-label" for="inputFirstname">Kontaktart</label>
             <div class="controls">
-                <select id="choices">
-                    <option id="f1">Telefongespräch</option>
-                    <option id="f1">Online Meeting</option>
+                <select>
+                    <option>Telefongespräch</option>
+                    <option>Online Meeting</option>
                     <option>Termin vor Ort</option>
                 </select>
             </div>
@@ -139,14 +158,14 @@
     
         <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
     </div>
-    <div id="step4" style="display: none; "><!-- step 4: select slot -->
+    <div id="step6" style="display: none; "><!-- step 6: select slot -->
         <h2>Termin wählen</h2>
     
         <div id="calendar">
         </div>
         
     </div>
-    <div id="step5" style="display: none; "><!-- step 5: select payment -->
+    <div id="step7" style="display: none; "><!-- step 7: select payment -->
         <h2>Zahlungsart wählen</h2>
     
         <button class="btn btn-primary" onclick="pay_by_qr();">mit QR-Rechnung zahlen</button>
@@ -155,19 +174,19 @@
     
     </div>
     
-    <div id="step6" style="display: none; "><!-- step 6: pay by QR-code -->
+    <div id="step8" style="display: none; "><!-- step 8: pay by QR-code -->
         <h2>Zahlung per QR-Rechnung</h2>
     
     
     </div>
     
-    <div id="step7" style="display: none; "><!-- step 7: pay by stripe -->
+    <div id="step9" style="display: none; "><!-- step 9: pay by stripe -->
         <h2>Zahlung mit Kreditkarte</h2>
     
     
     </div>
     
-    <div id="step8" style="display: none; "><!-- step 8: done -->
+    <div id="step10" style="display: none; "><!-- step 10: done -->
         <h2>Vielen Dank für Ihre Terminanfrage!</h2>
     
     

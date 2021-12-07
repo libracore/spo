@@ -72,8 +72,19 @@ function select_option_from_nonmember() {
     document.getElementById("step3").style.display = "block";
 }
 
+function select_evaluation() {
+	document.getElementById("step3").style.display = "none";
+    document.getElementById("step4").style.display = "block";
+}
+
+function select_consultation() {
+	document.getElementById("step3").style.display = "none";
+    document.getElementById("step5").style.display = "block";
+}
+
 function select_slot() {
-    document.getElementById("step3").style.display = "none";
+    document.getElementById("step4").style.display = "none";
+    document.getElementById("step5").style.display = "none";
     
     // call server to get available slots
     frappe.call({
@@ -81,7 +92,7 @@ function select_slot() {
         'callback': function(response) {
             var slots = response.message;
             
-            document.getElementById("step4").style.display = "block";
+            document.getElementById("step6").style.display = "block";
             
             load_calendar(slots);
         }
@@ -89,24 +100,24 @@ function select_slot() {
 }
 
 function select_payment() {
-    document.getElementById("step4").style.display = "none";
-    document.getElementById("step5").style.display = "block";
-}
-
-function pay_by_qr() {
-    document.getElementById("step5").style.display = "none";
-    document.getElementById("step6").style.display = "block";
-}
-
-function pay_stripe() {
-    document.getElementById("step5").style.display = "none";
+    document.getElementById("step6").style.display = "none";
     document.getElementById("step7").style.display = "block";
 }
 
-function done() {
-    document.getElementById("step6").style.display = "none";
+function pay_by_qr() {
     document.getElementById("step7").style.display = "none";
     document.getElementById("step8").style.display = "block";
+}
+
+function pay_stripe() {
+    document.getElementById("step7").style.display = "none";
+    document.getElementById("step9").style.display = "block";
+}
+
+function done() {
+    document.getElementById("step8").style.display = "none";
+    document.getElementById("step9").style.display = "none";
+    document.getElementById("step10").style.display = "block";
 }
 
 function load_calendar(events) {
@@ -127,22 +138,31 @@ function load_calendar(events) {
 /*
 hide selection vor Ort if Erstgespräch
 //jQuery('select[name=viewSelector]').change(function(){
-	//if option value="f1", hide choices f1
-	var fieldsetName = $(this).val();
-	$('select[name=choices]').hide().filter('#f1'.show();
+    //if option value="f1", hide choices f1
+    var fieldsetName = $(this).val();
+    $('select[name=choices]').hide().filter('#f1'.show();
 });*/
-
+/*
 function filter() {
     var keyword = document.getElementById("selector").value;
     var choices = document.getElementById("choices");
+    var keyword_txt = keyword.options[keyword.selectedIndex].text;
+    if (keyword_txt == 'Ersteinschätzung')
+    console.log("ich war in der Ersteinschätzung");
     for (var i = 0; i < choices.length; i++) {
-        if (!choices) {
+        if (selector.options[i] == 'Termin vor Ort') {
             choices.options[i].style.display = 'none';
         } else {
             choices.options[i].style.display = 'list-item';
         }
     }
+*/
+/*
+function removeAll(choices) {
+    while (selectBox.options.length > 0) {
+        selectBox.remove(0);
+        console.log("removed");
+    }
 }
 
-
-
+*/
