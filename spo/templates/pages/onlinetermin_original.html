@@ -2,7 +2,7 @@
 <h1>SPO</h1>
 <p class="lead muted">SPO - hier wenn Sie uns brauchen</p>
 <h3>Beratung / Termin Buchen</h3>
-<!--#<button class="btn btn-primary" onclick="start();">Start</button>-->
+<button class="btn btn-primary" onclick="start();">Start</button>
 <div id="container" class="wizard-container">
     <div id="step0">
         <h2>Sind Sie bereits Mitglied?</h2>
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start_over();">Zurück</button>    
+        
         <button class="btn btn-primary" onclick="select_option_from_member();">Weiter</button>
         
         <p>Ihr Kontingent für kostenfreie Beratung Beträgt aktuell: XY Min<br>
@@ -101,7 +101,7 @@
                 <input type="date" id="inputDate" placeholder="E-mail" class="input-xlarge" >
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start_over();">Zurück</button>   
+        
         <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
     </div>
     
@@ -111,7 +111,7 @@
         <div class="control-group">
             <label class="control-label" for="inputFirstname">Beratung</label>
             <div class="controls">
-                <select id="selector">
+                <select>
                     <option>Ersteinschätzung</option>
                     <option>Beratung</option>
                 </select>
@@ -120,9 +120,9 @@
         <div class="control-group">
             <label class="control-label" for="inputFirstname">Kontaktart</label>
             <div class="controls">
-                <select id="choices">
-                    <option id="f1">Telefongespräch</option>
-                    <option id="f1">Online Meeting</option>
+                <select>
+                    <option>Telefongespräch</option>
+                    <option>Online Meeting</option>
                     <option>Termin vor Ort</option>
                 </select>
             </div>
