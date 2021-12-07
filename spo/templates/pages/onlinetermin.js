@@ -31,6 +31,29 @@ function select_option_from_member() {
         document.getElementById("customer_lastname").style.border = "1px solid red;"
         document.getElementById("customer_lastname").focus();
     } else {
+        // verify membership
+        frappe.call({
+        'method': 'spo.utils.onlinetermin.check_membership',
+        'args' {
+            'member': customer_nr,
+            'lastname': customer_lastname
+        },
+        'callback': function(response) {
+            var details = response.message;
+            
+            if (details) {
+                // got details
+                document.getElementById("step4").style.display = "block";
+                
+                load_calendar(slots);
+            } else {
+                // invalid call
+                document.getElementById("customer_nr").value = null;
+                document.getElementById("customer_lastname").value = null;
+                document.getElementById("customer_nr").focus();
+            }
+        }
+    });
         // all good, go to next step
         document.getElementById("step1").style.display = "none";
         document.getElementById("step3").style.display = "block";

@@ -9,7 +9,8 @@
   "time",
   "objective1",
   "objective2",
-  "status"
+  "status",
+  "customer"
  ],
  "fields": [
   {
@@ -39,9 +40,15 @@
    "fieldtype": "Select",
    "label": "Status",
    "options": "frei\nreserviert\nbezahlt"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
- "modified": "2021-11-25 16:31:32.047388",
+ "modified": "2021-12-07 13:39:11.926128",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
