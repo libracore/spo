@@ -41,7 +41,7 @@ function select_option_from_member() {
         // verify membership
         frappe.call({
         'method': 'spo.utils.onlinetermin.check_membership',
-        'args' {
+        'args': {
             'member': customer_nr,
             'lastname': customer_lastname
         },
@@ -138,42 +138,31 @@ function load_calendar(events) {
 /*
 hide selection vor Ort if Erstgespräch
 //jQuery('select[name=viewSelector]').change(function(){
-	//if option value="f1", hide choices f1
-	var fieldsetName = $(this).val();
-	$('select[name=choices]').hide().filter('#f1'.show();
+    //if option value="f1", hide choices f1
+    var fieldsetName = $(this).val();
+    $('select[name=choices]').hide().filter('#f1'.show();
 });*/
 /*
 function filter() {
-	var keyword = document.getElementById("selector").value;
-	var choices = document.getElementById("choices");
-	var keyword_txt = keyword.options[keyword.selectedIndex].text;
-	if (keyword_txt == 'Ersteinschätzung')
-	console.log("ich war in der Ersteinschätzung");
-	for (var i = 0; i < choices.length; i++) {
-		if (selector.options[i] == 'Termin vor Ort') {
-			choices.options[i].style.display = 'none';
-		} else {
-			choices.options[i].style.display = 'list-item';
-		}
-	}
+    var keyword = document.getElementById("selector").value;
+    var choices = document.getElementById("choices");
+    var keyword_txt = keyword.options[keyword.selectedIndex].text;
+    if (keyword_txt == 'Ersteinschätzung')
+    console.log("ich war in der Ersteinschätzung");
+    for (var i = 0; i < choices.length; i++) {
+        if (selector.options[i] == 'Termin vor Ort') {
+            choices.options[i].style.display = 'none';
+        } else {
+            choices.options[i].style.display = 'list-item';
+        }
+    }
 */
 /*
 function removeAll(choices) {
-	while (selectBox.options.length > 0) {
-		selectBox.remove(0);
-		console.log("removed");
-	}
+    while (selectBox.options.length > 0) {
+        selectBox.remove(0);
+        console.log("removed");
+    }
 }
 
 */
-
-function filter() {
-	var keyword = document.getElementById("selector").value;
-	var choices = document.getElementById("choices");
-	for (var i = 0; i < choices.length; i++) {
-		if (!choices#f1) {
-			choices.options[i].style.display = 'none';
-		} else {
-			choices.options[i].style.display = 'list-item';
-		}
-	}
