@@ -41,7 +41,7 @@ function select_option_from_member() {
         // verify membership
         frappe.call({
         'method': 'spo.utils.onlinetermin.check_membership',
-        'args' {
+        'args': {
             'member': customer_nr,
             'lastname': customer_lastname
         },
@@ -133,16 +133,16 @@ hide selection vor Ort if Erstgespräch
 });*/
 
 function filter() {
-	var keyword = document.getElementById("selector").value;
-	var choices = document.getElementById("choices");
-	for (var i = 0; i < choices.length; i++) {
-		if (!choices#f1) {
-			choices.options[i].style.display = 'none';
-		} else {
-			choices.options[i].style.display = 'list-item';
-		}
-	}
-
+    var keyword = document.getElementById("selector").value;
+    var choices = document.getElementById("choices");
+    for (var i = 0; i < choices.length; i++) {
+        if (!choices) {
+            choices.options[i].style.display = 'none';
+        } else {
+            choices.options[i].style.display = 'list-item';
+        }
+    }
+}
 
 
 
