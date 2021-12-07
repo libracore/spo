@@ -104,14 +104,13 @@
         <button class="btn btn-primary" onclick="start_over();">Zurück</button>   
         <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
     </div>
-    
     <div id="step3" style="display: none; "><!-- step 3: select button -->
         <h2>Optionen wählen</h2>
     
         <button class="btn btn-primary" onclick="select_evaluation();">Ersteinschätzung</button>   
         <button class="btn btn-primary" onclick="select_consultation();">Beratung</button>   
-        
-        <div id="step4" style="display: none; "><!-- step 4: select options -->
+    </div>
+    <div id="step4" style="display: none; "><!-- step 4: select options -->
         <h2>Optionen wählen</h2>
         <div class="control-group">
             <label class="control-label" for="inputFirstname">Kontaktart</label>
@@ -134,7 +133,7 @@
     
         <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
     </div>
-         <div id="step5" style="display: none; "><!-- step 5: select options -->
+    <div id="step5" style="display: none; "><!-- step 5: select options -->
         <h2>Optionen wählen</h2>
         <div class="control-group">
             <label class="control-label" for="inputFirstname">Kontaktart</label>
@@ -177,13 +176,13 @@
     <div id="step8" style="display: none; "><!-- step 8: pay by QR-code -->
         <h2>Zahlung per QR-Rechnung</h2>
     
-    
+        <button class="btn btn-secondary" onclick="done();">weiter</button>
     </div>
     
     <div id="step9" style="display: none; "><!-- step 9: pay by stripe -->
         <h2>Zahlung mit Kreditkarte</h2>
     
-    
+        <button class="btn btn-secondary" onclick="done();">weiter</button>
     </div>
     
     <div id="step10" style="display: none; "><!-- step 10: done -->

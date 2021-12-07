@@ -50,7 +50,7 @@ function select_option_from_member() {
             
             if (details) {
                 // got details
-                document.getElementById("step4").style.display = "block";
+                document.getElementById("step6").style.display = "block";
                 
                 load_calendar(slots);
             } else {
