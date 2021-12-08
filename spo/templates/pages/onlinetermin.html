@@ -110,63 +110,58 @@
                 <input type="date" id="inputDate" placeholder="E-mail" class="input-xlarge" >
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start();">Zurück</button>   
+        <button class="btn btn-secondary" onclick="start();">Zurück</button>   
         <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
     </div>
     
-    <div id="step3" style="display: none; "><!-- step 3: select button -->
+    <div id="step3" style="display: none; "><!-- step 3: select options -->
         <h2>Optionen wählen</h2>
     
-        <button class="btn btn-primary" onclick="select_evaluation();">Ersteinschätzung</button>   
-        <button class="btn btn-primary" onclick="select_consultation();">Beratung</button>   
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Was für eine Beratung wünschen Sie?</p>
+                <div class="control-group">
+                    <select id="consultation_type" class="form-control">
+                        <option>Ersteinschätzung</option>
+                        <option>Beratung</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         
-        <div id="step4" style="display: none; "><!-- step 4: select options -->
-        <h2>Optionen wählen</h2>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Kontaktart</label>
-            <div class="controls">
-                <select>
-                    <option>Telefongespräch</option>
-                    <option>Online Meeting</option>
-                </select>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Wie möchten Sie die Beratung durchgeführt haben?</p>
+                <div class="control-group">
+                    <select id="consultation_mode" class="form-control">
+                        <option id="consultation_mode_phone" >Telefongespräch</option>
+                        <option id="consultation_mode_online" >Online Meeting</option>
+                        <option id="consultation_mode_onsite" disabled=true>Termin vor Ort</option>
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Themenbereich</label>
-            <div class="controls">
-                <select>
-                    <option>Medizin</option>
-                    <option>Zahnmedizin</option>
-                </select>
-            </div>
-        </div>
-    
-        <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
-    </div>
-         <div id="step5" style="display: none; "><!-- step 5: select options -->
-        <h2>Optionen wählen</h2>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Kontaktart</label>
-            <div class="controls">
-                <select>
-                    <option>Telefongespräch</option>
-                    <option>Online Meeting</option>
-                    <option>Termin vor Ort</option>
-                </select>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Themenbereich</label>
-            <div class="controls">
-                <select>
-                    <option>Medizin</option>
-                    <option>Zahnmedizin</option>
-                </select>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Um welchen Themenbereich handelt es sich?</p>
+                <div class="control-group">
+                    <select id="topic" class="form-control">
+                        <option>Medizin</option>
+                        <option>Zahnmedizin</option>
+                    </select>
+                </div>
             </div>
         </div>
     
-        <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <button class="btn btn-secondary" onclick="start();">Zurück</button> 
+                <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
+            </div>
+        </div>
     </div>
+
     <div id="step6" style="display: none; "><!-- step 6: select slot -->
         <h2>Termin wählen</h2>
     

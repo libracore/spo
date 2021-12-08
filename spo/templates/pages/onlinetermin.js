@@ -146,34 +146,16 @@ function load_calendar(events) {
 }
 
 //change triggers
-/*
-hide selection vor Ort if Erstgespräch
-//jQuery('select[name=viewSelector]').change(function(){
-    //if option value="f1", hide choices f1
-    var fieldsetName = $(this).val();
-    $('select[name=choices]').hide().filter('#f1'.show();
-});*/
-/*
-function filter() {
-    var keyword = document.getElementById("selector").value;
-    var choices = document.getElementById("choices");
-    var keyword_txt = keyword.options[keyword.selectedIndex].text;
-    if (keyword_txt == 'Ersteinschätzung')
-    console.log("ich war in der Ersteinschätzung");
-    for (var i = 0; i < choices.length; i++) {
-        if (selector.options[i] == 'Termin vor Ort') {
-            choices.options[i].style.display = 'none';
+document.addEventListener("DOMContentLoaded", function(event) {
+    // when document is loaded, add change triggers
+    document.getElementById("consultation_type").onchange = function() {
+        if (document.getElementById("consultation_type").value === "Ersteinschätzung") {
+            document.getElementById("consultation_mode_onsite").disabled = true;
+            if (document.getElementById("consultation_mode_onsite").selected) {
+                document.getElementById("consultation_mode_phone").selected = true;
+            }
         } else {
-            choices.options[i].style.display = 'list-item';
+            document.getElementById("consultation_mode_onsite").disabled = false;
         }
     }
-*/
-/*
-function removeAll(choices) {
-    while (selectBox.options.length > 0) {
-        selectBox.remove(0);
-        console.log("removed");
-    }
-}
-
-*/
+});
