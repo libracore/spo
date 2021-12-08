@@ -14,12 +14,22 @@
   "status",
   "column_status",
   "customer",
-  "customer_name"
+  "customer_name",
+  "section_reservation",
+  "first_name",
+  "last_name",
+  "email_id",
+  "phone",
+  "column_reservation",
+  "address",
+  "pincode",
+  "city"
  ],
  "fields": [
   {
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Status",
    "options": "frei\nreserviert\nbezahlt"
   },
@@ -32,6 +42,7 @@
   {
    "fieldname": "start",
    "fieldtype": "Datetime",
+   "in_list_view": 1,
    "label": "Start"
   },
   {
@@ -68,9 +79,54 @@
    "fieldtype": "Data",
    "label": "Customer name",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_reservation",
+   "fieldtype": "Section Break",
+   "label": "Reservation"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First name"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Last name"
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "column_reservation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "label": "Pincode"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
   }
  ],
- "modified": "2021-12-08 12:41:23.797059",
+ "modified": "2021-12-08 14:40:24.086195",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

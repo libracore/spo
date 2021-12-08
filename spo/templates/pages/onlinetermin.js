@@ -103,11 +103,37 @@ function select_slot() {
 }
 
 // this function is called when a calender slot is selected
-function reserve_slot(title, start) {
-    document.getElementById("slot_title").value = title;
-    document.getElementById("slot_start").value = start;
+function reserve_slot(id, title, start) {
+    // reserve slot
+    frappe.call({
+        'method': 'spo.spo.doctype.beratungsslot.beratungsslot.reserve_slot',
+        'args': {
+            'slot': id,
+            'member': document.getElementById("customer_nr").value, 
+            'first_name': document.getElementById("inputFirstname").value, 
+            'last_name': document.getElementById("inputSurname").value, 
+            'address': document.getElementById("inputStreet").value, 
+            'city': document.getElementById("inputCity").value, 
+            'pincode': document.getElementById("inputZIP").value, 
+            'email': document.getElementById("inputEmail").value, 
+            'phone': document.getElementById("inputPhone").value
+        },
+        'callback': function(response) {
+            var success = response.message;
+            
+            if (success) {
+                document.getElementById("slot_title").value = title;
+                document.getElementById("slot_start").value = start;
+                
+                select_payment();
+            } else {
+                // remain on calendar, could not lock this slot
+                console.log("slot reservation failed: " + id);
+            }
+        }
+    });
     
-    select_payment();
+    
 }
 
 function select_payment() {
@@ -142,7 +168,7 @@ function load_calendar(events) {
         },
         'events': events,
         'eventClick': function(info) {
-            reserve_slot(info.event.title, info.event.start);
+            reserve_slot(info.event.id, info.event.title, info.event.start);
         }
     });
     calendar.render();
