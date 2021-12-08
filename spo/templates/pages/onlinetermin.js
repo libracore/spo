@@ -83,23 +83,15 @@ function select_option_from_nonmember() {
     document.getElementById("step3").style.display = "block";
 }
 
-function select_evaluation() {
-    document.getElementById("step3").style.display = "none";
-    document.getElementById("step4").style.display = "block";
-}
-
-function select_consultation() {
-    document.getElementById("step3").style.display = "none";
-    document.getElementById("step5").style.display = "block";
-}
-
 function select_slot() {
-    document.getElementById("step4").style.display = "none";
-    document.getElementById("step5").style.display = "none";
+    document.getElementById("step3").style.display = "none";
     
     // call server to get available slots
     frappe.call({
         'method': 'spo.spo.doctype.beratungsslot.beratungsslot.get_slots',
+        'args': {
+            'topic': document.getElementById("topic").value
+        },
         'callback': function(response) {
             var slots = response.message;
             
@@ -108,6 +100,14 @@ function select_slot() {
             load_calendar(slots);
         }
     });
+}
+
+// this function is called when a calender slot is selected
+function reserve_slot(title, start) {
+    document.getElementById("slot_title").value = title;
+    document.getElementById("slot_start").value = start;
+    
+    select_payment();
 }
 
 function select_payment() {
@@ -140,7 +140,10 @@ function load_calendar(events) {
           'center': 'title',
           'right': 'dayGridMonth,timeGridWeek,timeGrudDay'
         },
-        'events': events
+        'events': events,
+        'eventClick': function(info) {
+            reserve_slot(info.event.title, info.event.start);
+        }
     });
     calendar.render();
 }

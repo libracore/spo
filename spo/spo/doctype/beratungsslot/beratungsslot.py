@@ -10,10 +10,16 @@ class Beratungsslot(Document):
 	pass
 
 @frappe.whitelist(allow_guest=True)
-def get_slots():
-    slots = [
-        {'title': 'Beratung', 'start': '2021-12-06T08:00:00', 'end': '2021-12-06T08:30:00'},
-        {'title': 'Beratung', 'start': '2021-12-06T09:00:00', 'end': '2021-12-06T09:30:00'},
-        {'title': 'Beratung', 'start': '2021-12-06T10:00:00', 'end': '2021-12-06T10:30:00'},
-    ]
-    return slots
+def get_slots(topic="Medizin"):
+    available_slots = frappe.db.sql("""
+        SELECT 
+            `name`, 
+            `topic` AS `title`, 
+            `start`, 
+            `end`
+        FROM `tabBeratungsslot`
+        WHERE `start` >= DATE_ADD(DATE(NOW()), INTERVAL 2 DAY)
+          AND `status` = "frei"
+          AND `topic` = "{topic}";""".format(topic=topic), as_dict=True)
+          
+    return available_slots

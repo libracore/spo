@@ -155,7 +155,7 @@
         </div>
     
         <div class="row" style="margin-top: 20px; ">
-            <div class="form-column col-sm-4">
+            <div class="form-column col-sm-12">
                 <button class="btn btn-secondary" onclick="start();">Zurück</button> 
                 <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
             </div>
@@ -172,9 +172,29 @@
     <div id="step7" style="display: none; "><!-- step 7: select payment -->
         <h2>Zahlungsart wählen</h2>
     
-        <button class="btn btn-primary" onclick="pay_by_qr();">mit QR-Rechnung zahlen</button>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                    <input type="text" id="slot_title" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" id="slot_start" class="form-control" readonly>
+                </div>
+            </div>
+        </div>
         
-        <button class="btn btn-secondary" onclick="pay_stripe();">mit Kreditkarte zahlen</button>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <button class="btn btn-primary" onclick="pay_by_qr();">mit QR-Rechnung zahlen</button>
+        
+                <button class="btn btn-secondary" onclick="pay_stripe();">mit Kreditkarte zahlen</button>
+                
+            </div>
+        </div>
     
     </div>
     
