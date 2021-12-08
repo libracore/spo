@@ -201,7 +201,21 @@
     <div id="step8" style="display: none; "><!-- step 8: pay by QR-code -->
         <h2>Zahlung per QR-Rechnung</h2>
     
-    
+        <p>Bitte scannen Sie den folgenden QR-Code mit Ihrer <b>Bank-App</b> und überweisen den Betrag vor dem Termin.</p>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <img id="qr_code" style="width: 200px; ">
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+        
+                <button class="btn btn-primary" onclick="done();">Zahlung wurde ausgeführt</button>
+                
+            </div>
+        </div>
     </div>
     
     <div id="step9" style="display: none; "><!-- step 9: pay by stripe -->
@@ -217,6 +231,8 @@
     </div>       
 
 </div><!-- end of wizard container -->
+
+<input type="text" id="slot_id" hidden readonly>
 
 <!-- load additinal resources (calendar) -->
 <link href="/assets/spo/js/fullcalendar.min.css" rel="stylesheet">

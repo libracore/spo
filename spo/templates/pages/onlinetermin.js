@@ -122,6 +122,7 @@ function reserve_slot(id, title, start) {
             var success = response.message;
             
             if (success) {
+                document.getElementById("slot_id").value = id;
                 document.getElementById("slot_title").value = title;
                 document.getElementById("slot_start").value = start;
                 
@@ -142,8 +143,50 @@ function select_payment() {
 }
 
 function pay_by_qr() {
-    document.getElementById("step7").style.display = "none";
-    document.getElementById("step8").style.display = "block";
+    // load QR code
+    frappe.call({
+        'method': 'spo.utils.onlinetermin.submit_request',
+        'args': {
+            'slot': document.getElementById("slot_id").value, 
+            'member': document.getElementById("customer_nr").value, 
+            'first_name': document.getElementById("inputFirstname").value, 
+            'last_name': document.getElementById("inputSurname").value, 
+            'address': document.getElementById("inputStreet").value, 
+            'city': document.getElementById("inputCity").value, 
+            'pincode': document.getElementById("inputZIP").value, 
+            'email': document.getElementById("inputEmail").value, 
+            'phone': document.getElementById("inputPhone").value
+        },
+        'callback': function(response) {
+            // invoice created
+            var details = response.message;
+            
+            var qr_source = "https://data.libracore.ch/phpqrcode/api/iso20022.php?"
+                + "iban=CH7400700110304209806&"
+                + "receiver_name=SPO Schweizerische Patientenorganisation&" 
+                + "receiver_street=Häringstrasse&"
+                + "receiver_number=20&"
+                + "receiver_pincode=8001&"
+                + "receiver_town=Zürich&"
+                + "receiver_country=CH&"
+                + "amount=" + details.rate + "&"
+                + "currency=CHF&"
+                + "payer_name=" + document.getElementById("inputFirstname").value + " " + document.getElementById("inputSurname").value + "&" 
+                + "payer_street=" + document.getElementById("inputStreet").value + "&"
+                + "payer_number=&"
+                + "payer_pincode=" + document.getElementById("inputZIP").value + "&" 
+                + "payer_town=" + document.getElementById("inputCity").value +"&"
+                + "payer_country=CH&"
+                + "reference_type=NON&message=" + details.invoice;
+
+            document.getElementById("qr_code").src = qr_source;
+
+            document.getElementById("step7").style.display = "none";
+            document.getElementById("step8").style.display = "block";
+        }
+    });
+        
+    
 }
 
 function pay_stripe() {
@@ -172,6 +215,11 @@ function load_calendar(events) {
         }
     });
     calendar.render();
+}
+
+// this function will create the sales invoice (and if required the customer)
+function create_invoice() {
+    
 }
 
 //change triggers
