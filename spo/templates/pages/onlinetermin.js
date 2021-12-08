@@ -53,7 +53,16 @@ function select_option_from_member() {
                 document.getElementById("member_buttons").style.display = "block"; // buttons back on
                 var details = response.message;
                 if (details) {
-                    // got details
+                    // got details, store them in the form
+                    document.getElementById("inputFirstname").value = details.first_name;
+                    document.getElementById("inputSurname").value = details.last_name;
+                    document.getElementById("inputStreet").value = details.address_line1;
+                    document.getElementById("inputCity").value = details.city;
+                    document.getElementById("inputZIP").value = details.pincode;
+                    document.getElementById("inputEmail").value = details.email_id;
+                    document.getElementById("inputPhone").value = details.phone;
+                    
+                    // open step 3: select options
                     document.getElementById("step1").style.display = "none";
                     document.getElementById("step3").style.display = "block";
     

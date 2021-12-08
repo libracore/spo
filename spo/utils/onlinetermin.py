@@ -74,7 +74,9 @@ def check_membership(member, lastname):
                     `tabAddress`.`address_line1`,
                     `tabAddress`.`city`,
                     `tabAddress`.`pincode`,
-                    `tabAddress`.`country`
+                    `tabAddress`.`country`,
+                    `tabContact`.`email_id`,
+                    `tabContact`.`phone`
                 FROM `tabCustomer` 
                 JOIN `tabDynamic Link` AS `tDL1` ON `tDL1`.`link_name` = `tabCustomer`.`name` 
                     AND `tDL1`.`link_doctype` = "Customer" 
