@@ -14,30 +14,39 @@
     <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
         <h2>Mitgliedschaft erfassen</h2>
         
-        <p>Es ist wichtig, dass sich Mitglieder mit Ihrer Customer-Nr. anmelden, da sonst der Termin <b>nicht bestätigt</b> werden kann.<br>
-        Falls Sie Ihre Customer-Nr. nicht kennen, kontaktieren Sie uns: 044 252 54 22</p>
+        <p>Es ist wichtig, dass sich Mitglieder mit Ihrer Kunden-Nr. (CUST-#####) anmelden, da sonst der Termin <b>nicht bestätigt</b> werden kann.<br>
+        Falls Sie Ihre Kunden-Nr. nicht kennen, kontaktieren Sie uns: 044 252 54 22</p>
         
-        <div class="control-group">
-            <div class="center">
-                <label class="control-label" for="customer_nr">Customer-Nr.</label>
-                <div class="controls" style="margin-left: 10px">
-                    <input type="text" id="customer_nr" placeholder="Customer-Nr." class="input-xlarge" title="Customer-Nr. ist zwingend!" minlength="10" required />
+        <div class="row">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" id="customer_nr" placeholder="Kunden-Nr." class="form-control">
                 </div>
             </div>
         </div>
-        <div class="control-group">
-            <div class="center">
-                <label class="control-label" for="customer_lastname">Nachname</label>
-                <div class="controls" style="margin-left: 10px">
-                    <input type="text" id="customer_lastname" placeholder="Nachname" class="input-xlarge" title="Nachname ist zwingend!" required />
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                    <input type="text" id="customer_lastname" placeholder="Nachname" class="form-control">
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start_over();">Zurück</button>    
-        <button class="btn btn-primary" onclick="select_option_from_member();">Weiter</button>
+            
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div id="member_buttons">
+                    <button class="btn btn-secondary" onclick="start();">Zurück</button>    
+                    <button class="btn btn-primary" onclick="select_option_from_member();">Weiter</button>
+                </div>
+            </div>
+        </div>
         
-        <p>Ihr Kontingent für kostenfreie Beratung Beträgt aktuell: XY Min<br>
-        Falls Sie <b>weniger als 30 Min </b> Kontingent übrig haben, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
+        <p id="member_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> prüfen...</p>
+        <p id="member_failed" style="display: none; color: red; ">Die angegebenen Benutzerdaten sind ungültig.</p>
+        <p><br>Falls Sie <b>in den letzten 12 Monaten bereits eine Beratung hatten </b>, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
 
     </div>
     <div id="step2" style="display: none; "><!-- Step 2: non-member: credentials -->
@@ -101,7 +110,7 @@
                 <input type="date" id="inputDate" placeholder="E-mail" class="input-xlarge" >
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start_over();">Zurück</button>   
+        <button class="btn btn-primary" onclick="start();">Zurück</button>   
         <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
     </div>
     

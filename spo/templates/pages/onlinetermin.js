@@ -39,31 +39,33 @@ function select_option_from_member() {
         document.getElementById("customer_lastname").focus();
     } else {
         // verify membership
+        document.getElementById("member_wait").style.display = "block"; // waiting gif
+        document.getElementById("member_buttons").style.display = "none"; // buttons off
         frappe.call({
-        'method': 'spo.utils.onlinetermin.check_membership',
-        'args': {
-            'member': customer_nr,
-            'lastname': customer_lastname
-        },
-        'callback': function(response) {
-            var details = response.message;
-            
-            if (details) {
-                // got details
-                document.getElementById("step4").style.display = "block";
-                
-                load_calendar(slots);
-            } else {
-                // invalid call
-                document.getElementById("customer_nr").value = null;
-                document.getElementById("customer_lastname").value = null;
-                document.getElementById("customer_nr").focus();
+            'method': 'spo.utils.onlinetermin.check_membership',
+            'args': {
+                'member': customer_nr,
+                'lastname': customer_lastname
+            },
+            'callback': function(response) {
+                // disable waiting animation
+                document.getElementById("member_wait").style.display = "none";
+                document.getElementById("member_buttons").style.display = "block"; // buttons back on
+                var details = response.message;
+                if (details) {
+                    // got details
+                    document.getElementById("step1").style.display = "none";
+                    document.getElementById("step3").style.display = "block";
+    
+                } else {
+                    // invalid call
+                    document.getElementById("member_failed").style.display = "block";
+                    document.getElementById("customer_nr").value = null;
+                    document.getElementById("customer_lastname").value = null;
+                    document.getElementById("customer_nr").focus();
+                }
             }
-        }
-    });
-        // all good, go to next step
-        document.getElementById("step1").style.display = "none";
-        document.getElementById("step3").style.display = "block";
+        });
     }
 }
 
@@ -73,12 +75,12 @@ function select_option_from_nonmember() {
 }
 
 function select_evaluation() {
-	document.getElementById("step3").style.display = "none";
+    document.getElementById("step3").style.display = "none";
     document.getElementById("step4").style.display = "block";
 }
 
 function select_consultation() {
-	document.getElementById("step3").style.display = "none";
+    document.getElementById("step3").style.display = "none";
     document.getElementById("step5").style.display = "block";
 }
 
