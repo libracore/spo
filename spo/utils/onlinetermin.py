@@ -74,7 +74,9 @@ def check_membership(member, lastname):
                     `tabAddress`.`address_line1`,
                     `tabAddress`.`city`,
                     `tabAddress`.`pincode`,
-                    `tabAddress`.`country`
+                    `tabAddress`.`country`,
+                    `tabContact`.`email_id`,
+                    `tabContact`.`phone`
                 FROM `tabCustomer` 
                 JOIN `tabDynamic Link` AS `tDL1` ON `tDL1`.`link_name` = `tabCustomer`.`name` 
                     AND `tDL1`.`link_doctype` = "Customer" 
@@ -102,3 +104,70 @@ def add_access_log(title, status):
     })
     log.insert(ignore_permissions=True)
     return
+
+@frappe.whitelist(allow_guest=True)
+def submit_request(slot, member, first_name, last_name, address, 
+    city, pincode, email, phone):
+    settings = frappe.get_doc("Einstellungen Onlinetermin", "Einstellungen Onlinetermin")
+    if not member:
+        # create a new customer profile
+        customer = frappe.get_doc({
+            'doctype': 'Customer',
+            'customer_name': "{0} {1}".format(first_name, last_name),
+            'customer_group': settings.customer_group,
+            'territory': settings.territory,
+            'customer_type': 'Individual'
+        })
+        customer = customer.insert(ignore_permissions=True)
+        contact = frappe.get_doc({
+            'doctype': 'Contact',
+            'last_name': last_name,
+            'first_name': first_name,
+            'email_id': email,
+            'phone': phone,
+            'email_ids': [{
+                    'email_id': email,
+                    'is_primary': 1
+            }],
+            'phone_nos': [{
+                    'phone': phone,
+                    'is_primary_phone': 1
+            }],
+            'links': [{
+                    'link_doctype': 'Customer',
+                    'link_name': customer.name
+            }]
+        })
+        contact = contact.insert(ignore_permissions=True)
+        address = frappe.get_doc({
+            'doctype': 'Address',
+            'address_title': customer.name,
+            'address_line1': address,
+            'city': city,
+            'plz': pincode,
+            'pincode': pincode,
+            'links': [{
+                'link_doctype': 'Customer',
+                'link_name': customer.name
+            }]
+        })
+        address = address.insert(ignore_permissions=True)
+        member = customer.name
+    # create new sales invoice
+    taxes = frappe.get_doc("Sales Taxes and Charges Template", settings.sales_taxes)
+    invoice = frappe.get_doc({
+        'doctype': 'Sales Invoice',
+        'company': settings.company,
+        'customer': member,
+        'items': [{
+            'item_code': settings.invoice_item,
+            'qty': 1,
+            'rate': settings.rate,
+            'description': slot
+        }],
+        'taxes_and_charges': settings.sales_taxes,
+        'taxes': taxes.taxes
+    })
+    invoice = invoice.insert(ignore_permissions=True)
+    invoice.submit()
+    return {'invoice': invoice.name, 'rate': invoice.grand_total}

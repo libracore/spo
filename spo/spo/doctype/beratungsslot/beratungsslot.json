@@ -1,43 +1,35 @@
 {
- "autoname": "format:Slot-{date}-{time}",
+ "autoname": "format:Slot-{topic}-{start}",
  "creation": "2021-11-11 11:00:26.023046",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "date",
-  "time",
-  "objective1",
-  "objective2",
+  "start",
+  "column_date",
+  "end",
+  "column_topic",
+  "topic",
+  "section_status",
   "status",
-  "customer"
+  "column_status",
+  "customer",
+  "customer_name",
+  "section_reservation",
+  "first_name",
+  "last_name",
+  "email_id",
+  "phone",
+  "column_reservation",
+  "address",
+  "pincode",
+  "city"
  ],
  "fields": [
   {
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "label": "Datum"
-  },
-  {
-   "fieldname": "time",
-   "fieldtype": "Time",
-   "label": "Uhrzeit"
-  },
-  {
-   "fieldname": "objective1",
-   "fieldtype": "Link",
-   "label": "Thema 1",
-   "options": "Beratungsthema"
-  },
-  {
-   "fieldname": "objective2",
-   "fieldtype": "Link",
-   "label": "Thema 2 ",
-   "options": "Beratungsthema"
-  },
-  {
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Status",
    "options": "frei\nreserviert\nbezahlt"
   },
@@ -46,9 +38,95 @@
    "fieldtype": "Link",
    "label": "Customer",
    "options": "Customer"
+  },
+  {
+   "fieldname": "start",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start"
+  },
+  {
+   "fieldname": "column_date",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "end",
+   "fieldtype": "Datetime",
+   "label": "End"
+  },
+  {
+   "fieldname": "column_topic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "topic",
+   "fieldtype": "Link",
+   "label": "Thema",
+   "options": "Beratungsthema"
+  },
+  {
+   "fieldname": "section_status",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "fieldname": "column_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_reservation",
+   "fieldtype": "Section Break",
+   "label": "Reservation"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First name"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Last name"
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "column_reservation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "label": "Pincode"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
   }
  ],
- "modified": "2021-12-07 13:39:11.926128",
+ "modified": "2021-12-08 14:40:24.086195",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

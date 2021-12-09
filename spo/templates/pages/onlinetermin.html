@@ -1,4 +1,3 @@
-
 <h1>SPO</h1>
 <p class="lead muted">SPO - hier wenn Sie uns brauchen</p>
 <h3>Beratung / Termin Buchen</h3>
@@ -14,30 +13,39 @@
     <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
         <h2>Mitgliedschaft erfassen</h2>
         
-        <p>Es ist wichtig, dass sich Mitglieder mit Ihrer Customer-Nr. anmelden, da sonst der Termin <b>nicht bestätigt</b> werden kann.<br>
-        Falls Sie Ihre Customer-Nr. nicht kennen, kontaktieren Sie uns: 044 252 54 22</p>
+        <p>Es ist wichtig, dass sich Mitglieder mit Ihrer Kunden-Nr. (CUST-#####) anmelden, da sonst der Termin <b>nicht bestätigt</b> werden kann.<br>
+        Falls Sie Ihre Kunden-Nr. nicht kennen, kontaktieren Sie uns: 044 252 54 22</p>
         
-        <div class="control-group">
-            <div class="center">
-                <label class="control-label" for="customer_nr">Customer-Nr.</label>
-                <div class="controls" style="margin-left: 10px">
-                    <input type="text" id="customer_nr" placeholder="Customer-Nr." class="input-xlarge" title="Customer-Nr. ist zwingend!" minlength="10" required />
+        <div class="row">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" id="customer_nr" placeholder="Kunden-Nr." class="form-control">
                 </div>
             </div>
         </div>
-        <div class="control-group">
-            <div class="center">
-                <label class="control-label" for="customer_lastname">Nachname</label>
-                <div class="controls" style="margin-left: 10px">
-                    <input type="text" id="customer_lastname" placeholder="Nachname" class="input-xlarge" title="Nachname ist zwingend!" required />
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                    <input type="text" id="customer_lastname" placeholder="Nachname" class="form-control">
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start_over();">Zurück</button>    
-        <button class="btn btn-primary" onclick="select_option_from_member();">Weiter</button>
+            
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div id="member_buttons">
+                    <button class="btn btn-secondary" onclick="start();">Zurück</button>    
+                    <button class="btn btn-primary" onclick="select_option_from_member();">Weiter</button>
+                </div>
+            </div>
+        </div>
         
-        <p>Ihr Kontingent für kostenfreie Beratung Beträgt aktuell: XY Min<br>
-        Falls Sie <b>weniger als 30 Min </b> Kontingent übrig haben, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
+        <p id="member_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> prüfen...</p>
+        <p id="member_failed" style="display: none; color: red; ">Die angegebenen Benutzerdaten sind ungültig.</p>
+        <p><br>Falls Sie <b>in den letzten 12 Monaten bereits eine Beratung hatten </b>, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
 
     </div>
     <div id="step2" style="display: none; "><!-- Step 2: non-member: credentials -->
@@ -101,62 +109,58 @@
                 <input type="date" id="inputDate" placeholder="E-mail" class="input-xlarge" >
             </div>
         </div>
-        <button class="btn btn-primary" onclick="start_over();">Zurück</button>   
+        <button class="btn btn-secondary" onclick="start();">Zurück</button>   
         <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
     </div>
-    <div id="step3" style="display: none; "><!-- step 3: select button -->
+    
+    <div id="step3" style="display: none; "><!-- step 3: select options -->
         <h2>Optionen wählen</h2>
     
-        <button class="btn btn-primary" onclick="select_evaluation();">Ersteinschätzung</button>   
-        <button class="btn btn-primary" onclick="select_consultation();">Beratung</button>   
-    </div>
-    <div id="step4" style="display: none; "><!-- step 4: select options -->
-        <h2>Optionen wählen</h2>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Kontaktart</label>
-            <div class="controls">
-                <select>
-                    <option>Telefongespräch</option>
-                    <option>Online Meeting</option>
-                </select>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Was für eine Beratung wünschen Sie?</p>
+                <div class="control-group">
+                    <select id="consultation_type" class="form-control">
+                        <option>Ersteinschätzung</option>
+                        <option>Beratung</option>
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Themenbereich</label>
-            <div class="controls">
-                <select>
-                    <option>Medizin</option>
-                    <option>Zahnmedizin</option>
-                </select>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Wie möchten Sie die Beratung durchgeführt haben?</p>
+                <div class="control-group">
+                    <select id="consultation_mode" class="form-control">
+                        <option id="consultation_mode_phone" >Telefongespräch</option>
+                        <option id="consultation_mode_online" >Online Meeting</option>
+                        <option id="consultation_mode_onsite" disabled=true>Termin vor Ort</option>
+                    </select>
+                </div>
             </div>
         </div>
-    
-        <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
-    </div>
-    <div id="step5" style="display: none; "><!-- step 5: select options -->
-        <h2>Optionen wählen</h2>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Kontaktart</label>
-            <div class="controls">
-                <select>
-                    <option>Telefongespräch</option>
-                    <option>Online Meeting</option>
-                    <option>Termin vor Ort</option>
-                </select>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="inputFirstname">Themenbereich</label>
-            <div class="controls">
-                <select>
-                    <option>Medizin</option>
-                    <option>Zahnmedizin</option>
-                </select>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Um welchen Themenbereich handelt es sich?</p>
+                <div class="control-group">
+                    <select id="topic" class="form-control">
+                        <option>Medizin</option>
+                        <option>Zahnmedizin</option>
+                    </select>
+                </div>
             </div>
         </div>
     
-        <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <button class="btn btn-secondary" onclick="start();">Zurück</button> 
+                <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
+            </div>
+        </div>
     </div>
+
     <div id="step6" style="display: none; "><!-- step 6: select slot -->
         <h2>Termin wählen</h2>
     
@@ -167,22 +171,56 @@
     <div id="step7" style="display: none; "><!-- step 7: select payment -->
         <h2>Zahlungsart wählen</h2>
     
-        <button class="btn btn-primary" onclick="pay_by_qr();">mit QR-Rechnung zahlen</button>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                    <input type="text" id="slot_title" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" id="slot_start" class="form-control" readonly>
+                </div>
+            </div>
+        </div>
         
-        <button class="btn btn-secondary" onclick="pay_stripe();">mit Kreditkarte zahlen</button>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <button class="btn btn-primary" onclick="pay_by_qr();">mit QR-Rechnung zahlen</button>
+        
+                <button class="btn btn-secondary" onclick="pay_stripe();">mit Kreditkarte zahlen</button>
+                
+            </div>
+        </div>
     
     </div>
     
     <div id="step8" style="display: none; "><!-- step 8: pay by QR-code -->
         <h2>Zahlung per QR-Rechnung</h2>
     
-        <button class="btn btn-secondary" onclick="done();">weiter</button>
+        <p>Bitte scannen Sie den folgenden QR-Code mit Ihrer <b>Bank-App</b> und überweisen den Betrag vor dem Termin.</p>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <img id="qr_code" style="width: 200px; ">
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+        
+                <button class="btn btn-primary" onclick="done();">Zahlung wurde ausgeführt</button>
+                
+            </div>
+        </div>
     </div>
     
     <div id="step9" style="display: none; "><!-- step 9: pay by stripe -->
         <h2>Zahlung mit Kreditkarte</h2>
     
-        <button class="btn btn-secondary" onclick="done();">weiter</button>
+    
     </div>
     
     <div id="step10" style="display: none; "><!-- step 10: done -->
@@ -192,6 +230,8 @@
     </div>       
 
 </div><!-- end of wizard container -->
+
+<input type="text" id="slot_id" hidden readonly>
 
 <!-- load additinal resources (calendar) -->
 <link href="/assets/spo/js/fullcalendar.min.css" rel="stylesheet">
