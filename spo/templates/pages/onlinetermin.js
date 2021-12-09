@@ -79,8 +79,38 @@ function select_option_from_member() {
 }
 
 function select_option_from_nonmember() {
+    var firstname = document.getElementById("firstname").value;
+    var lastname = document.getElementById("surname").value;
+    var email = document.getElementById("email").value;
+    var phone = document.getElementById("phone").value;
+    var street = document.getElementById("street").value;
+    var zip = document.getElementById("zip").value;
+    var city = document.getElementById("city").value;
+    if (!firstname) {
+        document.getElementById("firstname").style.border = "1px solid red;"
+        document.getElementById("firstname").focus();
+    } else if (!lastname) {
+        document.getElementById("surname").style.border = "1px solid red;"
+        document.getElementById("surname").focus();
+    } else if (!email) {
+        document.getElementById("email").style.border = "1px solid red;"
+        document.getElementById("email").focus();
+    } else if (!phone) {
+        document.getElementById("phone").style.border = "1px solid red;"
+        document.getElementById("phone").focus();
+    } else if (!street) {
+        document.getElementById("street").style.border = "1px solid red;"
+        document.getElementById("street").focus();
+    } else if (!zip) {
+        document.getElementById("zip").style.border = "1px solid red;"
+        document.getElementById("zip").focus();
+    } else if (!city) {
+        document.getElementById("city").style.border = "1px solid red;"
+        document.getElementById("city").focus();
+    } else {
     document.getElementById("step2").style.display = "none";
     document.getElementById("step3").style.display = "block";
+    }
 }
 
 function select_slot() {
