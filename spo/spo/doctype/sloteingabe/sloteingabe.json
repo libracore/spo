@@ -8,17 +8,20 @@
   "year",
   "month",
   "day",
+  "employee_objective",
   "button_set_slots",
   "sloteingaben"
  ],
  "fields": [
   {
    "fieldname": "month",
-   "fieldtype": "Int",
-   "label": "Monat"
+   "fieldtype": "Select",
+   "label": "Monat",
+   "options": "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
   },
   {
    "default": "2021",
+   "description": "Bitte im Format \"2020\" eingeben",
    "fieldname": "year",
    "fieldtype": "Int",
    "label": "Jahr"
@@ -31,16 +34,23 @@
   },
   {
    "fieldname": "day",
-   "fieldtype": "Int",
-   "label": "Tag"
+   "fieldtype": "Select",
+   "label": "Tag",
+   "options": "Montag\nDienstag\nMittwoch\nDonnerstag\nFreitag\nSamstag\nSonntag"
   },
   {
    "fieldname": "button_set_slots",
    "fieldtype": "Button",
    "label": "Bef\u00fclle Slots"
+  },
+  {
+   "fieldname": "employee_objective",
+   "fieldtype": "Table",
+   "label": "Mitarbeiter/Thema",
+   "options": "Beratungsthema"
   }
  ],
- "modified": "2021-11-25 16:31:09.003457",
+ "modified": "2021-12-13 11:54:59.311637",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Sloteingabe",

@@ -1,0 +1,29 @@
+{
+ "creation": "2021-12-13 13:37:43.324119",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "advisor"
+ ],
+ "fields": [
+  {
+   "fieldname": "advisor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Berater/in",
+   "options": "User"
+  }
+ ],
+ "istable": 1,
+ "modified": "2021-12-13 13:55:39.470069",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Beratungsthema Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
