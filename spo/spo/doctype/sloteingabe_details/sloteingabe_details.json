@@ -28,7 +28,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Wochentag",
-   "options": "Montag\nDienstag\nDonnerstag\nFreitag"
+   "options": "Montag\nDienstag\nMittwoch\nDonnerstag\nFreitag"
   },
   {
    "fieldname": "objective",
@@ -39,14 +39,14 @@
   },
   {
    "fieldname": "user",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Berater/in",
-   "options": "Aline\nJulia\nPetra"
+   "options": "User"
   }
  ],
  "istable": 1,
- "modified": "2021-12-14 08:31:50.840774",
+ "modified": "2021-12-14 20:36:55.261588",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Sloteingabe Details",
