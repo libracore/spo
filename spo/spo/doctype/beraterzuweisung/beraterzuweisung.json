@@ -1,28 +1,28 @@
 {
- "autoname": "field:objective",
+ "autoname": "format:{user}-{objective}",
  "creation": "2021-12-14 14:44:56.511105",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "objective",
-  "user_tbl"
+  "user",
+  "objective"
  ],
  "fields": [
   {
    "fieldname": "objective",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "Thema",
-   "unique": 1
+   "options": "Medizin\nZahnmedizin"
   },
   {
-   "fieldname": "user_tbl",
-   "fieldtype": "Table",
+   "fieldname": "user",
+   "fieldtype": "Link",
    "label": "Berater/In",
-   "options": "Beraterzuweisung Detail"
+   "options": "User"
   }
  ],
- "modified": "2021-12-14 14:47:19.325298",
+ "modified": "2021-12-14 15:07:47.290733",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beraterzuweisung",
