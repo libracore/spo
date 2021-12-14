@@ -10,6 +10,7 @@
   "end",
   "column_topic",
   "topic",
+  "user",
   "section_status",
   "status",
   "column_status",
@@ -124,9 +125,15 @@
    "fieldname": "city",
    "fieldtype": "Data",
    "label": "City"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Berater",
+   "options": "Beraterzuweisung"
   }
  ],
- "modified": "2021-12-08 14:40:24.086195",
+ "modified": "2021-12-14 16:47:47.633201",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
