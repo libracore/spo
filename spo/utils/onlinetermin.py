@@ -171,3 +171,19 @@ def submit_request(slot, member, first_name, last_name, address,
     invoice = invoice.insert(ignore_permissions=True)
     invoice.submit()
     return {'invoice': invoice.name, 'rate': invoice.grand_total}
+
+#@frappe.whitelist()
+# def create_slot():
+    #wie durch childtbl der Sloteingaben loopen?
+    # for line in sloteingaben
+        # slot = frappe.get_doc({
+            # 'doctype': 'Beratungsslot',
+            # 'start':
+            # 'end': 
+            # 'topic':
+            # 'status': 'frei',
+            # 'advisor': 
+        # })
+        
+    # slot.insert()
+    # return slot.name

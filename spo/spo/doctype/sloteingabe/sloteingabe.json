@@ -8,7 +8,8 @@
   "year",
   "month",
   "button_set_slots",
-  "sloteingaben"
+  "sloteingaben",
+  "button_create_slots"
  ],
  "fields": [
   {
@@ -34,9 +35,14 @@
    "fieldname": "button_set_slots",
    "fieldtype": "Button",
    "label": "Bef\u00fclle Slots"
+  },
+  {
+   "fieldname": "button_create_slots",
+   "fieldtype": "Button",
+   "label": "Erstelle einzelne Slots"
   }
  ],
- "modified": "2021-12-14 08:21:59.723770",
+ "modified": "2021-12-14 15:20:40.910210",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Sloteingabe",

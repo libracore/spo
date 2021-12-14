@@ -11,9 +11,9 @@
  "fields": [
   {
    "fieldname": "objective",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Thema",
-   "options": "Medizin\nZahnmedizin"
+   "options": "Beratungsthema"
   },
   {
    "fieldname": "user",
@@ -22,7 +22,7 @@
    "options": "User"
   }
  ],
- "modified": "2021-12-14 15:07:47.290733",
+ "modified": "2021-12-14 15:31:31.762193",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beraterzuweisung",
