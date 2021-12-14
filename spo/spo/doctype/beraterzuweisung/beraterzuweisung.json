@@ -1,12 +1,12 @@
 {
  "autoname": "field:objective",
- "creation": "2021-11-11 08:13:32.169810",
+ "creation": "2021-12-14 14:44:56.511105",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "objective",
-  "advisors"
+  "user_tbl"
  ],
  "fields": [
   {
@@ -16,16 +16,16 @@
    "unique": 1
   },
   {
-   "fieldname": "advisors",
+   "fieldname": "user_tbl",
    "fieldtype": "Table",
-   "label": "Berater/in",
-   "options": "Beratungsthema Details"
+   "label": "Berater/In",
+   "options": "Beraterzuweisung Detail"
   }
  ],
- "modified": "2021-12-13 13:56:55.692154",
+ "modified": "2021-12-14 14:47:19.325298",
  "modified_by": "Administrator",
  "module": "SPO",
- "name": "Beratungsthema",
+ "name": "Beraterzuweisung",
  "owner": "Administrator",
  "permissions": [
   {
@@ -39,20 +39,9 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Administrator",
-   "share": 1,
-   "write": 1
   }
  ],
+ "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

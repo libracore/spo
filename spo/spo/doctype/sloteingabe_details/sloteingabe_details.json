@@ -4,12 +4,11 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "weekday",
   "date",
+  "objective",
   "time",
-  "objective1",
-  "objective2",
-  "objective3",
-  "status"
+  "user"
  ],
  "fields": [
   {
@@ -25,36 +24,29 @@
    "label": "Uhrzeit"
   },
   {
-   "fieldname": "objective1",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Thema 1",
-   "options": "Beratungsthema"
-  },
-  {
-   "fieldname": "objective2",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Thema 2",
-   "options": "Beratungsthema"
-  },
-  {
-   "fieldname": "objective3",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Thema 3",
-   "options": "Beratungsthema"
-  },
-  {
-   "fieldname": "status",
+   "fieldname": "weekday",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Status",
-   "options": "frei\nreserviert\nbezahlt"
+   "label": "Wochentag",
+   "options": "Montag\nDienstag\nDonnerstag\nFreitag"
+  },
+  {
+   "fieldname": "objective",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Thema",
+   "options": "Medizin\nZahnmedizin"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Berater/in",
+   "options": "Aline\nJulia\nPetra"
   }
  ],
  "istable": 1,
- "modified": "2021-11-25 16:31:52.636764",
+ "modified": "2021-12-14 08:31:50.840774",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Sloteingabe Details",
