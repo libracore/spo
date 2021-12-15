@@ -159,6 +159,7 @@ def submit_request(slot, member, first_name, last_name, address,
         'doctype': 'Sales Invoice',
         'company': settings.company,
         'customer': member,
+        'beratungsslot': slot,
         'items': [{
             'item_code': settings.invoice_item,
             'qty': 1,

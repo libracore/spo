@@ -24,7 +24,12 @@
   "column_reservation",
   "address",
   "pincode",
-  "city"
+  "city",
+  "secton_payrexx",
+  "payrexx_id",
+  "payrexx_url",
+  "column_payrexx",
+  "payrexs_status"
  ],
  "fields": [
   {
@@ -131,9 +136,36 @@
    "fieldtype": "Link",
    "label": "Berater",
    "options": "Beraterzuweisung"
+  },
+  {
+   "fieldname": "secton_payrexx",
+   "fieldtype": "Section Break",
+   "label": "Payrexx"
+  },
+  {
+   "fieldname": "payrexx_id",
+   "fieldtype": "Data",
+   "label": "Payrexx ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_payrexx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payrexs_status",
+   "fieldtype": "Data",
+   "label": "Payrexx Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payrexx_url",
+   "fieldtype": "Data",
+   "label": "Payrexx URL",
+   "read_only": 1
   }
  ],
- "modified": "2021-12-15 13:58:39.461263",
+ "modified": "2021-12-15 16:41:37.779965",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

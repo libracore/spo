@@ -1,1 +1,6 @@
 frappe
+urllib
+hmac
+hashlib
+base64
+json
