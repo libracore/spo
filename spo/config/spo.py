@@ -285,9 +285,9 @@ def get_data():
             "items": [
                 {
                     "type": "doctype",
-                    "name": "Sloteingabe",
-                    "label": _("Sloteingabe"),
-                    "description": _("Sloteingabe")
+                    "name": "Beratungsplanung",
+                    "label": _("Beratungsplanung"),
+                    "description": _("Beratungsplanung")
                 },
                 {
                     "type": "doctype",

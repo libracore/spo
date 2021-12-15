@@ -32,7 +32,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "frei\nreserviert\nbezahlt"
+   "options": "frei\nreserviert\nbezahlt\ninklusive"
   },
   {
    "fieldname": "customer",
@@ -133,7 +133,7 @@
    "options": "Beraterzuweisung"
   }
  ],
- "modified": "2021-12-14 16:47:47.633201",
+ "modified": "2021-12-15 13:58:39.461263",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

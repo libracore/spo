@@ -8,7 +8,7 @@ function start() {
     document.getElementById("step5").style.display = "none";
     document.getElementById("step6").style.display = "none";
     document.getElementById("step7").style.display = "none";
-    document.getElementById("step8").style.display = "none";
+    document.getElementById("step10").style.display = "none";
 }
 
 function is_member() {
@@ -61,6 +61,7 @@ function select_option_from_member() {
                     document.getElementById("inputZIP").value = details.pincode;
                     document.getElementById("inputEmail").value = details.email_id;
                     document.getElementById("inputPhone").value = details.phone;
+                    document.getElementById("used_slots").value = details.used_slots;
                     
                     // open step 3: select options
                     document.getElementById("step1").style.display = "none";
@@ -146,7 +147,8 @@ function reserve_slot(id, title, start) {
             'city': document.getElementById("inputCity").value, 
             'pincode': document.getElementById("inputZIP").value, 
             'email': document.getElementById("inputEmail").value, 
-            'phone': document.getElementById("inputPhone").value
+            'phone': document.getElementById("inputPhone").value,
+            'used_slots': document.getElementById("used_slots").value
         },
         'callback': function(response) {
             var success = response.message;
@@ -168,11 +170,18 @@ function reserve_slot(id, title, start) {
 }
 
 function select_payment() {
-    document.getElementById("step6").style.display = "none";
-    document.getElementById("step7").style.display = "block";
+    // check if a payment is required
+    if (document.getElementById("used_slots").value === 0) {
+        // member with no used slots --> consider paid
+        done();
+    } else {
+        // requires payment
+        create_invoice();
+        
+    }
 }
 
-function pay_by_qr() {
+function create_invoice() {
     // load QR code
     frappe.call({
         'method': 'spo.utils.onlinetermin.submit_request',
@@ -191,42 +200,35 @@ function pay_by_qr() {
             // invoice created
             var details = response.message;
             
-            var qr_source = "https://data.libracore.ch/phpqrcode/api/iso20022.php?"
-                + "iban=CH7400700110304209806&"
-                + "receiver_name=SPO Schweizerische Patientenorganisation&" 
-                + "receiver_street=Häringstrasse&"
-                + "receiver_number=20&"
-                + "receiver_pincode=8001&"
-                + "receiver_town=Zürich&"
-                + "receiver_country=CH&"
-                + "amount=" + details.rate + "&"
-                + "currency=CHF&"
-                + "payer_name=" + document.getElementById("inputFirstname").value + " " + document.getElementById("inputSurname").value + "&" 
-                + "payer_street=" + document.getElementById("inputStreet").value + "&"
-                + "payer_number=&"
-                + "payer_pincode=" + document.getElementById("inputZIP").value + "&" 
-                + "payer_town=" + document.getElementById("inputCity").value +"&"
-                + "payer_country=CH&"
-                + "reference_type=NON&message=" + details.invoice;
-
-            document.getElementById("qr_code").src = qr_source;
-
-            document.getElementById("step7").style.display = "none";
-            document.getElementById("step8").style.display = "block";
+            create_payrexx_payment(details);
         }
     });
-        
-    
 }
 
-function pay_stripe() {
-    document.getElementById("step7").style.display = "none";
-    document.getElementById("step9").style.display = "block";
+function create_payrexx_payment(details) {
+    // load QR code
+    frappe.call({
+        'method': 'spo.utils.onlinetermin.create_payment',
+        'args': {
+            'invoice': details.invoice
+        },
+        'callback': function(response) {
+            // invoice created
+            var payment = response.message;
+            
+            // TODO: insert payrexx iframe here
+            
+            // open payrexx page
+            document.getElementById("step6").style.display = "none";    // disable calendar
+            document.getElementById("step7").style.display = "block";
+        }
+    });
 }
 
 function done() {
-    document.getElementById("step8").style.display = "none";
-    document.getElementById("step9").style.display = "none";
+    document.getElementById("step0").style.display = "none";
+    document.getElementById("step6").style.display = "none";
+    document.getElementById("step7").style.display = "none";
     document.getElementById("step10").style.display = "block";
 }
 
@@ -254,15 +256,40 @@ function create_invoice() {
 
 //change triggers
 document.addEventListener("DOMContentLoaded", function(event) {
-    // when document is loaded, add change triggers
-    document.getElementById("consultation_type").onchange = function() {
-        if (document.getElementById("consultation_type").value === "Ersteinschätzung") {
-            document.getElementById("consultation_mode_onsite").disabled = true;
-            if (document.getElementById("consultation_mode_onsite").selected) {
-                document.getElementById("consultation_mode_phone").selected = true;
-            }
-        } else {
-            document.getElementById("consultation_mode_onsite").disabled = false;
-        }
-    }
+    // add change triggers here
+    
+    // process command line arguments
+    get_arguments();
 });
+
+function get_arguments() {
+    var arguments = window.location.toString().split("?");
+    if (!arguments[arguments.length - 1].startsWith("http")) {
+        var args_raw = arguments[arguments.length - 1].split("&");
+        var args = {};
+        args_raw.forEach(function (arg) {
+            var kv = arg.split("=");
+            if (kv.length > 1) {
+                args[kv[0]] = kv[1];
+            }
+        });
+        if (args['success']) {
+            // this is a success postback
+            done();
+            // fetch payment status
+            fetch_payment_status(args['success']);
+        }
+    } 
+}
+
+function fetch_payment_status(booking) {
+    frappe.call({
+        'method': 'spo.utils.onlinetermin.fetch_payment_status',
+        'args': {
+            'booking': booking
+        },
+        'callback': function(response) {
+            
+        }
+    });
+}

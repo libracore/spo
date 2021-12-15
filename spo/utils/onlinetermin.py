@@ -63,7 +63,7 @@ def check_membership(member, lastname):
                 SELECT COUNT(`name`) AS `slots`
                 FROM `tabBeratungsslot`
                 WHERE `customer` = "{member}" 
-                  AND `date` >= (DATE_SUB(NOW(), INTERVAL 12 MONTH));""".format(member=member), as_dict=True)
+                  AND DATE(`start`) >= (DATE_SUB(NOW(), INTERVAL 12 MONTH));""".format(member=member), as_dict=True)
             
             # return full contact details
             details = frappe.db.sql("""
@@ -171,3 +171,13 @@ def submit_request(slot, member, first_name, last_name, address,
     invoice = invoice.insert(ignore_permissions=True)
     invoice.submit()
     return {'invoice': invoice.name, 'rate': invoice.grand_total}
+
+@frappe.whitelist(allow_guest=True)
+def fetch_payment_status(booking):
+    # TODO: fetch status
+    return
+    
+@frappe.whitelist(allow_guest=True)
+def create_payment(invoice):
+    # TODO: create payment
+    return

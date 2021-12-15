@@ -135,18 +135,6 @@
     
     <div id="step3" style="display: none; "><!-- step 3: select options -->
         <h2>Optionen wählen</h2>
-    <!--
-        <div class="row" style="margin-top: 20px; ">
-            <div class="form-column col-sm-4">
-                <p>Was für eine Beratung wünschen Sie?</p>
-                <div class="control-group">
-                    <select id="consultation_type" class="form-control">
-                        <option>Ersteinschätzung</option>
-                        <option>Beratung</option>
-                    </select>
-                </div>
-            </div>
-        </div>-->
         
         <div class="row" style="margin-top: 20px; ">
             <div class="form-column col-sm-4">
@@ -155,7 +143,6 @@
                     <select id="consultation_mode" class="form-control">
                         <option id="consultation_mode_phone" >Telefongespräch</option>
                         <option id="consultation_mode_online" >Online Meeting</option>
-                       <!-- <option id="consultation_mode_onsite" disabled=true>Termin vor Ort</option>-->
                     </select>
                 </div>
             </div>
@@ -186,10 +173,9 @@
     
         <div id="calendar">
         </div>
-        <button class="btn btn-primary" onclick="select_payment();">Weiter zur Zahlmethode</button> 
     </div>
-    <div id="step7" style="display: none; "><!-- step 7: select payment -->
-        <h2>Zahlungsart wählen</h2>
+    <div id="step7" style="display: none; "><!-- step 7: payment -->
+        <h2>Zahlung</h2>
         <div class="row" style="margin-top: 20px; ">
             <!--Slot Name-->
             <div class="form-column col-sm-4">
@@ -206,46 +192,15 @@
                 </div>
             </div>
         </div>
-        
-        <div class="row" style="margin-top: 20px; ">
-            <div class="form-column col-sm-12">
-                <button class="btn btn-primary" onclick="pay_by_qr();">mit QR-Rechnung zahlen</button>
-        
-                <button class="btn btn-secondary" onclick="pay_stripe();">mit Kreditkarte zahlen</button>
-                
-            </div>
-        </div>
-    
-    </div>
-    
-    <div id="step8" style="display: none; "><!-- step 8: pay by QR-code -->
-        <h2>Zahlung per QR-Rechnung</h2>
-    
-        <p>Bitte scannen Sie den folgenden QR-Code mit Ihrer <b>Bank-App</b> und überweisen den Betrag vor dem Termin.</p>
-        
-        <div class="row" style="margin-top: 20px; ">
-            <div class="form-column col-sm-12">
-                <img id="qr_code" style="width: 200px; ">
-            </div>
+            
+        <!-- payment iframe goes here -->
+        <div id="payrexx">
         </div>
         
-        <div class="row" style="margin-top: 20px; ">
-            <div class="form-column col-sm-12">
-        
-                <button class="btn btn-primary" onclick="done();">Zahlung wurde ausgeführt</button>
-                
-            </div>
-        </div>
-    </div>
-    
-    <div id="step9" style="display: none; "><!-- step 9: pay by stripe -->
-        <h2>Zahlung mit Kreditkarte</h2>
-    
-    
     </div>
     
     <div id="step10" style="display: none; "><!-- step 10: done -->
-        <h2>Vielen Dank für Ihre Terminanfrage!</h2>
+        <h2>Vielen Dank für Ihre Terminbuchung!</h2>
     
     
     </div>       
@@ -253,6 +208,7 @@
 </div><!-- end of wizard container -->
 
 <input type="text" id="slot_id" hidden readonly>
+<input type="text" id="used_slots" value=99 hidden readonly>
 
 <!-- load additinal resources (calendar) -->
 <link href="/assets/spo/js/fullcalendar.min.css" rel="stylesheet">

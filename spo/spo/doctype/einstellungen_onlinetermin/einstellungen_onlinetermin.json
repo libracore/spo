@@ -11,7 +11,11 @@
   "column_sales_invoice",
   "invoice_item",
   "rate",
-  "sales_taxes"
+  "sales_taxes",
+  "section_payrexx",
+  "payrexx_instance",
+  "column_payrexx",
+  "payrexx_api_key"
  ],
  "fields": [
   {
@@ -57,10 +61,29 @@
    "fieldtype": "Link",
    "label": "Sales Taxes",
    "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "section_payrexx",
+   "fieldtype": "Section Break",
+   "label": "Payrexx"
+  },
+  {
+   "fieldname": "payrexx_instance",
+   "fieldtype": "Data",
+   "label": "Instance"
+  },
+  {
+   "fieldname": "column_payrexx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payrexx_api_key",
+   "fieldtype": "Data",
+   "label": "API Key"
   }
  ],
  "issingle": 1,
- "modified": "2021-12-08 15:54:08.216741",
+ "modified": "2021-12-15 13:33:55.423469",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen Onlinetermin",
