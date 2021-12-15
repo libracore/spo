@@ -1,7 +1,7 @@
 // Copyright (c) 2021, libracore and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Sloteingabe', {
+frappe.ui.form.on('Beratungsplanung', {
     button_set_slots: function(frm) {
         slot_dialog(frm);
     }

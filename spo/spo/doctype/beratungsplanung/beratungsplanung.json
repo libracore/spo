@@ -1,6 +1,6 @@
 {
- "autoname": "Slot.#####",
- "creation": "2021-11-11 08:14:31.165560",
+ "autoname": "Beratungsslot.#####",
+ "creation": "2021-12-15 08:47:32.727961",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -9,15 +9,10 @@
   "month",
   "button_set_slots",
   "sloteingaben",
+  "amended_from",
   "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "month",
-   "fieldtype": "Select",
-   "label": "Monat",
-   "options": "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
-  },
   {
    "default": "2021",
    "fieldname": "year",
@@ -26,10 +21,10 @@
    "options": "2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029\n2030\n2031\n2032\n2033\n2034\n2035"
   },
   {
-   "fieldname": "sloteingaben",
-   "fieldtype": "Table",
-   "label": "Sloteingaben",
-   "options": "Sloteingabe Details"
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "label": "Monat",
+   "options": "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
   },
   {
    "fieldname": "button_set_slots",
@@ -37,20 +32,35 @@
    "label": "Bef\u00fclle Slots"
   },
   {
+   "fieldname": "sloteingaben",
+   "fieldtype": "Table",
+   "label": "Beratungsplanung",
+   "options": "Beratungsplanung Detail"
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Sloteingabe",
+   "options": "Beratungsplanung",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Beratungsplanung",
    "print_hide": 1,
    "read_only": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2021-12-14 21:20:13.120454",
+ "modified": "2021-12-15 08:47:32.727961",
  "modified_by": "Administrator",
  "module": "SPO",
- "name": "Sloteingabe",
+ "name": "Beratungsplanung",
  "owner": "Administrator",
  "permissions": [
   {

@@ -3,11 +3,8 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-import frappe
+# import frappe
 from frappe.model.document import Document
 
-class Sloteingabe(Document):
-    on_submit(self):
-        # TODO: create slots from child table
-        print("create slots from child table here")
-        return
+class BeratungsplanungDetail(Document):
+	pass
