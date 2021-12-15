@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 import time
+from spo.utils.payrexx import get_payment_status, create_payment
 
 @frappe.whitelist(allow_guest=True)
 def check_membership(member, lastname):
@@ -175,10 +176,12 @@ def submit_request(slot, member, first_name, last_name, address,
 
 @frappe.whitelist(allow_guest=True)
 def fetch_payment_status(booking):
-    # TODO: fetch status
+    beratungsslot = frappe.get_doc("Beratungsslot", booking)
+    beratungsslot.fetch_payment_status()
     return
     
 @frappe.whitelist(allow_guest=True)
-def create_payment(invoice):
-    # TODO: create payment
-    return
+def create_payment(booking):
+    beratungsslot = frappe.get_doc("Beratungsslot", booking)
+    details = beratungsslot.create_payment()
+    return details

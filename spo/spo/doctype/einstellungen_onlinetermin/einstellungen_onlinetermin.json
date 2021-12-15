@@ -14,6 +14,7 @@
   "sales_taxes",
   "section_payrexx",
   "payrexx_instance",
+  "payrexx_account",
   "column_payrexx",
   "payrexx_api_key"
  ],
@@ -80,10 +81,16 @@
    "fieldname": "payrexx_api_key",
    "fieldtype": "Data",
    "label": "API Key"
+  },
+  {
+   "fieldname": "payrexx_account",
+   "fieldtype": "Link",
+   "label": "Payrexx Account",
+   "options": "Account"
   }
  ],
  "issingle": 1,
- "modified": "2021-12-15 13:33:55.423469",
+ "modified": "2021-12-15 19:53:53.379724",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen Onlinetermin",

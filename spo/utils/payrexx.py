@@ -38,7 +38,7 @@ def create_payment(title, description, reference, purpose, amount,
     post_data['ApiSignature'] = base64.b64encode(dig).decode()
     data = urllib.parse.urlencode(post_data, quote_via=urllib.parse.quote).encode('utf-8')
     r = requests.post("{0}Invoice/?instance={1}".format(API_BASE, settings.payrexx_instance), data=data)
-    response = json.loads(r.content)
+    response = json.loads(r.content.decode('utf-8'))
     invoice = response['data'][0]
     return invoice
 
@@ -52,6 +52,6 @@ def get_payment_status(payrexx_id):
     post_data['ApiSignature'] = base64.b64encode(dig).decode()
     data = urllib.parse.urlencode(post_data, quote_via=urllib.parse.quote).encode('utf-8')
     r = requests.get("{0}Invoice/{2}/?instance={1}".format(API_BASE, settings.payrexx_instance, payrexx_id), data=data)
-    response = json.loads(r.content)
+    response = json.loads(r.content.decode('utf-8'))
     invoice = response['data'][0]
     return invoice

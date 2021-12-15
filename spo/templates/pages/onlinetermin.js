@@ -4,8 +4,6 @@ function start() {
     document.getElementById("step1").style.display = "none";
     document.getElementById("step2").style.display = "none";
     document.getElementById("step3").style.display = "none";
-    document.getElementById("step4").style.display = "none";
-    document.getElementById("step5").style.display = "none";
     document.getElementById("step6").style.display = "none";
     document.getElementById("step7").style.display = "none";
     document.getElementById("step10").style.display = "none";
@@ -79,6 +77,11 @@ function select_option_from_member() {
     }
 }
 
+function back_to_options() {
+    document.getElementById("step3").style.display = "block";
+    document.getElementById("step6").style.display = "none";
+}
+
 function select_option_from_nonmember() {
     var firstname = document.getElementById("inputFirstname").value;
     var lastname = document.getElementById("inputSurname").value;
@@ -127,6 +130,8 @@ function select_slot() {
             var slots = response.message;
             
             document.getElementById("step6").style.display = "block";
+            document.getElementById("calendar").style.display = "block";
+            document.getElementById("calendar_wait").style.display = "none";
             
             load_calendar(slots);
         }
@@ -135,6 +140,10 @@ function select_slot() {
 
 // this function is called when a calender slot is selected
 function reserve_slot(id, title, start) {
+    // hide calendar to prevent double-hits
+    document.getElementById("calendar").style.display = "none";
+    document.getElementById("calendar_wait").style.display = "block";
+    
     // reserve slot
     frappe.call({
         'method': 'spo.spo.doctype.beratungsslot.beratungsslot.reserve_slot',
@@ -148,7 +157,8 @@ function reserve_slot(id, title, start) {
             'pincode': document.getElementById("inputZIP").value, 
             'email': document.getElementById("inputEmail").value, 
             'phone': document.getElementById("inputPhone").value,
-            'used_slots': document.getElementById("used_slots").value
+            'used_slots': document.getElementById("used_slots").value,
+            'consultation_type': document.getElementById("consultation_mode").value
         },
         'callback': function(response) {
             var success = response.message;
@@ -177,12 +187,10 @@ function select_payment() {
     } else {
         // requires payment
         create_invoice();
-        
     }
 }
 
 function create_invoice() {
-    // load QR code
     frappe.call({
         'method': 'spo.utils.onlinetermin.submit_request',
         'args': {
@@ -199,25 +207,28 @@ function create_invoice() {
         'callback': function(response) {
             // invoice created
             var details = response.message;
-            
-            create_payrexx_payment(details);
+            create_payrexx_payment();
         }
     });
 }
 
-function create_payrexx_payment(details) {
+function create_payrexx_payment() {
     // load QR code
     frappe.call({
         'method': 'spo.utils.onlinetermin.create_payment',
         'args': {
-            'invoice': details.invoice
+            'booking': document.getElementById("slot_id").value
         },
         'callback': function(response) {
             // invoice created
             var payment = response.message;
             
-            // TODO: insert payrexx iframe here
-            
+            // insert payrexx iframe here
+            console.log(payment['link']);
+            document.getElementById("payrexx").innerHTML = 
+                "<iframe src=\"" + payment['link'] + "\" title=\"Payrexx payment\""
+                + " frameborder=\"0\" style=\"width: 100%; height: 750px; \"></iframe>";
+                
             // open payrexx page
             document.getElementById("step6").style.display = "none";    // disable calendar
             document.getElementById("step7").style.display = "block";
@@ -247,11 +258,6 @@ function load_calendar(events) {
         }
     });
     calendar.render();
-}
-
-// this function will create the sales invoice (and if required the customer)
-function create_invoice() {
-    
 }
 
 //change triggers
@@ -289,7 +295,7 @@ function fetch_payment_status(booking) {
             'booking': booking
         },
         'callback': function(response) {
-            
+            // do nothing
         }
     });
 }

@@ -173,6 +173,13 @@
     
         <div id="calendar">
         </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <button class="btn btn-secondary" onclick="back_to_options();">Zurück</button> 
+                <p id="calendar_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> buchen...</p>
+            </div>
+        </div>
     </div>
     <div id="step7" style="display: none; "><!-- step 7: payment -->
         <h2>Zahlung</h2>
@@ -192,9 +199,9 @@
                 </div>
             </div>
         </div>
-            
+        
         <!-- payment iframe goes here -->
-        <div id="payrexx">
+        <div id="payrexx" style="margin-top: 20px; ">
         </div>
         
     </div>

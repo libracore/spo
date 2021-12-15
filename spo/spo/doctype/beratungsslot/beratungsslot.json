@@ -8,6 +8,7 @@
   "start",
   "column_date",
   "end",
+  "consultation_type",
   "column_topic",
   "topic",
   "user",
@@ -29,7 +30,7 @@
   "payrexx_id",
   "payrexx_url",
   "column_payrexx",
-  "payrexs_status"
+  "payrexx_status"
  ],
  "fields": [
   {
@@ -153,19 +154,25 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "payrexs_status",
+   "fieldname": "payrexx_url",
+   "fieldtype": "Data",
+   "label": "Payrexx URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payrexx_status",
    "fieldtype": "Data",
    "label": "Payrexx Status",
    "read_only": 1
   },
   {
-   "fieldname": "payrexx_url",
+   "fieldname": "consultation_type",
    "fieldtype": "Data",
-   "label": "Payrexx URL",
+   "label": "Art",
    "read_only": 1
   }
  ],
- "modified": "2021-12-15 16:41:37.779965",
+ "modified": "2021-12-15 19:33:55.145673",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
