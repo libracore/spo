@@ -34,19 +34,121 @@ function fill_date(frm, options) {
             var user = null;
             var time = null;
             var create = false;
-            // check if this day is required
+            // check if this day is required - Monday
             if ((dayOfWeek === 1) && (options.med_mon_mor === 1)) {
                 topic = "Medizin";
                 user = options.advisor_mon_mor;
-                time = "10-11";
+                time = "10+11";
                 create = true;
             } else if ((dayOfWeek === 1) && (options.med_mon_aft === 1)) {
                 topic = "Medizin";
                 user = options.advisor_mon_aft;
-                time = "14-15";
+                time = "14+15";
                 create = true;
-            } /* TODO: extend logic here for other options */
-            
+            }
+            if ((dayOfWeek === 1) && (options.dent_mon_mor === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_mon_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 1) && (options.dent_mon_aft === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_mon_aft;
+                time = "14+15";
+                create = true;
+            }
+            //Tuesday
+            if ((dayOfWeek === 2) && (options.med_tue_mor === 1)) {
+                topic = "Medizin";
+                user = options.advisor_tue_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 2) && (options.med_tue_aft === 1)) {
+                topic = "Medizin";
+                user = options.advisor_tue_aft;
+                time = "14+15";
+                create = true;
+            }
+            if ((dayOfWeek === 2) && (options.dent_tue_mor === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_tue_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 2) && (options.dent_tue_aft === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_tue_aft;
+                time = "14+15";
+                create = true;
+            }
+            //Wednesday
+            if ((dayOfWeek === 3) && (options.med_wed_mor === 1)) {
+                topic = "Medizin";
+                user = options.advisor_wed_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 3) && (options.med_wed_aft === 1)) {
+                topic = "Medizin";
+                user = options.advisor_wed_aft;
+                time = "14+15";
+                create = true;
+            }
+            if ((dayOfWeek === 3) && (options.dent_wed_mor === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_wed_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 3) && (options.dent_wed_aft === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_wed_aft;
+                time = "14+15";
+                create = true;
+            }
+            //Thursday
+            if ((dayOfWeek === 4) && (options.med_thu_mor === 1)) {
+                topic = "Medizin";
+                user = options.advisor_thu_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 34) && (options.med_thu_aft === 1)) {
+                topic = "Medizin";
+                user = options.advisor_thu_aft;
+                time = "14+15";
+                create = true;
+            }
+            if ((dayOfWeek === 4) && (options.dent_thu_mor === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_thu_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 4) && (options.dent_thu_aft === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_thu_aft;
+                time = "14+15";
+                create = true;
+            }
+            //Friday
+            if ((dayOfWeek === 5) && (options.med_fri_mor === 1)) {
+                topic = "Medizin";
+                user = options.advisor_fri_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 5) && (options.med_fri_aft === 1)) {
+                topic = "Medizin";
+                user = options.advisor_fri_aft;
+                time = "14+15";
+                create = true;
+            }
+            if ((dayOfWeek === 5) && (options.dent_fri_mor === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_fri_mor;
+                time = "10+11";
+                create = true;
+            } else if ((dayOfWeek === 5) && (options.dent_fri_aft === 1)) {
+                topic = "Zahnmedizin";
+                user = options.advisor_wed_aft;
+                time = "14+15";
+                create = true;
+            }
             if (create) {
                 var child = cur_frm.add_child('sloteingaben');
                 // set weekday corresponding to options of Sloteingabe Details
