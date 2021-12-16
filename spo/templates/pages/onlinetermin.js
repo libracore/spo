@@ -250,7 +250,7 @@ function load_calendar(events) {
       'headerToolbar': {
           'left': 'prev,next today',
           'center': 'title',
-          'right': 'dayGridMonth,timeGridWeek,timeGrudDay'
+          'right': 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         'events': events,
         'eventClick': function(info) {
