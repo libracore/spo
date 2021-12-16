@@ -14,7 +14,7 @@ frappe.ui.form.on('Beratungsslot', {
                     }
                 });
             });
-        },
+        }
         // filter for berater based on topic
         cur_frm.fields_dict['user'].get_query = function(doc) {          
              return {
@@ -27,6 +27,6 @@ frappe.ui.form.on('Beratungsslot', {
     customer: function(frm) {
         if (!frm.doc.customer) {
             cur_frm.set_value("customer_name", null);
-        } 
+        }
     }
 });
