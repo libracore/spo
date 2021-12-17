@@ -181,7 +181,7 @@ function reserve_slot(id, title, start) {
 
 function select_payment() {
     // check if a payment is required
-    if (document.getElementById("used_slots").value === 0) {
+    if (document.getElementById("used_slots").value.parseInt() === 0) {
         // member with no used slots --> consider paid
         done();
     } else {
