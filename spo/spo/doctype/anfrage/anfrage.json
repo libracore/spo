@@ -217,7 +217,7 @@
    "label": "Auftraggeber Referenznummer"
   },
   {
-   "depends_on": "eval:in_list([\"Sonstiges\", \"Mandats Anfrage\"], doc.anfrage_typ)",
+   "depends_on": "eval:in_list([\"Sonstiges\", \"Mandats Anfrage\", \"Anfrage ohne Mitgliedschaft\"], doc.anfrage_typ)",
    "fieldname": "spo_ombudsstelle",
    "fieldtype": "Select",
    "label": "SPO als Ombudsstelle",
@@ -873,7 +873,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2021-08-03 09:20:09.624497",
+ "modified": "2021-12-21 13:26:06.498818",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
