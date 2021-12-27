@@ -1,0 +1,241 @@
+{
+ "autoname": "format:Slot-{topic}-{start}",
+ "creation": "2021-11-11 11:00:26.023046",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "start",
+  "column_date",
+  "end",
+  "consultation_type",
+  "column_topic",
+  "topic",
+  "user",
+  "section_status",
+  "status",
+  "column_status",
+  "customer",
+  "customer_name",
+  "section_reservation",
+  "first_name",
+  "last_name",
+  "email_id",
+  "phone",
+  "column_reservation",
+  "address",
+  "pincode",
+  "city",
+  "text",
+  "secton_payrexx",
+  "payrexx_id",
+  "payrexx_url",
+  "column_payrexx",
+  "payrexx_status"
+ ],
+ "fields": [
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "frei\nreserviert\nbezahlt\ninklusive"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "no_copy": 1,
+   "options": "Customer"
+  },
+  {
+   "fieldname": "start",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start"
+  },
+  {
+   "fieldname": "column_date",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "end",
+   "fieldtype": "Datetime",
+   "label": "End"
+  },
+  {
+   "fieldname": "column_topic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "topic",
+   "fieldtype": "Link",
+   "label": "Thema",
+   "options": "Beratungsthema"
+  },
+  {
+   "fieldname": "section_status",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "fieldname": "column_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer name",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_reservation",
+   "fieldtype": "Section Break",
+   "label": "Reservation"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First name",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Last name",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "column_reservation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "label": "Pincode",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Berater",
+   "options": "Beraterzuweisung"
+  },
+  {
+   "fieldname": "secton_payrexx",
+   "fieldtype": "Section Break",
+   "label": "Payrexx"
+  },
+  {
+   "fieldname": "payrexx_id",
+   "fieldtype": "Data",
+   "label": "Payrexx ID",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_payrexx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payrexx_url",
+   "fieldtype": "Data",
+   "label": "Payrexx URL",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "payrexx_status",
+   "fieldtype": "Data",
+   "label": "Payrexx Status",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "consultation_type",
+   "fieldtype": "Data",
+   "label": "Art",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "text",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "modified": "2021-12-27 15:39:52.637730",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Beratungsslot",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SPO Poweruser",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Beratung",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

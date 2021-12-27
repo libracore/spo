@@ -1,0 +1,237 @@
+<h3>SPO Kurzberatung</h3>
+<!--#<button class="btn btn-primary" onclick="start();">Start</button>-->
+<div id="container" class="wizard-container">
+    <div id="step0">
+        <p class="lead muted">Herzlich Willkommen zur Buchung Ihrer Kurzberatung bei der SPO.</p>
+        <h2>Sind Sie bereits Mitglied der SPO?</h2>
+        <p class="lead muted">Informieren sie sich <i><u>hier</u></i> über die Mitgliedschaft.</p>
+        <button class="btn btn-primary" onclick="is_member();">Mitglied der SPO</button>
+        
+        <button class="btn btn-secondary" onclick="is_nonmember();">Kein Mitglied der SPO</button>
+    </div>
+    <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
+        <h2>Mitgliedschaft</h2>
+        
+        <p>Wenn Sie <b>Mitglied der SPO</b> sind, gbeen Sie bitte Ihre Customer-Nummer ein, damit wir Sie zuordnen können. Sollten Sie Ihre Customer-Nummer nicht mehr wissen, kontaktieren Sie uns gerne unter 044/ 252 54 22.
+        Als Mitglied der SPO erhalten Sie pro Jahr eine Stunde Beratung kostenlos. Falls Sie bereits eine Beratung in Anspruch genommen haben, ist eine Kurzberatung für Sie kostenpflichtig (30 CHF).</p>
+        
+        <div class="row">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" id="customer_nr" placeholder="CUST-2022-######" class="form-control">
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                    <input type="text" id="customer_lastname" placeholder="Nachname" class="form-control">
+                </div>
+            </div>
+        </div>
+            
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <div id="member_buttons">
+                    <button class="btn btn-secondary" onclick="start();">Zurück</button>    
+                    <button class="btn btn-primary" onclick="select_option_from_member();">Weiter</button>
+                </div>
+            </div>
+        </div>
+        
+        <p id="member_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> prüfen...</p>
+        <p id="member_failed" style="display: none; color: red; ">Die angegebenen Benutzerdaten sind ungültig.</p>
+        <p><br>Falls Sie <b>in den letzten 12 Monaten bereits eine Beratung hatten </b>, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
+
+    </div>
+    <div id="step2" style="display: none; "><!-- Step 2: non-member: credentials -->
+        <h2>Persönliche Daten</h2>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                <p>*Anrede</p>
+                    <div class="control-group">
+                        <select id="salutation_title" class="form-control">
+                            <option>Familie</option>
+                            <option>Frau</option>
+                            <option>Herr</option>
+                        </select>
+                    </div>
+                </div> 
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input type="text" id="inputFirstname" placeholder="*Vorname" class="input-xlarge" title="Der Vorname ist zwingend!" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                        <input type="text" id="inputSurname" placeholder="*Nachname" class="input-xlarge" title="Der Nachname ist zwingend!" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <input type="text" id="inputEmail" placeholder="*E-mail" class="input-xlarge" title="Die Email ist zwingend!" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                        <input type="text" id="inputPhone" placeholder="*Telefon" class="input-xlarge" title="Die Telefonnummer ist zwingend!" pattern="[0-9]{10}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                        <input type="text" id="inputStreet" placeholder="*Strasse" class="input-xlarge" title="Die Strasse ist zwingend!" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                        <input type="text" id="inputZIP" placeholder="*Postleitzahl" class="input-xlarge" title="Die Postleitzahlist zwingend!" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                        <input type="text" id="inputCity" placeholder="*Ort" class="input-xlarge" title="Der Ort ist zwingend!" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; ">
+                <div class="form-column col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-birthday-cake"></i></span>
+                        <input type="date" id="inputBirthdate" placeholder="Geburtstag" class="input-xlarge" >
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 20px; ">
+            <button class="btn btn-secondary" onclick="start();">Zurück</button>   
+            <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
+            </div>
+    </div>
+    
+    <div id="step3" style="display: none; "><!-- step 3: select options -->
+        <h2>Grund für Kurzberatung</h2>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Wie möchten Sie die Beratung durchgeführen?</p>
+                <div class="control-group">
+                    <select id="consultation_mode" class="form-control">
+                        <option id="consultation_mode_phone">Telefongespräch</option>
+                        <option id="consultation_mode_online" >Online Meeting</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Möchten Sie sich zu einem medizinischen oder zahnmedizinischen Thema beraten lassen?</p>
+                <div class="control-group">
+                    <select id="topic" class="form-control">
+                        <option>Medizin</option>
+                        <option>Zahnmedizin</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Bitte schildern Sie uns in wenigen Sätzen, was Ihr Anliegen ist:</p>
+                <div class="control-group">
+                    <textarea id="text" name="text" cols="35" rows="4" maxlength="300" placeholder="Mehr dazu schreiben">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <button class="btn btn-secondary" onclick="start();">Zurück</button> 
+                <button class="btn btn-primary" onclick="select_slot();">Termin finden</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="step6" style="display: none; "><!-- step 6: select slot -->
+        <h2>Termin finden</h2>
+    
+        <div id="calendar">
+        </div>
+        
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-12">
+                <button class="btn btn-secondary" onclick="back_to_options();">Zurück</button> 
+                <p id="calendar_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> buchen...</p>
+            </div>
+        </div>
+    </div>
+    <div id="step7" style="display: none; "><!-- step 7: payment -->
+        <h2>Zahlung</h2>
+        <div class="row" style="margin-top: 20px; ">
+            <!--Slot Name-->
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                    <input type="text" id="slot_title" class="form-control" readonly>
+                </div>
+            </div>
+            <!--Slot Date-->
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" id="slot_start" class="form-control" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px; ">
+            <div class="form-column col-sm-4">
+                <p>Bitte beachten Sie, dass der Termin erst bestätigt werden kann, sobald die Zahlung erfolgreich ist.</p>
+            </div>
+        </div>
+        
+        <!-- payment iframe goes here -->
+        <div id="payrexx" style="margin-top: 20px; ">
+        </div>
+        
+    </div>
+    
+    <div id="step10" style="display: none; "><!-- step 10: done -->
+        <h2>Vielen Dank für Ihre Terminbuchung!</h2>
+    
+    
+    </div>       
+
+</div><!-- end of wizard container -->
+
+<input type="text" id="slot_id" hidden readonly>
+<input type="text" id="used_slots" value=99 hidden readonly>
+
+<!-- load additinal resources (calendar) -->
+<link href="/assets/spo/js/fullcalendar.min.css" rel="stylesheet">
+<script src="/assets/spo/js/fullcalendar.min.js"></script>
+<script src="/assets/spo/js/locales-all.min.js"></script>

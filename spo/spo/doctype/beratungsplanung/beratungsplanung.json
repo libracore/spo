@@ -1,0 +1,93 @@
+{
+ "autoname": "Beratungsslot.#####",
+ "creation": "2021-12-15 08:47:32.727961",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "year",
+  "month",
+  "button_set_slots",
+  "sloteingaben",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "2021",
+   "fieldname": "year",
+   "fieldtype": "Select",
+   "label": "Jahr",
+   "options": "2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029\n2030\n2031\n2032\n2033\n2034\n2035"
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "label": "Monat",
+   "options": "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
+  },
+  {
+   "fieldname": "button_set_slots",
+   "fieldtype": "Button",
+   "label": "Bef\u00fclle Slots"
+  },
+  {
+   "fieldname": "sloteingaben",
+   "fieldtype": "Table",
+   "label": "Beratungsplanung",
+   "options": "Beratungsplanung Detail"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Beratungsplanung",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2021-12-27 15:40:31.073247",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Beratungsplanung",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Beratung",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

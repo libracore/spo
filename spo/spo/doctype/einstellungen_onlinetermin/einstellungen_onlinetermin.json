@@ -1,0 +1,131 @@
+{
+ "creation": "2021-12-08 15:12:12.510655",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_sales_invoice",
+  "company",
+  "customer_group",
+  "territory",
+  "column_sales_invoice",
+  "invoice_item",
+  "rate",
+  "sales_taxes",
+  "section_payrexx",
+  "payrexx_instance",
+  "payrexx_account",
+  "column_payrexx",
+  "payrexx_api_key"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_sales_invoice",
+   "fieldtype": "Section Break",
+   "label": "Rechnungen"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_sales_invoice",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "customer_group",
+   "fieldtype": "Link",
+   "label": "Customer Group",
+   "options": "Customer Group"
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Link",
+   "label": "Territory",
+   "options": "Territory"
+  },
+  {
+   "fieldname": "sales_taxes",
+   "fieldtype": "Link",
+   "label": "Sales Taxes",
+   "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "section_payrexx",
+   "fieldtype": "Section Break",
+   "label": "Payrexx"
+  },
+  {
+   "fieldname": "payrexx_instance",
+   "fieldtype": "Data",
+   "label": "Instance"
+  },
+  {
+   "fieldname": "column_payrexx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payrexx_api_key",
+   "fieldtype": "Data",
+   "label": "API Key"
+  },
+  {
+   "fieldname": "payrexx_account",
+   "fieldtype": "Link",
+   "label": "Payrexx Account",
+   "options": "Account"
+  }
+ ],
+ "issingle": 1,
+ "modified": "2021-12-27 15:39:20.299468",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Einstellungen Onlinetermin",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "SPO Poweruser",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Beratung",
+   "share": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

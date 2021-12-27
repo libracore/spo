@@ -1,0 +1,60 @@
+{
+ "creation": "2021-12-15 08:46:13.731365",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "weekday",
+  "date",
+  "objective",
+  "time",
+  "user"
+ ],
+ "fields": [
+  {
+   "fieldname": "weekday",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Wochentag",
+   "options": "Montag\nDienstag\nMittwoch\nDonnerstag\nFreitag"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Datum"
+  },
+  {
+   "fieldname": "objective",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Thema",
+   "options": "Medizin\nZahnmedizin"
+  },
+  {
+   "description": "Eingeben als H1+H2 (Stunde, z.B. 10+11)",
+   "fieldname": "time",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Uhrzeit"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Berater/in",
+   "options": "Beraterzuweisung"
+  }
+ ],
+ "istable": 1,
+ "modified": "2021-12-27 13:20:39.966198",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Beratungsplanung Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
