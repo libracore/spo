@@ -181,7 +181,7 @@ function reserve_slot(id, title, start) {
 
 function select_payment() {
     // check if a payment is required
-    if (document.getElementById("used_slots").value === 0) {
+    if (parseInt(document.getElementById("used_slots").value, 10) === 0) {
         // member with no used slots --> consider paid
         done();
     } else {
@@ -250,7 +250,7 @@ function load_calendar(events) {
       'headerToolbar': {
           'left': 'prev,next today',
           'center': 'title',
-          'right': 'dayGridMonth,timeGridWeek,timeGrudDay'
+          'right': 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         'events': events,
         'eventClick': function(info) {
