@@ -145,11 +145,21 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 @font-face {
     font-family: OpenSans-Regular;
-    src: url('/spo/spo/templates/public/css/OpenSans');
+    src: url('/assets/spo/fonts/OpenSans-Regular.woff');
+}
+
+@font-face {
+    font-family: OpenSans-Bold;
+    src: url('/assets/spo/fonts/OpenSans-Bold.woff');
+}
+
+@font-face {
+    font-family: OpenSans-SemiBold;
+    src: url('/assets/spo/fonts/OpenSans-SemiBold.woff');
 }
 
 #container {
-    font-family: OpenSans-Regular;
+    font-family: OpenSans-Regular !important;
     color: white;
 }
 
@@ -164,12 +174,15 @@ h1, h3, p {
 }
 
 .btn {
+    font-family: OpenSans-Bold;
     color: white;
     background-color: #ad820d;
     text-transform: uppercase;
     font-size: 0.8rem;
+    border-color: #ad820d !important;
 }
 
 .btn:hover {
     background-color: #88680f;
+    border-color: #88680f;
 }
