@@ -14,19 +14,21 @@ class Beratungsplanung(Document):
             # separate time blocks (field is in "10+11" format
             times = slot.time.split("+")
             for t in times:
-                create_slot(date=slot.date , hour=t, subject=slot.objective, consultant=slot.user)
-            
+                create_slot(date=slot.date , hour=t, subject=slot.objective, user=slot.user)
+        
+        frappe.db.commit()
         return
 
 
-def create_slot(date, hour, subject, consultant):
+def create_slot(date, hour, subject, user):
     new_slot = frappe.get_doc({
         'doctype': 'Beratungsslot',
-        'start': datetime.strptime("{0} {1}:00".format(date, hour), "%Y-%m-%d %H:%M"),
-        'end': datetime.strptime("{0} {1}:30".format(date, hour), "%Y-%m-%d %H:%M"),
+        'start': "{0} {1}:00:00".format(date, hour),
+        'end': "{0} {1}:30:00".format(date, hour),
         'topic': subject,
         'user': user,
         'status': 'frei'
     })
+    frappe.log_error("{0}".format(new_slot.as_dict()))
     new_slot.insert()
     return

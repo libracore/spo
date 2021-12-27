@@ -155,7 +155,7 @@ function fill_date(frm, options) {
                 var weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 
                 frappe.model.set_value(child.doctype, child.name, 'weekday', weekdays[dayOfWeek]);
-                frappe.model.set_value(child.doctype, child.name, 'date', date);
+                frappe.model.set_value(child.doctype, child.name, 'date', date.toISOString().substr(0,10));
                 frappe.model.set_value(child.doctype, child.name, 'objective', topic);
                 frappe.model.set_value(child.doctype, child.name, 'time', time);
                 frappe.model.set_value(child.doctype, child.name, 'user', user);
