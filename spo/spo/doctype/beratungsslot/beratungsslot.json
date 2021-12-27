@@ -38,12 +38,14 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
+   "no_copy": 1,
    "options": "frei\nreserviert\nbezahlt\ninklusive"
   },
   {
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
+   "no_copy": 1,
    "options": "Customer"
   },
   {
@@ -85,6 +87,7 @@
    "fieldname": "customer_name",
    "fieldtype": "Data",
    "label": "Customer name",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -95,23 +98,27 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "label": "First name"
+   "label": "First name",
+   "no_copy": 1
   },
   {
    "fieldname": "last_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Last name"
+   "label": "Last name",
+   "no_copy": 1
   },
   {
    "fieldname": "email_id",
    "fieldtype": "Data",
-   "label": "Email"
+   "label": "Email",
+   "no_copy": 1
   },
   {
    "fieldname": "phone",
    "fieldtype": "Data",
-   "label": "Phone"
+   "label": "Phone",
+   "no_copy": 1
   },
   {
    "fieldname": "column_reservation",
@@ -120,17 +127,20 @@
   {
    "fieldname": "address",
    "fieldtype": "Data",
-   "label": "Address"
+   "label": "Address",
+   "no_copy": 1
   },
   {
    "fieldname": "pincode",
    "fieldtype": "Data",
-   "label": "Pincode"
+   "label": "Pincode",
+   "no_copy": 1
   },
   {
    "fieldname": "city",
    "fieldtype": "Data",
-   "label": "City"
+   "label": "City",
+   "no_copy": 1
   },
   {
    "fieldname": "user",
@@ -147,6 +157,7 @@
    "fieldname": "payrexx_id",
    "fieldtype": "Data",
    "label": "Payrexx ID",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -157,22 +168,25 @@
    "fieldname": "payrexx_url",
    "fieldtype": "Data",
    "label": "Payrexx URL",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "payrexx_status",
    "fieldtype": "Data",
    "label": "Payrexx Status",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "consultation_type",
    "fieldtype": "Data",
    "label": "Art",
+   "no_copy": 1,
    "read_only": 1
   }
  ],
- "modified": "2021-12-15 19:33:55.145673",
+ "modified": "2021-12-23 07:32:10.663761",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
