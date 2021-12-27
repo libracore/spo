@@ -90,7 +90,7 @@
   }
  ],
  "issingle": 1,
- "modified": "2021-12-15 19:53:53.379724",
+ "modified": "2021-12-27 15:39:20.299468",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen Onlinetermin",
@@ -105,6 +105,23 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "SPO Poweruser",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Beratung",
+   "share": 1
   }
  ],
  "quick_entry": 1,

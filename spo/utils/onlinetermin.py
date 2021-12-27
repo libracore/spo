@@ -108,7 +108,7 @@ def add_access_log(title, status):
 
 @frappe.whitelist(allow_guest=True)
 def submit_request(slot, member, first_name, last_name, address, 
-    city, pincode, email, phone):
+    city, pincode, email, phone, geburtsdatum, salutation_title):
     settings = frappe.get_doc("Einstellungen Onlinetermin", "Einstellungen Onlinetermin")
     if not member:
         # create a new customer profile
@@ -126,6 +126,8 @@ def submit_request(slot, member, first_name, last_name, address,
             'first_name': first_name,
             'email_id': email,
             'phone': phone,
+            'geburtsdatum': geburtsdatum,
+            'salutation_title': salutation_title,
             'email_ids': [{
                     'email_id': email,
                     'is_primary': 1

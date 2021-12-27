@@ -168,6 +168,10 @@ h1, h3, p {
     color: white;
 }
 
+select, option {
+    font-family: OpenSans-Regular !important;
+}
+
 #page-onlinetermin {
     background: #009e77;
     font: white;

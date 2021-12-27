@@ -158,7 +158,8 @@ function reserve_slot(id, title, start) {
             'email': document.getElementById("inputEmail").value, 
             'phone': document.getElementById("inputPhone").value,
             'used_slots': document.getElementById("used_slots").value,
-            'consultation_type': document.getElementById("consultation_mode").value
+            'consultation_type': document.getElementById("consultation_mode").value,
+            'text': document.getElementById("text").value
         },
         'callback': function(response) {
             var success = response.message;
@@ -202,7 +203,9 @@ function create_invoice() {
             'city': document.getElementById("inputCity").value, 
             'pincode': document.getElementById("inputZIP").value, 
             'email': document.getElementById("inputEmail").value, 
-            'phone': document.getElementById("inputPhone").value
+            'phone': document.getElementById("inputPhone").value,
+            'geburtsdatum': document.getElementById("inputBirthdate").value,
+            'salutation_title': document.getElementById("salutation_title").value,
         },
         'callback': function(response) {
             // invoice created

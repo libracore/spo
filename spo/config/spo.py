@@ -297,6 +297,12 @@ def get_data():
                 },
                 {
                     "type": "doctype",
+                    "name": "Beraterzuweisung",
+                    "label": _("Beraterzuweisung"),
+                    "description": _("Beraterzuweisung")
+                },
+                {
+                    "type": "doctype",
                     "name": "Einstellungen Onlinetermin",
                     "label": _("Einstellungen Onlinetermin"),
                     "description": _("Einstellungen Onlinetermin")

@@ -22,7 +22,7 @@
    "label": "Status"
   }
  ],
- "modified": "2021-12-07 14:04:04.067372",
+ "modified": "2021-12-27 15:42:11.895979",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Onlinetermin Access Log",
@@ -39,6 +39,15 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SPO Poweruser",
+   "share": 1
   }
  ],
  "sort_field": "modified",

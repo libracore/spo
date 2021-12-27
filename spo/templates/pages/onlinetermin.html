@@ -1,20 +1,19 @@
-<h1>SPO</h1>
-<p class="lead muted">SPO - hier wenn Sie uns brauchen</p>
-<h3>Beratung / Termin Buchen</h3>
+<h3>SPO Kurzberatung</h3>
 <!--#<button class="btn btn-primary" onclick="start();">Start</button>-->
 <div id="container" class="wizard-container">
     <div id="step0">
-        <h2>Sind Sie bereits Mitglied?</h2>
+        <p class="lead muted">Herzlich Willkommen zur Buchung Ihrer Kurzberatung bei der SPO.</p>
+        <h2>Sind Sie bereits Mitglied der SPO?</h2>
+        <p class="lead muted">Informieren sie sich <i><u>hier</u></i> über die Mitgliedschaft.</p>
+        <button class="btn btn-primary" onclick="is_member();">Mitglied der SPO</button>
         
-        <button class="btn btn-primary" onclick="is_member();">Mitglied</button>
-        
-        <button class="btn btn-secondary" onclick="is_nonmember();">Nicht-Mitglied</button>
+        <button class="btn btn-secondary" onclick="is_nonmember();">Kein Mitglied der SPO</button>
     </div>
     <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
-        <h2>Mitgliedschaft erfassen</h2>
+        <h2>Mitgliedschaft</h2>
         
-        <p>Es ist wichtig, dass sich Mitglieder mit Ihrer Kunden-Nr. (CUST-#####) anmelden, da sonst der Termin <b>nicht bestätigt</b> werden kann.<br>
-        Falls Sie Ihre Kunden-Nr. nicht kennen, kontaktieren Sie uns: 044 252 54 22</p>
+        <p>Wenn Sie <b>Mitglied der SPO</b> sind, gbeen Sie bitte Ihre Customer-Nummer ein, damit wir Sie zuordnen können. Sollten Sie Ihre Customer-Nummer nicht mehr wissen, kontaktieren Sie uns gerne unter 044/ 252 54 22.
+        Als Mitglied der SPO erhalten Sie pro Jahr eine Stunde Beratung kostenlos. Falls Sie bereits eine Beratung in Anspruch genommen haben, ist eine Kurzberatung für Sie kostenpflichtig (30 CHF).</p>
         
         <div class="row">
             <div class="form-column col-sm-4">
@@ -49,15 +48,15 @@
 
     </div>
     <div id="step2" style="display: none; "><!-- Step 2: non-member: credentials -->
-        <h2>Personalien erfassen</h2>
+        <h2>Persönliche Daten</h2>
             <div class="row" style="margin-top: 20px; ">
                 <div class="form-column col-sm-4">
-                <p>Anrede</p>
+                <p>*Anrede</p>
                     <div class="control-group">
-                        <select class="form-control">
-                            <option>*Familie</option>
-                            <option>*Frau</option>
-                            <option>*Herr</option>
+                        <select id="salutation_title" class="form-control">
+                            <option>Familie</option>
+                            <option>Frau</option>
+                            <option>Herr</option>
                         </select>
                     </div>
                 </div> 
@@ -134,14 +133,14 @@
     </div>
     
     <div id="step3" style="display: none; "><!-- step 3: select options -->
-        <h2>Optionen wählen</h2>
+        <h2>Grund für Kurzberatung</h2>
         
         <div class="row" style="margin-top: 20px; ">
             <div class="form-column col-sm-4">
-                <p>Wie möchten Sie die Beratung durchgeführt haben?</p>
+                <p>Wie möchten Sie die Beratung durchgeführen?</p>
                 <div class="control-group">
                     <select id="consultation_mode" class="form-control">
-                        <option id="consultation_mode_phone" >Telefongespräch</option>
+                        <option id="consultation_mode_phone">Telefongespräch</option>
                         <option id="consultation_mode_online" >Online Meeting</option>
                     </select>
                 </div>
@@ -150,7 +149,7 @@
         
         <div class="row" style="margin-top: 20px; ">
             <div class="form-column col-sm-4">
-                <p>Um welchen Themenbereich handelt es sich?</p>
+                <p>Möchten Sie sich zu einem medizinischen oder zahnmedizinischen Thema beraten lassen?</p>
                 <div class="control-group">
                     <select id="topic" class="form-control">
                         <option>Medizin</option>
@@ -162,7 +161,7 @@
         
         <div class="row" style="margin-top: 20px; ">
             <div class="form-column col-sm-4">
-                <p>Beschreibung des Gesprächsinhalts bzw. Problematik</p>
+                <p>Bitte schildern Sie uns in wenigen Sätzen, was Ihr Anliegen ist:</p>
                 <div class="control-group">
                     <textarea id="text" name="text" cols="35" rows="4" maxlength="300" placeholder="Mehr dazu schreiben">
                     </textarea>
@@ -173,13 +172,13 @@
         <div class="row" style="margin-top: 20px; ">
             <div class="form-column col-sm-12">
                 <button class="btn btn-secondary" onclick="start();">Zurück</button> 
-                <button class="btn btn-primary" onclick="select_slot();">Finde Termin</button>
+                <button class="btn btn-primary" onclick="select_slot();">Termin finden</button>
             </div>
         </div>
     </div>
 
     <div id="step6" style="display: none; "><!-- step 6: select slot -->
-        <h2>Termin wählen</h2>
+        <h2>Termin finden</h2>
     
         <div id="calendar">
         </div>
