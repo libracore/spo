@@ -191,16 +191,16 @@ function slot_dialog(frm) {
         {'fieldname': 'dent_fri_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Fr Vormittag')},
         {'fieldname': 'dent_fri_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Fr Nachmittag')},
         {'fieldname': 'col2', 'fieldtype': 'Column Break'},
-        {'fieldname': 'advisor_mon_mor', 'fieldtype': 'Link', 'label': __('Berater/in Mo Vormittag'), 'options': 'User'},
-        {'fieldname': 'advisor_mon_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mo Nachmittag'), 'options': 'User'},
-        {'fieldname': 'advisor_tue_mor', 'fieldtype': 'Link', 'label': __('Berater/in Di Vormittag'), 'options': 'User'},
-        {'fieldname': 'advisor_tue_aft', 'fieldtype': 'Link', 'label': __('Berater/in Di Nachmittag'), 'options': 'User'},
-        {'fieldname': 'advisor_wed_mor', 'fieldtype': 'Link', 'label': __('Berater/in Mi Vormittag'), 'options': 'User'},
-        {'fieldname': 'advisor_wed_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mi Nachmittag'), 'options': 'User'},
-        {'fieldname': 'advisor_thu_mor', 'fieldtype': 'Link', 'label': __('Berater/in Do Vormittag'), 'options': 'User'},
-        {'fieldname': 'advisor_thu_aft', 'fieldtype': 'Link', 'label': __('Berater/in Do Nachmittag'), 'options': 'User'},
-        {'fieldname': 'advisor_fri_mor', 'fieldtype': 'Link', 'label': __('Berater/in Fr Vormittag'), 'options': 'User'},
-        {'fieldname': 'advisor_fri_aft', 'fieldtype': 'Link', 'label': __('Berater/in Fr Nachmittag'), 'options': 'User'}
+        {'fieldname': 'advisor_mon_mor', 'fieldtype': 'Link', 'label': __('Berater/in Mo Vormittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_mon_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mo Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_tue_mor', 'fieldtype': 'Link', 'label': __('Berater/in Di Vormittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_tue_aft', 'fieldtype': 'Link', 'label': __('Berater/in Di Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_wed_mor', 'fieldtype': 'Link', 'label': __('Berater/in Mi Vormittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_wed_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mi Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_thu_mor', 'fieldtype': 'Link', 'label': __('Berater/in Do Vormittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_thu_aft', 'fieldtype': 'Link', 'label': __('Berater/in Do Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_fri_mor', 'fieldtype': 'Link', 'label': __('Berater/in Fr Vormittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_fri_aft', 'fieldtype': 'Link', 'label': __('Berater/in Fr Nachmittag'), 'options': 'Beraterzuweisung'}
       ],
       'primary_action': function() {
           dialog.hide();
