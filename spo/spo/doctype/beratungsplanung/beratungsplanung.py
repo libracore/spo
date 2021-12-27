@@ -11,7 +11,10 @@ class Beratungsplanung(Document):
     def on_submit(self):
         # create slots from child table
         for slot in self.sloteingaben:
-            create_slot(date=slot.date , hour=slot.time, subject=slot.objective, consultant=slot.user)
+            # separate time blocks (field is in "10+11" format
+            times = slot.time.split("+")
+            for t in times:
+                create_slot(date=slot.date , hour=t, subject=slot.objective, consultant=slot.user)
             
         return
 
