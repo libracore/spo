@@ -42,11 +42,11 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Berater/in",
-   "options": "User"
+   "options": "Beraterzuweisung"
   }
  ],
  "istable": 1,
- "modified": "2021-12-15 08:46:13.731365",
+ "modified": "2021-12-27 12:40:15.719966",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsplanung Detail",
