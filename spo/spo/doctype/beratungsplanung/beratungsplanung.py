@@ -8,7 +8,7 @@ from frappe.model.document import Document
 from datetime import datetime
 
 class Beratungsplanung(Document):
-    on_submit(self):
+    def on_submit(self):
         # create slots from child table
         for slot in self.sloteingaben:
             create_slot(date=slot.date , hour=slot.time, subject=slot.objective, consultant=slot.user)
