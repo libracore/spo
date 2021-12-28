@@ -256,6 +256,7 @@ function load_calendar(events) {
           'right': 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         'events': events,
+        'locale': 'de',
         'eventClick': function(info) {
             reserve_slot(info.event.id, info.event.title, info.event.start);
         }

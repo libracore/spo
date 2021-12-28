@@ -190,3 +190,17 @@ select, option {
     background-color: #88680f;
     border-color: #88680f;
 }
+
+.fc-event-title {
+    color: white;
+}
+
+.fc-event-time {
+    color: white;
+}
+
+.fc-daygrid-event-dot {
+    border: calc(var(--fc-daygrid-event-dot-width,8px)/ 2) solid var(--fc-event-border-color, white) !important;
+}
+
+

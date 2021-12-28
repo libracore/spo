@@ -4,7 +4,7 @@
     <div id="step0">
         <p class="lead muted">Herzlich Willkommen zur Buchung Ihrer Kurzberatung bei der SPO.</p>
         <h2>Sind Sie bereits Mitglied der SPO?</h2>
-        <p class="lead muted">Informieren sie sich <i><u>hier</u></i> über die Mitgliedschaft.</p>
+        <p class="lead muted">Informieren sie sich <a href="https://spo.ch/unser-angebot/" title="SPO Website-Link">hier</a> über die Mitgliedschaft.</p>
         <button class="btn btn-primary" onclick="is_member();">Mitglied der SPO</button>
         
         <button class="btn btn-secondary" onclick="is_nonmember();">Kein Mitglied der SPO</button>
@@ -43,7 +43,7 @@
         </div>
         
         <p id="member_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> prüfen...</p>
-        <p id="member_failed" style="display: none; color: red; ">Die angegebenen Benutzerdaten sind ungültig.</p>
+        <p id="member_failed" style="display: none; color: #f2c774; ">Die angegebenen Benutzerdaten sind ungültig.</p>
         <p><br>Falls Sie <b>in den letzten 12 Monaten bereits eine Beratung hatten </b>, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
 
     </div>
@@ -127,8 +127,10 @@
             </div>
             
             <div class="row" style="margin-top: 20px; ">
-            <button class="btn btn-secondary" onclick="start();">Zurück</button>   
-            <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
+                <div class="form-column col-sm-12">
+                    <button class="btn btn-secondary" onclick="start();">Zurück</button>   
+                    <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
+                </div>
             </div>
     </div>
     
@@ -137,7 +139,7 @@
         
         <div class="row" style="margin-top: 20px; ">
             <div class="form-column col-sm-4">
-                <p>Wie möchten Sie die Beratung durchgeführen?</p>
+                <p>Wie soll die Beratung stattfinden?</p>
                 <div class="control-group">
                     <select id="consultation_mode" class="form-control">
                         <option id="consultation_mode_phone">Telefongespräch</option>
@@ -163,8 +165,7 @@
             <div class="form-column col-sm-4">
                 <p>Bitte schildern Sie uns in wenigen Sätzen, was Ihr Anliegen ist:</p>
                 <div class="control-group">
-                    <textarea id="text" name="text" cols="35" rows="4" maxlength="300" placeholder="Mehr dazu schreiben">
-                    </textarea>
+                    <textarea id="text" name="text" cols="35" rows="4" maxlength="300" placeholder="Max 300 Zeichen"></textarea>
                 </div>
             </div>
         </div>

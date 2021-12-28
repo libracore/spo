@@ -109,7 +109,7 @@ function fill_date(frm, options) {
                 user = options.advisor_thu_mor;
                 time = "10+11";
                 create = true;
-            } else if ((dayOfWeek === 34) && (options.med_thu_aft === 1)) {
+            } else if ((dayOfWeek === 4) && (options.med_thu_aft === 1)) {
                 topic = "Medizin";
                 user = options.advisor_thu_aft;
                 time = "14+15";
@@ -145,7 +145,7 @@ function fill_date(frm, options) {
                 create = true;
             } else if ((dayOfWeek === 5) && (options.dent_fri_aft === 1)) {
                 topic = "Zahnmedizin";
-                user = options.advisor_wed_aft;
+                user = options.advisor_fri_aft;
                 time = "14+15";
                 create = true;
             }
@@ -175,7 +175,7 @@ function slot_dialog(frm) {
         {'fieldname': 'med_tue_aft', 'fieldtype': 'Check', 'label': __('Medizin Di Nachmittag')},
         {'fieldname': 'med_wed_mor', 'fieldtype': 'Check', 'label': __('Medizin Mi Vormittag')},
         {'fieldname': 'med_wed_aft', 'fieldtype': 'Check', 'label': __('Medizin Mi Nachmittag')},
-        {'fieldname': 'med_thu_mo', 'fieldtype': 'Check', 'label': __('Medizin Do Vormittag')},
+        {'fieldname': 'med_thu_mor', 'fieldtype': 'Check', 'label': __('Medizin Do Vormittag')},
         {'fieldname': 'med_thu_aft', 'fieldtype': 'Check', 'label': __('Medizin Do Nachmittag')},
         {'fieldname': 'med_fri_mor', 'fieldtype': 'Check', 'label': __('Medizin Fr Vormittag')},
         {'fieldname': 'med_fri_aft', 'fieldtype': 'Check', 'label': __('Medizin Fr Nachmittag')},
@@ -186,7 +186,7 @@ function slot_dialog(frm) {
         {'fieldname': 'dent_tue_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Di Nachmittag')},
         {'fieldname': 'dent_wed_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Mi Vormittag')},
         {'fieldname': 'dent_wed_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Mi Nachmittag')},
-        {'fieldname': 'dent_thu_mo', 'fieldtype': 'Check', 'label': __('Zahnmedizin Do Vormittag')},
+        {'fieldname': 'dent_thu_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Do Vormittag')},
         {'fieldname': 'dent_thu_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Do Nachmittag')},
         {'fieldname': 'dent_fri_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Fr Vormittag')},
         {'fieldname': 'dent_fri_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Fr Nachmittag')},
