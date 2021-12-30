@@ -12,7 +12,7 @@
   "column_topic",
   "topic",
   "user",
-  "email",
+  "advisor_email",
   "section_status",
   "status",
   "column_status",
@@ -114,7 +114,8 @@
    "fieldname": "email_id",
    "fieldtype": "Data",
    "label": "Email",
-   "no_copy": 1
+   "no_copy": 1,
+   "options": "Email"
   },
   {
    "fieldname": "phone",
@@ -193,13 +194,16 @@
    "label": "Notes"
   },
   {
-   "fieldname": "email",
+   "fetch_from": "user.user",
+   "fetch_if_empty": 1,
+   "fieldname": "advisor_email",
    "fieldtype": "Link",
    "label": "Berater Email",
-   "options": "User"
+   "options": "User",
+   "read_only": 1
   }
  ],
- "modified": "2021-12-28 15:48:59.450097",
+ "modified": "2021-12-30 11:25:51.917583",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

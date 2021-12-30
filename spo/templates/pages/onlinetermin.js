@@ -167,7 +167,9 @@ function reserve_slot(id, title, start) {
             if (success) {
                 document.getElementById("slot_id").value = id;
                 document.getElementById("slot_title").value = title;
-                document.getElementById("slot_start").value = start;
+                document.getElementById("slot_start").value = start.toLocaleString("de-ch", {weekday: "long", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});   
+                document.getElementById("slot_title_final").value = title;
+                document.getElementById("slot_start_final").value = start.toLocaleString("de-ch", {weekday: "long", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});   
                 
                 select_payment();
             } else {
@@ -258,7 +260,7 @@ function load_calendar(events) {
         'events': events,
         'locale': 'de',
         'eventClick': function(info) {
-            reserve_slot(info.event.id, info.event.title, info.event.start);
+            reserve_slot(info.event.id, info.event.description, info.event.start);
         }
     });
     calendar.render();

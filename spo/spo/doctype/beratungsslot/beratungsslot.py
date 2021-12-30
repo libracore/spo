@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from spo.utils.payrexx import get_payment_status, create_payment
 from frappe.utils import get_url
 from datetime import date
+from frappe.utils import cint
 
 class Beratungsslot(Document):
     def fetch_payment_status(self):
@@ -86,7 +87,8 @@ def get_slots(topic="Medizin"):
     available_slots = frappe.db.sql("""
         SELECT 
             `name` AS `id`, 
-            `topic` AS `title`, 
+            "frei" AS `title`, 
+            `topic` AS `description`,
             `start`, 
             `end`
         FROM `tabBeratungsslot`
@@ -105,7 +107,7 @@ def reserve_slot(slot, member, first_name, last_name, address,
         FROM `tabBeratungsslot`
         WHERE `name` = "{slot}"
           AND `status` = "frei";""".format(slot=slot), as_dict=True)[0]['slots']
-    if available_slots == 1:
+    if cint(available_slots) == 1:
         # slot available, reserve
         slot = frappe.get_doc("Beratungsslot", slot)
         slot.customer = member
@@ -118,7 +120,7 @@ def reserve_slot(slot, member, first_name, last_name, address,
         slot.phone = phone
         slot.consultation_type = consultation_type
         slot.text = text
-        if used_slots == 0:
+        if cint(used_slots) == 0:
             slot.status = "inklusive"
         else:
             slot.status = "reserviert"
