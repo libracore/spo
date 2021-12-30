@@ -203,4 +203,7 @@ select, option {
     border: calc(var(--fc-daygrid-event-dot-width,8px)/ 2) solid var(--fc-event-border-color, white) !important;
 }
 
+a, a:hover {
+    color: #f2c774;
+}
 

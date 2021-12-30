@@ -30,3 +30,5 @@ frappe.ui.form.on('Beratungsslot', {
         }
     }
 });
+
+

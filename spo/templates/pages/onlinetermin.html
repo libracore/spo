@@ -3,17 +3,17 @@
 <div id="container" class="wizard-container">
     <div id="step0">
         <p class="lead muted">Herzlich Willkommen zur Buchung Ihrer Kurzberatung bei der SPO.</p>
-        <h2>Sind Sie bereits Mitglied der SPO?</h2>
-        <p class="lead muted">Informieren sie sich <a href="https://spo.ch/unser-angebot/" title="SPO Website-Link">hier</a> über die Mitgliedschaft.</p>
-        <button class="btn btn-primary" onclick="is_member();">Mitglied der SPO</button>
-        
-        <button class="btn btn-secondary" onclick="is_nonmember();">Kein Mitglied der SPO</button>
+            <h2>Sind Sie bereits Mitglied der SPO?</h2>
+            <p class="lead muted">Informieren sie sich <a href="https://spo.ch/unser-angebot/" title="SPO Website-Link">hier</a> über die Mitgliedschaft.</p>
+            <button class="btn btn-primary" onclick="is_member()"; style="margin-bottom: 20px;">Mitglied der SPO</button>
+            <button class="btn btn-secondary" onclick="is_nonmember();" style="margin-bottom: 20px;">Kein Mitglied der SPO</button>
     </div>
     <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
         <h2>Mitgliedschaft</h2>
         
-        <p>Wenn Sie <b>Mitglied der SPO</b> sind, gbeen Sie bitte Ihre Customer-Nummer ein, damit wir Sie zuordnen können. Sollten Sie Ihre Customer-Nummer nicht mehr wissen, kontaktieren Sie uns gerne unter 044/ 252 54 22.
-        Als Mitglied der SPO erhalten Sie pro Jahr eine Stunde Beratung kostenlos. Falls Sie bereits eine Beratung in Anspruch genommen haben, ist eine Kurzberatung für Sie kostenpflichtig (30 CHF).</p>
+        <p>Wenn Sie <b>Mitglied der SPO</b> sind, gbeen Sie bitte Ihre Customer-Nummer ein, damit wir Sie zuordnen können. 
+        Sollten Sie Ihre Customer-Nummer nicht mehr wissen, kontaktieren Sie uns gerne unter 044/ 252 54 22.
+        Falls Sie in den letzten 12 Monaten bereits eine Beratung hatten, ist die Kurzberatung für Sie kostenpflichtig (30 CHF).</p>
         
         <div class="row">
             <div class="form-column col-sm-4">
@@ -44,7 +44,6 @@
         
         <p id="member_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> prüfen...</p>
         <p id="member_failed" style="display: none; color: #f2c774; ">Die angegebenen Benutzerdaten sind ungültig.</p>
-        <p><br>Falls Sie <b>in den letzten 12 Monaten bereits eine Beratung hatten </b>, ist dieser Service für Sie <b>kostenpflichtig</b>.</p>
 
     </div>
     <div id="step2" style="display: none; "><!-- Step 2: non-member: credentials -->
@@ -126,7 +125,7 @@
                 </div>
             </div>
             
-            <div class="row" style="margin-top: 20px; ">
+            <div class="row" style="margin-top: 20px; padding-bottom: 20px; ">
                 <div class="form-column col-sm-12">
                     <button class="btn btn-secondary" onclick="start();">Zurück</button>   
                     <button class="btn btn-primary" onclick="select_option_from_nonmember();">Weiter</button>
@@ -170,7 +169,7 @@
             </div>
         </div>
     
-        <div class="row" style="margin-top: 20px; ">
+        <div class="row" style="margin-top: 20px; padding-bottom: 20px; ">
             <div class="form-column col-sm-12">
                 <button class="btn btn-secondary" onclick="start();">Zurück</button> 
                 <button class="btn btn-primary" onclick="select_slot();">Termin finden</button>
@@ -184,7 +183,7 @@
         <div id="calendar">
         </div>
         
-        <div class="row" style="margin-top: 20px; ">
+        <div class="row" style="margin-top: 20px; padding-bottom: 20px;">
             <div class="form-column col-sm-12">
                 <button class="btn btn-secondary" onclick="back_to_options();">Zurück</button> 
                 <p id="calendar_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> buchen...</p>
@@ -221,10 +220,26 @@
         
     </div>
     
-    <div id="step10" style="display: none; "><!-- step 10: done -->
+    <div id="step10" style="display: none; "><!-- step 10:  -->
         <h2>Vielen Dank für Ihre Terminbuchung!</h2>
-    
-    
+        <p>Sie erhalten innerhalb der nächsten 10 Minuten ein Bestätigungsemail mit den wichtigsten Angaben auf die von Ihnen angegebene Emailadresse.</p>
+        
+        <div class="row" style="margin-top: 20px; padding-bottom: 20px; ">
+            <!--Slot Name-->
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                    <input type="text" id="slot_title" class="form-control" readonly>
+                </div>
+            </div>
+            <!--Slot Date-->
+            <div class="form-column col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" id="slot_start" class="form-control" readonly>
+                </div>
+            </div>
+        </div>
     </div>       
 
 </div><!-- end of wizard container -->

@@ -12,6 +12,7 @@
   "column_topic",
   "topic",
   "user",
+  "email",
   "section_status",
   "status",
   "column_status",
@@ -190,9 +191,15 @@
    "fieldname": "text",
    "fieldtype": "Small Text",
    "label": "Notes"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Link",
+   "label": "Berater Email",
+   "options": "User"
   }
  ],
- "modified": "2021-12-27 15:39:52.637730",
+ "modified": "2021-12-28 15:48:59.450097",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
