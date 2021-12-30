@@ -260,7 +260,7 @@ function load_calendar(events) {
         'events': events,
         'locale': 'de',
         'eventClick': function(info) {
-            reserve_slot(info.event.id, info.event.description, info.event.start);
+            reserve_slot(info.event.id, info.event.extendedProps.description, info.event.start);
         }
     });
     calendar.render();
