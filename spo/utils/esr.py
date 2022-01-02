@@ -1,146 +1,52 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2021, libracore AG and contributors
+# For license information, please see license.txt
+
 from __future__ import unicode_literals
-import frappe, os, json, math
-from frappe.utils.background_jobs import enqueue
-from PyPDF2 import PdfFileWriter
-import frappe, os, json
-"""
-Function for generating ESR-numbers for orange swiss payment slips ("Oranger Einzahlungsschein").
-@param
-    chf: amount in chf without rappen
-    rappen: amount in rappen
-    help1, help2, help3: fix, "+" or ">", no editing required
-    referenceNumber: contains matag number, zeros, client number and job number
-    participantNumber: bankaccount number
-@usage generateCodeline("4378", "85", "94476300000000128001105152", "01200027")
- 
-"""
-def moduloTenRecursive(number):
-	lut = [0, 9, 4, 6, 8, 2, 7, 1, 3, 5];
-	carryover = 0;
-	for i in str(number):
-		t = carryover + int(i)
-		carryover = lut[t % 10];
-	return str((10 - carryover) % 10)
+import frappe
 
 @frappe.whitelist()
-def generateCodeline(betrag, referenceNumber, participantNumber):
-	bc = "01"
-	help1 = ">"
-	help2 = "+"
-	help3 = ">"
-	_rappen, franken = math.modf(betrag)
-	if len(str(_rappen)) == 3:
-		_rappen = str(_rappen) + "0"
-		
-	if len(referenceNumber) < 26:  # check if referenceNumber has less than 27 chars
-		referenceNumber = (26-len(referenceNumber))*"0" + referenceNumber
-			
-	chf = str(int(franken))
-	rappen = str(_rappen).split(".")[1]
-	if len(chf) < 8:  # check if amount has less than eight chars
-		chf = (8-len(chf))*"0" + chf
-	if len(rappen) < 2:  # check if amount has less than 2 chars
-		rappen = (2-len(rappen))*"0" + rappen
-
-	# dynamic, check digit for bc and value (calculated with modulo 10 recursive)
-	p1 = moduloTenRecursive(bc + chf + rappen)  
-	# dynamic, check digit for referenceNumber (calculated with modulo 10 recursive)
-	p2 = moduloTenRecursive(referenceNumber)
-	
-	return bc + chf + rappen + p1 + help1 + referenceNumber + p2 + help2 + " " + participantNumber + help3
-
-def get_reference_number(referenceNumber):
-	if len(referenceNumber) < 26:  # check if referenceNumber has less than 27 chars
-		referenceNumber = (26-len(referenceNumber))*"0" + referenceNumber
-	
-	p2 = moduloTenRecursive(referenceNumber)
-	
-	return referenceNumber + p2
-	
-@frappe.whitelist()
-def set_esr_reference_and_esr_code(sinv, customer, grand_total):
-	invoice = frappe.get_doc("Sales Invoice", sinv)
-	referencenumber = "974554" + customer.split("-")[2] + "0000" + sinv.split("-")[1] + sinv.split("-")[2] 
-	return {
-		"esr_reference": get_reference_number(referencenumber),
-		"esr_code": generateCodeline(float(grand_total), referencenumber, "012000272")
-	}
-	
-# START bereinigungscode
-# bereinigungscode, kann nur von hand ausgefuehrt werden
-def esr_reference_correction():
-	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_list=True)[0][0]
-	loop = 1
-	sinvs = frappe.db.sql("""SELECT `name`, `customer`, `grand_total` FROM `tabSales Invoice` WHERE `docstatus` != 2""", as_dict=True)
-	for sinv in sinvs:
-		print("Correct {sinv} ({loop} of {all_sinvs})...".format(sinv=sinv.name, loop=loop, all_sinvs=all_sinvs))
-		referencenumber = "974554" + sinv.customer.split("-")[2] + "0000" + sinv.name.split("-")[1] + sinv.name.split("-")[2] 
-		new_ref = get_reference_number(referencenumber)
-		new_code = generateCodeline(sinv.grand_total, referencenumber, "012000272")
-		update_sinv = frappe.db.sql("""UPDATE `tabSales Invoice` SET `esr_reference` = '{new_ref}', `esr_code` = '{new_code}' WHERE `name` = '{name}'""".format(new_ref=new_ref, new_code=new_code, name=sinv.name), as_list=True)
-		print("correction done...")
-		loop += 1
-	print("Finished all Sales Invoices (total: {all_sinvs})".format(all_sinvs=all_sinvs))
-	
-# bereinigungscode, kann nur von hand ausgefuehrt werden
-def rechnungsnachdruck():
-	all_sinvs = frappe.db.sql("""SELECT COUNT(`name`), `customer` FROM `tabSales Invoice` WHERE `docstatus` != 2 AND `status` != 'Paid'""", as_list=True)[0][0]
-	sinvs = frappe.db.sql("""SELECT `name` FROM `tabSales Invoice` WHERE `docstatus` != 2 AND `status` != 'Paid'""", as_dict=True)
-	qty = 0
-	batch = 1
-	to_print = []
-	
-	print("found {all_sinvs} Invoices to print".format(all_sinvs=all_sinvs))
-	print("start printing...")
-	
-	for sinv in sinvs:
-		if qty < 500:
-			qty += 1
-			to_print.append(sinv.name)
-		else:
-			# start background....(500er batch)
-			bind_source = "/assets/spo/sinvs_for_print/NACHDRUCK/batch_{batch}.pdf".format(batch=batch)
-			physical_path = "/home/frappe/frappe-bench/sites" + bind_source
-			pdf_batch(to_print, format="Mitgliederrechnung", dest=str(physical_path), batch=batch)
-			print("start background job {batch}".format(batch=batch))
-			
-			to_print = []
-			qty = 1
-			batch += 1
-			to_print.append(sinv.name)
-			
-	# start background....(rest batch)
-	bind_source = "/assets/spo/sinvs_for_print/NACHDRUCK/batch_{batch}.pdf".format(batch=batch)
-	physical_path = "/home/frappe/frappe-bench/sites" + bind_source
-	pdf_batch(to_print, format="Mitgliederrechnung", dest=str(physical_path), batch=batch)
-	print("start LAST background job {batch}".format(batch=batch))
-	
-def pdf_batch(to_print, format=None, dest=None, batch=None):
-	max_time = 4800
-	args = {
-		'sales_invoices': to_print,
-		'format': "Mitgliederrechnung",
-		'dest': dest
-	}
-	enqueue("spo.utils.esr.print_bind", queue='long', job_name='Erstelle PDF Batch {batch}'.format(batch=batch), timeout=max_time, **args)
-	
-def print_bind(sales_invoices, format=None, dest=None):
-	# Concatenating pdf files
-	output = PdfFileWriter()
-	for sales_invoice in sales_invoices:
-		output = frappe.get_print("Sales Invoice", sales_invoice, format, as_pdf = True, output = output)
-	if dest != None:
-		if isinstance(dest, str): # when dest is a file path
-			destdir = os.path.dirname(dest)
-			if destdir != '' and not os.path.isdir(destdir):
-				os.makedirs(destdir)
-			with open(dest, "wb") as w:
-				output.write(w)
-		else: # when dest is io.IOBase
-			output.write(dest)
-			print("first return")
-		return
-	else:
-		print("second return")
-		return output
-# ENDE bereinigungscode
+def get_qrr_reference(sales_invoice=None, customer=None, reference_raw='00 00000 00000 00000 00000 0000'):
+    if sales_invoice and customer:
+        customer_year = customer.replace("CUST-", "").split("-")[0]
+        customer_number = customer.replace("CUST-", "").split("-")[1]
+        sinv_year = sales_invoice.replace("SINV-", "").split("-")[0]
+        sinv_number = sales_invoice.replace("SINV-", "").split("-")[1]
+        
+        reference_raw = '00 '
+        reference_raw += customer_year
+        reference_raw += customer_number[:1]
+        reference_raw += ' '
+        reference_raw += customer_number[1:6]
+        reference_raw += ' '
+        reference_raw += sinv_year
+        reference_raw += sinv_number[:1]
+        reference_raw += ' '
+        reference_raw += sinv_number[1:6]
+        reference_raw += ' 0000'
+    
+    check_digit_matrix = {
+        '0': [0, 9, 4, 6, 8, 2, 7, 1, 3, 5, 0],
+        '1': [9, 4, 6, 8, 2, 7, 1, 3, 5, 0, 9],
+        '2': [4, 6, 8, 2, 7, 1, 3, 5, 0, 9, 8],
+        '3': [6, 8, 2, 7, 1, 3, 5, 0, 9, 4, 7],
+        '4': [8, 2, 7, 1, 3, 5, 0, 9, 4, 6, 6],
+        '5': [2, 7, 1, 3, 5, 0, 9, 4, 6, 8, 5],
+        '6': [7, 1, 3, 5, 0, 9, 4, 6, 8, 2, 4],
+        '7': [1, 3, 5, 0, 9, 4, 6, 8, 2, 7, 3],
+        '8': [3, 5, 0, 9, 4, 6, 8, 2, 7, 1, 2],
+        '9': [5, 0, 9, 4, 6, 8, 2, 7, 1, 3, 1]
+    }
+    
+    transfer = 0
+    check_digit = 0
+    reference_raw = reference_raw.replace(" ", "")
+    for digit in reference_raw:
+        digit = int(digit)
+        transfer = int(check_digit_matrix[str(transfer)][digit])
+    
+    check_digit = int(check_digit_matrix[str(transfer)][10])
+    
+    qrr_reference_raw = reference_raw + str(check_digit)
+    qrr_reference = qrr_reference_raw[:2] + " " + qrr_reference_raw[2:7] + " " + qrr_reference_raw[7:12] + " " + qrr_reference_raw[12:17] + " " + qrr_reference_raw[17:22] + " " + qrr_reference_raw[22:27]
+    return qrr_reference

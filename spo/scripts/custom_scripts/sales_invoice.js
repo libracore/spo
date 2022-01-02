@@ -14,7 +14,7 @@ frappe.ui.form.on('Sales Invoice', {
 		}
     },
 	validate: function(frm) {
-		if ((!cur_frm.doc.is_return)&&(cur_frm.doc.company == 'Gönnerverein')) {
+		if ((!frm.doc.__islocal)&&(!cur_frm.doc.is_return)&&(cur_frm.doc.company == 'Gönnerverein')) {
 			update_esr(frm);
 		}
 	}
@@ -22,17 +22,15 @@ frappe.ui.form.on('Sales Invoice', {
 
 function update_esr(frm) {
 	frappe.call({
-		"method": "spo.utils.esr.set_esr_reference_and_esr_code",
+		"method": "spo.utils.esr.get_qrr_reference",
 		"args": {
-			"sinv": cur_frm.doc.name,
-			"customer": cur_frm.doc.customer,
-			"grand_total": parseFloat(cur_frm.doc.grand_total)
+			"sales_invoice": cur_frm.doc.name,
+			"customer": cur_frm.doc.customer
 		},
 		"async": false,
 		"callback": function(r) {
 			if (r.message) {
-				cur_frm.set_value('esr_reference', r.message.esr_reference);
-				cur_frm.set_value('esr_code', r.message.esr_code);
+				cur_frm.set_value('esr_reference', r.message);
 			}
 		}
 	});
