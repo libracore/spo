@@ -172,7 +172,8 @@ def auto_ts_submit():
     overwrite_ts_validation()
     overwrite_ts_on_submit()
     #************************************************************************************
-
+    
+    unsaved_ts = []
     # correct twh:
     ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
     for _ts in ts_list:
@@ -186,9 +187,11 @@ def auto_ts_submit():
         ts.twh = arbeitszeit
         try:
             ts.save()
-        except:
+        except Exception as err:
+            unsaved_ts.append([ts.name, err])
             continue
-            
+    
+    unsubmitted_ts = []
     # check and submit ts:
     ts_list = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 AND `start_date` < '{last_week}'""".format(last_week=add_days(nowdate(), -7)), as_dict=True)
     for _ts in ts_list:
@@ -201,10 +204,20 @@ def auto_ts_submit():
         if ruckmeldungen <= ts.twh:
             try:
                 ts.submit()
-            except:
+            except Exception as err:
+                unsubmitted_ts.append([ts.name, ruckmeldungen, ts.twh, err])
                 continue
-        #else:
-            #mail versand wenn fehler....muss noch programmiert werden...
+    if len(unsaved_ts) > 0 or len(unsubmitted_ts) > 0:
+        error_msg = ''
+        if len(unsaved_ts) > 0:
+            error_msg += "Nachfolgende Timesheets konnten nicht gespeichert werden (TS, (Fehler)):\n"
+            for u_ts in unsaved_ts:
+                error_msg += '{0} ({1})\n'.format(u_ts[0], u_ts[1])
+        if len(unsubmitted_ts) > 0:
+            error_msg += "\nNachfolgende Timesheets konnten nicht gebucht werden werden (TS, Arbeitszeit, Rückmeldungen, (Fehler):)\n"
+            for u_ts in unsubmitted_ts:
+                error_msg += '{0}, {1}, {2}, {3}\n'.format(u_ts[0], u_ts[2], u_ts[1], u_ts[3])
+        frappe.log_error("{0}".format(error_msg), 'Auto TS Submit')
 
 def get_zeiten_uebersicht(dt, name):
     if dt != 'Mandat':
