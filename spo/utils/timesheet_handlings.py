@@ -201,12 +201,15 @@ def auto_ts_submit():
         for log in ts.time_logs:
             if log.activity_type != "Pause" and log.activity_type != "Arbeitszeit":
                 ruckmeldungen += log.hours
-        if ruckmeldungen <= ts.twh:
+        if float(ruckmeldungen) <= float(ts.twh):
             try:
                 ts.submit()
             except Exception as err:
                 unsubmitted_ts.append([ts.name, ruckmeldungen, ts.twh, err])
                 continue
+        else:
+            unsubmitted_ts.append([ts.name, ruckmeldungen, ts.twh, 'Rückmeldung > Arbeitszeit'])
+    
     if len(unsaved_ts) > 0 or len(unsubmitted_ts) > 0:
         error_msg = ''
         if len(unsaved_ts) > 0:
