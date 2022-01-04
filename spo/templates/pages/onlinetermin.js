@@ -261,7 +261,8 @@ function load_calendar(events) {
         'locale': 'de',
         'eventClick': function(info) {
             reserve_slot(info.event.id, info.event.extendedProps.description, info.event.start);
-        }
+        },
+        'eventColor': '#ffffff'
     });
     calendar.render();
 }

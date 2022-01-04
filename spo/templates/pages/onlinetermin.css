@@ -192,15 +192,19 @@ select, option {
 }
 
 .fc-event-title {
-    color: white;
+    color: #36414c;
 }
 
 .fc-event-time {
-    color: white;
+    color: #36414c;
 }
 
 .fc-daygrid-event-dot {
     border: calc(var(--fc-daygrid-event-dot-width,8px)/ 2) solid var(--fc-event-border-color, white) !important;
+}
+
+.fc-event-main, .fc-event {
+    background-color: white;
 }
 
 a, a:hover {
