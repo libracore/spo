@@ -12,15 +12,6 @@ function fill_date(frm, options) {
     var month = frm.doc.month;
     //get nr of days in this month
     var daysInMonth = new Date(year, month, 0).getDate();
-
-    //delete old values: remove all rows
-    var tbl = frm.doc.sloteingaben || [];
-    var i = tbl.length;
-    while (i--)
-    {
-        cur_frm.get_field("sloteingaben").grid.grid_rows[i].remove();
-    }
-    cur_frm.refresh();
     
     //loop, day starts at 1
     for (var day = 1; day <= daysInMonth; day++) {
