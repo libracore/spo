@@ -13,17 +13,19 @@
  ],
  "fields": [
   {
-   "default": "2021",
    "fieldname": "year",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Jahr",
-   "options": "2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029\n2030\n2031\n2032\n2033\n2034\n2035"
+   "options": "\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029\n2030\n2031\n2032\n2033\n2034\n2035",
+   "reqd": 1
   },
   {
    "fieldname": "month",
    "fieldtype": "Select",
    "label": "Monat",
-   "options": "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
+   "options": "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12",
+   "reqd": 1
   },
   {
    "fieldname": "button_set_slots",
@@ -47,7 +49,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2021-12-27 15:40:31.073247",
+ "modified": "2022-01-06 17:57:52.159831",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsplanung",

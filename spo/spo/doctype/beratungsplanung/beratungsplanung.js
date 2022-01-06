@@ -3,7 +3,14 @@
 
 frappe.ui.form.on('Beratungsplanung', {
     button_set_slots: function(frm) {
-        slot_dialog(frm);
+        if (frm.doc.year) {
+            slot_dialog(frm);
+        }
+    },
+    refresh: function(frm) {
+        if (!frm.doc.year) {
+            cur_frm.set_value("year", (new Date()).getFullYear());
+        }
     }
 });
 
@@ -17,7 +24,7 @@ function fill_date(frm, options) {
     for (var day = 1; day <= daysInMonth; day++) {
         //fill in sloteingaben (childtbl)
         //month starts at 0
-        var date = new Date(year, month-1, day);
+        var date = new Date(year, month-1, day, 12, 0);                 // use 12 o'clock to prevent UTC shift
         var dayOfWeek = date.getDay();      // 0 = Sunday, 1 = Monday, ... 6 = Saturday
         if ((dayOfWeek > 0) && (dayOfWeek < 6)) {
             // only process for weekdays
@@ -166,9 +173,9 @@ function fill_date(frm, options) {
                     var child = cur_frm.add_child('sloteingaben');
                     // set weekday corresponding to options of Sloteingabe Details
                     var weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-
+                    
                     frappe.model.set_value(child.doctype, child.name, 'weekday', weekdays[dayOfWeek]);
-                    frappe.model.set_value(child.doctype, child.name, 'date', date.toISOString().substr(0,10));
+                    frappe.model.set_value(child.doctype, child.name, 'date', date.toISOString().slice(0, 10));
                     frappe.model.set_value(child.doctype, child.name, 'objective', topic[k]);
                     frappe.model.set_value(child.doctype, child.name, 'time', time[k]);
                     frappe.model.set_value(child.doctype, child.name, 'user', user[k]);
