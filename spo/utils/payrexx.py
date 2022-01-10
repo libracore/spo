@@ -11,6 +11,7 @@ import hmac
 import hashlib
 import base64
 import json
+from datetime import date, timedelta
 
 API_BASE = "https://api.payrexx.com/v1.0/"
 
@@ -55,3 +56,23 @@ def get_payment_status(payrexx_id):
     response = json.loads(r.content.decode('utf-8'))
     invoice = response['data'][0]
     return invoice
+
+
+"""
+This function will pull the payment status of all "waiting" payments (no older than 2 weeks)
+
+Run on cron with bench execute spo.utils.payrexx.force_fetch_payment_status --kwargs "{'debug': False}"
+"""
+def force_fetch_payment_status(debug=False):
+    waiting_payments = frappe.get_all("Beratungsslot", 
+        filters=[
+            ['payrexx_status', '=', 'waiting'], 
+            ['start', '>=', (date.today() - timedelta(days=14))]
+        ],
+        fields=['name'])
+    for payment in waiting_payments:
+        slot = frappe.get_doc("Beratungsslot", payment['name'])
+        if debug:
+            print("Updating {0}".format(slot.name))
+        slot.fetch_payment_status()
+    return
