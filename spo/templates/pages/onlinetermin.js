@@ -211,21 +211,6 @@ function create_invoice() {
         },
         'callback': function(response) {
             // invoice created
-            var details = response.message;
-            create_payrexx_payment();
-        }
-    });
-}
-
-function create_payrexx_payment() {
-    // load QR code
-    frappe.call({
-        'method': 'spo.utils.onlinetermin.create_payment',
-        'args': {
-            'booking': document.getElementById("slot_id").value
-        },
-        'callback': function(response) {
-            // invoice created
             var payment = response.message;
             
             // insert payrexx iframe here

@@ -174,7 +174,10 @@ def submit_request(slot, member, first_name, last_name, address,
     })
     invoice = invoice.insert(ignore_permissions=True)
     invoice.submit()
-    return {'invoice': invoice.name, 'rate': (invoice.rounded_total or invoice.grand_total)}
+    # return {'invoice': invoice.name, 'rate': (invoice.rounded_total or invoice.grand_total)}
+    # create payrexx payment
+    return create_payment(slot)
+    
 
 @frappe.whitelist(allow_guest=True)
 def fetch_payment_status(booking):

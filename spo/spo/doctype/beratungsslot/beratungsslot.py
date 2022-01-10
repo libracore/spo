@@ -25,14 +25,14 @@ class Beratungsslot(Document):
     def create_payment(self):
         details = None
         sinv = frappe.get_all("Sales Invoice", filters={'beratungsslot': self.name},
-            fields=['name', 'base_grand_total'])
+            fields=['name', 'outstanding_amount', 'base_grand_total'])
         if len(sinv) > 0:
             details = create_payment(
                 title="SPO Onlineberatung", 
                 description="Onlinetermin bezahlen", 
                 reference=self.name, 
                 purpose="Onlineberatung", 
-                amount=(sinv[0]['base_grand_total'] * 100), 
+                amount=((sinv[0]['outstanding_amount'] or sinv[0]['base_grand_total']) * 100), 
                 vat_rate=7.7, 
                 sku=frappe.get_value("Einstellungen Onlinetermin", "Einstellungen Onlinetermin", "invoice_item"), 
                 currency="CHF", 
