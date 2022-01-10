@@ -538,6 +538,9 @@ function set_mandatory_and_read_only(frm) {
 		if (cur_frm.doc.problematik == __('Krankenkasse (Grundversicherung)')) {
 			cur_frm.set_df_property('krankenkasse','reqd', 1);
 		}
+        if (cur_frm.doc.anfrage_typ == __('Online-Beratung')) {
+            cur_frm.set_df_property('spo_ombudsstelle','reqd', 0);
+        }
 	}
 }
 

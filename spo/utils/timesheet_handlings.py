@@ -410,7 +410,7 @@ def get_pending_leaves_for_current_year(employee, date):
             'persoenlich': str(persoenlich)
         }
 
-def create_default_ts_entry(user, doctype, record, datum):
+def create_default_ts_entry(user, doctype, record, datum, onlineberatung=False):
     #**********************************************************
     #overwrite the time_log overlap validation of timesheet
     overwrite_ts_validation()
@@ -425,7 +425,10 @@ def create_default_ts_entry(user, doctype, record, datum):
         frappe.throw("Es wurde kein Mitarbeiterstamm gefunden!")
     else:
         user = user[0][0]
-    time = get_default_time(doctype)
+    if not onlineberatung:
+        time = get_default_time(doctype)
+    else:
+        time = 0.5
     ts = frappe.db.sql("""SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 1 AND `employee` = '{user}' AND `start_date` = '{nowdate}'""".format(user=user, nowdate=datum.strftime("%Y-%m-%d")), as_dict=True)
     if len(ts) > 0:
         frappe.throw("Das Timesheet vom {datum} ist bereits verbucht.".format(datum=datum))
