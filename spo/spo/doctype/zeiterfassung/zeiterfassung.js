@@ -448,7 +448,8 @@ function set_subtable_filter(frm) {
 			'filters': {
 				'name': ['not in', ['Beratung', 'Mandatsarbeit', 'Pause', 'Arbeitszeit']],
 				'disabled': 0
-			}
+			},
+			'page_length': 30
 		};
 	});
 }

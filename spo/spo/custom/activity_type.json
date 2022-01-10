@@ -1,0 +1,31 @@
+{
+ "custom_fields": [],
+ "custom_perms": [],
+ "doctype": "Activity Type",
+ "property_setters": [
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2022-01-10 13:31:51.110282",
+   "default_value": null,
+   "doc_type": "Activity Type",
+   "docstatus": 0,
+   "doctype_or_field": "DocType",
+   "field_name": null,
+   "idx": 0,
+   "modified": "2022-01-10 13:31:51.110282",
+   "modified_by": "Administrator",
+   "name": "Activity Type-sort_field",
+   "owner": "Administrator",
+   "parent": null,
+   "parentfield": null,
+   "parenttype": null,
+   "property": "sort_field",
+   "property_type": "Data",
+   "value": "activity_type"
+  }
+ ],
+ "sync_on_migrate": 1
+}
