@@ -15,7 +15,10 @@ class Anfrage(Document):
             if not self.default_ts:
                 # create start ts buchung
                 #handle_timesheet(frappe.session.user, self.doctype, self.name, 0, '', self.datum)
-                create_default_ts_entry(frappe.session.user, self.doctype, self.name, self.datum)
+                onlineberatung = False
+                if self.anfrage_typ == 'Online-Beratung':
+                    onlineberatung = True
+                create_default_ts_entry(frappe.session.user, self.doctype, self.name, self.datum, onlineberatung=onlineberatung)
                 self.default_ts = 1
 
         if self.patient != self.customer:

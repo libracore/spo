@@ -446,8 +446,10 @@ function set_subtable_filter(frm) {
 	frm.set_query('activity_type', 'diverses', function () {
 		return {
 			'filters': {
-				'name': ['not in', ['Beratung', 'Mandatsarbeit', 'Pause', 'Arbeitszeit']]
-			}
+				'name': ['not in', ['Beratung', 'Mandatsarbeit', 'Pause', 'Arbeitszeit']],
+				'disabled': 0
+			},
+			'page_length': 30
 		};
 	});
 }
