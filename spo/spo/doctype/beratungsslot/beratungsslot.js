@@ -23,6 +23,16 @@ frappe.ui.form.on('Beratungsslot', {
                  }
              }
         }
+        if (frm.doc.customer) {
+            frm.add_custom_button(__("Anfrage erstellen"), function() {
+                frappe.route_options = {
+                    "customer": frm.doc.customer,
+                    "anfrage_typ": "Online-Beratung",
+                    "kontakt_via": "Telefon"
+                }
+                frappe.set_route("List", "Anfrage");
+            });
+        }
     },
     customer: function(frm) {
         if (!frm.doc.customer) {
