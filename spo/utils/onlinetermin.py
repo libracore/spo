@@ -120,6 +120,9 @@ def submit_request(slot, member, first_name, last_name, address,
             'customer_type': 'Individual'
         })
         customer = customer.insert(ignore_permissions=True)
+        beratungsslot = frappe.get_doc("Beratungsslot", slot)
+        beratungsslot.customer = customer.name
+        beratungsslot.save(ignore_permissions=True)
         contact = frappe.get_doc({
             'doctype': 'Contact',
             'last_name': last_name,
