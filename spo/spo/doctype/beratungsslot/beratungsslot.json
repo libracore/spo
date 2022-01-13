@@ -23,6 +23,8 @@
   "last_name",
   "email_id",
   "phone",
+  "geburtsdatum",
+  "salutation_title",
   "column_reservation",
   "address",
   "pincode",
@@ -204,9 +206,19 @@
    "label": "Berater Email",
    "options": "User",
    "read_only": 1
+  },
+  {
+   "fieldname": "geburtsdatum",
+   "fieldtype": "Date",
+   "label": "Geburtsdatum"
+  },
+  {
+   "fieldname": "salutation_title",
+   "fieldtype": "Data",
+   "label": "Salutation"
   }
  ],
- "modified": "2022-01-06 09:13:49.027881",
+ "modified": "2022-01-13 15:00:21.405593",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
