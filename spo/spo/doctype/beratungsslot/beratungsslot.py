@@ -19,7 +19,7 @@ class Beratungsslot(Document):
             if self.payrexx_status == "confirmed":
                 self.status = "bezahlt"
                 self.verify_payment()
-            self.save()
+            self.save(ignore_permissions=True)
         return
     
     def create_payment(self):
@@ -44,7 +44,7 @@ class Beratungsslot(Document):
             if self.payrexx_status == "confirmed":
                 self.status = "bezahlt"
                 self.verify_payment()
-            self.save()
+            self.save(ignore_permissions=True)
         return details
 
     def verify_payment(self):
@@ -100,7 +100,8 @@ def get_slots(topic="Medizin"):
 
 @frappe.whitelist(allow_guest=True)
 def reserve_slot(slot, member, first_name, last_name, address, 
-    city, pincode, email, phone, used_slots=1, consultation_type="Online", text=""):
+    city, pincode, email, phone, used_slots=1, consultation_type="Online", 
+    text="", geburtsdatum=None, salutation_title=None):
     # verify if this slot is still available
     available_slots = frappe.db.sql("""
         SELECT COUNT(`name`) AS `slots`
@@ -120,6 +121,8 @@ def reserve_slot(slot, member, first_name, last_name, address,
         slot.phone = phone
         slot.consultation_type = consultation_type
         slot.text = text
+        slot.geburtsdatum = geburtsdatum
+        slot.salutation_title = salutation_title
         if cint(used_slots) == 0:
             slot.status = "inklusive"
         else:

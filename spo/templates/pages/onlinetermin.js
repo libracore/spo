@@ -159,7 +159,9 @@ function reserve_slot(id, title, start) {
             'phone': document.getElementById("inputPhone").value,
             'used_slots': document.getElementById("used_slots").value,
             'consultation_type': document.getElementById("consultation_mode").value,
-            'text': document.getElementById("text").value
+            'text': document.getElementById("text").value,
+            'geburtsdatum': document.getElementById("inputBirthdate").value,
+            'salutation_title': document.getElementById("salutation_title").value
         },
         'callback': function(response) {
             var success = response.message;
