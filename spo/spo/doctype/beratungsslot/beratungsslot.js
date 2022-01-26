@@ -54,7 +54,7 @@ frappe.ui.form.on('Beratungsslot', {
                 frappe.route_options = {
                     "customer": frm.doc.customer,
                     "anfrage_typ": "Online-Beratung",
-                    "kontakt_via": "Telefon"
+                    "kontakt_via": "Video-Call"
                 }
                 frappe.set_route("List", "Anfrage");
             });
