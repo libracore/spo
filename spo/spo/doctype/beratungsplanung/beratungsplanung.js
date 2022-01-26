@@ -28,32 +28,17 @@ function fill_date(frm, options) {
         var dayOfWeek = date.getDay();      // 0 = Sunday, 1 = Monday, ... 6 = Saturday
         if ((dayOfWeek > 0) && (dayOfWeek < 6)) {
             // only process for weekdays
-            var topic = [];
             var user = [];
             var time = [];
             var create = false;
             // check if this day is required - Monday
             if (dayOfWeek === 1) {
-                if (options.med_mon_mor === 1) {
-                    topic.push("Medizin");
+                if (options.mon_mor === 1) {
                     user.push(options.advisor_mon_mor);
                     time.push("10+11");
                     create = true;
                 } 
-                if (options.med_mon_aft === 1) {
-                    topic.push("Medizin");
-                    user.push(options.advisor_mon_aft);
-                    time.push("14+15");
-                    create = true;
-                }
-                if (options.dent_mon_mor === 1) {
-                    topic.push("Zahnmedizin");
-                    user.push(options.advisor_mon_mor);
-                    time.push("10+11");
-                    create = true;
-                } 
-                if (options.dent_mon_aft === 1) {
-                    topic.push("Zahnmedizin");
+                if (options.mon_aft === 1) {
                     user.push(options.advisor_mon_aft);
                     time.push("14+15");
                     create = true;
@@ -61,26 +46,12 @@ function fill_date(frm, options) {
             }
             //Tuesday
             if (dayOfWeek === 2) {
-                if (options.med_tue_mor === 1) {
-                    topic.push("Medizin");
+                if (options.tue_mor === 1) {
                     user.push(options.advisor_tue_mor);
                     time.push("10+11");
                     create = true;
                 } 
-                if (options.med_tue_aft === 1) {
-                    topic.push("Medizin");
-                    user.push(options.advisor_tue_aft);
-                    time.push("14+15");
-                    create = true;
-                }
-                if (options.dent_tue_mor === 1) {
-                    topic.push("Zahnmedizin");
-                    user.push(options.advisor_tue_mor);
-                    time.push("10+11");
-                    create = true;
-                }
-                if (options.dent_tue_aft === 1) {
-                    topic.push("Zahnmedizin");
+                if (options.tue_aft === 1) {
                     user.push(options.advisor_tue_aft);
                     time.push("14+15");
                     create = true;
@@ -88,26 +59,12 @@ function fill_date(frm, options) {
             }
             //Wednesday
             if (dayOfWeek === 3) {
-                if (options.med_wed_mor === 1) {
-                    topic.push("Medizin");
+                if (options.wed_mor === 1) {
                     user.push(options.advisor_wed_mor);
                     time.push("10+11");
                     create = true;
                 }
-                if (options.med_wed_aft === 1) {
-                    topic.push("Medizin");
-                    user.push(options.advisor_wed_aft);
-                    time.push("14+15");
-                    create = true;
-                }
-                if (options.dent_wed_mor === 1) {
-                    topic.push("Zahnmedizin");
-                    user.push(options.advisor_wed_mor);
-                    time.push("10+11");
-                    create = true;
-                }
-                if (options.dent_wed_aft === 1) {
-                    topic.push("Zahnmedizin");
+                if (options.wed_aft === 1) {
                     user.push(options.advisor_wed_aft);
                     time.push("14+15");
                     create = true;
@@ -115,26 +72,12 @@ function fill_date(frm, options) {
             }
             //Thursday
             if (dayOfWeek === 4) {
-                if (options.med_thu_mor === 1) {
-                    topic.push("Medizin");
+                if (options.thu_mor === 1) {
                     user.push(options.advisor_thu_mor);
                     time.push("10+11");
                     create = true;
                 }
-                if (options.med_thu_aft === 1) {
-                    topic.push("Medizin");
-                    user.push(options.advisor_thu_aft);
-                    time.push("14+15");
-                    create = true;
-                }
-                if (options.dent_thu_mor === 1) {
-                    topic.push("Zahnmedizin");
-                    user.push(options.advisor_thu_mor);
-                    time.push("10+11");
-                    create = true;
-                }
-                if (options.dent_thu_aft === 1) {
-                    topic.push("Zahnmedizin");
+                if (options.thu_aft === 1) {
                     user.push(options.advisor_thu_aft);
                     time.push("14+15");
                     create = true;
@@ -142,26 +85,12 @@ function fill_date(frm, options) {
             }
             //Friday
             if (dayOfWeek === 5) {
-                if (options.med_fri_mor === 1) {
-                    topic.push("Medizin");
+                if (options.fri_mor === 1) {
                     user.push(options.advisor_fri_mor);
                     time.push("10+11");
                     create = true;
                 }
-                if (options.med_fri_aft === 1) {
-                    topic.push("Medizin");
-                    user.push(options.advisor_fri_aft);
-                    time.push("14+15");
-                    create = true;
-                }
-                if (options.dent_fri_mor === 1) {
-                    topic.push("Zahnmedizin");
-                    user.push(options.advisor_fri_mor);
-                    time.push("10+11");
-                    create = true;
-                }
-                if (options.dent_fri_aft === 1) {
-                    topic.push("Zahnmedizin");
+                if (options.fri_aft === 1) {
                     user.push(options.advisor_fri_aft);
                     time.push("14+15");
                     create = true;
@@ -169,14 +98,14 @@ function fill_date(frm, options) {
             }
             // create
             if (create) {
-                for (var k = 0; k < topic.length; k++) {
+                for (var k = 0; k < user.length; k++) {
                     var child = cur_frm.add_child('sloteingaben');
                     // set weekday corresponding to options of Sloteingabe Details
                     var weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
                     
                     frappe.model.set_value(child.doctype, child.name, 'weekday', weekdays[dayOfWeek]);
                     frappe.model.set_value(child.doctype, child.name, 'date', date.toISOString().slice(0, 10));
-                    frappe.model.set_value(child.doctype, child.name, 'objective', topic[k]);
+                    frappe.model.set_value(child.doctype, child.name, 'objective', options.topic);
                     frappe.model.set_value(child.doctype, child.name, 'time', time[k]);
                     frappe.model.set_value(child.doctype, child.name, 'user', user[k]);
                 }
@@ -190,37 +119,29 @@ function slot_dialog(frm) {
     var dialog = new frappe.ui.Dialog({
       'title': __('Welche Slots möchten Sie erstellen?'),
       'fields': [
-        {'fieldname': 'med_mon_mor', 'fieldtype': 'Check', 'label': __('Medizin Mo Vormittag')},
-        {'fieldname': 'med_mon_aft', 'fieldtype': 'Check', 'label': __('Medizin Mo Nachmittag')},
-        {'fieldname': 'med_tue_mor', 'fieldtype': 'Check', 'label': __('Medizin Di Vormittag')},
-        {'fieldname': 'med_tue_aft', 'fieldtype': 'Check', 'label': __('Medizin Di Nachmittag')},
-        {'fieldname': 'med_wed_mor', 'fieldtype': 'Check', 'label': __('Medizin Mi Vormittag')},
-        {'fieldname': 'med_wed_aft', 'fieldtype': 'Check', 'label': __('Medizin Mi Nachmittag')},
-        {'fieldname': 'med_thu_mor', 'fieldtype': 'Check', 'label': __('Medizin Do Vormittag')},
-        {'fieldname': 'med_thu_aft', 'fieldtype': 'Check', 'label': __('Medizin Do Nachmittag')},
-        {'fieldname': 'med_fri_mor', 'fieldtype': 'Check', 'label': __('Medizin Fr Vormittag')},
-        {'fieldname': 'med_fri_aft', 'fieldtype': 'Check', 'label': __('Medizin Fr Nachmittag')},
+        {'fieldname': 'topic', 'fieldtype': 'Link', 'label': __('Thema'), 'options': 'Beratungsthema', 'reqd': 1},
+        {'fieldname': 'section_main', 'fieldtype': 'Section Break'},
+        {'fieldname': 'mon_mor', 'fieldtype': 'Check', 'label': __('Mo Vormittag')},
+        {'fieldname': 'mon_aft', 'fieldtype': 'Check', 'label': __('Mo Nachmittag')},
+        {'fieldname': 'tue_mor', 'fieldtype': 'Check', 'label': __('Di Vormittag')},
+        {'fieldname': 'tue_aft', 'fieldtype': 'Check', 'label': __('Di Nachmittag')},
+        {'fieldname': 'wed_mor', 'fieldtype': 'Check', 'label': __('Mi Vormittag')},
+        {'fieldname': 'wed_aft', 'fieldtype': 'Check', 'label': __('Mi Nachmittag')},
+        {'fieldname': 'thu_mor', 'fieldtype': 'Check', 'label': __('Do Vormittag')},
+        {'fieldname': 'thu_aft', 'fieldtype': 'Check', 'label': __('Do Nachmittag')},
+        {'fieldname': 'fri_mor', 'fieldtype': 'Check', 'label': __('Fr Vormittag')},
+        {'fieldname': 'fri_aft', 'fieldtype': 'Check', 'label': __('Fr Nachmittag')},
         {'fieldname': 'col1', 'fieldtype': 'Column Break'},
-        {'fieldname': 'dent_mon_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Mo Vormittag')},
-        {'fieldname': 'dent_mon_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Mo Nachmittag')},
-        {'fieldname': 'dent_tue_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Di Vormittag')},
-        {'fieldname': 'dent_tue_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Di Nachmittag')},
-        {'fieldname': 'dent_wed_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Mi Vormittag')},
-        {'fieldname': 'dent_wed_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Mi Nachmittag')},
-        {'fieldname': 'dent_thu_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Do Vormittag')},
-        {'fieldname': 'dent_thu_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Do Nachmittag')},
-        {'fieldname': 'dent_fri_mor', 'fieldtype': 'Check', 'label': __('Zahnmedizin Fr Vormittag')},
-        {'fieldname': 'dent_fri_aft', 'fieldtype': 'Check', 'label': __('Zahnmedizin Fr Nachmittag')},
-        {'fieldname': 'col2', 'fieldtype': 'Column Break'},
         {'fieldname': 'advisor_mon_mor', 'fieldtype': 'Link', 'label': __('Berater/in Mo Vormittag'), 'options': 'Beraterzuweisung'},
-        {'fieldname': 'advisor_mon_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mo Nachmittag'), 'options': 'Beraterzuweisung'},
         {'fieldname': 'advisor_tue_mor', 'fieldtype': 'Link', 'label': __('Berater/in Di Vormittag'), 'options': 'Beraterzuweisung'},
-        {'fieldname': 'advisor_tue_aft', 'fieldtype': 'Link', 'label': __('Berater/in Di Nachmittag'), 'options': 'Beraterzuweisung'},
         {'fieldname': 'advisor_wed_mor', 'fieldtype': 'Link', 'label': __('Berater/in Mi Vormittag'), 'options': 'Beraterzuweisung'},
-        {'fieldname': 'advisor_wed_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mi Nachmittag'), 'options': 'Beraterzuweisung'},
         {'fieldname': 'advisor_thu_mor', 'fieldtype': 'Link', 'label': __('Berater/in Do Vormittag'), 'options': 'Beraterzuweisung'},
-        {'fieldname': 'advisor_thu_aft', 'fieldtype': 'Link', 'label': __('Berater/in Do Nachmittag'), 'options': 'Beraterzuweisung'},
         {'fieldname': 'advisor_fri_mor', 'fieldtype': 'Link', 'label': __('Berater/in Fr Vormittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'col2', 'fieldtype': 'Column Break'},
+        {'fieldname': 'advisor_mon_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mo Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_tue_aft', 'fieldtype': 'Link', 'label': __('Berater/in Di Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_wed_aft', 'fieldtype': 'Link', 'label': __('Berater/in Mi Nachmittag'), 'options': 'Beraterzuweisung'},
+        {'fieldname': 'advisor_thu_aft', 'fieldtype': 'Link', 'label': __('Berater/in Do Nachmittag'), 'options': 'Beraterzuweisung'},
         {'fieldname': 'advisor_fri_aft', 'fieldtype': 'Link', 'label': __('Berater/in Fr Nachmittag'), 'options': 'Beraterzuweisung'}
       ],
       'primary_action': function() {

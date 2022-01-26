@@ -26,10 +26,10 @@
   },
   {
    "fieldname": "objective",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Thema",
-   "options": "Medizin\nZahnmedizin"
+   "options": "Beratungsthema"
   },
   {
    "description": "Eingeben als H1+H2 (Stunde, z.B. 10+11)",
@@ -47,7 +47,7 @@
   }
  ],
  "istable": 1,
- "modified": "2021-12-27 13:20:39.966198",
+ "modified": "2022-01-26 20:00:19.065390",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsplanung Detail",

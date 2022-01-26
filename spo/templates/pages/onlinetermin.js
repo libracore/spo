@@ -7,6 +7,8 @@ function start() {
     document.getElementById("step6").style.display = "none";
     document.getElementById("step7").style.display = "none";
     document.getElementById("step10").style.display = "none";
+    // prepare topic
+    get_topics();
 }
 
 function is_member() {
@@ -138,12 +140,31 @@ function select_slot() {
     });
 }
 
+function get_topics() {
+    frappe.call({
+        'method': 'spo.spo.utils.onlinetermin.get_topics',
+        'callback': function(response) {
+            var topics = response.message || [];
+            
+            var topic_selector = document.getElementById("topic");
+            topic_selector.innerHTML = "";
+            topics.forEach(function (topic) {
+                var opt = document.createElement('option');
+                opt.value = topic;
+                opt.innerHTML = topic;
+                topic_selector.appendChild(opt);
+            });
+        }
+    });
+}
+
 // this function is called when a calender slot is selected
 function reserve_slot(id, title, start) {
     // hide calendar to prevent double-hits
     document.getElementById("calendar").style.display = "none";
     document.getElementById("calendar_wait").style.display = "block";
     
+    console.log("reserve slot...");
     // reserve slot
     frappe.call({
         'method': 'spo.spo.doctype.beratungsslot.beratungsslot.reserve_slot',
@@ -167,6 +188,7 @@ function reserve_slot(id, title, start) {
             var success = response.message;
             
             if (success) {
+                console.log("reserved");
                 document.getElementById("slot_id").value = id;
                 document.getElementById("slot_title").value = title;
                 document.getElementById("slot_start").value = start.toLocaleString("de-ch", {weekday: "long", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});   
@@ -196,6 +218,7 @@ function select_payment() {
 }
 
 function create_invoice() {
+    console.log("create invoice...");
     frappe.call({
         'method': 'spo.utils.onlinetermin.submit_request',
         'args': {

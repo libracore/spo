@@ -193,3 +193,11 @@ def create_payment(booking):
     beratungsslot = frappe.get_doc("Beratungsslot", booking)
     details = beratungsslot.create_payment()
     return details
+
+@frappe.whitelist(allow_guest=True)
+def get_topics():
+    topics = frappe.get_all("Beratunsgthema", fields=['name'])
+    topic_list = []
+    for t in topics:
+        topic_list.append(t['name'])
+    return topic_list

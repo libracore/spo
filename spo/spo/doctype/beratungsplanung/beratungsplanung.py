@@ -29,6 +29,6 @@ def create_slot(date, hour, subject, user):
         'user': user,
         'status': 'frei'
     })
-    frappe.log_error("{0}".format(new_slot.as_dict()))
+    #frappe.log_error("{0}".format(new_slot.as_dict()))
     new_slot.insert()
     return
