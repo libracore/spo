@@ -33,7 +33,7 @@ class Anfrage(Document):
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
     query = """SELECT * FROM `tabMitgliedschaft` WHERE `mitglied` = '{mitgliedernummer}' AND `ende` >= CURDATE()""".format(mitgliedernummer=mitgliedernummer)
     return frappe.db.sql(query, as_dict=True)
-	
+
 @frappe.whitelist()
 def create_new_mitglied(vorname='', nachname='', strasse='', ort='', plz='', email='', telefon='', mobile='', geburtsdatum='', kanton='', adress_zusatz=''):
     mitglied = frappe.get_doc({
@@ -410,7 +410,7 @@ def check_anfrage_daten_vs_stamm_daten(vorname, nachname, geburtsdatum, kanton, 
             break
 
     return {'abweichungen': abweichungen, 'assign_to': assign_to}
-	
+
 @frappe.whitelist()
 def assign_mitglied_anlage():
     assign_to = frappe.get_doc("Einstellungen").auto_assign
@@ -611,7 +611,7 @@ def get_angehoerige_data(ang, adresse, kontakt):
     html += '</p></div></div>'
 
     return html
-	
+
 @frappe.whitelist()
 def get_rsv_data(rsv, adresse, kontakt):
     rsv = frappe.get_doc("Customer", rsv)

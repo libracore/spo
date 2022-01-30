@@ -467,6 +467,7 @@
   },
   {
    "fetch_from": "patienten_adresse.kanton",
+   "fetch_if_empty": 1,
    "fieldname": "patient_kanton",
    "fieldtype": "Select",
    "label": "Kanton",
@@ -617,6 +618,7 @@
   },
   {
    "fetch_from": "ang_adresse.kanton",
+   "fetch_if_empty": 1,
    "fieldname": "ang_kanton",
    "fieldtype": "Select",
    "label": "Kanton (Ang.)",
@@ -873,8 +875,8 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2022-01-19 20:55:29.216021",
- "modified_by": "Administrator",
+ "modified": "2022-01-30 20:58:16.103847",
+ "modified_by": "joel.mesmer@libracore.com",
  "module": "SPO",
  "name": "Anfrage",
  "owner": "Administrator",
