@@ -23,8 +23,7 @@ class Beratungsslot(Document):
                 self.save(ignore_permissions=True)
             except Exception as err:
                 # probably customer has been disabled (this prevents saving)
-                self.customer = None
-                self.save(ignore_permissions=True)
+                frappe.log_error( "Unable to update {0} because {1}".format(self.name, err), "Payrexx fetch status error")
         return
     
     def create_payment(self):
