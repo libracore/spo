@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2021, libracore and contributors
+# Copyright (c) 2021-2022, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -19,7 +19,12 @@ class Beratungsslot(Document):
             if self.payrexx_status == "confirmed":
                 self.status = "bezahlt"
                 self.verify_payment()
-            self.save(ignore_permissions=True)
+            try:
+                self.save(ignore_permissions=True)
+            except Exception as err:
+                # probably customer has been disabled (this prevents saving)
+                self.customer = None
+                self.save(ignore_permissions=True)
         return
     
     def create_payment(self):
