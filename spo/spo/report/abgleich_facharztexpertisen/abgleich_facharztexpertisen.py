@@ -45,7 +45,7 @@ def execute(filters=None):
                 `grand_total`, `posting_date`, `name` FROM `tabPurchase Invoice` 
             WHERE 
                 `mandat` = '{mandat}' 
-                AND `docstatus` != '2' 
+                AND `docstatus` != 2
                 AND `posting_date` >= '{abgleich_ab}' 
                 AND `posting_date` <= '{abgleich_bis}'
             LIMIT 1""".format(mandat=mandat[0], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis), 
@@ -63,17 +63,20 @@ def execute(filters=None):
                 `tabSales Invoice`.`posting_date`, 
                 `tabSales Invoice`.`status`,
                 SUM(`tabSales Invoice Item`.`amount`) AS `amount`,
-                `tabPayment Entry Reference`.`modified`
+                (SELECT
+                    MIN(`tabPayment Entry Reference`.`modified`)
+                 FROM `tabPayment Entry Reference`
+                 WHERE 
+                     `tabPayment Entry Reference`.`parentfield` = 'references' 
+                     AND `tabPayment Entry Reference`.`parenttype` = 'Payment Entry' 
+                     AND `tabPayment Entry Reference`.`reference_name` = `tabSales Invoice`.`name`
+                     AND `tabPayment Entry Reference`.`docstatus` = 1
+                ) AS `modified`
             FROM `tabSales Invoice Item` 
             LEFT JOIN `tabSales Invoice` ON `tabSales Invoice`.`name` = `tabSales Invoice Item`.`parent`
-            LEFT JOIN `tabPayment Entry Reference` ON (
-                `tabPayment Entry Reference`.`parentfield` = 'references' 
-                AND `tabPayment Entry Reference`.`parenttype` = 'Payment Entry' 
-                AND `tabPayment Entry Reference`.`reference_name` = `tabSales Invoice`.`name`
-                AND `tabPayment Entry Reference`.`docstatus` = 1)
             WHERE 
                 `tabSales Invoice`.`mandat` = '{mandat}' 
-                AND `tabSales Invoice`.`docstatus` != '2' 
+                AND `tabSales Invoice`.`docstatus` != 2
                 AND `tabSales Invoice`.`posting_date` >= '{abgleich_ab}'
                 AND `tabSales Invoice`.`posting_date` <= '{abgleich_bis}'
                 AND `tabSales Invoice Item`.`item_code` = 'Mandatsverrechnung (exkl. MwSt)'
