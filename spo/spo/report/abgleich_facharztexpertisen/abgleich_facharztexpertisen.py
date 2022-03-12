@@ -48,7 +48,7 @@ def execute(filters=None):
                 AND `docstatus` != '2' 
                 AND `posting_date` >= '{abgleich_ab}' 
                 AND `posting_date` <= '{abgleich_bis}'
-            LIMIT 1""".format(mandat=mandat[0], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis), 
+            LIMIT 1""".format(mandat=mandat['name'], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis), 
             as_dict=True)
         if len(pinv) > 0:
             row['pinv_name'] = pinv[0]['name']
@@ -78,7 +78,7 @@ def execute(filters=None):
                 AND `tabSales Invoice`.`posting_date` <= '{abgleich_bis}'
                 AND `tabSales Invoice Item`.`item_code` = 'Mandatsverrechnung (exkl. MwSt)'
             GROUP BY `tabSales Invoice`.`name`
-                """.format(mandat=mandat[0], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis),
+                """.format(mandat=mandat['name'], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis),
             as_dict=True)
         if len(sinv) > 0:
             row['sinv_name'] = sinv[0]['name']
