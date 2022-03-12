@@ -9,14 +9,14 @@ frappe.query_reports["Abgleich Facharztexpertisen"] = {
 			"label": __("Abgleich ab"),
 			"fieldtype": "Date",
 			"reqd": 1,
-			"default": new Date(2000, 0, 1)
+			"default": frappe.datetime.add_months(frappe.datetime.get_today(), -12)
 		},
         {
 			"fieldname": "abgleich_bis",
 			"label": __("Abgleich bis"),
 			"fieldtype": "Date",
 			"reqd": 1,
-			"default": new Date()
+			"default": frappe.datetime.get_today()
 		},
         {
 			"fieldname": "nur_offene",
