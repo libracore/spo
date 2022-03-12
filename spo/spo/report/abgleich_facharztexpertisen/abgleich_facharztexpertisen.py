@@ -1,4 +1,4 @@
-# Copyright (c) 2013, libracore and contributors
+# Copyright (c) 2016-2022, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -7,7 +7,8 @@ from frappe import _
 from frappe.utils.data import getdate
 
 def execute(filters=None):
-    columns, data = [
+    # prepare columns
+    columns = [
         {"label": _("Mandat"), "fieldname": "mandat", "fieldtype": "Link", "options": "Mandat"},
         {"label": _("PINV"), "fieldname": "pinv_name", "fieldtype": "Link", "options": "Purchase Invoice"},
         {"label": _("Eingangsrechnung (in CHF)"), "fieldname": "pinv", "fieldtype": "Float"},
@@ -18,55 +19,79 @@ def execute(filters=None):
         {"label": _("Rechnungsstatus"), "fieldname": "rechnungsstatus", "fieldtype": "Data", "width": "100"},
         {"label": _("Datum der Zahlung"), "fieldname": "payment_date", "fieldtype": "Date", "width": "100"},
         {"label": _("Saldo (in CHF)"), "fieldname": "saldo", "fieldtype": "Float"}
-    ], []
+    ]
     
-    abgleich_ab = filters.abgleich_ab
-    
-    mandate = frappe.db.sql("""SELECT `name` FROM `tabMandat`""", as_list=True)
+    # prepare data
+    data = []
+        
+    # loop through mandates
+    mandate = frappe.db.sql("""SELECT `name` FROM `tabMandat`""", as_dict=True)
     for mandat in mandate:
-        _data = []
-        _data.append(mandat[0])
+        row = {
+            'mandat': mandat['name'],
+            'pinv_name': None,
+            'pinv': 0.00,
+            'pinv_date': None,
+            'sinv_name': None,
+            'sinv': 0.00,
+            'sinv_date': None,
+            'saldo': 0.00
+        }
         pinv_amount = 0
         sinv_amount = 0
-        pinv = frappe.db.sql("""SELECT `grand_total`, `posting_date`, `name` FROM `tabPurchase Invoice` WHERE `mandat` = '{mandat}' AND `docstatus` != '2' AND `posting_date` >= '{abgleich_ab}' LIMIT 1""".format(mandat=mandat[0], abgleich_ab=abgleich_ab), as_dict=True)
+        # get purchase invoices
+        pinv = frappe.db.sql("""
+            SELECT 
+                `grand_total`, `posting_date`, `name` FROM `tabPurchase Invoice` 
+            WHERE 
+                `mandat` = '{mandat}' 
+                AND `docstatus` != '2' 
+                AND `posting_date` >= '{abgleich_ab}' 
+                AND `posting_date` <= '{abgleich_bis}'
+            LIMIT 1""".format(mandat=mandat[0], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis), 
+            as_dict=True)
         if len(pinv) > 0:
-            _data.append(pinv[0].name)
-            _data.append(pinv[0].grand_total)
-            _data.append(pinv[0].posting_date)
-            if pinv[0].grand_total:
-                pinv_amount = float(pinv[0].grand_total)
-        else:
-            _data.append("")
-            _data.append(0.00)
-            _data.append("")
-        sinv_query = """SELECT `name` FROM `tabSales Invoice` WHERE `mandat` = '{mandat}' AND `docstatus` != '2' AND `posting_date` >= '{abgleich_ab}'""".format(mandat=mandat[0], abgleich_ab=abgleich_ab)
-        sinv_date = frappe.db.sql("""SELECT `posting_date`, `status`, `name` FROM `tabSales Invoice` WHERE `mandat` = '{mandat}' AND `docstatus` != '2' AND `posting_date` >= '{abgleich_ab}' LIMIT 1""".format(mandat=mandat[0], abgleich_ab=abgleich_ab), as_dict=True)
-        if len(sinv_date) > 0:
-            _data.append(sinv_date[0].name)
-            sinv = frappe.db.sql("""SELECT SUM(`amount`) FROM `tabSales Invoice Item` WHERE `parent` IN ({sinv_query}) AND `item_code` = 'Mandatsverrechnung (exkl. MwSt)'""".format(sinv_query=sinv_query), as_list=True)
-            if sinv[0][0]:
-                sinv_amount = float(sinv[0][0])
-                _data.append(sinv[0][0])
-            else:
-                _data.append(0.00)
-            _data.append(sinv_date[0].posting_date)
-            _data.append(sinv_date[0].status)
-            if sinv_date[0].status == 'Paid':
-                payment_date = frappe.db.sql("""SELECT `modified` FROM `tabPayment Entry Reference` WHERE `parentfield` = 'references' AND `parenttype` = 'Payment Entry' AND `reference_name` IN ({sinv_query}) LIMIT 1""".format(sinv_query=sinv_query), as_list=True)
-                if len(payment_date) > 0:
-                    _data.append(getdate(payment_date[0][0]))
-                else:
-                    _data.append("")
-            else:
-                _data.append("")
-        else:
-            _data.append("")
-            _data.append(0.00)
-            _data.append("")
-            _data.append("")
-            _data.append("")
+            row['pinv_name'] = pinv[0]['name']
+            row['pinv'] = pinv[0]['grand_total']
+            row['pinv_date'] = pinv[0]['posting_date']
+            if pinv[0]['grand_total']:
+                pinv_amount = float(pinv[0]['grand_total'])
+        # get sales invoices
+        sinv = frappe.db.sql("""
+            SELECT 
+                `tabSales Invoice`.`name`, 
+                `tabSales Invoice`.`posting_date`, 
+                `tabSales Invoice`.`status`,
+                SUM(`tabSales Invoice Item`.`amount`) AS `amount`,
+                `tabPayment Entry Reference`.`modified`
+            FROM `tabSales Invoice Item` 
+            LEFT JOIN `tabSales Invoice` ON `tabSales Invoice`.`name` = `tabSales Invoice Item`.`parent`
+            LEFT JOIN `tabPayment Entry Reference` ON (
+                `tabPayment Entry Reference`.`parentfield` = 'references' 
+                AND `tabPayment Entry Reference`.`parenttype` = 'Payment Entry' 
+                AND `tabPayment Entry Reference`.`reference_name` = `tabSales Invoice`.`name`
+                AND `tabPayment Entry Reference`.`docstatus` = 1)
+            WHERE 
+                `tabSales Invoice`.`mandat` = '{mandat}' 
+                AND `tabSales Invoice`.`docstatus` != '2' 
+                AND `tabSales Invoice`.`posting_date` >= '{abgleich_ab}'
+                AND `tabSales Invoice`.`posting_date` <= '{abgleich_bis}'
+                AND `tabSales Invoice Item`.`item_code` = 'Mandatsverrechnung (exkl. MwSt)'
+            GROUP BY `tabSales Invoice`.`name`
+                """.format(mandat=mandat[0], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis),
+            as_dict=True)
+        if len(sinv) > 0:
+            row['sinv_name'] = sinv[0]['name']
+            if sinv[0]['amount']:
+                sinv_amount = float(sinv[0]['amount'])
+                row['sinv'] = sinv_amount
+            row['sinv_date'] = sinv[0]['posting_date']
+            row['rechnungsstatus'] = sinv[0]['status']
+            row['payment_date'] = sinv[0]['modified']
+
         saldo = 0 - pinv_amount + sinv_amount
-        _data.append(saldo)
-        data.append(_data)
+        row['saldo'] = saldo
+        if filters.nur_offene == 0 or (filters.nur_offene == 1 and saldo != 0):
+            data.append(row)
         
     return columns, data
