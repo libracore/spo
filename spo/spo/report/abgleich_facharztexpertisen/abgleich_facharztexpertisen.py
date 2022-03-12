@@ -94,7 +94,10 @@ def execute(filters=None):
 
         saldo = 0 - pinv_amount + sinv_amount
         row['saldo'] = saldo
-        if filters.nur_offene == 0 or (filters.nur_offene == 1 and saldo != 0):
+        if saldo == 0 and filters.nur_offene == 1:
+            #skip
+            pass
+        else:
             data.append(row)
         
     return columns, data
