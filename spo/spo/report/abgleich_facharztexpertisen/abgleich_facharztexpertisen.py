@@ -43,7 +43,7 @@ def execute(filters=None):
         pinv = frappe.db.sql("""
             SELECT 
                 SUM(`grand_total`) AS `grand_total`, 
-                MIN(`posting_date`), 
+                MIN(`posting_date`) AS `posting_date`, 
                 `name` 
             FROM `tabPurchase Invoice` 
             WHERE 
