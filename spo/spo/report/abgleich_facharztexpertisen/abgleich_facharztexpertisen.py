@@ -42,13 +42,16 @@ def execute(filters=None):
         # get purchase invoices
         pinv = frappe.db.sql("""
             SELECT 
-                `grand_total`, `posting_date`, `name` FROM `tabPurchase Invoice` 
+                SUM(`grand_total`) AS `grand_total`, 
+                MIN(`posting_date`), 
+                `name` 
+            FROM `tabPurchase Invoice` 
             WHERE 
                 `mandat` = '{mandat}' 
                 AND `docstatus` != 2
                 AND `posting_date` >= '{abgleich_ab}' 
                 AND `posting_date` <= '{abgleich_bis}'
-            LIMIT 1""".format(mandat=mandat['name'], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis), 
+            ;""".format(mandat=mandat['name'], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis), 
             as_dict=True)
         if len(pinv) > 0:
             row['pinv_name'] = pinv[0]['name']
