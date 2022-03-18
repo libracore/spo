@@ -63,7 +63,7 @@ def execute(filters=None):
         sinv = frappe.db.sql("""
             SELECT 
                 `tabSales Invoice`.`name`, 
-                `tabSales Invoice`.`posting_date`, 
+                MIN(`tabSales Invoice`.`posting_date`) AS `posting_date`, 
                 `tabSales Invoice`.`status`,
                 SUM(`tabSales Invoice Item`.`amount`) AS `amount`,
                 (SELECT
@@ -83,8 +83,7 @@ def execute(filters=None):
                 AND `tabSales Invoice`.`posting_date` >= '{abgleich_ab}'
                 AND `tabSales Invoice`.`posting_date` <= '{abgleich_bis}'
                 AND `tabSales Invoice Item`.`item_code` = 'Mandatsverrechnung (exkl. MwSt)'
-            GROUP BY `tabSales Invoice`.`name`
-                """.format(mandat=mandat['name'], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis),
+            ;    """.format(mandat=mandat['name'], abgleich_ab=filters.abgleich_ab, abgleich_bis=filters.abgleich_bis),
             as_dict=True)
         if len(sinv) > 0:
             row['sinv_name'] = sinv[0]['name']
