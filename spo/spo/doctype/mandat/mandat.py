@@ -22,7 +22,7 @@ class Mandat(Document):
         if self.is_new() != True:
             if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
                 self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
-	
+
 def get_default_time(doctype):
     time = 0
     defaults = frappe.get_doc("Einstellungen").ts_defaults
@@ -31,7 +31,7 @@ def get_default_time(doctype):
             time = default.default_hours
             break
     return time
-	
+
 @frappe.whitelist()
 def get_dashboard_data(mitglied='', anfrage='', mandat=''):
     # Zeitbalken
@@ -91,7 +91,7 @@ def get_dashboard_data(mitglied='', anfrage='', mandat=''):
             "callcenter_limit": callcenter_limit,
             "callcenter_verwendet": callcenter_verwendet
         }
-		
+
 @frappe.whitelist()
 def create_zeiten_uebersicht(dt, name):
     alle_zeiten = get_zeiten_uebersicht(dt, name)
@@ -105,7 +105,7 @@ def create_zeiten_uebersicht(dt, name):
         return html
     else:
         return False
-		
+
 @frappe.whitelist()
 def share_mandat_and_related_docs(mandat, user_to_add):
     related_docs = ['Vollmacht', 'Anforderung Patientendossier', 'Medizinischer Bericht', 'Triage', 'Abschlussbericht', 'Freies Schreiben', 'SPO Anhang']
@@ -143,7 +143,7 @@ def share_mandat_and_related_docs(mandat, user_to_add):
                             
     frappe.db.commit()
     return 'ok'
-	
+
 @frappe.whitelist()
 def remove_share_of_mandat_and_related_docs(mandat, user_to_remove):
     related_docs = ['Vollmacht', 'Anforderung Patientendossier', 'Medizinischer Bericht', 'Triage', 'Abschlussbericht', 'Freies Schreiben', 'SPO Anhang']
@@ -198,7 +198,7 @@ def get_facharzt_table(customer=None, type=None):
         return results
     else:
         return False
-		
+
 @frappe.whitelist()
 def create_new_facharzt_bericht(mandat, facharzt):
     facharzt_bericht = frappe.get_doc({
@@ -208,3 +208,42 @@ def create_new_facharzt_bericht(mandat, facharzt):
     })
     facharzt_bericht.insert(ignore_permissions=True)
     return facharzt_bericht.name
+
+@frappe.whitelist()
+def erstelle_mandats_revision(mandat):
+    mandat = frappe.get_doc("Mandat", mandat)
+    
+    new_mandat = frappe.copy_doc(mandat)
+    new_mandat.docstatus = 0
+    if not mandat.ursprungs_mandat:
+        new_mandat.ursprungs_mandat = mandat.name
+        new_name = mandat.name + "-1"
+    else:
+        if len(mandat.ursprungs_mandat.split("-")) > 3:
+            revision = str(int(mandat.ursprungs_mandat.split("-")[3]) + 2)
+        else:
+            revision = '2'
+        new_mandat.ursprungs_mandat = mandat.name
+        new_name = mandat.name.split("-")[0] + "-" + mandat.name.split("-")[1] + "-" + mandat.name.split("-")[2] + "-" + revision
+    new_mandat.anfragen = ''
+    new_mandat.insert()
+    
+    frappe.rename_doc('Mandat', new_mandat.name, new_name)
+    copy_attachments_from_mandat(mandat.name, new_name)
+    
+    return new_name
+
+def copy_attachments_from_mandat(mandat, new_mandat):
+    from frappe.desk.form.load import get_attachments
+
+    # loop through attachments
+    for attach_item in get_attachments('Mandat', mandat):
+        # save attachments to new doc
+        _file = frappe.get_doc({
+            "doctype": "File",
+            "file_url": attach_item.file_url,
+            "file_name": attach_item.file_name,
+            "attached_to_name": new_mandat,
+            "attached_to_doctype": 'Mandat',
+            "folder": "Home/Attachments"})
+        _file.save()

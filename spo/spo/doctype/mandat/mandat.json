@@ -1,4 +1,5 @@
 {
+ "allow_rename": 1,
  "autoname": "format:MAN-{YYYY}-{######}",
  "creation": "2019-07-31 15:24:46.186043",
  "doctype": "DocType",
@@ -45,6 +46,7 @@
   "fold_referenzen",
   "section_allg_referenzen",
   "anfragen",
+  "ursprungs_mandat",
   "kunde_html",
   "ang_html",
   "rsv_html",
@@ -461,11 +463,18 @@
    "fieldname": "facharzthonorar",
    "fieldtype": "Currency",
    "label": "Facharzthonorar"
+  },
+  {
+   "fieldname": "ursprungs_mandat",
+   "fieldtype": "Link",
+   "label": "Ursprungs Mandat",
+   "options": "Mandat",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2021-03-04 08:49:43.585073",
+ "modified": "2022-03-23 10:04:50.854220",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
