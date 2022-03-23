@@ -92,6 +92,7 @@ function select_option_from_nonmember() {
     var street = document.getElementById("inputStreet").value;
     var zip = document.getElementById("inputZIP").value;
     var city = document.getElementById("inputCity").value;
+    var birthdate = document.getElementById("inputBirthdate").value;
     if (!firstname) {
         document.getElementById("inputFirstname").style.border = "1px solid red;"
         document.getElementById("inputFirstname").focus();
@@ -113,6 +114,9 @@ function select_option_from_nonmember() {
     } else if (!city) {
         document.getElementById("inputCity").style.border = "1px solid red;"
         document.getElementById("inputCity").focus();
+    } else if (!birthdate) {
+        document.getElementById("inputBirthdate").style.border = "1px solid red;"
+        document.getElementById("inputBirthdate").focus();
     } else {
     document.getElementById("step2").style.display = "none";
     document.getElementById("step3").style.display = "block";
