@@ -200,7 +200,7 @@
   },
   {
    "fetch_from": "user.user",
-   "fetch_if_empty": 1,
+   "fetch_if_empty": 0,
    "fieldname": "advisor_email",
    "fieldtype": "Link",
    "label": "Berater Email",
@@ -218,7 +218,7 @@
    "label": "Salutation"
   }
  ],
- "modified": "2022-01-13 15:00:21.405593",
+ "modified": "2022-04-06 17:04:21.405593",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
