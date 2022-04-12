@@ -196,7 +196,8 @@
   {
    "fieldname": "text",
    "fieldtype": "Small Text",
-   "label": "Notes"
+   "label": "Notes",
+   "no_copy": 1
   },
   {
    "fetch_from": "user.user",
@@ -210,15 +211,17 @@
   {
    "fieldname": "geburtsdatum",
    "fieldtype": "Date",
-   "label": "Geburtsdatum"
+   "label": "Geburtsdatum",
+   "no_copy": 1
   },
   {
    "fieldname": "salutation_title",
    "fieldtype": "Data",
-   "label": "Salutation"
+   "label": "Salutation",
+   "no_copy": 1
   }
  ],
- "modified": "2022-04-06 17:04:21.405593",
+ "modified": "2022-04-12 12:08:21.405593",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
