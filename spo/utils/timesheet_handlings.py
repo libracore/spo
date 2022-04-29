@@ -117,7 +117,7 @@ def get_default_time(doctype):
     return time
 
 @frappe.whitelist()
-def get_total_ts_time(doctype, reference):
+def get_total_ts_time(doctype, reference, nicht_verrechnen_filter=False):
     if doctype != 'Mandat':
         time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `spo_dokument` = '{doctype}' AND `spo_referenz` = '{reference}' AND `parent` IN (
                             SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(doctype=doctype, reference=reference), as_list=True)[0][0] or 0)
@@ -129,8 +129,12 @@ def get_total_ts_time(doctype, reference):
             referenz_anfrage = " OR `spo_referenz` = '{referenz_anfrage}'".format(referenz_anfrage=referenz_anfrage)
         else:
             referenz_anfrage = ''
+        if nicht_verrechnen_filter:
+            nicht_verrechnen_filter = ' AND `nicht_verrechnen` = 1'
+        else:
+            nicht_verrechnen_filter = ''
         time = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE
-                                    `spo_referenz` = '{reference}'
+                                    (`spo_referenz` = '{reference}'
                                     OR `spo_referenz` IN (
                                         SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{reference}')
                                     OR `spo_referenz` IN (
@@ -140,7 +144,7 @@ def get_total_ts_time(doctype, reference):
                                     OR `spo_referenz` IN (
                                         SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{reference}')
                                     OR `spo_referenz` IN (
-                                        SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{reference}'){referenz_anfrage}""".format(reference=reference, referenz_anfrage=referenz_anfrage), as_list=True)[0][0] or 0)
+                                        SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{reference}'){referenz_anfrage}){nicht_verrechnen_filter}""".format(reference=reference, referenz_anfrage=referenz_anfrage, nicht_verrechnen_filter=nicht_verrechnen_filter), as_list=True)[0][0] or 0)
         return time
 
 def overwrite_ts_validation():
@@ -234,7 +238,8 @@ def get_zeiten_uebersicht(dt, name):
         else:
             referenz_anfrage = ''
         alle_zeiten = frappe.db.sql("""SELECT `parent`, `hours`, `from_time`, `spo_referenz`, `spo_dokument`, `spo_remark` FROM `tabTimesheet Detail` WHERE
-                                        `spo_referenz` = '{name}'
+                                        `docstatus` != 2
+                                        AND (`spo_referenz` = '{name}'
                                         OR `spo_referenz` IN (
                                             SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{name}')
                                         OR `spo_referenz` IN (
@@ -244,7 +249,7 @@ def get_zeiten_uebersicht(dt, name):
                                         OR `spo_referenz` IN (
                                             SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{name}')
                                         OR `spo_referenz` IN (
-                                            SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{name}'){referenz_anfrage} ORDER BY `from_time`, `spo_referenz`""".format(name=name, referenz_anfrage=referenz_anfrage), as_dict=True)
+                                            SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{name}'){referenz_anfrage}) ORDER BY `from_time`, `spo_referenz`""".format(name=name, referenz_anfrage=referenz_anfrage), as_dict=True)
         return alle_zeiten
 
 @frappe.whitelist()

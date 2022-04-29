@@ -22,6 +22,9 @@ class Mandat(Document):
         if self.is_new() != True:
             if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
                 self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
+                self.nicht_verrechnen_total = float(get_total_ts_time(self.doctype, self.name, nicht_verrechnen_filter=True) or 0)
+                self.timer_chf = float(get_total_ts_time(self.doctype, self.name) or 0) * self.stundensatz
+                self.nicht_verrechnen_total_chf = float(get_total_ts_time(self.doctype, self.name, nicht_verrechnen_filter=True) or 0) * self.stundensatz
 
 def get_default_time(doctype):
     time = 0
@@ -38,58 +41,61 @@ def get_dashboard_data(mitglied='', anfrage='', mandat=''):
     callcenter_limit = frappe.get_single("Einstellungen").limite_mandat_time
     callcenter_verwendet = 0.000
 
-    if not mitglied:
-        # zeit aus anfrage & mandat
-        try:
-            callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE (
-                                                        `nicht_verrechnen` != 1 AND
-                                                        (`spo_dokument` = 'Anfrage' AND `spo_referenz` = '{anfrage}')
-                                                        OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')
-                                                        OR (`spo_dokument` = 'Anforderung Patientendossier' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Medizinischer Bericht' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabMedizinischer Bericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Triage' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabTriage` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Vollmacht' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabVollmacht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Abschlussbericht' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabAbschlussbericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        ) AND `parent` IN (
-                                                            SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)""".format(anfrage=anfrage, mandat=mandat), as_list=True)[0][0])
-        except:
-            callcenter_verwendet = 0
-        callcenter_verwendet = callcenter_verwendet * 60
-    else:
-        # zeit aus anfrage & mandat zu mitglied
-        try:
-            callcenter_verwendet = float(frappe.db.sql("""SELECT SUM(`hours`)
-                                                        FROM `tabTimesheet Detail`
-                                                        WHERE
-                                                        `nicht_verrechnen` != 1 AND
-                                                        `parent` IN (SELECT `name` FROM `tabTimesheet` WHERE `docstatus` = 0 OR `docstatus` = 1)
-                                                        AND (
-                                                        (`spo_dokument` = 'Anfrage' AND `spo_referenz` IN (
-                                                            SELECT `name` FROM `tabAnfrage` WHERE `mitglied` = '{mitglied}'))
-                                                        OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')
-                                                        OR (`spo_dokument` = 'Anforderung Patientendossier' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Medizinischer Bericht' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabMedizinischer Bericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Triage' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabTriage` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Vollmacht' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabVollmacht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        OR (`spo_dokument` = 'Abschlussbericht' AND `spo_referenz` IN (
-                                                            SELECT `name`FROM `tabAbschlussbericht` WHERE `mandat` = '{mandat}' AND `docstatus` != 2))
-                                                        )""".format(anfrage=anfrage, mitglied=mitglied, mandat=mandat), as_list=True)[0][0])
-        except:
-            callcenter_verwendet = 0
-        callcenter_verwendet = callcenter_verwendet * 60
+    # ~ if not mitglied:
+    # zeit aus anfrage & mandat
+    try:
+        callcenter_verwendet = float(frappe.db.sql("""SELECT
+                                                        SUM(`hours`) FROM `tabTimesheet Detail`
+                                                    WHERE (
+                                                    (`spo_dokument` = 'Anfrage' AND `spo_referenz` = '{anfrage}')
+                                                    OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')
+                                                    OR (`spo_dokument` = 'Anforderung Patientendossier' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Medizinischer Bericht' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabMedizinischer Bericht` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Triage' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabTriage` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Vollmacht' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Abschlussbericht' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{mandat}'))
+                                                    )
+                                                    AND `parent` IN (
+                                                        SELECT `name` FROM `tabTimesheet` WHERE `docstatus` != 2)
+                                                    AND `nicht_verrechnen` != 1""".format(anfrage=anfrage, mandat=mandat), as_list=True)[0][0])
+    except:
+        callcenter_verwendet = 0
+    # ~ callcenter_verwendet = callcenter_verwendet * 60
+    
+    try:
+        nicht_verrechnen = float(frappe.db.sql("""SELECT
+                                                        SUM(`hours`) FROM `tabTimesheet Detail`
+                                                    WHERE (
+                                                    (`spo_dokument` = 'Anfrage' AND `spo_referenz` = '{anfrage}')
+                                                    OR (`spo_dokument` = 'Mandat' AND `spo_referenz` = '{mandat}')
+                                                    OR (`spo_dokument` = 'Anforderung Patientendossier' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabAnforderung Patientendossier` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Medizinischer Bericht' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabMedizinischer Bericht` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Triage' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabTriage` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Vollmacht' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabVollmacht` WHERE `mandat` = '{mandat}'))
+                                                    OR (`spo_dokument` = 'Abschlussbericht' AND `spo_referenz` IN (
+                                                        SELECT `name` FROM `tabAbschlussbericht` WHERE `mandat` = '{mandat}'))
+                                                    )
+                                                    AND `parent` IN (
+                                                        SELECT `name` FROM `tabTimesheet` WHERE `docstatus` != 2)
+                                                    AND `nicht_verrechnen` = 1""".format(anfrage=anfrage, mandat=mandat), as_list=True)[0][0])
+    except:
+        nicht_verrechnen = 0
+    # ~ nicht_verrechnen = nicht_verrechnen * 60
+    
         
     return {
             "callcenter_limit": callcenter_limit,
-            "callcenter_verwendet": callcenter_verwendet
+            "callcenter_verwendet": callcenter_verwendet,
+            "nicht_verrechnen": nicht_verrechnen
         }
 
 @frappe.whitelist()

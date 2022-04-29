@@ -278,31 +278,67 @@ function update_dashboard(frm) {
         "async": false,
         "callback": function(response) {
             var query = response.message;
+            
+            // Kostendach (Verwendet/Ausstehend)
             var max_aufwand = query.callcenter_limit;
             if (frm.doc.max_aufwand > 0) {
                 max_aufwand = frm.doc.max_aufwand;
             }
-            //Limits
+            
             var _colors = ['#d40000', '#00b000'];
             var aufwand_in_ch = query.callcenter_verwendet;
             if (aufwand_in_ch == 0) {
                 _colors = ['#00b000', '#d40000'];
             } else {
-                aufwand_in_ch = ((aufwand_in_ch / 60) * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
+                //~ aufwand_in_ch = ((aufwand_in_ch / 60) * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
+                aufwand_in_ch = (aufwand_in_ch * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
             }
+            
+            aufwand_in_ch = Math.round(aufwand_in_ch * 100) / 100;
+            var offene_chf = Math.round((max_aufwand - aufwand_in_ch) * 100) / 100
+
             let limit_chart = new frappe.Chart( "#limit", { // or DOM element
                 data: {
                 labels: [__("Verwendet"), __("Ausstehend")],
 
                 datasets: [
                     {
-                        values: [aufwand_in_ch, max_aufwand - aufwand_in_ch]
+                        values: [aufwand_in_ch, offene_chf]
                     }
                 ],
 
                 },
                 title: __("Auswertung Kostendach (in CHF)"),
                 type: 'percentage', // or 'bar', 'line', 'pie', 'percentage'
+                colors: _colors,
+                barOptions: {
+                    height: 20,          // default: 20
+                    depth: 2             // default: 2
+                }
+            });
+            
+            // Übersicht verrechenbar/nicht verrechnen
+            var _colors = ['#d40000', '#00b000'];
+            var verrechenbar = (query.callcenter_verwendet * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
+            var nicht_verrechnen = query.nicht_verrechnen * frm.doc.stundensatz;
+            verrechenbar = Math.round(verrechenbar * 100) / 100;
+            nicht_verrechnen = Math.round(nicht_verrechnen * 100) / 100;
+            if (verrechenbar == 0) {
+                _colors = ['#00b000', '#d40000'];
+            }
+            let verrechenbar_chart = new frappe.Chart( "#chart", { // or DOM element
+                data: {
+                labels: [__("Verrechenbar"), __("Nicht verrechnen")],
+
+                datasets: [
+                    {
+                        values: [verrechenbar, nicht_verrechnen]
+                    }
+                ],
+
+                },
+                title: __("Übersicht Verrechenbar vs. nicht verrechnen (in CHF)"),
+                type: 'pie', // or 'bar', 'line', 'pie', 'percentage'
                 colors: _colors,
                 barOptions: {
                     height: 20,          // default: 20

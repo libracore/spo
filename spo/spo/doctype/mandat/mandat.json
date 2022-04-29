@@ -36,6 +36,9 @@
   "section_zeiterfassung",
   "absprung_einstellungen",
   "timer",
+  "timer_chf",
+  "nicht_verrechnen_total",
+  "nicht_verrechnen_total_chf",
   "default_ts",
   "kostengutschsprache",
   "max_aufwand",
@@ -470,11 +473,29 @@
    "label": "Ursprungs Mandat",
    "options": "Mandat",
    "read_only": 1
+  },
+  {
+   "fieldname": "nicht_verrechnen_total",
+   "fieldtype": "Float",
+   "label": "Total verbuchte Zeit (in h) (nicht verrechnen)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "timer_chf",
+   "fieldtype": "Currency",
+   "label": "Total verbuchte Zeit (in CHF)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "nicht_verrechnen_total_chf",
+   "fieldtype": "Currency",
+   "label": "Total verbuchte Zeit (in CHF) (nicht verrechnen)",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2022-03-23 10:04:50.854220",
+ "modified": "2022-04-29 14:06:32.382498",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
