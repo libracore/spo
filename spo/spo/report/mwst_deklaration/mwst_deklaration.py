@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021, libracore and contributors
+# Copyright (c) 2020-2022, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -17,7 +17,7 @@ def get_columns():
     return [
         {"label": _("Beschreibung"), "fieldname": "description", "fieldtype": "Data", "width": 200},
         {"label": _("Konto"), "fieldname": "account", "fieldtype": "Data", "width": 150},
-        {"label": _("Betrag"), "fieldname": "amount", "fieldtype": "Data", "width": 150},
+        {"label": _("Betrag (brutto)"), "fieldname": "amount", "fieldtype": "Data", "width": 150},
         {"label": _("Steuer"), "fieldname": "tax", "fieldtype": "Data", "width": 150}
     ]
 
