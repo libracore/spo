@@ -318,13 +318,13 @@ function update_dashboard(frm) {
             });
             
             // Übersicht verrechenbar/nicht verrechnen
-            var _colors = ['#d40000', '#00b000'];
+            var _colors = ['#00b000', '#fa842b'];
             var verrechenbar = (query.callcenter_verwendet * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
             var nicht_verrechnen = query.nicht_verrechnen * frm.doc.stundensatz;
             verrechenbar = Math.round(verrechenbar * 100) / 100;
             nicht_verrechnen = Math.round(nicht_verrechnen * 100) / 100;
             if (verrechenbar == 0) {
-                _colors = ['#00b000', '#d40000'];
+                _colors = ['#00b000', '#fa842b'];
             }
             let verrechenbar_chart = new frappe.Chart( "#chart", { // or DOM element
                 data: {

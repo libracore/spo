@@ -25,6 +25,7 @@ class Mandat(Document):
                 self.nicht_verrechnen_total = float(get_total_ts_time(self.doctype, self.name, nicht_verrechnen_filter=True) or 0)
                 self.timer_chf = float(get_total_ts_time(self.doctype, self.name) or 0) * self.stundensatz
                 self.nicht_verrechnen_total_chf = float(get_total_ts_time(self.doctype, self.name, nicht_verrechnen_filter=True) or 0) * self.stundensatz
+                self.total_verrechenbar = self.timer - self.nicht_verrechnen_total
 
 def get_default_time(doctype):
     time = 0
