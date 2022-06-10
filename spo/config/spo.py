@@ -116,6 +116,14 @@ def get_data():
                     "is_query_report": True
                 },
                 {
+                    "type": "report",
+                    "name": "Demographie Mitglieder",
+                    "label": _("Demographie Mitglieder"),
+                    "description": _("Demographie Mitglieder"),
+                    "doctype": "Mitgliedschaft",
+                    "is_query_report": True
+                },
+                {
                     "type": "doctype",
                     "label": _("Customer Deactivation Log"),
                     "name": "Customer Deactivation Log",
