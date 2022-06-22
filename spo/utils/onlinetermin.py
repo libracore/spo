@@ -7,6 +7,20 @@ import frappe
 import time
 from spo.utils.payrexx import get_payment_status, create_payment
 
+
+@frappe.whitelist(allow_guest=True) 
+def get_active_partners():
+	sql_query = """
+		SELECT 
+		IF (`tabOmbudsstellen Partner`.`active` = 1, `tabOmbudsstellen Partner`.`name`, null) 
+		FROM `tabOmbudsstellen Partner`
+	"""
+	data = frappe.db.sql(sql_query, as_dict = True)
+	# ~ visitor_types = []
+	# ~ for d in data:
+		# ~ visitor_types.append(d['name'])
+	return data
+
 @frappe.whitelist(allow_guest=True)
 def check_membership(member, lastname):
     # check if requests to API are accepted (fail block on 100 hits per day)

@@ -21,6 +21,23 @@ function is_nonmember() {
     document.getElementById("step2").style.display = "block";
 }
 
+function is_partner() {
+    console.log("hey") 
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
 function start_over() {
     document.getElementById("step0").style.display = "block";
     document.getElementById("step1").style.display = "none";
@@ -287,7 +304,30 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     // process command line arguments
     get_arguments();
+    get_ombudsstelle();
 });
+
+function get_ombudsstelle() {
+	//var sample_data = [{title:"Gustsvo S", active: true},{title:"Joel F", active: false},{title:"Alejandra B", active: true},{title:"Badillo M", active: false},{title:"Nola S", active: false},{title:"Jose S", active: true}];
+	
+	frappe.call({
+		'method': 'spo.utils.onlinetermin.get_active_partners',
+		'callback': function (response) {
+			data = response.message;
+			
+			var links_box = document.getElementById("myDropdown");
+			data.forEach(res => {
+				//~ if (res.active == true) {
+					//~ links_box.innerHTML += `<a href="#home">${res.title}</a>`;
+				//~ }
+				console.log("res", res)
+			})
+		
+		}
+	})
+}
+
+
 
 function get_arguments() {
     var arguments = window.location.toString().split("?");
