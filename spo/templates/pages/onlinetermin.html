@@ -6,7 +6,11 @@
             <h2>Sind Sie bereits Mitglied der SPO?</h2>
             <p class="lead muted">Informieren sie sich <a href="https://www.spo.ch/unterstuetzung/#mitgliedschaft/" title="SPO Website-Link" target="_blank">hier</a> über die Mitgliedschaft.</p>
             <button class="btn btn-primary" onclick="is_member()"; style="margin-bottom: 20px;">Mitglied der SPO</button>
-            <button class="btn btn-secondary" onclick="is_nonmember();" style="margin-bottom: 20px;">Kein Mitglied der SPO</button>
+            <button class="btn btn-secondary" onclick="is_nonmember()"; style="margin-bottom: 20px;">Kein Mitglied der SPO</button>
+            <div class="dropdown">
+				<button class="dropbtn btn btn-secondary" onclick="open_dropdown()"; style="margin-bottom: 20px;">Ombudsstelle</button>
+				<ul id="myDropdown" class="dropdown-content"></ul>
+			</div>
     </div>
     <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
         <h2>Mitgliedschaft</h2>
@@ -246,6 +250,7 @@
 
 </div><!-- end of wizard container -->
 
+<input type="text" id="is_partner" hidden readonly>
 <input type="text" id="slot_id" hidden readonly>
 <input type="text" id="used_slots" value=99 hidden readonly>
 

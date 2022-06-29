@@ -34,7 +34,9 @@
   "payrexx_id",
   "payrexx_url",
   "column_payrexx",
-  "payrexx_status"
+  "payrexx_status",
+  "section_ombudsstellen",
+  "ombudsstelle"
  ],
  "fields": [
   {
@@ -201,7 +203,6 @@
   },
   {
    "fetch_from": "user.user",
-   "fetch_if_empty": 0,
    "fieldname": "advisor_email",
    "fieldtype": "Link",
    "label": "Berater Email",
@@ -219,9 +220,21 @@
    "fieldtype": "Data",
    "label": "Salutation",
    "no_copy": 1
+  },
+  {
+   "fieldname": "ombudsstelle",
+   "fieldtype": "Link",
+   "label": "Ombudsstelle",
+   "options": "Ombudsstellen Partner",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_ombudsstellen",
+   "fieldtype": "Section Break",
+   "label": "Ombudsstellen"
   }
  ],
- "modified": "2022-04-12 12:08:21.405593",
+ "modified": "2022-06-29 13:23:20.036032",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
