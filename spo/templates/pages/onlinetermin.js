@@ -21,6 +21,7 @@ function is_nonmember() {
     document.getElementById("step2").style.display = "block";
 }
 
+<<<<<<< HEAD
 function is_partner(partner) {
     document.getElementById("is_partner").value = partner;
 	
@@ -28,6 +29,10 @@ function is_partner(partner) {
 }
 
 function open_dropdown() {
+=======
+function is_partner() {
+    console.log("hey") 
+>>>>>>> a567c1c671856149fa345fc18b7f722a7f1c94bf
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
@@ -321,6 +326,7 @@ function get_ombudsstelle() {
 	frappe.call({
 		'method': 'spo.utils.onlinetermin.get_active_partners',
 		'callback': function (response) {
+<<<<<<< HEAD
 			var data = response.message;
 			
 			var partners_list = document.getElementById("myDropdown");
@@ -329,12 +335,27 @@ function get_ombudsstelle() {
 					partners_list.innerHTML += `<li onclick="is_partner('${res.active}')">${res.active}</li>`;
 				}
 				//console.log("res", res)
+=======
+			data = response.message;
+			
+			var links_box = document.getElementById("myDropdown");
+			data.forEach(res => {
+				//~ if (res.active == true) {
+					//~ links_box.innerHTML += `<a href="#home">${res.title}</a>`;
+				//~ }
+				console.log("res", res)
+>>>>>>> a567c1c671856149fa345fc18b7f722a7f1c94bf
 			})
 		
 		}
 	})
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> a567c1c671856149fa345fc18b7f722a7f1c94bf
 function get_arguments() {
     var arguments = window.location.toString().split("?");
     if (!arguments[arguments.length - 1].startsWith("http")) {
