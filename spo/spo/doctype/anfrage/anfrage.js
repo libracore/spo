@@ -101,6 +101,13 @@ frappe.ui.form.on('Anfrage', {
                 }
             }
         });
+         cur_frm.fields_dict['spo_ombudsstelle_details'].get_query = function(doc) {          //gets field you want to filter
+         return {
+             filters: {
+                 "active": 1                       //filters field according to key/value
+             }
+         }
+    }
     },
     anfrage_typ: function(frm) {
         //pflichtfelder basierend auf Anfrage Typ
@@ -1070,3 +1077,4 @@ function fetch_rsv(frm) {
         });
     }
 }
+

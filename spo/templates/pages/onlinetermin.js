@@ -316,7 +316,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function get_ombudsstelle() {
-	//var sample_data = [{title:"Gustsvo S", active: true},{title:"Joel F", active: false},{title:"Alejandra B", active: true},{title:"Badillo M", active: false},{title:"Nola S", active: false},{title:"Jose S", active: true}];
 	
 	frappe.call({
 		'method': 'spo.utils.onlinetermin.get_active_partners',

@@ -226,9 +226,9 @@
   {
    "depends_on": "eval:doc.spo_ombudsstelle=='Ja'",
    "fieldname": "spo_ombudsstelle_details",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Ombudstelle von",
-   "options": "\nMedbase\nMonvia\nSpital Leuggern (ASANA)\nSpital Menziken (ASANA)\nZ-Med\nGD St. Gallen\nEMR"
+   "options": "Ombudsstellen Partner"
   },
   {
    "depends_on": "eval:doc.spo_ombudsstelle=='Ja' && doc.spo_ombudsstelle_details=='GD St. Gallen'",
@@ -875,8 +875,8 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2022-01-30 20:58:16.103847",
- "modified_by": "joel.mesmer@libracore.com",
+ "modified": "2022-07-05 13:07:54.589667",
+ "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
  "owner": "Administrator",

@@ -128,7 +128,7 @@ def reserve_slot(slot, member, first_name, last_name, address,
         slot.geburtsdatum = geburtsdatum
         slot.salutation_title = salutation_title
         slot.ombudsstelle = ombudsstelle
-        if cint(used_slots) == 0:
+        if cint(used_slots) == 0 or ombudsstelle:
             slot.status = "inklusive"
         else:
             slot.status = "reserviert"
