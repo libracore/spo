@@ -101,10 +101,11 @@ frappe.ui.form.on('Anfrage', {
                 }
             }
         });
-         cur_frm.fields_dict['spo_ombudsstelle_details'].get_query = function(doc) {          //gets field you want to filter
+        // displaying only active partners if "SPO als Ombudsstelle" is set to "Yes"
+         cur_frm.fields_dict['spo_ombudsstelle_details'].get_query = function(doc) { 
          return {
              filters: {
-                 "active": 1                       //filters field according to key/value
+                 "active": 1
              }
          }
     }

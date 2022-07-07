@@ -316,22 +316,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function get_ombudsstelle() {
-	
-	frappe.call({
-		'method': 'spo.utils.onlinetermin.get_active_partners',
-		'callback': function (response) {
-			var data = response.message;
-			
-			var partners_list = document.getElementById("myDropdown");
-			data.forEach(res => {
-				if (res.active) {
-					partners_list.innerHTML += `<li onclick="is_partner('${res.active}')">${res.active}</li>`;
-				}
-				//console.log("res", res)
-			})
-		
-		}
-	})
+  // fetching the list of partners and displaying a list only if they are active
+  frappe.call({
+    'method': 'spo.utils.onlinetermin.get_active_partners',
+    'callback': function (response) {
+       var data = response.message;	
+       var partners_list = document.getElementById("myDropdown");
+       data.forEach(res => {
+         if (res.active) {
+          partners_list.innerHTML += `<li onclick="is_partner('${res.active}')">${res.active}</li>`;
+         }
+       //console.log("res", res)
+       })
+     }
+  })
 }
 
 function get_arguments() {
