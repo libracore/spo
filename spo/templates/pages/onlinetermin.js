@@ -21,6 +21,28 @@ function is_nonmember() {
     document.getElementById("step2").style.display = "block";
 }
 
+function is_partner(partner) {
+    document.getElementById("is_partner").value = partner;
+	
+    is_nonmember();
+}
+
+function open_dropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
 function start_over() {
     document.getElementById("step0").style.display = "block";
     document.getElementById("step1").style.display = "none";
@@ -186,7 +208,8 @@ function reserve_slot(id, title, start) {
             'consultation_type': document.getElementById("consultation_mode").value,
             'text': document.getElementById("text").value,
             'geburtsdatum': document.getElementById("inputBirthdate").value,
-            'salutation_title': document.getElementById("salutation_title").value
+            'salutation_title': document.getElementById("salutation_title").value,
+            'ombudsstelle': document.getElementById("is_partner").value
         },
         'callback': function(response) {
             var success = response.message;
@@ -198,21 +221,23 @@ function reserve_slot(id, title, start) {
                 document.getElementById("slot_start").value = start.toLocaleString("de-ch", {weekday: "long", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});   
                 document.getElementById("slot_title_final").value = title;
                 document.getElementById("slot_start_final").value = start.toLocaleString("de-ch", {weekday: "long", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});   
-                
-                select_payment();
+
+				select_payment();
+				
             } else {
                 // remain on calendar, could not lock this slot
                 console.log("slot reservation failed: " + id);
             }
         }
     });
-    
-    
 }
 
 function select_payment() {
-    // check if a payment is required
-    if (parseInt(document.getElementById("used_slots").value, 10) === 0) {
+	// check if a payment is required
+	if (document.getElementById("is_partner").value) {
+		// if partner 
+		done();
+	} else if (parseInt(document.getElementById("used_slots").value, 10) === 0) {
         // member with no used slots --> consider paid
         done();
     } else {
@@ -287,7 +312,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     // process command line arguments
     get_arguments();
+    get_ombudsstelle();
 });
+
+function get_ombudsstelle() {
+  // fetching the list of partners and displaying a list only if they are active
+  frappe.call({
+    'method': 'spo.utils.onlinetermin.get_active_partners',
+    'callback': function (response) {
+       var data = response.message;	
+       var partners_list = document.getElementById("myDropdown");
+       data.forEach(res => {
+         if (res.active) {
+          partners_list.innerHTML += `<li onclick="is_partner('${res.active}')">${res.active}</li>`;
+         }
+       //console.log("res", res)
+       })
+     }
+  })
+}
 
 function get_arguments() {
     var arguments = window.location.toString().split("?");

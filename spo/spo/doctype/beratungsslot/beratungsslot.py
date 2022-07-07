@@ -105,7 +105,7 @@ def get_slots(topic="Medizin"):
 @frappe.whitelist(allow_guest=True)
 def reserve_slot(slot, member, first_name, last_name, address, 
     city, pincode, email, phone, used_slots=1, consultation_type="Online", 
-    text="", geburtsdatum=None, salutation_title=None):
+    text="", geburtsdatum=None, salutation_title=None, ombudsstelle=None):
     # verify if this slot is still available
     available_slots = frappe.db.sql("""
         SELECT COUNT(`name`) AS `slots`
@@ -127,7 +127,8 @@ def reserve_slot(slot, member, first_name, last_name, address,
         slot.text = text
         slot.geburtsdatum = geburtsdatum
         slot.salutation_title = salutation_title
-        if cint(used_slots) == 0:
+        slot.ombudsstelle = ombudsstelle
+        if cint(used_slots) == 0 or ombudsstelle:
             slot.status = "inklusive"
         else:
             slot.status = "reserviert"

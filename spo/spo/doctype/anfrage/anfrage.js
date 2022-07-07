@@ -101,6 +101,14 @@ frappe.ui.form.on('Anfrage', {
                 }
             }
         });
+        // displaying only active partners if "SPO als Ombudsstelle" is set to "Yes"
+         cur_frm.fields_dict['spo_ombudsstelle_details'].get_query = function(doc) { 
+         return {
+             filters: {
+                 "active": 1
+             }
+         }
+    }
     },
     anfrage_typ: function(frm) {
         //pflichtfelder basierend auf Anfrage Typ
@@ -1070,3 +1078,4 @@ function fetch_rsv(frm) {
         });
     }
 }
+
