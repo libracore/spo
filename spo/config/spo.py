@@ -194,6 +194,12 @@ def get_data():
                     "name": "SPO Textbausteine",
                     "label": _("Textbausteine"),
                     "description": _("Benutzerspezifische Textbausteine")
+                },
+                {
+                    "type": "doctype",
+                    "name": "Ombudsstellen Partner",
+                    "label": _("Ombudsstellen Partner"),
+                    "description": _("Ombudsstellen Partner")
                 }
             ]
         },
