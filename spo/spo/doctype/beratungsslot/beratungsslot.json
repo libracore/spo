@@ -45,7 +45,7 @@
    "in_list_view": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "frei\nreserviert\nbezahlt\ninklusive"
+   "options": "frei\nreserviert\nbezahlt\ninklusive\nstorniert"
   },
   {
    "fieldname": "customer",
@@ -234,7 +234,7 @@
    "label": "Ombudsstellen"
   }
  ],
- "modified": "2022-06-29 15:05:59.817884",
+ "modified": "2022-07-21 17:38:05.914300",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
