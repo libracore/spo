@@ -327,6 +327,20 @@ def get_data():
                     "label": _("Onlinetermin Access Log"),
                     "description": _("Onlinetermin Access Log")
                 },
+                {
+                    "type": "report",
+                    "name": "Gebuchte Slots",
+                    "label": _("Gebuchte Slots"),
+                    "doctype": "Beratungsslot",
+                    "is_query_report": True
+                },
+                {
+                    "type": "report",
+                    "name": "Unbezahlte Beratungen",
+                    "label": _("Unbezahlte Beratungen"),
+                    "doctype": "Beratungsslot",
+                    "is_query_report": True
+                },
             ]
         }
     ]

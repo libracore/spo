@@ -13,29 +13,19 @@ def execute(filters=None):
 
 def get_columns():
     return [
-        {"label": _("Start"), "fieldname": "startdate", "fieldtype": "Time", "width": 160},
+        {"label": _("Start"), "fieldname": "startdate", "fieldtype": "datetime", "width": 160},
         {"label": _("Slot"), "fieldname": "slot", "fieldtype": "Link", "options": "Beratungsslot", "width": 150},
         {"label": _("Thema"), "fieldname": "thema", "fieldtype": "Data", "width": 100},
         {"label": _("Art"), "fieldname": "art", "fieldtype": "Data", "width": 140},
         {"label": _("Berater"), "fieldname": "berater", "fieldtype": "Data", "width": 140},
         {"label": _("Kunde"), "fieldname": "kunde", "fieldtype": "Link", "options": "Customer", "width": 150},
-        {"label": _("Ombudsstellenpartner"), "fieldname": "partner", "fieldtype": "Data", "width": 180},
+        {"label": _("Ombudsstellenpartner"), "fieldname": "partner", "fieldtype": "Link", "options": "Ombudsstellen Partner", "width": 180},
         {"label": _("Satus"), "fieldname": "status", "fieldtype": "Data", "width": 70},
     ]
 
 def get_data(filters):
-    if type(filters) is str:
-        filters = ast.literal_eval(filters)
-    else:
-        filters = dict(filters)
-    
-    conditions = ""
-    if 'from_date' in filters and filters['from_date']:
-        conditions += """ AND (`tabBeratungsslot`.`start` >= '{from_date}' OR `tabBeratungsslot`.`start` IS NULL)""".format(from_date=filters['from_date'])
-    if 'to_date' in filters and filters['to_date']:
-        conditions += """ AND (`tabBeratungsslot`.`start` <= '{to_date}' OR `tabBeratungsslot`.`start` IS NULL)""".format(to_date=filters['to_date'])
-    if 'customer' in filters:
-        conditions = """ AND `tabBeratungsslot`.`customer` = "{customer}" """.format(customer=filters['customer'])
+    from_date = frappe.utils.nowdate()
+    to_date = frappe.utils.add_months(frappe.utils.nowdate(), 1)
         
     # prepare query
     sql_query = """
@@ -49,10 +39,11 @@ def get_data(filters):
             `tabBeratungsslot`.`ombudsstelle` AS `partner`,
             `tabBeratungsslot`.`status` AS `status`
         FROM `tabBeratungsslot`
-        WHERE `tabBeratungsslot`.`status` = "bezahlt" OR `tabBeratungsslot`.`status` = "inklusive"
-            {conditions}
+        WHERE`tabBeratungsslot`.`status` IN ("bezahlt", "inklusive")
+            AND (`tabBeratungsslot`.`start` >= '{from_date}' OR `tabBeratungsslot`.`start` IS NULL)
+            AND (`tabBeratungsslot`.`start` <= '{to_date}' OR `tabBeratungsslot`.`start` IS NULL)
         ORDER BY `tabBeratungsslot`.`start` ASC
-      """.format(conditions=conditions)
+      """.format(to_date=to_date, from_date=from_date)
     #frappe.throw(sql_query)
     data = frappe.db.sql(sql_query, as_dict=True)
 

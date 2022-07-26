@@ -50,16 +50,13 @@ frappe.ui.form.on('Beratungsslot', {
              }
         }
         if (frm.doc.customer) {
-           var ombudsstelle = null;
-            if (frm.doc.ombudsstelle) {
-                ombudsstelle = frm.doc.ombudsstelle;
-            }
+          
             frm.add_custom_button(__("Anfrage erstellen"), function() {
                 frappe.route_options = {
                     "customer": frm.doc.customer,
                     "anfrage_typ": "Online-Beratung",
                     "kontakt_via": "Video-Call",
-                    "spo_ombudsstelle_details": ombudsstelle
+                    "spo_ombudsstelle_details": frm.doc.ombudsstelle
                 }
                 frappe.set_route("List", "Anfrage");
             });
