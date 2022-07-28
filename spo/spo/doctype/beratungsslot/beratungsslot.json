@@ -190,10 +190,11 @@
   },
   {
    "fieldname": "consultation_type",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "Art",
    "no_copy": 1,
-   "read_only": 0
+   "read_only": 0,
+   "options": "Telefongespräch\nOnline Meeting"
   },
   {
    "fieldname": "text",
