@@ -193,7 +193,7 @@
    "fieldtype": "Data",
    "label": "Art",
    "no_copy": 1,
-   "read_only": 1
+   "read_only": 0
   },
   {
    "fieldname": "text",
@@ -234,7 +234,7 @@
    "label": "Ombudsstellen"
   }
  ],
- "modified": "2022-06-29 15:05:59.817884",
+ "modified": "2022-07-28 13:43:59.817884",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
