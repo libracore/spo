@@ -1,4 +1,4 @@
-# Copyright (c) 2021, libracore and contributors
+# Copyright (c) 2021-2022, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -6,47 +6,44 @@ import frappe
 from frappe import _
 
 def execute(filters=None):
-    columns = get_columns(filters)
+    columns = get_columns()
     data = get_data(filters)
     return columns, data
 
-def get_columns(filters):
-    return[
-        {"label": _("Beratungsslot-Link"), "fieldname": "name", "fieldtype": "Link", "options": "Beratungsslot", "width": 80},
-        {"label": _("Start"), "fieldname": "start", "fieldtype": "Datetime", "width": 120},
-        {"label": _("Customer Name"), "fieldname": "customer_name", "fieldtype": "Data", "width": 120},
-        {"label": _("Customer Link"), "fieldname": "customer", "fieldtype": "Link", "options": "Customer", "width": 60},
-        {"label": _("Thema"), "fieldname": "topic", "fieldtype": "Link", "options": "Beratungsthema", "width": 60},
-        {"label": _("Telefon"), "fieldname": "phone", "fieldtype": "Data", "width": 60},
-        {"label": _("Email"), "fieldname": "email", "fieldtype": "Data", "width": 80},
-        {"label": _("Status"), "fieldname": "status", "fieldtype": "Select", "width": 60},
-        {"label": _("End"), "fieldname": "end", "fieldtype": "Datetime", "width": 120},
-        {"label": _("Berater"), "fieldname": "user", "fieldtype": "Link", "options": "Beraterzuweisung", "width": 120}
+def get_columns():
+    return [
+        {"label": _("Start"), "fieldname": "startdate", "fieldtype": "datetime", "width": 160},
+        {"label": _("Slot"), "fieldname": "slot", "fieldtype": "Link", "options": "Beratungsslot", "width": 150},
+        {"label": _("Thema"), "fieldname": "thema", "fieldtype": "Data", "width": 100},
+        {"label": _("Art"), "fieldname": "art", "fieldtype": "Data", "width": 140},
+        {"label": _("Berater"), "fieldname": "berater", "fieldtype": "Data", "width": 140},
+        {"label": _("Kunde"), "fieldname": "kunde", "fieldtype": "Link", "options": "Customer", "width": 150},
+        {"label": _("Ombudsstellenpartner"), "fieldname": "partner", "fieldtype": "Link", "options": "Ombudsstellen Partner", "width": 180},
+        {"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 70},
     ]
 
-
 def get_data(filters):
-    if not filters.user:
-        filters.user = "%"
-    
-    sql_query = """SELECT 
-    `tabBeratungsslot`.`name` AS `name`, 
-    `tabBeratungsslot`.`start` AS `start`,
-    `tabBeratungsslot`.`customer_name` AS `customer_name`, 
-    `tabBeratungsslot`.`customer` AS `customer`, 
-    `tabBeratungsslot`.`topic` AS `topic`, 
-    `tabBeratungsslot`.`phone` AS `phone`,
-    `tabBeratungsslot`.`email` AS `email`, 
-    `tabBeratungsslot`.`status` AS `status`,
-    `tabBeratungsslot`.`end` AS `end`,
-    `tabBeratungsslot`.`user` AS `user`
-    FROM 
-    `tabBeratungsslot` 
-    WHERE 
-    `tabBeratungsslot`.`user` = '{user}' 
-        AND `tabBeratungsslot`.`start` >= '{start}' 
-        AND `tabBeratungsslot`.`end` <= {end}'""".format(user=filters.user, start=filters.start, end=filters.end)
-    
-    data = frappe.db.sql(sql_query, as_dict=True)
+    from_date = frappe.utils.nowdate()
+    to_date = frappe.utils.add_months(frappe.utils.nowdate(), 1)
         
+    # prepare query
+    sql_query = """
+        SELECT
+            `tabBeratungsslot`.`start` AS `startdate`,
+            `tabBeratungsslot`.`name` AS `slot`,
+            `tabBeratungsslot`.`topic` AS `thema`,
+            `tabBeratungsslot`.`consultation_type` AS `art`,
+            `tabBeratungsslot`.`user` AS `berater`,
+            `tabBeratungsslot`.`customer` AS `kunde`,
+            `tabBeratungsslot`.`ombudsstelle` AS `partner`,
+            `tabBeratungsslot`.`status` AS `status`
+        FROM `tabBeratungsslot`
+        WHERE`tabBeratungsslot`.`status` IN ("bezahlt", "inklusive")
+            AND (`tabBeratungsslot`.`start` >= '{from_date}' OR `tabBeratungsslot`.`start` IS NULL)
+            AND (`tabBeratungsslot`.`start` <= '{to_date}' OR `tabBeratungsslot`.`start` IS NULL)
+        ORDER BY `tabBeratungsslot`.`start` ASC
+      """.format(to_date=to_date, from_date=from_date)
+    #frappe.throw(sql_query)
+    data = frappe.db.sql(sql_query, as_dict=True)
+
     return data

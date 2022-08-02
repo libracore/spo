@@ -329,8 +329,8 @@ def get_data():
                 },
                 {
                     "type": "report",
-                    "name": "Gebuchte Slots",
-                    "label": _("Gebuchte Slots"),
+                    "name": "Anstehende Beratungen",
+                    "label": _("Anstehende Beratungen"),
                     "doctype": "Beratungsslot",
                     "is_query_report": True
                 },

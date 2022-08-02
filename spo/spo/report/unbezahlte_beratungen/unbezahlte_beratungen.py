@@ -22,7 +22,7 @@ def get_columns():
         {"label": _("Berater"), "fieldname": "berater", "fieldtype": "Data", "width": 140},
         {"label": _("Kunde"), "fieldname": "kunde", "fieldtype": "Link", "options": "Customer", "width": 150},
         {"label": _("Ombudsstellenpartner"), "fieldname": "partner", "fieldtype": "Link", "options": "Ombudsstellen Partner", "width": 180},
-        {"label": _("Satus"), "fieldname": "status", "fieldtype": "Data", "width": 70},
+        {"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 70},
     ]
 
 def get_data(filters):
