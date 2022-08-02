@@ -1,9 +1,12 @@
-# Copyright (c) 2021-2022, libracore and contributors
+# Copyright (c) 2022, libracore and contributors
 # For license information, please see license.txt
+
 
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+import ast
+from frappe.utils.data import add_days, nowdate
 
 def execute(filters=None):
     columns = get_columns()
@@ -23,8 +26,7 @@ def get_columns():
     ]
 
 def get_data(filters):
-    from_date = frappe.utils.nowdate()
-    to_date = frappe.utils.add_months(frappe.utils.nowdate(), 1)
+    from_date = add_days(nowdate(), -7)
         
     # prepare query
     sql_query = """
@@ -36,14 +38,15 @@ def get_data(filters):
             `tabBeratungsslot`.`user` AS `berater`,
             `tabBeratungsslot`.`customer` AS `kunde`,
             `tabBeratungsslot`.`ombudsstelle` AS `partner`,
-            `tabBeratungsslot`.`status` AS `status`
+            `tabBeratungsslot`.`status` AS `status`,
+            `anf`.`customer`
         FROM `tabBeratungsslot`
-        WHERE`tabBeratungsslot`.`status` IN ("bezahlt", "inklusive")
-            AND (`tabBeratungsslot`.`start` >= '{from_date}' OR `tabBeratungsslot`.`start` IS NULL)
-            AND (`tabBeratungsslot`.`start` <= '{to_date}' OR `tabBeratungsslot`.`start` IS NULL)
+        JOIN `tabAnfrage` AS `anf` ON `tabBeratungsslot`.`customer` = `anf`.`customer`
+        WHERE `tabBeratungsslot`.`status` = "reserviert"
+        AND `tabBeratungsslot`.`start` <= '{from_date}'
         ORDER BY `tabBeratungsslot`.`start` ASC
-      """.format(to_date=to_date, from_date=from_date)
-    #frappe.throw(sql_query)
+      """.format(from_date=from_date)
+    
     data = frappe.db.sql(sql_query, as_dict=True)
 
     return data

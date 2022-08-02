@@ -45,7 +45,7 @@
    "in_list_view": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "frei\nreserviert\nbezahlt\ninklusive"
+   "options": "frei\nreserviert\nbezahlt\ninklusive\nstorniert"
   },
   {
    "fieldname": "customer",
