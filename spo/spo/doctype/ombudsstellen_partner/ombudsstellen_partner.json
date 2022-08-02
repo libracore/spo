@@ -26,7 +26,7 @@
    "label": "Active"
   }
  ],
- "modified": "2022-06-29 09:25:35.389816",
+ "modified": "2022-08-02 13:37:35.389816",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Ombudsstellen Partner",
@@ -41,6 +41,30 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SPO Poweruser",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Backoffice",
    "share": 1,
    "write": 1
   }
