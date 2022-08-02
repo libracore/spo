@@ -23,10 +23,12 @@ def create_invoice(mitgliedschaft):
 	else:
 		kunde = mitgliedschaft.mitglied
 		beschreibung = frappe.utils.get_datetime(mitgliedschaft.start).strftime('%d.%m.%Y') + " - " + frappe.utils.get_datetime(mitgliedschaft.ende).strftime('%d.%m.%Y')
+	customer = frappe.get_doc("Customer", kunde)
 	invoice = frappe.get_doc({
 		"doctype": "Sales Invoice",
 		"customer": kunde,
 		"company": "Gönnerverein",
+		"customer_group": customer.customer_group,
 		"due_date": zahlungsziel,
 		"items": [
 			{

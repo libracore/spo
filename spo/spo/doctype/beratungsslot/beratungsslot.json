@@ -190,10 +190,11 @@
   },
   {
    "fieldname": "consultation_type",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "Art",
    "no_copy": 1,
-   "read_only": 1
+   "read_only": 0,
+   "options": "Telefongespräch\nOnline Meeting"
   },
   {
    "fieldname": "text",
@@ -234,7 +235,7 @@
    "label": "Ombudsstellen"
   }
  ],
- "modified": "2022-07-21 17:38:05.914300",
+ "modified": "2022-07-28 13:43:59.817884",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",
