@@ -30,6 +30,7 @@ def cleanup_slots():
     for slot in slots:
         slot_doc = frappe.get_doc("Beratungsslot", slot['name'])
         
+        customer = None
         # enable customer (otherwise invoice cannot be cancelled)
         if frappe.db.exists("Customer", slot_doc.customer):
             customer = frappe.get_doc("Customer", slot_doc.customer)
@@ -47,13 +48,6 @@ def cleanup_slots():
                     sinv_doc.cancel()
                 except Exception as err:
                     frappe.log_error(err, "cleanup_slots: cancel invoice {0}".format(sinv_doc.name))
-            
-            # deactivate customer
-            customer.disabled = 1
-            try:
-                customer.save()
-            except Exception as err:
-                frappe.log_error(err, "cleanup_slots: disable customer {0}".format(slot_doc.customer))
         
         # set slot status
         slot_doc.status = 'storniert'
@@ -61,7 +55,15 @@ def cleanup_slots():
             slot_doc.save()
         except Exception as err:
             frappe.log_error(err, "cleanup_slots: mark slot {0}".format(slot_doc.name))
-    
+        
+        if customer:
+            # deactivate customer
+            customer.disabled = 1
+            try:
+                customer.save()
+            except Exception as err:
+                frappe.log_error(err, "cleanup_slots: disable customer {0}".format(slot_doc.customer))
+                
     # delete old unused slots
     date = add_days(nowdate(), -7)
     slots = frappe.db.sql("""SELECT `name` FROM `tabBeratungsslot` WHERE `status` = 'frei' AND `tabBeratungsslot`.`start` <= '{date}' """.format(date=date), as_dict=True)
