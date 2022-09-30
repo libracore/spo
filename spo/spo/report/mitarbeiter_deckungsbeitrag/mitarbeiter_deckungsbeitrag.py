@@ -11,6 +11,9 @@ def execute(filters=None):
         {"label": _("Name"), "fieldname": "employee_name", "fieldtype": "Data"},
         {"label": _("Summe Arbeitszeit"), "fieldname": "arbeitszeit", "fieldtype": "Float"},
         {"label": _("Verrechenbar"), "fieldname": "verrechenbar", "fieldtype": "Float"},
+        {"label": _("davon Online-Beratung"), "fieldname": "online_beratungen_verrechenbar", "fieldtype": "Float"},
+        {"label": _("davon NV Online-Beratung"), "fieldname": "online_beratungen_nicht_verrechenbar", "fieldtype": "Float"},
+        {"label": _("NV Online-Beratung in %"), "fieldname": "nv_online_beratung_percentage", "fieldtype": "Data"},
         {"label": _("Markiert als NV"), "fieldname": "markiert_als_nv", "fieldtype": "Float"},
         {"label": _("NV in %"), "fieldname": "nv_in_prozent", "fieldtype": "Data"},
         {"label": _("Verrechnet"), "fieldname": "verrechnet", "fieldtype": "Float"},
@@ -47,6 +50,41 @@ def execute(filters=None):
         else:
             verrechenbar = 0.00
         _data.append(verrechenbar)
+        
+        # verrechenbare Online-Beratungen
+        online_beratungen_query = """SELECT `name` FROM `tabAnfrage` WHERE `anfrage_typ` = 'Online-Beratung'"""
+        _online_beratungen_verrechenbar = frappe.db.sql("""SELECT
+                                                                SUM(`hours`)
+                                                            FROM `tabTimesheet Detail`
+                                                            WHERE `parent` IN ({timesheets_query})
+                                                            AND `activity_type` IN ('Beratung', 'Mandatsarbeit')
+                                                            AND `spo_referenz` IN ({online_beratungen_query})""".format(timesheets_query=timesheets_query, online_beratungen_query=online_beratungen_query), as_list=True)
+        if _online_beratungen_verrechenbar[0][0]:
+            online_beratungen_verrechenbar = _online_beratungen_verrechenbar[0][0]
+        else:
+            online_beratungen_verrechenbar = 0.00
+        _data.append(online_beratungen_verrechenbar)
+        
+        # nicht verrechenbare Online-Beratungen
+        _online_beratungen_nicht_verrechenbar = frappe.db.sql("""SELECT
+                                                                SUM(`hours`) AS `qty`,
+                                                                `spo_referenz`
+                                                            FROM `tabTimesheet Detail`
+                                                            WHERE `parent` IN ({timesheets_query})
+                                                            AND `activity_type` IN ('Beratung', 'Mandatsarbeit')
+                                                            AND `spo_referenz` IN ({online_beratungen_query})
+                                                            GROUP BY `spo_referenz`""".format(timesheets_query=timesheets_query, online_beratungen_query=online_beratungen_query), as_dict=True)
+        online_beratungen_nicht_verrechenbar = 0.00
+        for entry in _online_beratungen_nicht_verrechenbar:
+            if entry.qty > 0.5:
+                online_beratungen_nicht_verrechenbar += entry.qty - 0.5
+        _data.append(online_beratungen_nicht_verrechenbar)
+        
+        # nicht verrechenbare Online-Beratungen in %
+        nv_online_beratung_percentage = 0
+        if online_beratungen_verrechenbar > 0:
+            nv_online_beratung_percentage = (100 / online_beratungen_verrechenbar) * online_beratungen_nicht_verrechenbar
+        _data.append(round(nv_online_beratung_percentage, 2))
         
         _markiert_als_nv = frappe.db.sql("""SELECT SUM(`hours`) FROM `tabTimesheet Detail` WHERE `parent` IN ({timesheets_query}) AND `activity_type` IN ('Beratung', 'Mandatsarbeit') AND `nicht_verrechnen` = 1""".format(timesheets_query=timesheets_query), as_list=True)
         if _markiert_als_nv[0][0]:
