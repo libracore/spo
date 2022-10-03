@@ -69,11 +69,11 @@ def proceed_sinv(sinv):
                                         WHERE
                                             `rechnung` = '{sinv}'""".format(sinv=sinv), as_dict=True)
         if len(mitgliedschaft) != 1:
-            sinv = frappe.get_doc("Sales Invoice", sinv)
+            sinv_doc = frappe.get_doc("Sales Invoice", sinv)
             return {
                 'status': False,
-                'sales_invoice': sinv.name,
-                'customer': sinv.customer,
+                'sales_invoice': sinv_doc.name,
+                'customer': sinv_doc.customer,
                 'mitgliedschaft': '',
                 'error': 'Dieser Kunde besitzt mehrere Mitgliedschaften'
             }
@@ -84,9 +84,14 @@ def proceed_sinv(sinv):
             mitgliedschaft.not_renew = 1
             mitgliedschaft.save()
             
-            sinv = frappe.get_doc("Sales Invoice", sinv)
-            cancel_linked_payment_reminder(sinv.name)
-            sinv.cancel()
+            customer = frappe.get_doc("Customer", mitgliedschaft.mitglied)
+            if customer.disabled == 1:
+                customer.disabled = 0
+                customer.save()
+            
+            sinv_doc = frappe.get_doc("Sales Invoice", sinv)
+            cancel_linked_payment_reminder(sinv_doc.name)
+            sinv_doc.cancel()
             
             customer = frappe.get_doc("Customer", mitgliedschaft.mitglied)
             customer.spo_aktuell = 'Kein'
@@ -95,18 +100,18 @@ def proceed_sinv(sinv):
             
             return {
                 'status': True,
-                'sales_invoice': sinv.name,
+                'sales_invoice': sinv_doc.name,
                 'customer': customer.name,
                 'mitgliedschaft': mitgliedschaft.name
             }
             
     except Exception as err:
         # error handling
-        sinv = frappe.get_doc("Sales Invoice", sinv)
+        sinv_doc = frappe.get_doc("Sales Invoice", sinv)
         return {
             'status': False,
-            'sales_invoice': sinv.name,
-            'customer': sinv.customer,
+            'sales_invoice': sinv_doc.name,
+            'customer': sinv_doc.customer,
             'mitgliedschaft': '',
             'error': str(err)
         }
@@ -118,7 +123,7 @@ def create_log_record(positiv_log, negativ_log):
         "deactivations": positiv_log,
         "errors": negativ_log
     })
-    log.insert()
+    log.insert(ignore_links=True)
     
 def cancel_linked_payment_reminder(sinv):
     pr = frappe.db.sql("""SELECT `parent` FROM `tabPayment Reminder Invoice` WHERE `sales_invoice` = '{sinv}' AND `docstatus` = 1""".format(sinv=sinv), as_dict=True)
