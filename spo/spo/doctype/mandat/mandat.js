@@ -268,11 +268,16 @@ var get_checked_values= function($results) {
 };
 
 function update_dashboard(frm) {
+    if (frm.doc.anfragen) {
+        var anfrage_ref = frm.doc.anfragen;
+    } else {
+        var anfrage_ref = 'Keine Anfrage';
+    }
     frappe.call({
         "method": "spo.spo.doctype.mandat.mandat.get_dashboard_data",
         "args": {
             "mitglied": frm.doc.mitglied,
-            "anfrage": frm.doc.anfragen,
+            "anfrage": anfrage_ref,
             "mandat": frm.doc.name
         },
         "async": false,
