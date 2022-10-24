@@ -1,0 +1,160 @@
+{
+ "autoname": "field:customer",
+ "creation": "2022-10-21 13:06:43.100755",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_verknuepfungen",
+  "customer",
+  "aktuelle_mitgliedschaft",
+  "section_mitgliedschaftsdaten",
+  "mitgliedschaftstyp",
+  "eintrittsdatum",
+  "anzahl_mitgliedschaften",
+  "mitgliedschafts_personen",
+  "multy_entry",
+  "section_kontaktdaten",
+  "kontaktdaten",
+  "section_adressdaten",
+  "adressdaten",
+  "section_zahlungsdaten",
+  "zahlungen_total",
+  "mitgliedschafts_zahlungen",
+  "spenden_zahlungen",
+  "spenden_auflistung",
+  "letzte_bezahlte_periode",
+  "letztes_zahlungsdatum"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "anzahl_mitgliedschaften",
+   "fieldtype": "Int",
+   "label": "Anzahl Mitgliedschaften"
+  },
+  {
+   "fieldname": "aktuelle_mitgliedschaft",
+   "fieldtype": "Link",
+   "label": "Aktuelle Mitgliedschaft",
+   "options": "Mitgliedschaft"
+  },
+  {
+   "fieldname": "eintrittsdatum",
+   "fieldtype": "Date",
+   "label": "Eintrittsdatum"
+  },
+  {
+   "fieldname": "zahlungen_total",
+   "fieldtype": "Currency",
+   "label": "Total Zahlungen"
+  },
+  {
+   "fieldname": "mitgliedschafts_zahlungen",
+   "fieldtype": "Currency",
+   "label": "Mitgliedschafts Zahlungen"
+  },
+  {
+   "fieldname": "spenden_zahlungen",
+   "fieldtype": "Currency",
+   "label": "Spenden Zahlungen"
+  },
+  {
+   "fieldname": "spenden_auflistung",
+   "fieldtype": "Code",
+   "label": "Spenden Zahlungen Auflistung"
+  },
+  {
+   "fieldname": "letzte_bezahlte_periode",
+   "fieldtype": "Data",
+   "label": "Letzte bezahlte Mitgliedschafts Periode"
+  },
+  {
+   "fieldname": "letztes_zahlungsdatum",
+   "fieldtype": "Date",
+   "label": "Letztes Zahlungsdatum"
+  },
+  {
+   "fieldname": "mitgliedschafts_personen",
+   "fieldtype": "Code",
+   "label": "Mitgliedschaftspersonen"
+  },
+  {
+   "fieldname": "section_verknuepfungen",
+   "fieldtype": "Section Break",
+   "label": "Verkn\u00fcpfungen"
+  },
+  {
+   "fieldname": "section_mitgliedschaftsdaten",
+   "fieldtype": "Section Break",
+   "label": "Mitgliedschaftsdaten"
+  },
+  {
+   "fieldname": "section_zahlungsdaten",
+   "fieldtype": "Section Break",
+   "label": "Zahlungsdaten"
+  },
+  {
+   "fieldname": "mitgliedschaftstyp",
+   "fieldtype": "Data",
+   "label": "Mitgliedschaftstyp"
+  },
+  {
+   "fieldname": "section_kontaktdaten",
+   "fieldtype": "Section Break",
+   "label": "Kontaktdaten"
+  },
+  {
+   "fieldname": "kontaktdaten",
+   "fieldtype": "Table",
+   "label": "Kontaktdaten",
+   "options": "Demographie Bin Kontaktdaten"
+  },
+  {
+   "fieldname": "section_adressdaten",
+   "fieldtype": "Section Break",
+   "label": "Adressdaten"
+  },
+  {
+   "fieldname": "adressdaten",
+   "fieldtype": "Table",
+   "label": "Adressdaten",
+   "options": "Demographie Bin Adressdaten"
+  },
+  {
+   "default": "0",
+   "fieldname": "multy_entry",
+   "fieldtype": "Check",
+   "label": "Multi Entry"
+  }
+ ],
+ "modified": "2022-10-24 13:37:13.803001",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Demographie Bin",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

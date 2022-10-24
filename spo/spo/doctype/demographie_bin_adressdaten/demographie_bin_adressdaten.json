@@ -1,0 +1,47 @@
+{
+ "creation": "2022-10-24 10:39:35.181036",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "strasse",
+  "plz",
+  "ort",
+  "kanton"
+ ],
+ "fields": [
+  {
+   "fieldname": "strasse",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Strasse"
+  },
+  {
+   "fieldname": "plz",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "PLZ"
+  },
+  {
+   "fieldname": "ort",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Ort"
+  },
+  {
+   "fieldname": "kanton",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Kanton"
+  }
+ ],
+ "istable": 1,
+ "modified": "2022-10-24 10:39:55.314688",
+ "modified_by": "Administrator",
+ "module": "SPO",
+ "name": "Demographie Bin Adressdaten",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

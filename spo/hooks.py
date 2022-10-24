@@ -87,13 +87,20 @@ doctype_js = {
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+    "Customer": {
+        "on_update": "spo.utils.demographie_bin.demographie_bin_updater"
+    },
+    "Address": {
+        "on_update": "spo.utils.demographie_bin.demographie_bin_updater"
+    },
+    "Contact": {
+        "on_update": "spo.utils.demographie_bin.demographie_bin_updater"
+    },
+    "Payment Entry": {
+        "on_update": "spo.utils.demographie_bin.demographie_bin_updater"
+    }
+}
 
 # Scheduled Tasks
 # ---------------
