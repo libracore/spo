@@ -15,81 +15,95 @@ def get_columns():
         {"label": _("Mitglied"), "fieldname": "mitglied", "fieldtype": "Link", "options": "Customer"},
         {"label": _("Mitgliedschaft"), "fieldname": "mitgliedschaft", "fieldtype": "Link", "options": "Mitgliedschaft"},
         {"label": _("Typ"), "fieldname": "mitgliedschafts_typ", "fieldtype": "Select", "options": "Einzelmitglied\nFamilienmitglied\nPassiv-/Kollektivmitglied\nFreimitglied"},
-        {"label": _("Mitgliedschafts Ende"), "fieldname": "enddatum", "fieldtype": "Date"},
-        {"label": _("Anz. Mitgliedschaften"), "fieldname": "qty", "fieldtype": "Int"},
-        {"label": _("Geschlecht"), "fieldname": "geschlecht", "fieldtype": "Link", "options": "Gender"},
-        {"label": _("Anrede"), "fieldname": "anrede", "fieldtype": "Link", "options": "Salutation"},
+        {"label": _("Eintrittsdatum"), "fieldname": "eintrittsdatum", "fieldtype": "Date"},
+        {"label": _("Anz. Mitgliedschaften"), "fieldname": "anzahl_mitgliedschaften", "fieldtype": "Int", "width": 90},
+        {"label": _("Letzte bezahlte Mitgliedschafts Periode"), "fieldname": "letzte_bezahlte_periode", "fieldtype": "Data", "width": 160},
+        {"label": _("Anrede"), "fieldname": "anrede", "fieldtype": "Data"},
         {"label": _("Vorname"), "fieldname": "vorname", "fieldtype": "Data"},
-        {"label": _("Nachname"), "fieldname": "nachname", "fieldtype": "Data"},
-        {"label": _("Geburtsdatum"), "fieldname": "geburtsdatum", "fieldtype": "Date"},
+        {"label": _("Nachname"), "fieldname": "nachname", "fieldtype": "Data", "width": 110},
+        {"label": _("Geburtsdatum"), "fieldname": "geburtsdatum", "fieldtype": "Data"},
+        {"label": _("E-Mail"), "fieldname": "email", "fieldtype": "Data"},
+        {"label": _("Mobile"), "fieldname": "mobile", "fieldtype": "Data"},
         {"label": _("Strasse"), "fieldname": "strasse", "fieldtype": "Data"},
-        {"label": _("PLZ"), "fieldname": "plz", "fieldtype": "Int"},
+        {"label": _("PLZ"), "fieldname": "plz", "fieldtype": "Data"},
         {"label": _("Ort"), "fieldname": "ort", "fieldtype": "Data"},
         {"label": _("Kanton"), "fieldname": "kanton", "fieldtype": "Data"},
-        {"label": _("Saldo"), "fieldname": "saldo", "fieldtype": "Currency"}
+        {"label": _("Mitgliedschafts Zahlungen"), "fieldname": "mitgliedschafts_zahlungen", "fieldtype": "Currency"},
+        {"label": _("Spenden Zahlungen"), "fieldname": "spenden_zahlungen", "fieldtype": "Currency"},
+        {"label": _("Spenden Zahlungen Auflistung"), "fieldname": "spenden_auflistung", "fieldtype": "Code"},
+        {"label": _("Total Zahlungen"), "fieldname": "zahlungen_total", "fieldtype": "Currency"},
+        {"label": _("Letztes Zahlungsdatum"), "fieldname": "letztes_zahlungsdatum", "fieldtype": "Date"}
     ]
 
 def get_data(filters):
     query = """
-        SELECT DISTINCT
-            `a`.`mitglied`,
-            `a`.`mitgliedschaft`,
-            `a`.`mitgliedschafts_typ`,
-            `a`.`enddatum`,
-            `d`.`qty`,
-            `b`.`geschlecht`,
-            `b`.`anrede`,
-            `b`.`vorname`,
-            `b`.`nachname`,
-            `b`.`geburtsdatum`,
-            `a`.`strasse`,
-            `a`.`plz`,
-            `a`.`ort`,
-            `a`.`kanton`,
-            `c`.`saldo`
-        FROM (
-            SELECT
-                `ms`.`mitglied` AS `mitglied`,
-                `ms`.`name` AS `mitgliedschaft`,
-                `ms`.`mitgliedschafts_typ` AS `mitgliedschafts_typ`,
-                `ms`.`ende` AS `enddatum`,
-                `addr`.`address_line1` AS `strasse`,
-                `addr`.`plz` AS `plz`,
-                `addr`.`city` AS `ort`,
-                `addr`.`kanton` AS `kanton`,
-                `dynlink`.`parenttype`
-            FROM `tabMitgliedschaft` AS `ms`
-            JOIN `tabDynamic Link` AS `dynlink` ON `ms`.`mitglied` = `dynlink`.`link_name`
-            JOIN `tabAddress` AS `addr` ON `dynlink`.`parent` = `addr`.`name`
-        ) AS `a`
-        JOIN (
-            SELECT
-                `ms`.`mitglied` AS `mitglied`,
-                `con`.`first_name` AS `vorname`,
-                `con`.`last_name` AS `nachname`,
-                `con`.`salutation` AS `anrede`,
-                `con`.`gender` AS `geschlecht`,
-                `con`.`geburtsdatum` AS `geburtsdatum`
-            FROM `tabMitgliedschaft` AS `ms`
-            JOIN `tabDynamic Link` AS `dynlink` ON `ms`.`mitglied` = `dynlink`.`link_name`
-            JOIN `tabContact` AS `con` ON `dynlink`.`parent` = `con`.`name`
-        ) AS `b` ON `a`.`mitglied` = `b`.`mitglied`
-        JOIN (
-            SELECT 
-                `tabGL Entry`.`party`,
-                ((SUM(`tabGL Entry`.`debit_in_account_currency`) - SUM(`tabGL Entry`.`credit_in_account_currency`)) * -1) AS `saldo`
-            FROM `tabGL Entry`
-            WHERE `tabGL Entry`.`party_type` = 'Customer'
-            GROUP BY `tabGL Entry`.`party`
-        ) AS `c` ON `a`.`mitglied` = `c`.`party`
-        JOIN (
-            SELECT 
-                COUNT(`name`) AS `qty`,
-                `mitglied`
-            FROM `tabMitgliedschaft`
-            GROUP BY `mitglied`
-        ) AS `d` ON `a`.`mitglied` = `d`.`mitglied`
-        WHERE `a`.`enddatum` >= CURDATE()
+        SELECT
+            `name` AS `mitglied`,
+            `aktuelle_mitgliedschaft` AS `mitgliedschaft`,
+            `mitgliedschaftstyp` AS `mitgliedschafts_typ`,
+            `eintrittsdatum`,
+            `anzahl_mitgliedschaften`,
+            `letzte_bezahlte_periode`,
+            `mitgliedschafts_personen`,
+            `multy_entry`,
+            `mitgliedschafts_zahlungen`,
+            `spenden_zahlungen`,
+            `spenden_auflistung`,
+            `zahlungen_total`,
+            `letztes_zahlungsdatum`
+        FROM `tabDemographie Bin`
+        WHERE `eintrittsdatum` IS NOT NULL
     """
     
-    return frappe.db.sql(query, as_dict=True)
+    data = frappe.db.sql(query, as_dict=True)
+    return_data = []
+    for d in data:
+        first_entry = d.copy()
+        first_entry['indent'] = 0
+        demo_bin = frappe.get_doc("Demographie Bin", d['mitglied'])
+        
+        for _adresse in demo_bin.adressdaten:
+            if _adresse.idx == 1:
+                adresse = _adresse
+        for _kontakt in demo_bin.kontaktdaten:
+            if _kontakt.idx == 1:
+                kontakt = _kontakt
+        
+        if kontakt:
+            first_entry['anrede'] = kontakt.anrede
+            first_entry['vorname'] = kontakt.vorname
+            first_entry['nachname'] = kontakt.nachname
+            first_entry['geburtsdatum'] = kontakt.geburtsdatum
+            first_entry['email'] = kontakt.mail
+            first_entry['mobile'] = kontakt.mobile
+        
+        if adresse:
+            first_entry['strasse'] = adresse.strasse
+            first_entry['plz'] = adresse.plz
+            first_entry['ort'] = adresse.ort
+            first_entry['kanton'] = adresse.kanton
+        
+        return_data.append(first_entry)
+        
+        if int(d.multy_entry) == 1:
+            for multy_adresse in demo_bin.adressdaten:
+                for multy_kontakt in demo_bin.kontaktdaten:
+                    if multy_kontakt.idx != 1:
+                        following_entries = d.copy()
+                        following_entries['indent'] = 1
+                        
+                        following_entries['anrede'] = multy_kontakt.anrede
+                        following_entries['vorname'] = multy_kontakt.vorname
+                        following_entries['nachname'] = multy_kontakt.nachname
+                        following_entries['geburtsdatum'] = multy_kontakt.geburtsdatum
+                        following_entries['email'] = multy_kontakt.mail
+                        following_entries['mobile'] = multy_kontakt.mobile
+                        
+                        following_entries['strasse'] = multy_adresse.strasse
+                        following_entries['plz'] = multy_adresse.plz
+                        following_entries['ort'] = multy_adresse.ort
+                        following_entries['kanton'] = multy_adresse.kanton
+                        
+                        return_data.append(following_entries)
+    
+    return return_data
