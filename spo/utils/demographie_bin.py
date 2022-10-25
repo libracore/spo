@@ -24,7 +24,7 @@ def demographie_bin_updater(record, event):
                 customer = frappe.get_doc("Customer", record.rechnungsempfaenger)
                 customer.save()
         elif quelle == 'Payment Entry':
-            if record.party_type == 'Customer':
+            if record.party_type == 'Customer' and record.party:
                 customer = frappe.get_doc("Customer", record.party)
                 customer.save()
     else:
