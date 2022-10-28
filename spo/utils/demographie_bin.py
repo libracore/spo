@@ -50,7 +50,7 @@ def demographie_bin_updater(record, event):
             else:
                 demographie_bin.multy_entry = 0
             
-            demographie_bin.save()
+            demographie_bin.save(ignore_permissions=True)
             
         except Exception as err:
             frappe.log_error("{0}".format(err), 'Demographie Bin Updater')
@@ -62,7 +62,7 @@ def check_existing_bin(customer):
             "doctype": "Demographie Bin",
             "customer": customer,
         })
-        new_bin.insert()
+        new_bin.insert(ignore_permissions=True)
         return new_bin
     else:
         return frappe.get_doc("Demographie Bin", customer)
