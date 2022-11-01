@@ -17,24 +17,24 @@ def demographie_bin_updater(record, event):
                     customer = frappe.get_doc("Customer", link.link_name)
                     if customer.spo_aktuell not in ("Kein", "Papierform", "Digital"):
                         customer.spo_aktuell = "Kein"
-                    customer.save()
+                    customer.save(ignore_permissions=True)
         elif quelle == 'Mitgliedschaft':
             if record.mitglied:
                 customer = frappe.get_doc("Customer", record.mitglied)
                 if customer.spo_aktuell not in ("Kein", "Papierform", "Digital"):
                     customer.spo_aktuell = "Kein"
-                customer.save()
+                customer.save(ignore_permissions=True)
             if record.rechnungsempfaenger:
                 customer = frappe.get_doc("Customer", record.rechnungsempfaenger)
                 if customer.spo_aktuell not in ("Kein", "Papierform", "Digital"):
                     customer.spo_aktuell = "Kein"
-                customer.save()
+                customer.save(ignore_permissions=True)
         elif quelle == 'Payment Entry':
             if record.party_type == 'Customer' and record.party:
                 customer = frappe.get_doc("Customer", record.party)
                 if customer.spo_aktuell not in ("Kein", "Papierform", "Digital"):
                     customer.spo_aktuell = "Kein"
-                customer.save()
+                customer.save(ignore_permissions=True)
     else:
         try:
             customer = record.name
