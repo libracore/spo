@@ -15,6 +15,11 @@ frappe.ui.form.on('Anfrage', {
             cur_frm.save();
         }
     },
+    validate: function(frm) {
+        if (!cur_frm.doc.problematik) {
+            frappe.msgprint("Achtung; Es wurde <b>keine</b> Problematik hinterlegt!");
+        }
+    },
     refresh: function(frm) {
         //dropdown steuerung von sections
         dropdown_steuerung_von_sections(frm);
