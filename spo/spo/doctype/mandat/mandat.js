@@ -458,6 +458,8 @@ function set_rsv_html(frm) {
                 cur_frm.set_df_property('rsv_html','options', r.message);
             }
         });
+    } else {
+        cur_frm.set_df_property('rsv_html','options', '');
     }
 }
 
