@@ -246,7 +246,7 @@
    "fieldname": "problematik",
    "fieldtype": "Select",
    "label": "Problematik",
-   "options": "\nArzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nZA: Honorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nPsychiatrie\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nSterben\nKrankenkasse (Grundversicherung)\nSUVA/EMV/IV/UVG\nZusatz- / Sonstige Versicherung\nallg. Information\nAdressen\nBestellung"
+   "options": "\nArzt: Honorar\nArzt: Aufkl\u00e4rung\nArzt: Zeugnis/KG\nArzt: Behandlung\nArzt: m\u00f6gl. Behandlungsfehler\nArzt: Kommunikation\nZA: Honorar\nZA: Behandlung\nZA: m\u00f6gl. Behandlungsfehler\nZA: KG/Info\nZA: Kommunikation\nKomplement\u00e4r- und Alternativmedizin: Methoden\nPhysio-/Ergotherapie\nPsychiatrie\nJuristische Frage\nSpital/Heim/Leistungszentrum\nPflege\nSPITEX\nTherapie/Arznei\nPatientenverf\u00fcgung/ACP\nKrankenkasse (Grundversicherung)\nSozialversicherungen\nZusatz- / Sonstige Versicherung\nAdressen\nBestellung"
   },
   {
    "allow_in_quick_entry": 1,
@@ -875,7 +875,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2022-07-05 13:07:54.589667",
+ "modified": "2023-01-03 09:48:55.451174",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
