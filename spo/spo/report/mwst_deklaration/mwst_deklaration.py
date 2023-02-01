@@ -35,7 +35,7 @@ def get_data(from_date, to_date):
                          AND `account` LIKE "3100%SPO";""".format(from_date=from_date, to_date=to_date)
     betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
     summe_6p1 += betrag
-    data.append({'description': '6.1%', 'account': '3100', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
+    data.append({'description': '5.9%', 'account': '3100', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
     # 3110
     sql_query = """SELECT 1.077 * IFNULL(SUM(`credit` - `debit`), 0) AS `amount` 
                    FROM `tabGL Entry` 
@@ -90,8 +90,8 @@ def get_data(from_date, to_date):
     betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
     summe_6p1 += betrag
     data.append({'description': '', 'account': '3160', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
-    # total 6.1%
-    tax_6p1 = summe_6p1 * 0.061
+    # total 5.9% (formerly 6.1%)
+    tax_6p1 = summe_6p1 * 0.059
     data.append({'description': '', 'account': '<b>Total</b>', 'amount': "<b>CHF {:,.2f}</b>".format(summe_6p1).replace(",", "'"), 
                  'tax': "<b>CHF {:,.2f}</b>".format(tax_6p1).replace(",", "'") })
     # 3241
@@ -103,9 +103,9 @@ def get_data(from_date, to_date):
                          AND `account` LIKE "3241%SPO";""".format(from_date=from_date, to_date=to_date)
     betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
     summe_3p7 += betrag
-    data.append({'description': '3.7%', 'account': '3241', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
-    # total 3.7%
-    tax_3p7 = summe_3p7 * 0.037
+    data.append({'description': '3.5%', 'account': '3241', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
+    # total 3.5% (formerly 3.7%)
+    tax_3p7 = summe_3p7 * 0.035
     data.append({'description': '', 'account': '<b>Total</b>', 'amount': "<b>CHF {:,.2f}</b>".format(summe_3p7).replace(",", "'"),
                  'tax': "<b>CHF {:,.2f}</b>".format(tax_3p7).replace(",", "'")})
     # 3210
@@ -117,7 +117,7 @@ def get_data(from_date, to_date):
                          AND `account` LIKE "3210%SPO";""".format(from_date=from_date, to_date=to_date)
     betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
     summe_2p1 += betrag
-    data.append({'description': '2.1%', 'account': '3210', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
+    data.append({'description': '2.0%', 'account': '3210', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
     # 3215
     sql_query = """SELECT 1.025 * IFNULL(SUM(`credit` - `debit`), 0) AS `amount` 
                    FROM `tabGL Entry` 
@@ -127,8 +127,8 @@ def get_data(from_date, to_date):
     betrag = frappe.db.sql(sql_query, as_dict=True)[0]['amount']
     summe_2p1 += betrag
     data.append({'description': '', 'account': '3215', 'amount': "CHF {:,.2f}".format(betrag).replace(",", "'"), 'tax': ''})
-    # total 2.1%
-    tax_2p1 = summe_2p1 * 0.021
+    # total 2.0% (formerly 2.1%)
+    tax_2p1 = summe_2p1 * 0.020
     data.append({'description': '', 'account': '<b>Total</b>', 'amount': "<b>CHF {:,.2f}</b>".format(summe_2p1).replace(",", "'"),
                  'tax': "<b>CHF {:,.2f}</b>".format(tax_2p1).replace(",", "'")})
     # 3200
