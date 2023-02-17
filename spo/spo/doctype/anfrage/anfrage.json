@@ -470,8 +470,8 @@
    "fetch_if_empty": 1,
    "fieldname": "patient_kanton",
    "fieldtype": "Select",
-   "label": "Kanton",
-   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFL\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nKeine Angabe"
+   "label": "Kanton/Ausland",
+   "options": "\nAG\nAI\nAR\nBE\nBL\nBS\nFL\nFR\nGE\nGL\nGR\nJU\nLU\nNE\nNW\nOW\nSG\nSH\nSO\nSZ\nTG\nTI\nUR\nVD\nVS\nZG\nZH\nDeutschland\nFrankreich\nF\u00fcrstentum Lichtenstein\nItalien\nKeine Angabe"
   },
   {
    "fetch_from": "patienten_kontakt.phone",
@@ -875,7 +875,7 @@
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2023-01-03 09:48:55.451174",
+ "modified": "2023-02-17 09:03:23.916911",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",
