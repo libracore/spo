@@ -341,7 +341,14 @@ def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rs
     return mandat.name
 
 def autom_submit():
-    sql_query = """SELECT `name` FROM `tabAnfrage` WHERE `datum` <= '{last_week}' AND `docstatus` = 0""".format(last_week=add_days(nowdate(), -7))
+    sql_query = """SELECT
+                        `name`
+                    FROM `tabAnfrage`
+                    WHERE (
+                        `datum` <= '{last_14_days}' AND `docstatus` = 0 AND `anfrage_typ` = 'Mandats Anfrage'
+                    ) OR (
+                        `datum` <= '{last_week}' AND `docstatus` = 0 AND `anfrage_typ` != 'Mandats Anfrage'
+                    )""".format(last_week=add_days(nowdate(), -7), last_14_days=add_days(nowdate(), -14))
     anfragen_to_submit = frappe.db.sql(sql_query, as_dict=True)
     for _anfrage in anfragen_to_submit:
         try:
