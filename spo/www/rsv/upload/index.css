@@ -1,0 +1,19 @@
+#spofreeze {
+    display: none;
+}
+
+#spofreeze .lead {
+    text-align: center;
+}
+
+.modal-header .indicator {
+  margin-top: -2.5px !important;
+}
+
+.indicator.red.spo {
+    vertical-align: text-bottom;
+}
+
+.indicator.green.spo {
+    vertical-align: text-bottom;
+}

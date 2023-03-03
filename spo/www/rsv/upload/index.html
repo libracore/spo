@@ -1,0 +1,225 @@
+{% if access %}
+    <div id="formular">
+        <h1>RSV <i class="fa fa-arrow-right"></i> SPO Upload-Tool</h1>
+        <h2>Willkommen {{ contact.salutation or '' }} {{ contact.salutation_title or '' }} {{ contact.first_name or '' }} {{ contact.last_name or '' }}</h2>
+        <p>(Ihre Rechtsschutzversicherung: {{ customer.customer_name }})</p>
+        <hr>
+        <form class="needs-validation" novalidate anlage_key="{{ anlage_key }}" rsv="{{ customer.name }}">
+            <h3>Allgemeine Daten</h3>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="anfrage_typ">Anfrage Typ</label>
+                    <input type="text" class="form-control" id="anfrage_typ" value="Mandats Anfrage" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="datum">Anfrage Datum</label>
+                    <input id="datum" class="form-control" type="date" readonly/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="rsv_kontakt">Zuständige*r Mitarbeiter*inn</label>
+                    <select class="form-control" id="rsv_kontakt" required>
+                        <option></option>
+                        {% for ma in mitarbeiter %}
+                            <option value="{{ ma.name }}">{{ ma.first_name or '' }} {{ ma.last_name or '' }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine*n Mitarbeiter*inn
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="rechtsschutz_ref">Ihre Referenz</label>
+                <input type="text" class="form-control" id="rechtsschutz_ref" required>
+                <div class="invalid-feedback">
+                    Falls Sie keine Referenznummer besitzen, können sie auch ein Platzhalter (z.B. "-") einfügen.
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="todesfall">Anfrage im Zusammenhang mit einem Todesfall?</label>
+                    <select class="form-control" id="todesfall" required>
+                        <option>Nein</option>
+                        <option>Ja</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="urteilsunfaehig">Anfrage im Zusammenhang mit urteilsunfähiger Person?</label>
+                    <select class="form-control" id="urteilsunfaehig" required>
+                        <option>Nein</option>
+                        <option>Ja</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="problematik">Problematik</label>
+                <select class="form-control" id="problematik" required>
+                    <option></option>
+                    <option>Arzt: Honorar</option>
+                    <option>Arzt: Aufklärung</option>
+                    <option>Arzt: Zeugnis/KG</option>
+                    <option>Arzt: Behandlung</option>
+                    <option>Arzt: mögl. Behandlungsfehler</option>
+                    <option>Arzt: Kommunikation</option>
+                    <option>ZA: Honorar</option>
+                    <option>ZA: Behandlung</option>
+                    <option>ZA: mögl. Behandlungsfehler</option>
+                    <option>ZA: KG/Info</option>
+                    <option>ZA: Kommunikation</option>
+                    <option>Komplementär- und Alternativmedizin: Methoden</option>
+                    <option>Physio-/Ergotherapie</option>
+                    <option>Psychiatrie</option>
+                    <option>Juristische Frage</option>
+                    <option>Spital/Heim/Leistungszentrum</option>
+                    <option>Pflege</option>
+                    <option>SPITEX</option>
+                    <option>Therapie/Arznei</option>
+                    <option>Patientenverfügung/ACP</option>
+                    <option>Krankenkasse (Grundversicherung)</option>
+                    <option>Sozialversicherungen</option>
+                    <option>Zusatz- / Sonstige Versicherung</option>
+                </select>
+                <div class="invalid-feedback">
+                    Bitte erfassen Sie eine Problematik.
+                </div>
+            </div>
+            <h3>Angaben zur versicherten Person</h3>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="patient_vorname">Vorname</label>
+                    <input type="text" class="form-control" id="patient_vorname" required>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Vornamen.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="patient_nachname">Nachname</label>
+                    <input type="text" class="form-control" id="patient_nachname" required>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Nachnamen.
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="patient_geburtsdatum">Geburtsdatum</label>
+                    <input id="patient_geburtsdatum" class="form-control" type="date" required/>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Geburtsdatum.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="patient_krankenkasse">Krankenkasse</label>
+                    <input type="text" class="form-control" id="patient_krankenkasse">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="patient_telefon">Telefon</label>
+                    <input id="patient_telefon" class="form-control" type="text"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="patient_mobile">Mobile</label>
+                    <input type="text" class="form-control" id="patient_mobile">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="patient_mail">E-Mail</label>
+                    <input type="email" class="form-control" id="patient_mail">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="patient_strasse">Strasse und Hausnummer</label>
+                <input type="text" class="form-control" id="patient_strasse" required>
+                <div class="invalid-feedback">
+                    Bitte erfassen Sie eine Strasse inkl. Hausnummer.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="patient_adress_zusatz">Adress Zusatz</label>
+                <input type="text" class="form-control" id="patient_adress_zusatz">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="patient_plz">Postleitzahl</label>
+                    <input type="text" class="form-control" id="patient_plz" required>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Postleitzahl.
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="patient_ort">Ort</label>
+                    <input type="text" class="form-control" id="patient_ort" required>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Ort.
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="patient_kanton">Kanton / Ausland</label>
+                    <select class="form-control" id="patient_kanton" required>
+                        <option></option>
+                        <option>AG</option>
+                        <option>AI</option>
+                        <option>AR</option>
+                        <option>BE</option>
+                        <option>BL</option>
+                        <option>BS</option>
+                        <option>FL</option>
+                        <option>FR</option>
+                        <option>GE</option>
+                        <option>GL</option>
+                        <option>GR</option>
+                        <option>JU</option>
+                        <option>LU</option>
+                        <option>NE</option>
+                        <option>NW</option>
+                        <option>OW</option>
+                        <option>SG</option>
+                        <option>SH</option>
+                        <option>SO</option>
+                        <option>SZ</option>
+                        <option>TG</option>
+                        <option>TI</option>
+                        <option>UR</option>
+                        <option>VD</option>
+                        <option>VS</option>
+                        <option>ZG</option>
+                        <option>ZH</option>
+                        <option>Deutschland</option>
+                        <option>Frankreich</option>
+                        <option>Fürstentum Lichtenstein</option>
+                        <option>Italien</option>
+                        <option>Keine Angabe</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Kanton.
+                    </div>
+                </div>
+            </div>
+            <h3>Angaben zur Anfrage</h3>
+            <div class="form-group">
+                <textarea class="form-control" id="grundlage_anfrage" rows="10" required></textarea>
+                <div class="invalid-feedback">
+                    Bitte erfassen Sie die Angaben zur Anfrage.
+                </div>
+            </div>
+            <h3>Anhang</h3>
+            <div class="form-group">
+                <div class="custom-file">
+                    <label class="custom-file-label" for="anhang">Wählen Sie einen Anhang</label>
+                    <input type="file" class="custom-file-input" id="anhang" aria-describedby="fileHelpInline">
+                    <small id="fileHelpInline" class="text-muted">
+                        Um mehrere Dateien hochzuladen, verpacken Sie diese bitte in einem komprimierten Ordner (.zip) und laden Sie diesen hoch.
+                    </small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Erstelle Anfrage</button>
+        </form>
+    </div>
+    <div id="spofreeze" class="spo-modal-backdrop">
+        <div class="spo-freeze-message-container">
+            <div class="spo-freeze-message">
+                <p class="lead">Ihre Anfrage wird verarbeitet<br>Bitte warten...</p>
+            </div>
+        </div>
+    </div>
+{% endif %}

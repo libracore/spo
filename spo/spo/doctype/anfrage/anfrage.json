@@ -33,6 +33,8 @@
   "datum",
   "todesfall",
   "urteilsunfaehig",
+  "eingeschraenkter_zugriff",
+  "spo_vip_status",
   "section_person",
   "kontaktdaten_suchen",
   "patient_vorname",
@@ -240,7 +242,7 @@
    "fieldname": "kontakt_via",
    "fieldtype": "Select",
    "label": "Kontakt via",
-   "options": "\nTelefon\nBrief\nMail\nRechtsanwalt\nRechtsschutzversicherung\npers\u00f6nliche Beratung\nVideo-Call"
+   "options": "\nTelefon\nBrief\nMail\nRechtsanwalt\nRechtsschutzversicherung\npers\u00f6nliche Beratung\nVideo-Call\nUpload Tool"
   },
   {
    "fieldname": "problematik",
@@ -871,11 +873,25 @@
    "fieldtype": "Link",
    "label": "Fusszeile",
    "options": "Letter Head"
+  },
+  {
+   "default": "0",
+   "fieldname": "eingeschraenkter_zugriff",
+   "fieldtype": "Check",
+   "label": "Eingeschr\u00e4nkter Zugriff"
+  },
+  {
+   "default": "Normal",
+   "fieldname": "spo_vip_status",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "SPO VIP Status",
+   "options": "SPO VIP Status"
   }
  ],
  "icon": "fa fa-question",
  "is_submittable": 1,
- "modified": "2023-02-17 09:03:23.916911",
+ "modified": "2023-03-03 11:20:22.711471",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Anfrage",

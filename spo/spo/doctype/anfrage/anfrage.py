@@ -23,6 +23,24 @@ class Anfrage(Document):
 
         if self.patient != self.customer:
             self.customer = self.patient
+        
+        if self.eingeschraenkter_zugriff:
+            self.spo_vip_status = 'VIP'
+        else:
+            self.spo_vip_status = 'Normal'
+        
+        if self.kontakt_via == 'Upload Tool':
+            if not self.rsv_adresse:
+                if self.rsv:
+                    rsv_adressen = frappe.db.sql("""
+                                                    SELECT
+                                                        `parent`
+                                                    FROM `tabDynamic Link`
+                                                    WHERE `parenttype` = 'Address'
+                                                    AND `link_name` = '{0}'""".format(self.rsv), as_dict=True)
+                    
+                    if len(rsv_adressen) > 0:
+                        self.rsv_adresse = rsv_adressen[0].parent
 
     def onload(self):
         if self.is_new() != True:
