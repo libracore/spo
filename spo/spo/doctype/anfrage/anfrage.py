@@ -23,6 +23,24 @@ class Anfrage(Document):
 
         if self.patient != self.customer:
             self.customer = self.patient
+        
+        if self.eingeschraenkter_zugriff:
+            self.spo_vip_status = 'VIP'
+        else:
+            self.spo_vip_status = 'Normal'
+        
+        if self.kontakt_via == 'Upload Tool':
+            if not self.rsv_adresse:
+                if self.rsv:
+                    rsv_adressen = frappe.db.sql("""
+                                                    SELECT
+                                                        `parent`
+                                                    FROM `tabDynamic Link`
+                                                    WHERE `parenttype` = 'Address'
+                                                    AND `link_name` = '{0}'""".format(self.rsv), as_dict=True)
+                    
+                    if len(rsv_adressen) > 0:
+                        self.rsv_adresse = rsv_adressen[0].parent
 
     def onload(self):
         if self.is_new() != True:
@@ -341,7 +359,14 @@ def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rs
     return mandat.name
 
 def autom_submit():
-    sql_query = """SELECT `name` FROM `tabAnfrage` WHERE `datum` <= '{last_week}' AND `docstatus` = 0""".format(last_week=add_days(nowdate(), -7))
+    sql_query = """SELECT
+                        `name`
+                    FROM `tabAnfrage`
+                    WHERE (
+                        `datum` <= '{last_14_days}' AND `docstatus` = 0 AND `anfrage_typ` = 'Mandats Anfrage'
+                    ) OR (
+                        `datum` <= '{last_week}' AND `docstatus` = 0 AND `anfrage_typ` != 'Mandats Anfrage'
+                    )""".format(last_week=add_days(nowdate(), -7), last_14_days=add_days(nowdate(), -14))
     anfragen_to_submit = frappe.db.sql(sql_query, as_dict=True)
     for _anfrage in anfragen_to_submit:
         try:

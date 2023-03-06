@@ -25,5 +25,19 @@ frappe.ui.form.on('Customer', {
                 } 
             }
         });
+    },
+    erstelle_rsv_upload_id: function(frm) {
+        frappe.call({
+            method: 'spo.scripts.custom_scripts.customer.get_rsv_upload_cred',
+            args: {
+                customer: cur_frm.doc.name
+            },
+            callback: function(r) {
+                if(r.message) {
+                    cur_frm.set_value("rsv_upload_id", r.message.id);
+                    cur_frm.set_value("rsv_upload_url", r.message.url);
+                } 
+            }
+        });
     }
 });
