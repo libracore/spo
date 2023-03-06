@@ -8,7 +8,7 @@ frappe.query_reports["Adressliste SPO Aktuell"] = {
 			"fieldname": "customer_group",
 			"label": __("Customer Group"),
 			"fieldtype": "Select",
-			"options": ["Mitglied", "Newsletter Abo"]
+			"options": ["Mitglied", "Newsletter Abo", "Schenkende Rechnung an Dritte"]
 		}
 	]
 };
