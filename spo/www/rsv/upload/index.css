@@ -17,3 +17,19 @@
 .indicator.green.spo {
     vertical-align: text-bottom;
 }
+
+.angehoerige {
+    display: none;
+}
+
+.angehoerige-block {
+    display: none;
+}
+
+.gesetzliche-vertreter {
+    display: none;
+}
+
+.gesetzliche-vertreter-block {
+    display: none;
+}

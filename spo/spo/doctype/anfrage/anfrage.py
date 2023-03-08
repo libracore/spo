@@ -354,6 +354,13 @@ def creat_new_mandat(anfrage=None, mitglied=None, kontakt=None, adresse=None, rs
             'ges_ver_2_kontakt': ges_ver_2_kontakt
         })
         mandat.save()
+    
+    # relink files from anfrage to mandat
+    anfrage_files = frappe.db.sql("""SELECT `name` FROM `tabFile` WHERE `attached_to_name` = '{0}'""".format(anfrage), as_dict=True)
+    if len(anfrage_files) > 0:
+        for anfrage_file in anfrage_files:
+            frappe.db.set_value("File", anfrage_file.name, "attached_to_doctype", "Mandat")
+            frappe.db.set_value("File", anfrage_file.name, "attached_to_name", mandat.name)
 
 
     return mandat.name

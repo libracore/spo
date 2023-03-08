@@ -1,6 +1,9 @@
 $(document).ready(function() {
     var today = new Date().toISOString().split("T")[0];
     $('#datum').val(today);
+    $("#todesfall").val("Nein");
+    $("#urteilsunfaehig").val("Nein");
+    $("#anhang").val('');
 });
 
 (function() {
@@ -90,9 +93,80 @@ function finish_upload(anfrage, good) {
     $('form').removeClass("was-validated");
     var today = new Date().toISOString().split("T")[0];
     $('#datum').val(today);
+    $("#todesfall").val("Nein");
+    $("#urteilsunfaehig").val("Nein");
 }
 
 function freeze() {
     $("#formular").toggle("hidden");
     $("#spofreeze").toggle("hidden");
 }
+
+$("#todesfall").change(function(){
+    if ($("#todesfall").val() == 'Ja') {
+        $(".angehoerige-block").each(function(){
+            $(this).toggle("hidden");
+            $(this).css("display", "block");
+        });
+        
+        $(".angehoerige").each(function(){
+            $(this).toggle("hidden");
+            $(this).css("display", "flex");
+        });
+        
+        $(".angehoerige-required").each(function(){
+            $(this).attr("required","required");
+        });
+    } else {
+        $(".angehoerige-block").each(function(){
+            $(this).toggle("hidden");
+        });
+        
+        $(".angehoerige").each(function(){
+            $(this).toggle("hidden");
+        });
+        
+        $(".angehoerige-required").each(function(){
+            $(this).removeAttr("required");
+        });
+    }
+});
+
+$("#urteilsunfaehig").change(function(){
+    if ($("#urteilsunfaehig").val() == 'Ja') {
+        $(".gesetzliche-vertreter-block").each(function(){
+            $(this).toggle("hidden");
+            $(this).css("display", "block");
+        });
+        
+        $(".gesetzliche-vertreter").each(function(){
+            $(this).toggle("hidden");
+            $(this).css("display", "flex");
+        });
+        
+        $(".ges-ver-required").each(function(){
+            $(this).attr("required","required");
+        });
+    } else {
+        $(".gesetzliche-vertreter-block").each(function(){
+            $(this).toggle("hidden");
+        });
+        
+        $(".gesetzliche-vertreter").each(function(){
+            $(this).toggle("hidden");
+        });
+        
+        $(".ges-ver-required").each(function(){
+            $(this).removeAttr("required");
+        });
+    }
+});
+
+$("#anhang").change(function(){
+    if ($("#anhang").val()) {
+        $("#anhang_label").html($("#anhang")[0].files[0].name );
+    } else {
+        $("#anhang_label").html('Wählen Sie einen Anhang');
+        $("#anhang").val('');
+    }
+});

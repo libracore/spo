@@ -28,59 +28,24 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="rechtsschutz_ref">Ihre Referenz</label>
-                <input type="text" class="form-control" id="rechtsschutz_ref" required>
-                <div class="invalid-feedback">
-                    Falls Sie keine Referenznummer besitzen, können sie auch ein Platzhalter (z.B. "-") einfügen.
-                </div>
-            </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="todesfall">Anfrage im Zusammenhang mit einem Todesfall?</label>
-                    <select class="form-control" id="todesfall" required>
-                        <option>Nein</option>
-                        <option>Ja</option>
-                    </select>
+                    <label for="rechtsschutz_ref">Ihre Referenz</label>
+                    <input type="text" class="form-control" id="rechtsschutz_ref" required>
+                    <div class="invalid-feedback">
+                        Falls Sie keine Referenznummer besitzen, können sie auch ein Platzhalter (z.B. "-") einfügen.
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="urteilsunfaehig">Anfrage im Zusammenhang mit urteilsunfähiger Person?</label>
-                    <select class="form-control" id="urteilsunfaehig" required>
-                        <option>Nein</option>
-                        <option>Ja</option>
+                    <label for="problematik">Problematik</label>
+                    <select class="form-control" id="problematik" required>
+                        <option></option>
+                        <option>Arzt: mögl. Behandlungsfehler</option>
+                        <option>ZA: mögl. Behandlungsfehler</option>
                     </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="problematik">Problematik</label>
-                <select class="form-control" id="problematik" required>
-                    <option></option>
-                    <option>Arzt: Honorar</option>
-                    <option>Arzt: Aufklärung</option>
-                    <option>Arzt: Zeugnis/KG</option>
-                    <option>Arzt: Behandlung</option>
-                    <option>Arzt: mögl. Behandlungsfehler</option>
-                    <option>Arzt: Kommunikation</option>
-                    <option>ZA: Honorar</option>
-                    <option>ZA: Behandlung</option>
-                    <option>ZA: mögl. Behandlungsfehler</option>
-                    <option>ZA: KG/Info</option>
-                    <option>ZA: Kommunikation</option>
-                    <option>Komplementär- und Alternativmedizin: Methoden</option>
-                    <option>Physio-/Ergotherapie</option>
-                    <option>Psychiatrie</option>
-                    <option>Juristische Frage</option>
-                    <option>Spital/Heim/Leistungszentrum</option>
-                    <option>Pflege</option>
-                    <option>SPITEX</option>
-                    <option>Therapie/Arznei</option>
-                    <option>Patientenverfügung/ACP</option>
-                    <option>Krankenkasse (Grundversicherung)</option>
-                    <option>Sozialversicherungen</option>
-                    <option>Zusatz- / Sonstige Versicherung</option>
-                </select>
-                <div class="invalid-feedback">
-                    Bitte erfassen Sie eine Problematik.
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Problematik.
+                    </div>
                 </div>
             </div>
             <h3>Angaben zur versicherten Person</h3>
@@ -109,20 +74,16 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="patient_krankenkasse">Krankenkasse</label>
-                    <input type="text" class="form-control" id="patient_krankenkasse">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
                     <label for="patient_telefon">Telefon</label>
                     <input id="patient_telefon" class="form-control" type="text"/>
                 </div>
-                <div class="form-group col-md-4">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
                     <label for="patient_mobile">Mobile</label>
                     <input type="text" class="form-control" id="patient_mobile">
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="patient_mail">E-Mail</label>
                     <input type="email" class="form-control" id="patient_mail">
                 </div>
@@ -195,6 +156,238 @@
                     </div>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="todesfall">Anfrage im Zusammenhang mit einem Todesfall?</label>
+                    <select class="form-control" id="todesfall" required>
+                        <option>Nein</option>
+                        <option>Ja</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="urteilsunfaehig">Anfrage im Zusammenhang mit urteilsunfähiger Person?</label>
+                    <select class="form-control" id="urteilsunfaehig" required>
+                        <option>Nein</option>
+                        <option>Ja</option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="angehoerige-block">Angaben zu Angehörigen</h3>
+            <div class="form-row angehoerige">
+                <div class="form-group col-md-6">
+                    <label for="ang_vorname">Vorname</label>
+                    <input type="text" class="form-control angehoerige-required" id="ang_vorname">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Vornamen.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ang_nachname">Nachname</label>
+                    <input type="text" class="form-control angehoerige-required" id="ang_nachname">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Nachnamen.
+                    </div>
+                </div>
+            </div>
+            <div class="form-row angehoerige">
+                <div class="form-group col-md-6">
+                    <label for="ang_geburtsdatum">Geburtsdatum</label>
+                    <input id="ang_geburtsdatum" class="form-control angehoerige-required" type="date"/>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Geburtsdatum.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ang_telefon">Telefon</label>
+                    <input id="ang_telefon" class="form-control" type="text"/>
+                </div>
+            </div>
+            <div class="form-row angehoerige">
+                <div class="form-group col-md-6">
+                    <label for="ang_mobile">Mobile</label>
+                    <input type="text" class="form-control" id="ang_mobile">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ang_mail">E-Mail</label>
+                    <input type="email" class="form-control" id="ang_mail">
+                </div>
+            </div>
+            <div class="form-group angehoerige-block">
+                <label for="ang_strasse">Strasse und Hausnummer</label>
+                <input type="text" class="form-control angehoerige-required" id="ang_strasse">
+                <div class="invalid-feedback">
+                    Bitte erfassen Sie eine Strasse inkl. Hausnummer.
+                </div>
+            </div>
+            <div class="form-group angehoerige-block">
+                <label for="ang_adress_zusatz">Adress Zusatz</label>
+                <input type="text" class="form-control" id="ang_adress_zusatz">
+            </div>
+            <div class="form-row angehoerige">
+                <div class="form-group col-md-4">
+                    <label for="ang_plz">Postleitzahl</label>
+                    <input type="text" class="form-control angehoerige-required" id="ang_plz">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Postleitzahl.
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="ang_ort">Ort</label>
+                    <input type="text" class="form-control angehoerige-required" id="ang_ort">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Ort.
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="ang_kanton">Kanton / Ausland</label>
+                    <select class="form-control angehoerige-required" id="ang_kanton">
+                        <option></option>
+                        <option>AG</option>
+                        <option>AI</option>
+                        <option>AR</option>
+                        <option>BE</option>
+                        <option>BL</option>
+                        <option>BS</option>
+                        <option>FL</option>
+                        <option>FR</option>
+                        <option>GE</option>
+                        <option>GL</option>
+                        <option>GR</option>
+                        <option>JU</option>
+                        <option>LU</option>
+                        <option>NE</option>
+                        <option>NW</option>
+                        <option>OW</option>
+                        <option>SG</option>
+                        <option>SH</option>
+                        <option>SO</option>
+                        <option>SZ</option>
+                        <option>TG</option>
+                        <option>TI</option>
+                        <option>UR</option>
+                        <option>VD</option>
+                        <option>VS</option>
+                        <option>ZG</option>
+                        <option>ZH</option>
+                        <option>Deutschland</option>
+                        <option>Frankreich</option>
+                        <option>Fürstentum Lichtenstein</option>
+                        <option>Italien</option>
+                        <option>Keine Angabe</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Kanton.
+                    </div>
+                </div>
+            </div>
+            <h3 class="gesetzliche-vertreter-block">Angaben gesetzliche Vertreter</h3>
+            <div class="form-row gesetzliche-vertreter">
+                <div class="form-group col-md-6">
+                    <label for="ges_ver_1_vorname">Vorname</label>
+                    <input type="text" class="form-control ges-ver-required" id="ges_ver_1_vorname">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Vornamen.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ges_ver_1_nachname">Nachname</label>
+                    <input type="text" class="form-control ges-ver-required" id="ges_ver_1_nachname">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Nachnamen.
+                    </div>
+                </div>
+            </div>
+            <div class="form-row gesetzliche-vertreter">
+                <div class="form-group col-md-6">
+                    <label for="ges_ver_1_geburtsdatum">Geburtsdatum</label>
+                    <input id="ges_ver_1_geburtsdatum" class="form-control ges-ver-required" type="date"/>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Geburtsdatum.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ges_ver_1_telefon">Telefon</label>
+                    <input id="ges_ver_1_telefon" class="form-control" type="text"/>
+                </div>
+            </div>
+            <div class="form-row gesetzliche-vertreter">
+                <div class="form-group col-md-6">
+                    <label for="ges_ver_1_mobile">Mobile</label>
+                    <input type="text" class="form-control" id="ges_ver_1_mobile">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ges_ver_1_mail">E-Mail</label>
+                    <input type="email" class="form-control" id="ges_ver_1_mail">
+                </div>
+            </div>
+            <div class="form-group gesetzliche-vertreter-block">
+                <label for="ges_ver_1_strasse">Strasse und Hausnummer</label>
+                <input type="text" class="form-control ges-ver-required" id="ges_ver_1_strasse">
+                <div class="invalid-feedback">
+                    Bitte erfassen Sie eine Strasse inkl. Hausnummer.
+                </div>
+            </div>
+            <div class="form-group gesetzliche-vertreter-block">
+                <label for="ges_ver_1_adress_zusatz">Adress Zusatz</label>
+                <input type="text" class="form-control" id="ges_ver_1_adress_zusatz">
+            </div>
+            <div class="form-row gesetzliche-vertreter">
+                <div class="form-group col-md-4">
+                    <label for="ges_ver_1_plz">Postleitzahl</label>
+                    <input type="text" class="form-control ges-ver-required" id="ges_ver_1_plz">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie eine Postleitzahl.
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="ges_ver_1_ort">Ort</label>
+                    <input type="text" class="form-control ges-ver-required" id="ges_ver_1_ort">
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Ort.
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="ges_ver_1_kanton">Kanton / Ausland</label>
+                    <select class="form-control ges-ver-required" id="ges_ver_1_kanton">
+                        <option></option>
+                        <option>AG</option>
+                        <option>AI</option>
+                        <option>AR</option>
+                        <option>BE</option>
+                        <option>BL</option>
+                        <option>BS</option>
+                        <option>FL</option>
+                        <option>FR</option>
+                        <option>GE</option>
+                        <option>GL</option>
+                        <option>GR</option>
+                        <option>JU</option>
+                        <option>LU</option>
+                        <option>NE</option>
+                        <option>NW</option>
+                        <option>OW</option>
+                        <option>SG</option>
+                        <option>SH</option>
+                        <option>SO</option>
+                        <option>SZ</option>
+                        <option>TG</option>
+                        <option>TI</option>
+                        <option>UR</option>
+                        <option>VD</option>
+                        <option>VS</option>
+                        <option>ZG</option>
+                        <option>ZH</option>
+                        <option>Deutschland</option>
+                        <option>Frankreich</option>
+                        <option>Fürstentum Lichtenstein</option>
+                        <option>Italien</option>
+                        <option>Keine Angabe</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Bitte erfassen Sie einen Kanton.
+                    </div>
+                </div>
+            </div>
             <h3>Angaben zur Anfrage</h3>
             <div class="form-group">
                 <textarea class="form-control" id="grundlage_anfrage" rows="10" required></textarea>
@@ -205,7 +398,7 @@
             <h3>Anhang</h3>
             <div class="form-group">
                 <div class="custom-file">
-                    <label class="custom-file-label" for="anhang">Wählen Sie einen Anhang</label>
+                    <label class="custom-file-label" id="anhang_label" for="anhang">Wählen Sie einen Anhang</label>
                     <input type="file" class="custom-file-input" id="anhang" aria-describedby="fileHelpInline">
                     <small id="fileHelpInline" class="text-muted">
                         Um mehrere Dateien hochzuladen, verpacken Sie diese bitte in einem komprimierten Ordner (.zip) und laden Sie diesen hoch.
