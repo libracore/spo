@@ -75,6 +75,12 @@ function get_mandats_positionen(frm, mandat) {
             var rate = response.message.rate;
             var pauschal_artikel = response.message.pauschal_artikel;
             var pauschal_betrag = response.message.pauschal_betrag;
+            var med_abschl_gespr = response.message.med_abschl_gespr;
+            var med_abschl_gespr_datum = response.message.med_abschl_gespr_datum;
+            var med_jur_abschl_gespr = response.message.med_jur_abschl_gespr;
+            var med_jur_abschl_gespr_datum = response.message.med_jur_abschl_gespr_datum;
+            var med_abschl_gespr_betrag = response.message.med_abschl_gespr_betrag;
+            var med_jur_abschl_gespr_betrag = response.message.med_jur_abschl_gespr_betrag;
             if (!rate || rate <= 0) {
                 rate = false;
             }
@@ -113,7 +119,9 @@ function get_mandats_positionen(frm, mandat) {
                         frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
                         frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
                         frappe.model.set_value(child.doctype, child.name, 'employee', logs[i].employee_name);
+                        frappe.model.set_value(child.doctype, child.name, 'klientenkontakt', logs[i].klientenkontakt);
                     }
+                    
                     //~ Pauschal Verrechnung
                     if (pauschal_artikel) {
                         var child = cur_frm.add_child('items');
@@ -124,17 +132,49 @@ function get_mandats_positionen(frm, mandat) {
                         frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
                     }
                     
+                    //~ Medizinisches Abschlussgespräch
+                    if (med_abschl_gespr) {
+                        var child = cur_frm.add_child('items');
+                        frappe.model.set_value(child.doctype, child.name, 'item_code', pauschal_artikel);
+                        frappe.model.set_value(child.doctype, child.name, 'qty', 1);
+                        frappe.model.set_value(child.doctype, child.name, 'spo_description', 'Medizinisches Abschlussgespräch ' + med_abschl_gespr_datum);
+                        frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'med_abschl_gespr', 1);
+                    }
+                    
+                    //~ Medizinisches Juristische Abschlussgespräch
+                    if (med_jur_abschl_gespr) {
+                        var child = cur_frm.add_child('items');
+                        frappe.model.set_value(child.doctype, child.name, 'item_code', pauschal_artikel);
+                        frappe.model.set_value(child.doctype, child.name, 'qty', 1);
+                        frappe.model.set_value(child.doctype, child.name, 'spo_description', 'Medizinisches-Juristisches Abschlussgespräch ' + med_jur_abschl_gespr_datum);
+                        frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
+                        frappe.model.set_value(child.doctype, child.name, 'med_jur_abschl_gespr', 1);
+                    }
+                    
                     cur_frm.save().then(() => {
                         var line_items = cur_frm.doc.items;
                         line_items.forEach(function(entry) {
-                             //~ Pausch Verrechnug
+                             //~ Pauschal Verrechnug
                              if (pauschal_artikel) {
                                  if (entry.item_code == pauschal_artikel) {
-                                     entry.rate = pauschal_betrag;
+                                     if (entry.med_abschl_gespr) {
+                                         entry.rate = med_abschl_gespr_betrag;
+                                     } else if (entry.med_jur_abschl_gespr) {
+                                         entry.rate = med_jur_abschl_gespr_betrag;
+                                     } else {
+                                         entry.rate = pauschal_betrag;
+                                     }
                                  } else {
-                                     entry.rate = 0;
-                                     entry.discount_percentage = 100;
-                                     entry.discount_amount = entry.price_list_rate;
+                                     if (entry.klientenkontakt) {
+                                         entry.rate = rate;
+                                     } else {
+                                         entry.rate = 0;
+                                         entry.discount_percentage = 100;
+                                         entry.discount_amount = entry.price_list_rate;
+                                     }
                                  }
                              } else {
                                  if (rate) {

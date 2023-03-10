@@ -146,13 +146,27 @@ frappe.ui.form.on('Mandat', {
         get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
         d.show();
     },
-    pauschal_verrechnung: function(frm) {
-        if (cur_frm.doc.pauschal_verrechnung) {
-            cur_frm.set_df_property('pauschal_betrag','reqd', 1);
-            cur_frm.set_df_property('pauschal_artikel','reqd', 1);
-        } else {
-            cur_frm.set_df_property('pauschal_betrag','reqd', 0);
-            cur_frm.set_df_property('pauschal_artikel','reqd', 0);
+    pauschal_variante: function(frm) {
+        if (frm.doc.pauschal_variante == 'Empfehlung schriftlich') {
+            frappe.db.get_single_value('Einstellungen', 'empfehlung_schriftlich').then(
+                function(value) {
+                    cur_frm.set_value('pauschal_betrag', value);
+                }
+            );
+        }
+        if (frm.doc.pauschal_variante == 'Empfehlung mündlich') {
+            frappe.db.get_single_value('Einstellungen', 'empfehlung_muendlich').then(
+                function(value) {
+                    cur_frm.set_value('pauschal_betrag', value);
+                }
+            );
+        }
+        if (frm.doc.pauschal_variante == 'Beurteilung') {
+            frappe.db.get_single_value('Einstellungen', 'beurteilung').then(
+                function(value) {
+                    cur_frm.set_value('pauschal_betrag', value);
+                }
+            );
         }
     }
 });
@@ -296,7 +310,7 @@ function update_dashboard(frm) {
             // Kostendach (Verwendet/Ausstehend)
             var max_aufwand = query.callcenter_limit;
             if (frm.doc.max_aufwand > 0) {
-                max_aufwand = frm.doc.max_aufwand;
+                max_aufwand = frm.doc.pauschal_verrechnung ? frm.doc.pauschal_betrag:frm.doc.max_aufwand;
             }
             
             var _colors = ['#d40000', '#00b000'];
@@ -305,7 +319,7 @@ function update_dashboard(frm) {
                 _colors = ['#00b000', '#d40000'];
             } else {
                 //~ aufwand_in_ch = ((aufwand_in_ch / 60) * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
-                aufwand_in_ch = (aufwand_in_ch * frm.doc.stundensatz) + cur_frm.doc.facharzthonorar;
+                aufwand_in_ch = (aufwand_in_ch * frm.doc.stundensatz); // (kein Facharzthonorar weil neu immer exkl.) + cur_frm.doc.facharzthonorar;
             }
             
             aufwand_in_ch = Math.round(aufwand_in_ch * 100) / 100;
@@ -370,7 +384,8 @@ function timesheet_handling(frm) {
         {'fieldname': 'arbeit', 'fieldtype': 'Select', 'label': __('Arbeitsinhalt'), 'reqd': 1, options: [__('Korrespondenz'), __('Telefonat'), __('Aktenstudium'), __('Organisation der juristischen Beratung'), __('Juristische Beratung'), __('Recherche Facharzt'), __('Organisation Facharzt'), __('Interne fachliche Besprechung'), __('Sonstiges')]},
         {'fieldname': 'remark', 'fieldtype': 'Small Text', 'label': __('Bemerkung'), 'reqd': 0},
         {'fieldname': 'time', 'fieldtype': 'Float', 'label': 'Arbeitszeit (in h)', 'reqd': 1},
-        {'fieldname': 'nicht_verrechnen', 'fieldtype': 'Check', 'label': 'Nicht verrechnen', 'default': 0}
+        {'fieldname': 'nicht_verrechnen', 'fieldtype': 'Check', 'label': 'Nicht verrechnen', 'default': 0},
+        {'fieldname': 'klientenkontakt', 'fieldtype': 'Check', 'label': 'Zusatz Leistung: Klientenkontakt', 'default': 0}
     ],
     function(values){
         var bemerkung = __(values.arbeit) + ": " + (values.remark||'');
@@ -386,7 +401,8 @@ function timesheet_handling(frm) {
                 "time": values.time,
                 "datum": values.datum,
                 "bemerkung": bemerkung,
-                "nicht_verrechnen": values.nicht_verrechnen
+                "nicht_verrechnen": values.nicht_verrechnen,
+                "klientenkontakt": values.klientenkontakt
             },
             "async": false,
             "callback": function(response) {
