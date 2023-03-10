@@ -145,6 +145,15 @@ frappe.ui.form.on('Mandat', {
         
         get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
         d.show();
+    },
+    pauschal_verrechnung: function(frm) {
+        if (cur_frm.doc.pauschal_verrechnung) {
+            cur_frm.set_df_property('pauschal_betrag','reqd', 1);
+            cur_frm.set_df_property('pauschal_artikel','reqd', 1);
+        } else {
+            cur_frm.set_df_property('pauschal_betrag','reqd', 0);
+            cur_frm.set_df_property('pauschal_artikel','reqd', 0);
+        }
     }
 });
 

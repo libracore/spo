@@ -40,5 +40,7 @@ def get_mandat_logs(mandat):
     return {
             'logs': logs,
             'rsv': mandat.rsv,
-            'rate': mandat.stundensatz
+            'rate': mandat.stundensatz if not mandat.pauschal_verrechnung else 0.00,
+            'pauschal_betrag': mandat.pauschal_betrag,
+            'pauschal_artikel': mandat.pauschal_artikel if mandat.pauschal_verrechnung else None
         }

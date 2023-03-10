@@ -45,6 +45,9 @@
   "max_aufwand",
   "stundensatz",
   "facharzthonorar",
+  "pauschal_verrechnung",
+  "pauschal_betrag",
+  "pauschal_artikel",
   "zeiten_uebersicht",
   "amended_from",
   "fold_referenzen",
@@ -274,7 +277,7 @@
    "collapsible": 1,
    "fieldname": "section_zeiterfassung",
    "fieldtype": "Section Break",
-   "label": "Zeiterfassung"
+   "label": "Zeiterfassung / Kosten"
   },
   {
    "fieldname": "timer",
@@ -498,11 +501,30 @@
    "fieldtype": "Float",
    "label": "Total verbuchte Zeit (in h) (verrechenbar)",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "pauschal_verrechnung",
+   "fieldtype": "Check",
+   "label": "Pauschal Verrechnung"
+  },
+  {
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "pauschal_betrag",
+   "fieldtype": "Currency",
+   "label": "Pauschal Betrag"
+  },
+  {
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "pauschal_artikel",
+   "fieldtype": "Link",
+   "label": "Pauschal Artikel",
+   "options": "Item"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2023-01-03 09:41:02.845147",
+ "modified": "2023-03-10 08:59:17.932163",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
