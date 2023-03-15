@@ -143,12 +143,12 @@ function get_mandats_positionen(frm, mandat) {
                         frappe.model.set_value(child.doctype, child.name, 'med_abschl_gespr', 1);
                     }
                     
-                    //~ Medizinisches Juristische Abschlussgespräch
+                    //~ Medizinisch Juristische Abschlussgespräch
                     if (med_jur_abschl_gespr) {
                         var child = cur_frm.add_child('items');
                         frappe.model.set_value(child.doctype, child.name, 'item_code', pauschal_artikel);
                         frappe.model.set_value(child.doctype, child.name, 'qty', 1);
-                        frappe.model.set_value(child.doctype, child.name, 'spo_description', 'Medizinisches-Juristisches Abschlussgespräch ' + med_jur_abschl_gespr_datum);
+                        frappe.model.set_value(child.doctype, child.name, 'spo_description', 'Medizinisch-Juristisches Abschlussgespräch ' + med_jur_abschl_gespr_datum);
                         frappe.model.set_value(child.doctype, child.name, 'income_account', '3100 - Beratungseinnahmen 6.1% - SPO');
                         frappe.model.set_value(child.doctype, child.name, 'cost_center', 'Main - SPO');
                         frappe.model.set_value(child.doctype, child.name, 'med_jur_abschl_gespr', 1);

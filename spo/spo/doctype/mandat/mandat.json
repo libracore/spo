@@ -558,7 +558,7 @@
    "depends_on": "eval:doc.pauschal_verrechnung",
    "fieldname": "med_jur_abschl_gespr",
    "fieldtype": "Check",
-   "label": "Medizinisches-Juristisches Abschlussgespr\u00e4ch"
+   "label": "Medizinisch-Juristisches Abschlussgespr\u00e4ch"
   },
   {
    "depends_on": "eval:doc.pauschal_verrechnung && doc.med_abschl_gespr",
@@ -570,12 +570,12 @@
    "depends_on": "eval:doc.pauschal_verrechnung && doc.med_jur_abschl_gespr",
    "fieldname": "med_jur_abschl_gespr_datum",
    "fieldtype": "Date",
-   "label": "Medizinisches-Juristisches Abschlussgespr\u00e4ch Datum"
+   "label": "Medizinisch-Juristisches Abschlussgespr\u00e4ch Datum"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2023-03-10 15:06:35.501076",
+ "modified": "2023-03-15 11:50:14.314856",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
