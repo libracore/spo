@@ -15,7 +15,9 @@
   "mitgliedschafts_typ",
   "ende",
   "not_renew",
-  "neue_mitgliedschaft"
+  "neue_mitgliedschaft",
+  "status",
+  "status_bezugsdatum"
  ],
  "fields": [
   {
@@ -91,10 +93,22 @@
    "fieldtype": "Link",
    "label": "Rechnungsempf\u00e4nger",
    "options": "Customer"
+  },
+  {
+   "default": "Aktiv",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Aktiv\nK\u00fcndigung\nInaktiviert\nVerl\u00e4ngert"
+  },
+  {
+   "fieldname": "status_bezugsdatum",
+   "fieldtype": "Date",
+   "label": "Status Bezugsdatum"
   }
  ],
  "icon": "fa fa-id-card",
- "modified": "2020-01-17 11:06:44.130460",
+ "modified": "2023-04-05 13:10:39.603940",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mitgliedschaft",
