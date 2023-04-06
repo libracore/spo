@@ -11,6 +11,25 @@ def execute(filters=None):
     columns = get_columns(filters)
     data, chart_data = get_data(filters)
     
+    for row in data:
+        if row['bezugsdaten'] in [
+            'Davon Durchgehend',
+            'Zugänge / Verlängerungen',
+            'Abgänge',
+            # ~ 'Nicht vollzogene Verlängerungen',
+            'Kurzmitglieder',
+            'Erfasste Kündigungen',
+            'Vollzogene Kündigungen',
+            'Inaktivierungen',
+            'Unbezahlt gemahnt',
+            'Unbezahlt Inaktivierungs-Vormerkung',
+            'Unbezahlt fristgerecht',
+            'Negativwachstum in %',
+            'Wachstum in Mitgliedschaften']:
+            row['indent'] = 1
+        else:
+            row['indent'] = 0
+    
     if filters.einblenden:
         einblenden = filters.einblenden.split(",")
     else:
@@ -31,14 +50,9 @@ def execute(filters=None):
     for data_set in chart_data:
         if len(einblenden) > 0:
             if str(label_counter) in einblenden:
-                datasets.append({'name': str(label_counter), 'monat': data_set['data_set'], 'values': [], 'chartType': filters.chart_type.lower()})
+                datasets.append({'name': data_set['data_set'], 'monat': data_set['data_set'], 'values': [], 'chartType': filters.chart_type.lower()})
         else:
-            datasets.append({'name': str(label_counter), 'monat': data_set['data_set'], 'values': [], 'chartType': filters.chart_type.lower()})
-        # ~ if data_set['data_set'] == 'Mitglieder':
-            # ~ if int(mitglieder_ausblenden) != 1:
-                # ~ datasets.append({'name': str(label_counter), 'monat': data_set['data_set'], 'values': [], 'chartType': 'bar'})
-        # ~ else:
-            # ~ datasets.append({'name': str(label_counter), 'monat': data_set['data_set'], 'values': [], 'chartType': 'bar'})
+            datasets.append({'name': data_set['data_set'], 'monat': data_set['data_set'], 'values': [], 'chartType': filters.chart_type.lower()})
         label_counter += 1
     
     for label in label_dict['monate']:
@@ -55,7 +69,19 @@ def execute(filters=None):
             'datasets': datasets
         },
         'type': 'axis-mixed',
-        'colors': ["#b9fbc0", "#98f5e1", "#8A2BE2", "#90dbf4", "#a3c4f3", "#cfbaf0", "#f1c0e8", "#ffcfd2", "#fde4cf", "#fbf8cc"]
+        'colors': ['#00bdff', '#1b3bff', '#8F00FF', '#ff0011', '#ff7300', '#ffd600', '#00c30e', '#65ff00', '#d200ff', '#FF00FF', '#7d7d7d', '#5d5d5d', "#b9fbc0", "#98f5e1", "#8A2BE2", "#90dbf4", "#a3c4f3", "#cfbaf0", "#f1c0e8", "#ffcfd2", "#fde4cf", "#fbf8cc"],
+        'lineOptions': {
+            'regionFill': 1,
+            'spline': 1
+        },
+        'truncateLegends': True,
+        'yMarkers': [
+            {
+                'label': '',
+                'value': 5,
+                'type': 'solid'
+            }
+        ]
     }
     
     return columns, data, None, chart
@@ -117,19 +143,23 @@ def get_data(filters):
     chart_data = []
     
     query_types = [
-        'Mitglieder',
-        'Auslaufende Mitgliedschaften ohne Verlängerung',
-        'Auslaufende Mitgliedschaften mit Verlängerung',
-        'Verlängerte Mitgliedschaften',
-        'Neu-Mitglieder',
-        'Kurz Mitglieder',
+        'Anfangsbestand',
+        'Davon Durchgehend',
+        'Endbestand',
+        'Zugänge / Verlängerungen',
+        'Abgänge',
+        # ~ 'Nicht vollzogene Verlängerungen',
+        'Kurzmitglieder',
         'Erfasste Kündigungen',
         'Vollzogene Kündigungen',
         'Inaktivierungen',
+        'Wachstum in %',
+        'Negativwachstum in %',
+        'Wachstum in Mitgliedschaften',
+        'Total Unbezahlt',
         'Unbezahlt fristgerecht',
         'Unbezahlt gemahnt',
-        'Unbezahlt Inaktivierungs-Vormerkung',
-        'Total Unbezahlt'
+        'Unbezahlt Inaktivierungs-Vormerkung'
     ]
     
     for query_type in query_types:
@@ -188,49 +218,101 @@ def get_month(month):
     return mapper[month]
 
 def get_month_data(start_date, end_date, query_type):
-    if query_type == 'Mitglieder':
-        return get_mitglieder(start_date, end_date)
-    elif query_type == 'Neu-Mitglieder':
-        return get_neu_mitglieder(start_date, end_date)
-    elif query_type == 'Auslaufende Mitgliedschaften ohne Verlängerung':
-        return get_auslaufende_mitgliedschaften(start_date, end_date)
-    elif query_type == 'Auslaufende Mitgliedschaften mit Verlängerung':
-        return get_auslaufende_mitgliedschaften_mit_verlaengerung(start_date, end_date)
-    elif query_type == 'Verlängerte Mitgliedschaften':
-        return get_verlaengerte_mitgliedschaften(start_date, end_date)
+    if query_type == 'Anfangsbestand':
+        return get_anfangsbestand(start_date, end_date)
+        
+    elif query_type == 'Endbestand':
+        return get_endbestand(start_date, end_date)
+        
+    elif query_type == 'Davon Durchgehend':
+        durchgehend = get_durchgehend(start_date, end_date)
+        return durchgehend
+        
+    # ~ elif query_type == 'Davon Verlängert':
+        # ~ verlaengert = get_verlaengerte_mitgliedschaften(start_date, end_date)
+        # ~ return verlaengert
+        
+    elif query_type == 'Zugänge / Verlängerungen':
+        neu = get_neu_mitglieder(start_date, end_date)
+        return neu
+        
+    elif query_type == 'Abgänge':
+        auslaufend = get_auslaufende_mitgliedschaften(start_date, end_date)
+        return auslaufend
+        
+    # ~ elif query_type == 'Nicht vollzogene Verlängerungen':
+        # ~ nicht_vollzogene_verlaengerung = get_nicht_vollzogene_verlaengerung(start_date, end_date)
+        # ~ return nicht_vollzogene_verlaengerung
+        
+    elif query_type == 'Kurzmitglieder':
+        kurzmitglieder =  get_kurz_mitglieder(start_date, end_date)
+        return kurzmitglieder
+        
     elif query_type == 'Vollzogene Kündigungen':
         return get_kuendigungen(start_date, end_date)
+        
     elif query_type == 'Erfasste Kündigungen':
         return get_erfasste_kuendigungen(start_date, end_date)
+        
     elif query_type == 'Inaktivierungen':
         return get_inaktivierungen(start_date, end_date)
+        
     elif query_type == 'Unbezahlt fristgerecht':
         return get_unbezahlt_fristgerecht(start_date, end_date)
+        
     elif query_type == 'Unbezahlt gemahnt':
         return get_unbezahlt_gemahnt(start_date, end_date)
+        
     elif query_type == 'Unbezahlt Inaktivierungs-Vormerkung':
         return get_unbezahlt_inaktivierungs_vormerkung(start_date, end_date)
+        
     elif query_type == 'Total Unbezahlt':
         return get_unbezahlt(start_date, end_date)
-    elif query_type == 'Kurz Mitglieder':
-        return get_kurz_mitglieder(start_date, end_date)
+        
+    elif query_type == 'Wachstum in %':
+        anfangsbestand = get_anfangsbestand(start_date, end_date)
+        if anfangsbestand == 0:
+            anfangsbestand = 1
+        endbestand = get_endbestand(start_date, end_date)
+        return round((((100 / anfangsbestand) * endbestand) - 100), 2)
+        
+    elif query_type == 'Negativwachstum in %':
+        anfangsbestand = get_anfangsbestand(start_date, end_date)
+        if anfangsbestand == 0:
+            anfangsbestand = 1
+        endbestand = get_endbestand(start_date, end_date)
+        return round(((((100 / anfangsbestand) * endbestand) - 100) * -1), 2)
+        
+    elif query_type == 'Wachstum in Mitgliedschaften':
+        anfangsbestand = get_anfangsbestand(start_date, end_date)
+        endbestand = get_endbestand(start_date, end_date)
+        return endbestand - anfangsbestand
+        
     else:
         return 'Fehler'
 
-def get_mitglieder(start_date, end_date):
+def get_anfangsbestand(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` < '{von}'
+                            AND `ende` >= '{von}'""".format(von=start_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_durchgehend(start_date, end_date):
     mitglieder =  frappe.db.sql("""
                             SELECT COUNT(`name`) AS `qty`
                             FROM `tabMitgliedschaft`
                             WHERE `start` < '{von}'
                             AND `ende` > '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
-    
-    # ~ auslaufend_verlaengert = frappe.db.sql("""
-                            # ~ SELECT COUNT(`name`) AS `qty`
-                            # ~ FROM `tabMitgliedschaft`
-                            # ~ WHERE `ende` BETWEEN '{von}' AND '{bis}'
-                            # ~ AND CAST(`not_renew` AS CHAR) != '1'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
-    
-    # ~ return mitglieder + auslaufend_verlaengert
+    return mitglieder
+
+def get_endbestand(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` <= '{bis}'
+                            AND `ende` > '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
     return mitglieder
 
 def get_kurz_mitglieder(start_date, end_date):
@@ -243,44 +325,47 @@ def get_kurz_mitglieder(start_date, end_date):
 
 def get_neu_mitglieder(start_date, end_date):
     qty = frappe.db.sql("""
-                            SELECT 
-                                COUNT(`alle`.`name`) AS `qty`
-                            FROM `tabMitgliedschaft` AS `alle`
-                            LEFT JOIN `tabMitgliedschaft` AS `verlaengerte` ON `alle`.`name` = `verlaengerte`.`neue_mitgliedschaft`
-                            WHERE `alle`.`start` >= '{von}'
-                            AND `alle`.`start` <= '{bis}'
-                            AND `alle`.`ende` > '{bis}'
-                            AND `verlaengerte`.`name` IS NULL""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` BETWEEN '{von}' AND '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    
     return qty
 
 def get_auslaufende_mitgliedschaften(start_date, end_date):
     return frappe.db.sql("""
                             SELECT COUNT(`name`) AS `qty`
                             FROM `tabMitgliedschaft`
-                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
-                            AND `start` < '{von}'
-                            AND CAST(`not_renew` AS CHAR) = '1'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+                            WHERE `ende` BETWEEN '{von}' AND '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
 
-def get_auslaufende_mitgliedschaften_mit_verlaengerung(start_date, end_date):
-    return frappe.db.sql("""
-                            SELECT COUNT(`name`) AS `qty`
-                            FROM `tabMitgliedschaft`
-                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
-                            AND `start` < '{von}'
-                            AND CAST(`not_renew` AS CHAR) != '1'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+# ~ def get_auslaufende_mitgliedschaften_mit_verlaengerung(start_date, end_date):
+    # ~ return frappe.db.sql("""
+                            # ~ SELECT COUNT(`name`) AS `qty`
+                            # ~ FROM `tabMitgliedschaft`
+                            # ~ WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            # ~ AND `start` < '{von}'
+                            # ~ AND CAST(`not_renew` AS CHAR) != '1'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
 
-def get_verlaengerte_mitgliedschaften(start_date, end_date):
-    qty = frappe.db.sql("""
-                            SELECT COUNT(`name`) AS `qty`
-                            FROM `tabMitgliedschaft`
-                            WHERE `start` >= '{von}'
-                            AND `start` <= '{bis}'
-                            AND `ende` > '{bis}'
-                            AND `name` IN (
-                                SELECT `neue_mitgliedschaft`
-                                FROM `tabMitgliedschaft`
-                            )""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
-    return qty
+# ~ def get_nicht_vollzogene_verlaengerung(start_date, end_date):
+    # ~ return frappe.db.sql("""
+                            # ~ SELECT COUNT(`name`) AS `qty`
+                            # ~ FROM `tabMitgliedschaft`
+                            # ~ WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            # ~ AND `start` < '{von}'
+                            # ~ AND CAST(`not_renew` AS CHAR) != '1'
+                            # ~ AND `neue_mitgliedschaft` IS NULL""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+
+# ~ def get_verlaengerte_mitgliedschaften(start_date, end_date):
+    # ~ qty = frappe.db.sql("""
+                            # ~ SELECT COUNT(`name`) AS `qty`
+                            # ~ FROM `tabMitgliedschaft`
+                            # ~ WHERE `start` >= '{von}'
+                            # ~ AND `start` <= '{bis}'
+                            # ~ AND `ende` > '{bis}'
+                            # ~ AND `name` IN (
+                                # ~ SELECT `neue_mitgliedschaft`
+                                # ~ FROM `tabMitgliedschaft`
+                            # ~ )""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    # ~ return qty
 
 def get_kuendigungen(start_date, end_date):
     return len(frappe.db.get_all('Mitgliedschaft', [
