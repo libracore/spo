@@ -13,22 +13,53 @@ def execute(filters=None):
     
     for row in data:
         if row['bezugsdaten'] in [
-            'Davon Durchgehend',
+            # ~ 'Davon Durchgehend',
             'Zugänge / Verlängerungen',
             'Abgänge',
+            'Vollzogene Inaktiverungen',
             # ~ 'Nicht vollzogene Verlängerungen',
             'Kurzmitglieder',
             'Erfasste Kündigungen',
             'Vollzogene Kündigungen',
-            'Inaktivierungen',
+            'Erfasste Inaktivierungen',
             'Unbezahlt gemahnt',
             'Unbezahlt Inaktivierungs-Vormerkung',
             'Unbezahlt fristgerecht',
             'Negativwachstum in %',
-            'Wachstum in Mitgliedschaften']:
+            'Einzelmitglied (AB)',
+            'Familienmitglied (AB)',
+            'Passiv-/Kollektivmitglied (AB)',
+            'Freimitglied (AB)',
+            'Einzelmitglied (EB)',
+            'Familienmitglied (EB)',
+            'Passiv-/Kollektivmitglied (EB)',
+            'Freimitglied (EB)',
+            'Wachstum Einzelmitglied in %',
+            'Wachstum Familienmitglied in %',
+            'Wachstum Passiv/Kollektiv in %',
+            'Wachstum Freimitglied in %']:
             row['indent'] = 1
         else:
-            row['indent'] = 0
+            if row['bezugsdaten'] in [
+                'Einzelmitglied (Z/V)',
+                'Familienmitglied (Z/V)',
+                'Passiv-/Kollektivmitglied (Z/V)',
+                'Freimitglied (Z/V)',
+                'Einzelmitglied (A)',
+                'Familienmitglied (A)',
+                'Passiv-/Kollektivmitglied (A)',
+                'Freimitglied (A)',
+                'Einzelmitglied (EK)',
+                'Familienmitglied (EK)',
+                'Passiv-/Kollektivmitglied (EK)',
+                'Freimitglied (EK)',
+                'Einzelmitglied (EI)',
+                'Familienmitglied (EI)',
+                'Passiv-/Kollektivmitglied (EI)',
+                'Freimitglied (EI)']:
+                row['indent'] = 2
+            else:
+                row['indent'] = 0
     
     if filters.einblenden:
         einblenden = filters.einblenden.split(",")
@@ -144,18 +175,47 @@ def get_data(filters):
     
     query_types = [
         'Anfangsbestand',
-        'Davon Durchgehend',
-        'Endbestand',
+        # ~ 'Davon Durchgehend',
+        'Einzelmitglied (AB)',
+        'Familienmitglied (AB)',
+        'Passiv-/Kollektivmitglied (AB)',
+        'Freimitglied (AB)',
+        'Veränderungen',
         'Zugänge / Verlängerungen',
+        'Einzelmitglied (Z/V)',
+        'Familienmitglied (Z/V)',
+        'Passiv-/Kollektivmitglied (Z/V)',
+        'Freimitglied (Z/V)',
         'Abgänge',
+        'Einzelmitglied (A)',
+        'Familienmitglied (A)',
+        'Passiv-/Kollektivmitglied (A)',
+        'Freimitglied (A)',
         # ~ 'Nicht vollzogene Verlängerungen',
         'Kurzmitglieder',
         'Erfasste Kündigungen',
+        'Einzelmitglied (EK)',
+        'Familienmitglied (EK)',
+        'Passiv-/Kollektivmitglied (EK)',
+        'Freimitglied (EK)',
         'Vollzogene Kündigungen',
-        'Inaktivierungen',
+        'Erfasste Inaktivierungen',
+        'Einzelmitglied (EI)',
+        'Familienmitglied (EI)',
+        'Passiv-/Kollektivmitglied (EI)',
+        'Freimitglied (EI)',
+        'Vollzogene Inaktiverungen',
+        'Endbestand',
+        'Einzelmitglied (EB)',
+        'Familienmitglied (EB)',
+        'Passiv-/Kollektivmitglied (EB)',
+        'Freimitglied (EB)',
         'Wachstum in %',
+        'Wachstum Einzelmitglied in %',
+        'Wachstum Familienmitglied in %',
+        'Wachstum Passiv/Kollektiv in %',
+        'Wachstum Freimitglied in %',
         'Negativwachstum in %',
-        'Wachstum in Mitgliedschaften',
         'Total Unbezahlt',
         'Unbezahlt fristgerecht',
         'Unbezahlt gemahnt',
@@ -254,7 +314,7 @@ def get_month_data(start_date, end_date, query_type):
     elif query_type == 'Erfasste Kündigungen':
         return get_erfasste_kuendigungen(start_date, end_date)
         
-    elif query_type == 'Inaktivierungen':
+    elif query_type == 'Erfasste Inaktivierungen':
         return get_inaktivierungen(start_date, end_date)
         
     elif query_type == 'Unbezahlt fristgerecht':
@@ -276,6 +336,34 @@ def get_month_data(start_date, end_date, query_type):
         endbestand = get_endbestand(start_date, end_date)
         return round((((100 / anfangsbestand) * endbestand) - 100), 2)
         
+    elif query_type == 'Wachstum Einzelmitglied in %':
+        anfangsbestand = get_anfangsbestand_einzel(start_date, end_date)
+        if anfangsbestand == 0:
+            anfangsbestand = 1
+        endbestand = get_endbestand_einzel(start_date, end_date)
+        return round((((100 / anfangsbestand) * endbestand) - 100), 2)
+        
+    elif query_type == 'Wachstum Familienmitglied in %':
+        anfangsbestand = get_anfangsbestand_familie(start_date, end_date)
+        if anfangsbestand == 0:
+            anfangsbestand = 1
+        endbestand = get_endbestand_familie(start_date, end_date)
+        return round((((100 / anfangsbestand) * endbestand) - 100), 2)
+        
+    elif query_type == 'Wachstum Passiv/Kollektiv in %':
+        anfangsbestand = get_anfangsbestand_kollektiv(start_date, end_date)
+        if anfangsbestand == 0:
+            anfangsbestand = 1
+        endbestand = get_endbestand_kollektiv(start_date, end_date)
+        return round((((100 / anfangsbestand) * endbestand) - 100), 2)
+        
+    elif query_type == 'Wachstum Freimitglied in %':
+        anfangsbestand = get_anfangsbestand_frei(start_date, end_date)
+        if anfangsbestand == 0:
+            anfangsbestand = 1
+        endbestand = get_endbestand_frei(start_date, end_date)
+        return round((((100 / anfangsbestand) * endbestand) - 100), 2)
+        
     elif query_type == 'Negativwachstum in %':
         anfangsbestand = get_anfangsbestand(start_date, end_date)
         if anfangsbestand == 0:
@@ -283,10 +371,97 @@ def get_month_data(start_date, end_date, query_type):
         endbestand = get_endbestand(start_date, end_date)
         return round(((((100 / anfangsbestand) * endbestand) - 100) * -1), 2)
         
-    elif query_type == 'Wachstum in Mitgliedschaften':
+    elif query_type == 'Veränderungen':
         anfangsbestand = get_anfangsbestand(start_date, end_date)
         endbestand = get_endbestand(start_date, end_date)
         return endbestand - anfangsbestand
+        
+    elif query_type == 'Vollzogene Inaktiverungen':
+        return get_auslaufende_inaktivierte_mitgliedschaften(start_date, end_date)
+        
+    elif query_type == 'Einzelmitglied (AB)':
+        return get_anfangsbestand_einzel(start_date, end_date)
+        
+    elif query_type == 'Familienmitglied (AB)':
+        return get_anfangsbestand_familie(start_date, end_date)
+        
+    elif query_type == 'Passiv-/Kollektivmitglied (AB)':
+        return get_anfangsbestand_kollektiv(start_date, end_date)
+        
+    elif query_type == 'Freimitglied (AB)':
+        return get_anfangsbestand_frei(start_date, end_date)
+        
+    elif query_type == 'Einzelmitglied (EB)':
+        endbestand = get_endbestand_einzel(start_date, end_date)
+        return endbestand
+        
+    elif query_type == 'Familienmitglied (EB)':
+        endbestand = get_endbestand_familie(start_date, end_date)
+        return endbestand
+        
+    elif query_type == 'Passiv-/Kollektivmitglied (EB)':
+        endbestand = get_endbestand_kollektiv(start_date, end_date)
+        return endbestand
+        
+    elif query_type == 'Freimitglied (EB)':
+        endbestand = get_endbestand_frei(start_date, end_date)
+        return endbestand
+        
+    elif query_type == 'Einzelmitglied (Z/V)':
+        neu = get_neu_mitglieder_einzel(start_date, end_date)
+        return neu
+        
+    elif query_type == 'Familienmitglied (Z/V)':
+        neu = get_neu_mitglieder_familie(start_date, end_date)
+        return neu
+        
+    elif query_type == 'Passiv-/Kollektivmitglied (Z/V)':
+        neu = get_neu_mitglieder_kollektiv(start_date, end_date)
+        return neu
+        
+    elif query_type == 'Freimitglied (Z/V)':
+        neu = get_neu_mitglieder_frei(start_date, end_date)
+        return neu
+        
+    elif query_type == 'Einzelmitglied (A)':
+        auslaufend = get_auslaufende_mitgliedschaften_einzel(start_date, end_date)
+        return auslaufend
+        
+    elif query_type == 'Familienmitglied (A)':
+        auslaufend = get_auslaufende_mitgliedschaften_familie(start_date, end_date)
+        return auslaufend
+        
+    elif query_type == 'Passiv-/Kollektivmitglied (A)':
+        auslaufend = get_auslaufende_mitgliedschaften_kollektv(start_date, end_date)
+        return auslaufend
+        
+    elif query_type == 'Freimitglied (A)':
+        auslaufend = get_auslaufende_mitgliedschaften_frei(start_date, end_date)
+        return auslaufend
+        
+    elif query_type == 'Einzelmitglied (EK)':
+        return get_erfasste_kuendigungen_einzel(start_date, end_date)
+        
+    elif query_type == 'Familienmitglied (EK)':
+        return get_erfasste_kuendigungen_familie(start_date, end_date)
+        
+    elif query_type == 'Passiv-/Kollektivmitglied (EK)':
+        return get_erfasste_kuendigungen_kollektiv(start_date, end_date)
+        
+    elif query_type == 'Freimitglied (EK)':
+        return get_erfasste_kuendigungen_frei(start_date, end_date)
+        
+    elif query_type == 'Einzelmitglied (EI)':
+        return get_inaktivierungen_einzel(start_date, end_date)
+        
+    elif query_type == 'Familienmitglied (EI)':
+        return get_inaktivierungen_familie(start_date, end_date)
+        
+    elif query_type == 'Passiv-/Kollektivmitglied (EI)':
+        return get_inaktivierungen_kollektiv(start_date, end_date)
+        
+    elif query_type == 'Freimitglied (EI)':
+        return get_inaktivierungen_frei(start_date, end_date)
         
     else:
         return 'Fehler'
@@ -297,6 +472,42 @@ def get_anfangsbestand(start_date, end_date):
                             FROM `tabMitgliedschaft`
                             WHERE `start` < '{von}'
                             AND `ende` >= '{von}'""".format(von=start_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_anfangsbestand_einzel(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` < '{von}'
+                            AND `ende` >= '{von}'
+                            AND `mitgliedschafts_typ` = 'Einzelmitglied'""".format(von=start_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_anfangsbestand_familie(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` < '{von}'
+                            AND `ende` >= '{von}'
+                            AND `mitgliedschafts_typ` = 'Familienmitglied'""".format(von=start_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_anfangsbestand_kollektiv(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` < '{von}'
+                            AND `ende` >= '{von}'
+                            AND `mitgliedschafts_typ` = 'Passiv-/Kollektivmitglied'""".format(von=start_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_anfangsbestand_frei(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` < '{von}'
+                            AND `ende` >= '{von}'
+                            AND `mitgliedschafts_typ` = 'Freimitglied'""".format(von=start_date), as_dict=True)[0].qty or 0
     return mitglieder
 
 def get_durchgehend(start_date, end_date):
@@ -315,12 +526,49 @@ def get_endbestand(start_date, end_date):
                             AND `ende` > '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
     return mitglieder
 
+def get_endbestand_einzel(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` <= '{bis}'
+                            AND `ende` > '{bis}'
+                            AND `mitgliedschafts_typ` = 'Einzelmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_endbestand_familie(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` <= '{bis}'
+                            AND `ende` > '{bis}'
+                            AND `mitgliedschafts_typ` = 'Familienmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_endbestand_kollektiv(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` <= '{bis}'
+                            AND `ende` > '{bis}'
+                            AND `mitgliedschafts_typ` = 'Passiv-/Kollektivmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
+def get_endbestand_frei(start_date, end_date):
+    mitglieder =  frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` <= '{bis}'
+                            AND `ende` > '{bis}'
+                            AND `mitgliedschafts_typ` = 'Freimitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    return mitglieder
+
 def get_kurz_mitglieder(start_date, end_date):
     kurz_mitglieder =  frappe.db.sql("""
                             SELECT COUNT(`name`) AS `qty`
                             FROM `tabMitgliedschaft`
                             WHERE `start` >= '{von}'
-                            AND `ende` <= '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+                            AND `ende` <= '{bis}'
+                            AND `status` != 'Inaktiviert'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
     return kurz_mitglieder
 
 def get_neu_mitglieder(start_date, end_date):
@@ -331,11 +579,82 @@ def get_neu_mitglieder(start_date, end_date):
     
     return qty
 
+def get_neu_mitglieder_einzel(start_date, end_date):
+    qty = frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Einzelmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    
+    return qty
+
+def get_neu_mitglieder_familie(start_date, end_date):
+    qty = frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Familienmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    
+    return qty
+
+def get_neu_mitglieder_kollektiv(start_date, end_date):
+    qty = frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Passiv-/Kollektivmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    
+    return qty
+
+def get_neu_mitglieder_frei(start_date, end_date):
+    qty = frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `start` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Freimitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+    
+    return qty
+
 def get_auslaufende_mitgliedschaften(start_date, end_date):
     return frappe.db.sql("""
                             SELECT COUNT(`name`) AS `qty`
                             FROM `tabMitgliedschaft`
                             WHERE `ende` BETWEEN '{von}' AND '{bis}'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+
+def get_auslaufende_mitgliedschaften_einzel(start_date, end_date):
+    return frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Einzelmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+
+def get_auslaufende_mitgliedschaften_familie(start_date, end_date):
+    return frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Familienmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+
+def get_auslaufende_mitgliedschaften_kollektv(start_date, end_date):
+    return frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Passiv-/Kollektivmitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+
+def get_auslaufende_mitgliedschaften_frei(start_date, end_date):
+    return frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            AND `mitgliedschafts_typ` = 'Freimitglied'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
+
+def get_auslaufende_inaktivierte_mitgliedschaften(start_date, end_date):
+    return frappe.db.sql("""
+                            SELECT COUNT(`name`) AS `qty`
+                            FROM `tabMitgliedschaft`
+                            WHERE `ende` BETWEEN '{von}' AND '{bis}'
+                            AND `status` = 'Inaktiviert'""".format(von=start_date, bis=end_date), as_dict=True)[0].qty or 0
 
 # ~ def get_auslaufende_mitgliedschaften_mit_verlaengerung(start_date, end_date):
     # ~ return frappe.db.sql("""
@@ -381,11 +700,75 @@ def get_erfasste_kuendigungen(start_date, end_date):
         ['status', '=', 'Kündigung']
     ])) or 0
 
+def get_erfasste_kuendigungen_einzel(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Kündigung'],
+        ['mitgliedschafts_typ', '=', 'Einzelmitglied']
+    ])) or 0
+
+def get_erfasste_kuendigungen_familie(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Kündigung'],
+        ['mitgliedschafts_typ', '=', 'Familienmitglied']
+    ])) or 0
+
+def get_erfasste_kuendigungen_kollektiv(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Kündigung'],
+        ['mitgliedschafts_typ', '=', 'Passiv-/Kollektivmitglied']
+    ])) or 0
+
+def get_erfasste_kuendigungen_frei(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Kündigung'],
+        ['mitgliedschafts_typ', '=', 'Freimitglied']
+    ])) or 0
+
 def get_inaktivierungen(start_date, end_date):
     return len(frappe.db.get_all('Mitgliedschaft', [
         ['status_bezugsdatum', '>=', start_date],
         ['status_bezugsdatum', '<=', end_date],
         ['status', '=', 'Inaktiviert']
+    ])) or 0
+
+def get_inaktivierungen_einzel(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Inaktiviert'],
+        ['mitgliedschafts_typ', '=', 'Einzelmitglied']
+    ])) or 0
+
+def get_inaktivierungen_familie(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Inaktiviert'],
+        ['mitgliedschafts_typ', '=', 'Familienmitglied']
+    ])) or 0
+
+def get_inaktivierungen_kollektiv(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Inaktiviert'],
+        ['mitgliedschafts_typ', '=', 'Passiv-/Kollektivmitglied']
+    ])) or 0
+
+def get_inaktivierungen_frei(start_date, end_date):
+    return len(frappe.db.get_all('Mitgliedschaft', [
+        ['status_bezugsdatum', '>=', start_date],
+        ['status_bezugsdatum', '<=', end_date],
+        ['status', '=', 'Inaktiviert'],
+        ['mitgliedschafts_typ', '=', 'Freimitglied']
     ])) or 0
 
 def get_unbezahlt_fristgerecht(start_date, end_date):
