@@ -82,6 +82,8 @@ def proceed_sinv(sinv):
             mitgliedschaft = frappe.get_doc("Mitgliedschaft", mitgliedschaft[0].name)
             mitgliedschaft.ende = mitgliedschaft.start
             mitgliedschaft.not_renew = 1
+            mitgliedschaft.status = 'Inaktiviert'
+            mitgliedschaft.status_bezugsdatum = getdate(now())
             mitgliedschaft.save()
             
             customer = frappe.get_doc("Customer", mitgliedschaft.mitglied)
