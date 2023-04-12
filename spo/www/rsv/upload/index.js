@@ -48,24 +48,8 @@ function erstelle_anfrage(form) {
         callback: function(r)
         {
             if (r.message.files > 0) {
-                // File Upload
-                var file_name = $("#anhang").val().split(/(\\|\/)/g).pop();
-                let upload_file = new FormData();
-                upload_file.append('file', $("#anhang")[0].files[0], file_name);
-                upload_file.append('is_private', 1);
-                upload_file.append('doctype', 'Anfrage');
-                upload_file.append('docname', r.message.anfrage);
-                fetch('/api/method/upload_file', {
-                    headers: {
-                        'Authorization': 'token ' + r.message.key + ':' + r.message.secret
-                    },
-                    method: 'POST',
-                    body: upload_file
-                }).then(function(res){
-                    // finish
-                    freeze();
-                    finish_upload(r.message.anfrage, res.ok);
-                });
+                //~ // File Upload
+                upload_files_from_list(0, r.message.anfrage, r.message.key, r.message.secret);
             } else {
                 // finish
                 finish_upload(r.message.anfrage, true);
@@ -73,6 +57,34 @@ function erstelle_anfrage(form) {
             }
         }
     });
+}
+
+function upload_files_from_list(cur_index, anfrage, key, secret) {
+    // File Upload
+    var file_name = $("#anhang")[0].files[cur_index].name.split(/(\\|\/)/g).pop();
+    let upload_file = new FormData();
+    upload_file.append('file', $("#anhang")[0].files[cur_index], file_name);
+    upload_file.append('is_private', 1);
+    upload_file.append('doctype', 'Anfrage');
+    upload_file.append('docname', anfrage);
+    fetch('/api/method/upload_file', {
+        headers: {
+            'Authorization': 'token ' + key + ':' + secret
+        },
+        method: 'POST',
+        body: upload_file
+    }).then(function(res){
+        var new_index = cur_index + 1;
+        if (new_index < $("#anhang")[0].files.length) {
+            // upload next file
+            upload_files_from_list(new_index, anfrage, key, secret);
+        } else {
+            // finish
+            freeze();
+            finish_upload(anfrage, res.ok);
+        }
+    });
+    
 }
 
 function finish_upload(anfrage, good) {
@@ -164,7 +176,11 @@ $("#urteilsunfaehig").change(function(){
 
 $("#anhang").change(function(){
     if ($("#anhang").val()) {
-        $("#anhang_label").html($("#anhang")[0].files[0].name );
+        if ($("#anhang")[0].files.length > 1) {
+            $("#anhang_label").html($("#anhang")[0].files.length + " Dateien");
+        } else {
+            $("#anhang_label").html($("#anhang")[0].files[0].name);
+        }
     } else {
         $("#anhang_label").html('Wählen Sie einen Anhang');
         $("#anhang").val('');
