@@ -3,12 +3,12 @@
 /* eslint-disable */
 
 frappe.query_reports["Adressliste SPO Aktuell"] = {
-	"filters": [
-		{
-			"fieldname": "customer_group",
-			"label": __("Customer Group"),
-			"fieldtype": "Select",
-			"options": ["Mitglied", "Newsletter Abo", "Schenkende Rechnung an Dritte"]
-		}
-	]
+    "filters": [
+        {
+            "fieldname": "base_data",
+            "label": __("Datenbasis"),
+            "fieldtype": "Select",
+            "options": ["Kunden / Mitglieder", "Lieferanten"]
+        }
+    ]
 };
