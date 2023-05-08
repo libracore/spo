@@ -124,6 +124,14 @@ def get_data():
                     "is_query_report": True
                 },
                 {
+                    "type": "report",
+                    "name": "Mitgliederstatistik",
+                    "label": _("Mitgliederstatistik"),
+                    "description": _("Mitgliederstatistik"),
+                    "doctype": "Mitgliedschaft",
+                    "is_query_report": True
+                },
+                {
                     "type": "doctype",
                     "label": _("Customer Deactivation Log"),
                     "name": "Customer Deactivation Log",

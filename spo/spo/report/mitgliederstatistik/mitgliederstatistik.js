@@ -22,7 +22,7 @@ frappe.query_reports["Mitgliederstatistik"] = {
             "fieldname": "einblenden",
             "label": __("In Grafik einblenden"),
             "fieldtype": "Data",
-            "default": "10,11"
+            "default": "35,40"
         },
         {
             "fieldname": "chart_type",

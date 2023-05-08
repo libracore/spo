@@ -33,3 +33,9 @@
 .gesetzliche-vertreter-block {
     display: none;
 }
+
+/*
+.custom-file-label {
+    height: calc(3em + 0.75rem + 2px) !important;
+}
+*/
