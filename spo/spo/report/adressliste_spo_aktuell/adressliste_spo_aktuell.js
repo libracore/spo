@@ -8,7 +8,8 @@ frappe.query_reports["Adressliste SPO Aktuell"] = {
             "fieldname": "base_data",
             "label": __("Datenbasis"),
             "fieldtype": "Select",
-            "options": ["Kunden / Mitglieder", "Lieferanten"]
+            "options": ["Kunden / Mitglieder", "Lieferanten"],
+            "reqd": 1
         }
     ]
 };
