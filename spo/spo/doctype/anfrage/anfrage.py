@@ -47,6 +47,16 @@ class Anfrage(Document):
             if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
                 self.timer = float(get_total_ts_time(self.doctype, self.name) or 0)
 
+
+def kpi_refresh():
+    records = frappe.db.sql("""SELECT `name` FROM `tabAnfrage` WHERE `docstatus` NOT IN (1, 2)""", as_dict=True)
+    for record in records:
+        self = frappe.get_doc('Anfrage', record.name)
+        if self.is_new() != True:
+            if float(self.timer or 0) != float(get_total_ts_time(self.doctype, self.name) or 0):
+                timer_value = float(get_total_ts_time(self.doctype, self.name) or 0)
+                frappe.db.set_value('Anfrage', self.name, 'timer', timer_value)
+
 @frappe.whitelist()
 def get_valid_mitgliedschaft_based_on_mitgliedernummer(mitgliedernummer):
     query = """SELECT * FROM `tabMitgliedschaft` WHERE `mitglied` = '{mitgliedernummer}' AND `ende` >= CURDATE()""".format(mitgliedernummer=mitgliedernummer)

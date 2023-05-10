@@ -131,7 +131,8 @@ scheduler_events = {
         "spo.utils.cleanup.cleanup_anfragen",
         "spo.utils.cleanup.cleanup_anonyme_ansichten",
         "spo.utils.cleanup.cleanup_slots",
-        "spo.spo.doctype.customer_deactivation_log.customer_deactivation_log.daily_check"
+        "spo.spo.doctype.customer_deactivation_log.customer_deactivation_log.daily_check",
+        "spo.spo.doctype.anfrage.anfrage.kpi_refresh"
     ]
 }
 

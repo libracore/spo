@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.6.0
+Auto Anfrage KPI Refresh
 #### 3.5.0
 Mandats Pauschalen
 #### 3.4.0
