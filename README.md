@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.5.0
+Mandats Pauschalen
 #### 3.4.0
 Erweiterung "Adressliste SPO Aktuell"
 #### 3.3.0
