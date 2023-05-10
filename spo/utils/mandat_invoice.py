@@ -19,6 +19,7 @@ def get_mandat_logs(mandat):
                                 `tabTimesheet Detail`.`spo_remark`,
                                 `tabTimesheet Detail`.`from_time`,
                                 `tabTimesheet Detail`.`owner`,
+                                `tabTimesheet Detail`.`klientenkontakt`,
                                 `employee` AS `employee_name`
                                 FROM `tabTimesheet Detail`
                                 INNER JOIN `tabEmployee` ON `tabTimesheet Detail`.`owner` = `tabEmployee`.`user_id`
@@ -40,5 +41,13 @@ def get_mandat_logs(mandat):
     return {
             'logs': logs,
             'rsv': mandat.rsv,
-            'rate': mandat.stundensatz
+            'rate': mandat.stundensatz,
+            'pauschal_artikel': frappe.db.get_value('Einstellungen', 'Einstellungen', 'pauschal_artikel'),
+            'pauschal_betrag': mandat.pauschal_betrag,
+            'med_abschl_gespr': mandat.med_abschl_gespr,
+            'med_abschl_gespr_betrag': frappe.db.get_value('Einstellungen', 'Einstellungen', 'med_abschl_gespr'),
+            'med_abschl_gespr_datum': mandat.med_abschl_gespr_datum,
+            'med_jur_abschl_gespr': mandat.med_jur_abschl_gespr,
+            'med_jur_abschl_gespr_betrag': frappe.db.get_value('Einstellungen', 'Einstellungen', 'med_jur_abschl_gespr'),
+            'med_jur_abschl_gespr_datum': mandat.med_jur_abschl_gespr_datum
         }

@@ -479,7 +479,7 @@ def create_default_ts_entry(user, doctype, record, datum, onlineberatung=False):
     frappe.db.commit()
 
 @frappe.whitelist()
-def create_ts_entry(user, doctype, record, datum, time, bemerkung='', nicht_verrechnen=0):
+def create_ts_entry(user, doctype, record, datum, time, bemerkung='', nicht_verrechnen=0, klientenkontakt=0):
     #**********************************************************
     #overwrite the time_log overlap validation of timesheet
     overwrite_ts_validation()
@@ -515,6 +515,7 @@ def create_ts_entry(user, doctype, record, datum, time, bemerkung='', nicht_verr
             row["spo_referenz"] = record
             row['spo_remark'] = bemerkung
             row['nicht_verrechnen'] = nicht_verrechnen
+            row['klientenkontakt'] = klientenkontakt
             ts.append('time_logs', row)
             ts.save(ignore_permissions=True)
         else:
@@ -533,10 +534,14 @@ def create_ts_entry(user, doctype, record, datum, time, bemerkung='', nicht_verr
                         "spo_referenz": record,
                         "from_time": get_datetime(get_datetime_str(start)),
                         "spo_remark": bemerkung,
-                        "nicht_verrechnen": nicht_verrechnen
+                        "nicht_verrechnen": nicht_verrechnen,
+                        "klientenkontakt": klientenkontakt
                     }
                 ]
             })
             ts.insert(ignore_permissions=True)
             
+        if doctype == 'Mandat' and int(klientenkontakt) == 1:
+            frappe.db.set_value("Mandat", record, 'klientenkontakt', 1)
+        
     frappe.db.commit()

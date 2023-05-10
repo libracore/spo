@@ -6,6 +6,19 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "section_typisierung",
+  "kostengutschsprache",
+  "pauschal_verrechnung",
+  "pauschal_variante",
+  "klientenkontakt",
+  "cb_typisierung_1",
+  "max_aufwand",
+  "pauschal_betrag",
+  "facharzthonorar",
+  "med_abschl_gespr",
+  "med_abschl_gespr_datum",
+  "med_jur_abschl_gespr",
+  "med_jur_abschl_gespr_datum",
   "section_dashboard",
   "dashboard_html",
   "kunden_dashboard_html",
@@ -41,10 +54,7 @@
   "nicht_verrechnen_total",
   "nicht_verrechnen_total_chf",
   "default_ts",
-  "kostengutschsprache",
-  "max_aufwand",
   "stundensatz",
-  "facharzthonorar",
   "zeiten_uebersicht",
   "amended_from",
   "fold_referenzen",
@@ -274,7 +284,7 @@
    "collapsible": 1,
    "fieldname": "section_zeiterfassung",
    "fieldtype": "Section Break",
-   "label": "Zeiterfassung"
+   "label": "Zeiterfassung / Kosten"
   },
   {
    "fieldname": "timer",
@@ -498,11 +508,74 @@
    "fieldtype": "Float",
    "label": "Total verbuchte Zeit (in h) (verrechenbar)",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "pauschal_verrechnung",
+   "fieldtype": "Check",
+   "label": "Pauschal Verrechnung"
+  },
+  {
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "pauschal_betrag",
+   "fieldtype": "Currency",
+   "label": "Pauschal Betrag",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "pauschal_variante",
+   "fieldtype": "Select",
+   "label": "Pauschal Variante",
+   "options": "Empfehlung m\u00fcndlich\nEmpfehlung schriftlich\nBeurteilung"
+  },
+  {
+   "fieldname": "section_typisierung",
+   "fieldtype": "Section Break",
+   "label": "Typisierung"
+  },
+  {
+   "fieldname": "cb_typisierung_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "klientenkontakt",
+   "fieldtype": "Check",
+   "label": "Klientenkontakt",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "med_abschl_gespr",
+   "fieldtype": "Check",
+   "label": "Medizinisches Abschlussgespr\u00e4ch"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.pauschal_verrechnung",
+   "fieldname": "med_jur_abschl_gespr",
+   "fieldtype": "Check",
+   "label": "Medizinisch-Juristisches Abschlussgespr\u00e4ch"
+  },
+  {
+   "depends_on": "eval:doc.pauschal_verrechnung && doc.med_abschl_gespr",
+   "fieldname": "med_abschl_gespr_datum",
+   "fieldtype": "Date",
+   "label": "Medizinisches Abschlussgespr\u00e4ch Datum"
+  },
+  {
+   "depends_on": "eval:doc.pauschal_verrechnung && doc.med_jur_abschl_gespr",
+   "fieldname": "med_jur_abschl_gespr_datum",
+   "fieldtype": "Date",
+   "label": "Medizinisch-Juristisches Abschlussgespr\u00e4ch Datum"
   }
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2023-01-03 09:41:02.845147",
+ "modified": "2023-03-15 11:50:14.314856",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",

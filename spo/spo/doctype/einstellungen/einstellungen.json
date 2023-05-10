@@ -20,7 +20,14 @@
   "execution_month",
   "reminder_recipients",
   "section_meldestelle",
-  "recaptcha_secret"
+  "recaptcha_secret",
+  "section_mandats_pauschalen",
+  "empfehlung_muendlich",
+  "empfehlung_schriftlich",
+  "beurteilung",
+  "med_abschl_gespr",
+  "med_jur_abschl_gespr",
+  "pauschal_artikel"
  ],
  "fields": [
   {
@@ -122,10 +129,46 @@
    "fieldname": "recaptcha_secret",
    "fieldtype": "Data",
    "label": "reCAPTCHA Secret Key"
+  },
+  {
+   "fieldname": "section_mandats_pauschalen",
+   "fieldtype": "Section Break",
+   "label": "Mandats Pauschalen"
+  },
+  {
+   "fieldname": "empfehlung_muendlich",
+   "fieldtype": "Currency",
+   "label": "Empfehlung m\u00fcndlich"
+  },
+  {
+   "fieldname": "empfehlung_schriftlich",
+   "fieldtype": "Currency",
+   "label": "Empfehlung schriftlich"
+  },
+  {
+   "fieldname": "beurteilung",
+   "fieldtype": "Currency",
+   "label": "Beurteilung"
+  },
+  {
+   "fieldname": "med_abschl_gespr",
+   "fieldtype": "Currency",
+   "label": "Medizinisches Abschlussgespr\u00e4ch"
+  },
+  {
+   "fieldname": "med_jur_abschl_gespr",
+   "fieldtype": "Currency",
+   "label": "Medizinisch-Juristisches Abschlussgespr\u00e4ch"
+  },
+  {
+   "fieldname": "pauschal_artikel",
+   "fieldtype": "Link",
+   "label": "Pauschal Artikel",
+   "options": "Item"
   }
  ],
  "issingle": 1,
- "modified": "2021-08-26 00:43:22.878785",
+ "modified": "2023-03-15 11:50:29.112923",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Einstellungen",
