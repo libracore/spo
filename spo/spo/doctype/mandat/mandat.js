@@ -148,23 +148,24 @@ frappe.ui.form.on('Mandat', {
     },
     pauschal_variante: function(frm) {
         if (frm.doc.pauschal_variante == 'Empfehlung schriftlich') {
-            frappe.db.get_single_value('Einstellungen', 'empfehlung_schriftlich').then(
+            frappe.db.get_value('Einstellungen', 'Einstellungen', 'empfehlung_schriftlich').then(
                 function(value) {
-                    cur_frm.set_value('pauschal_betrag', value);
+                    cur_frm.set_value('pauschal_betrag', value.message.empfehlung_schriftlich);
+                    console.log(value)
                 }
             );
         }
         if (frm.doc.pauschal_variante == 'Empfehlung mündlich') {
-            frappe.db.get_single_value('Einstellungen', 'empfehlung_muendlich').then(
+            frappe.db.get_value('Einstellungen', 'Einstellungen', 'empfehlung_muendlich').then(
                 function(value) {
-                    cur_frm.set_value('pauschal_betrag', value);
+                    cur_frm.set_value('pauschal_betrag', value.message.empfehlung_muendlich);
                 }
             );
         }
         if (frm.doc.pauschal_variante == 'Beurteilung') {
-            frappe.db.get_single_value('Einstellungen', 'beurteilung').then(
+            frappe.db.get_value('Einstellungen', 'Einstellungen', 'beurteilung').then(
                 function(value) {
-                    cur_frm.set_value('pauschal_betrag', value);
+                    cur_frm.set_value('pauschal_betrag', value.message.beurteilung);
                 }
             );
         }
