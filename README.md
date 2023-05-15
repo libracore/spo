@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.6.2
+Pauschal Mandat Bugfix (nicht-pauschal RGs)
 #### 3.6.1
 Pauschal Mandat Bugfix (float forced to int)
 #### 3.6.0

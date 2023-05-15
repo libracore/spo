@@ -42,6 +42,7 @@ def get_mandat_logs(mandat):
             'logs': logs,
             'rsv': mandat.rsv,
             'rate': mandat.stundensatz,
+            'ist_pauschal': True if mandat.pauschal_verrechnung else False,
             'pauschal_artikel': frappe.db.get_value('Einstellungen', 'Einstellungen', 'pauschal_artikel'),
             'pauschal_betrag': mandat.pauschal_betrag,
             'med_abschl_gespr': mandat.med_abschl_gespr,

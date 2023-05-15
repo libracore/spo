@@ -73,6 +73,7 @@ function get_mandats_positionen(frm, mandat) {
             var logs = response.message.logs;
             var rsv = response.message.rsv;
             var rate = response.message.rate;
+            var ist_pauschal = response.message.ist_pauschal;
             var pauschal_artikel = response.message.pauschal_artikel;
             var pauschal_betrag = response.message.pauschal_betrag;
             var med_abschl_gespr = response.message.med_abschl_gespr;
@@ -123,7 +124,7 @@ function get_mandats_positionen(frm, mandat) {
                     }
                     
                     //~ Pauschal Verrechnung
-                    if (pauschal_artikel) {
+                    if (pauschal_artikel&&ist_pauschal) {
                         var child = cur_frm.add_child('items');
                         frappe.model.set_value(child.doctype, child.name, 'item_code', pauschal_artikel);
                         frappe.model.set_value(child.doctype, child.name, 'qty', 1);
@@ -158,7 +159,7 @@ function get_mandats_positionen(frm, mandat) {
                         var line_items = cur_frm.doc.items;
                         line_items.forEach(function(entry) {
                              //~ Pauschal Verrechnug
-                             if (pauschal_artikel) {
+                             if (pauschal_artikel&&ist_pauschal) {
                                  if (entry.item_code == pauschal_artikel) {
                                      if (entry.med_abschl_gespr) {
                                          entry.rate = med_abschl_gespr_betrag;
