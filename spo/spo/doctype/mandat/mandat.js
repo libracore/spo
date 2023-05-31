@@ -146,31 +146,43 @@ frappe.ui.form.on('Mandat', {
         get_facharzt_table(frm, $results, $placeholder, $second_placeholder, method, args, columns);
         d.show();
     },
+
+    pauschal_verrechnung: function(frm) {
+		if (frm.doc.pauschal_verrechnung == 1) {
+			set_pauschal_betrag(frm);
+        } else {
+			cur_frm.set_value('pauschal_betrag', 0);
+		}
+    },
+
     pauschal_variante: function(frm) {
-        if (frm.doc.pauschal_variante == 'Empfehlung schriftlich') {
-            frappe.db.get_value('Einstellungen', 'Einstellungen', 'empfehlung_schriftlich').then(
-                function(value) {
-                    cur_frm.set_value('pauschal_betrag', value.message.empfehlung_schriftlich);
-                    console.log(value)
-                }
-            );
-        }
-        if (frm.doc.pauschal_variante == 'Empfehlung mündlich') {
-            frappe.db.get_value('Einstellungen', 'Einstellungen', 'empfehlung_muendlich').then(
-                function(value) {
-                    cur_frm.set_value('pauschal_betrag', value.message.empfehlung_muendlich);
-                }
-            );
-        }
-        if (frm.doc.pauschal_variante == 'Beurteilung') {
-            frappe.db.get_value('Einstellungen', 'Einstellungen', 'beurteilung').then(
-                function(value) {
-                    cur_frm.set_value('pauschal_betrag', value.message.beurteilung);
-                }
-            );
-        }
-    }
+		set_pauschal_betrag(frm);
+	}
 });
+
+function set_pauschal_betrag(frm) {
+    if (frm.doc.pauschal_variante == 'Empfehlung schriftlich') {
+		frappe.db.get_value('Einstellungen', 'Einstellungen', 'empfehlung_schriftlich').then(
+            function(value) {
+                cur_frm.set_value('pauschal_betrag', value.message.empfehlung_schriftlich);
+            }
+        );
+    }
+    if (frm.doc.pauschal_variante == 'Empfehlung mündlich') {
+        frappe.db.get_value('Einstellungen', 'Einstellungen', 'empfehlung_muendlich').then(
+            function(value) {
+                cur_frm.set_value('pauschal_betrag', value.message.empfehlung_muendlich);
+            }
+        );
+    }
+    if (frm.doc.pauschal_variante == 'Beurteilung') {
+        frappe.db.get_value('Einstellungen', 'Einstellungen', 'beurteilung').then(
+            function(value) {
+                cur_frm.set_value('pauschal_betrag', value.message.beurteilung);
+            }
+        );
+    }
+}
 
 var set_primary_action = function(frm, dialog, $results) {
     var me = this;
