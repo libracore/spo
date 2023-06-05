@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.8.0
+Onlinetermin Disclaimer
 #### 3.7.0
 PDF-Sammeldruck Funktion in Mahnung
 #### 3.6.2
