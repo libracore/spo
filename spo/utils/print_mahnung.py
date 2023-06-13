@@ -9,6 +9,7 @@ from frappe.utils.data import add_days, today, add_years, now
 from PyPDF2 import PdfFileWriter
 from frappe import _
 from frappe.utils.pdf import get_file_data_from_writer
+import json
 
 @frappe.whitelist()
 def create_mahnungs_pdf(mahnung):
@@ -43,3 +44,29 @@ def print_bind(mahnung):
         "attached_to_name": mahnung.name
     })
     _file.save(ignore_permissions=True)
+
+@frappe.whitelist()
+def multi_print_bind(**kwargs):
+    args = json.loads(kwargs['kwargs'])
+    mahnungen = args['mahnungen']
+    bind_source = "/assets/spo/sinvs_for_print/MahnungenMassenLauf/{mahnungen}.pdf".format(mahnungen=mahnungen[0])
+    physical_path = "/home/frappe/frappe-bench/sites" + bind_source
+    dest=str(physical_path)
+    # Concatenating pdf files
+    output = PdfFileWriter()
+    for m in mahnungen:
+        mahnung = frappe.get_doc("Payment Reminder", m)
+        output = frappe.get_print("Payment Reminder", mahnung.name , 'SPO Zahlungserinnerung', as_pdf = True, output = output, ignore_zugferd=True)
+        for sales_invoice in mahnung.sales_invoices:
+            print_format = 'QR-Rechnung SPO' if sales_invoice.company == 'SPO Schweizerische Patientenorganisation' else 'Mitgliederrechnung'
+            output = frappe.get_print("Sales Invoice", sales_invoice.sales_invoice, print_format, as_pdf = True, output = output, ignore_zugferd=True)
+    if dest != None:
+        if isinstance(dest, str): # when dest is a file path
+            destdir = os.path.dirname(dest)
+            if destdir != '' and not os.path.isdir(destdir):
+                os.makedirs(destdir)
+            with open(dest, "wb") as w:
+                output.write(w)
+        else: # when dest is io.IOBase
+            output.write(dest)
+    return bind_source
