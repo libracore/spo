@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.5
+Anp. Onlinetermin Disclaimer
 #### 3.9.4
 Neue Default Werte in DT Customer
 #### 3.9.3
