@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.3
+Integration von Urlaubstyp 'Persönlich' in 'Meine Arbeitszeiten' in DT Employee
 #### 3.9.2
 Anp. Druckformat Facharztbericht
 #### 3.9.1
