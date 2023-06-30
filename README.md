@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.2
+Anp. Druckformat Facharztbericht
 #### 3.9.1
 Sicherheitsabfrage für Erzeugung RSV-Upload ID
 #### 3.9.0

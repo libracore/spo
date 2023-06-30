@@ -19,6 +19,7 @@
   "bericht",
   "fusszeile",
   "section_rechnungsformular",
+  "aufwand_in_stunden",
   "betrag",
   "iban",
   "section_referenzen",
@@ -159,9 +160,14 @@
    "label": "Fusszeile",
    "options": "Letter Head",
    "reqd": 1
+  },
+  {
+   "fieldname": "aufwand_in_stunden",
+   "fieldtype": "Float",
+   "label": "Aufwand in Stunden"
   }
  ],
- "modified": "2021-04-19 10:03:07.954686",
+ "modified": "2023-06-30 08:23:54.392723",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Facharzt Bericht",
