@@ -7,6 +7,12 @@ import frappe
 from frappe.utils.data import nowdate, add_years, now_datetime
 from frappe import _
 
+def default_values_after_insert(self, event):
+    if self.customer_type != 'Individual':
+        frappe.db.set_value("Customer", self.name, "customer_type", "Individual")
+    if self.territory != 'Switzerland':
+        frappe.db.set_value("Customer", self.name, "territory", "Switzerland")
+
 @frappe.whitelist()
 def check_contact(customer):
     customer = frappe.get_doc("Customer", customer)

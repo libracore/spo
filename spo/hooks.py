@@ -91,7 +91,8 @@ doctype_list_js = {"Payment Reminder" : "scripts/custom_scripts/payment_reminder
 
 doc_events = {
     "Customer": {
-        "on_update": "spo.utils.demographie_bin.demographie_bin_updater"
+        "on_update": "spo.utils.demographie_bin.demographie_bin_updater",
+        "after_insert": "spo.scripts.custom_scripts.customer.default_values_after_insert"
     },
     "Address": {
         "on_update": "spo.utils.demographie_bin.demographie_bin_updater"

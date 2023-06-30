@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.4
+Neue Default Werte in DT Customer
 #### 3.9.3
 Integration von Urlaubstyp 'Persönlich' in 'Meine Arbeitszeiten' in DT Employee
 #### 3.9.2
