@@ -7,7 +7,7 @@ import frappe
 from frappe.utils.data import add_days, nowdate
 
 def cleanup_anfragen():
-    anfragen = frappe.db.sql("""SELECT `name` FROM `tabAnfrage` WHERE `docstatus` = 0 AND `name` NOT IN (SELECT `spo_referenz` FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage')""", as_dict=True)
+    anfragen = frappe.db.sql("""SELECT `name` FROM `tabAnfrage` WHERE `docstatus` = 0 AND `name` NOT IN (SELECT `spo_referenz` FROM `tabTimesheet Detail` WHERE `spo_dokument` = 'Anfrage') AND `kontakt_via` != 'Upload Tool'""", as_dict=True)
     for _anfrage in anfragen:
         anfrage = frappe.get_doc("Anfrage", _anfrage.name)
         anfrage.delete()
