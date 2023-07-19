@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.7
+Freigabe 'Klientenkontakt' in Mandat
 #### 3.9.6
 Anpassung an Daily-Job 'cleanup_anfragen', damit keine 'Upload-Tool'-Anfragen gelöscht werden
 #### 3.9.5

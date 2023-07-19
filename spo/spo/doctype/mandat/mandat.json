@@ -543,8 +543,7 @@
    "depends_on": "eval:doc.pauschal_verrechnung",
    "fieldname": "klientenkontakt",
    "fieldtype": "Check",
-   "label": "Klientenkontakt",
-   "read_only": 1
+   "label": "Klientenkontakt"
   },
   {
    "default": "0",
@@ -575,7 +574,7 @@
  ],
  "icon": "fa fa-sitemap",
  "is_submittable": 1,
- "modified": "2023-05-31 13:44:44.642667",
+ "modified": "2023-07-19 08:40:44.797489",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Mandat",
