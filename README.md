@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.8
+Bugfix Mandats-Verrechnungsübersicht (Chart)
 #### 3.9.7
 Freigabe 'Klientenkontakt' in Mandat
 #### 3.9.6

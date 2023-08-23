@@ -322,6 +322,9 @@ function update_dashboard(frm) {
             
             // Kostendach (Verwendet/Ausstehend)
             var max_aufwand = query.callcenter_limit;
+            if (frm.doc.pauschal_verrechnung && frm.doc.pauschal_betrag > 0) {
+                max_aufwand = frm.doc.pauschal_betrag
+            }
             if (frm.doc.max_aufwand > 0) {
                 max_aufwand = frm.doc.pauschal_verrechnung ? frm.doc.pauschal_betrag:frm.doc.max_aufwand;
             }
