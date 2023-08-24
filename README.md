@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.9.9
+Der Daily-Job cleanup_anfragen wurde in einen Weekly-Job umgewandelt
 #### 3.9.8
 Bugfix Mandats-Verrechnungsübersicht (Chart)
 #### 3.9.7
