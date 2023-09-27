@@ -410,4 +410,20 @@ footer span {
   text-decoration: none;
   cursor: pointer;
 }
+
+.taright {
+	text-align: right;
+}
+
+.selected {
+        border: 2px solid blue;
+}
+
+.flag {
+	width: 30px;
+}
+
+.hidden {
+	display: none;
+}
 /*----------------------------------*/
