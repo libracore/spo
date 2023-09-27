@@ -1,8 +1,15 @@
 <!-- Google reCaptcha -->
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 <!-- mainContent-area start -->
+
 <section class="mainContent-area">
-    <div class="container">
+		<!--------------GERMAN-------------->
+	<div class="container" id="de">
+		<div id="language-selector" class="taright">
+			<img src="/assets/spo/image/de.png" alt="Deutsche Flagge" onclick="changeLanguage('de')" class="flag selected">
+			<img src="/assets/spo/image/fr.png" alt="Französische Flagge" onclick="changeLanguage('fr')" class="flag">
+			<img src="/assets/spo/image/it.png" alt="Italienische Flagge" onclick="changeLanguage('it')" class="flag">
+		</div>
         <div class="mainContent_box">
             <div class="content_left">
                 <div class="left-text">
@@ -32,15 +39,15 @@
                 <div class="right_box fqa">
                     <h5>FAQ</h5>
                     <ul>
-                        <li><a href="#" onclick="open_faq();">Was verstehen wir unter möglichen Grenzüberschreitungen?</a></li>
-                        <li><a href="#" onclick="open_faq();">Wie wird meine Anonymität gewährleistet?</a></li>
+                        <li><a href="#" onclick="open_faq('de');">Was verstehen wir unter möglichen Grenzüberschreitungen?</a></li>
+                        <li><a href="#" onclick="open_faq('de');">Wie wird meine Anonymität gewährleistet?</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="left-form">
             <h5>Wir danken Ihnen für Ihre Mithilfe.</h5>
-            <form>
+            <form id="form_de">
                 <input type="text" name="fname" placeholder="Vorname" required />
                 <input type="text" name="lname" placeholder="Nachname" required />
                 <input type="text" name="availability" placeholder="Wann sind Sie am besten erreichbar?" required />
@@ -50,6 +57,7 @@
                 <div id="g-recaptcha" name="g-recaptcha" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
                 <div name="recaptcha-error" id="recaptcha-error" style="color: red; display: none;"></div>
                 <input type="submit" value="SENDEN" />
+                <input type="text" name="language" value="de" class="hidden"/>
             </form>
         </div>
         <div class="d-md-none">
@@ -66,37 +74,227 @@
             <div class="right_box fqa">
                 <h5>FAQ</h5>
                 <ul>
-                    <li><a href="#" onclick="open_faq();">Was verstehen wir unter möglichen Grenzüberschreitungen?</a></li>
-                    <li><a href="#" onclick="open_faq();">Wie wird meine Anonymität gewährleistet?</a></li>
+                    <li><a href="#" onclick="open_faq('de');">Was verstehen wir unter möglichen Grenzüberschreitungen?</a></li>
+                    <li><a href="#" onclick="open_faq('de');">Wie wird meine Anonymität gewährleistet?</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--------------French-------------->
+    <div class="container hidden" id="fr">
+		<div id="language-selector" class="taright">
+			<img src="/assets/spo/image/de.png" alt="Deutsche Flagge" onclick="changeLanguage('de')" class="flag">
+			<img src="/assets/spo/image/fr.png" alt="Französische Flagge" onclick="changeLanguage('fr')" class="flag selected">
+			<img src="/assets/spo/image/it.png" alt="Italienische Flagge" onclick="changeLanguage('it')" class="flag">
+		</div>
+        <div class="mainContent_box">
+            <div class="content_left">
+                <div class="left-text">
+                    <h2>Bienvenue</h2>
+                    <h4>Au centre de signalement de l’OSP Organisation des patients</h4>
+                    <h5>
+                     Vous pouvez signaler ici en toute sécurité et anonymement un comportement inapproprié ou d’éventuels dépassements de limites à l’hôpital. Votre signalement est transmis à l’OSP via un site web crypté.
+                    </h5>
+                    <div class="green_divider"></div>
+                    <p>
+                    L’OSP est une organisation indépendante du système de santé. Votre signalement ainsi que tous les contenus conversationnels concernant le signalement sont traités de manière strictement confidentielle. Votre identité ainsi que toutes les informations susceptibles de retrouver votre identité restent exclusivement à l’OSP et ne sont pas communiquées à l’hôpital. Ainsi nous vous garantissons un anonymat total.
+                    </p>
+                    <p>Par votre signalement, vous contribuez à améliorer la situation concernant les dérives dans le secteur hospitalier, sans révéler votre identité à l’hôpital.</p>
+                </div>
+            </div>
+            <div class="content_right d-md-block">
+                <div class="right_box">
+                    <h5><a href="https://www.spo.ch/" target="_blank">Au sujet de l’OSP Organisation des patients</a></h5>
+                    
+                        <p>Schweizerische Stiftung<br>
+                        SPO Patientenorganisation<br>
+                        Häringstrasse 20<br>
+                        8001 Zürich<br>
+                        Tel: 044 252 54 22<br>
+                        <a href="https://www.spo.ch/" target="_blank">www.spo.ch</a></p>
+                </div>
+                <div class="right_box fqa">
+                    <h5>FAQ</h5>
+                    <ul>
+                        <li><a href="#" onclick="open_faq('fr');">Qu’entendons-nous par de possibles dépassements des limites?</a></li>
+                        <li><a href="#" onclick="open_faq('fr');">Comment mon anonymat est-il assuré?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="left-form">
+            <h5>Nous vous remercions pour votre aide.</h5>
+            <form id="form_fr">
+                <input type="text" name="fname" placeholder="Prénom " required />
+                <input type="text" name="lname" placeholder="Nom" required />
+                <input type="text" name="availability" placeholder="Quand êtes-vous atteignable?" required />
+                <input type="tel" name="phone" placeholder="Numéro de téléphone en cas de questions" required />
+                <input type="email" name="email" placeholder="e-mail en cas de questions" required />
+                <textarea name="report" rows="5" required>Votre signalement</textarea>
+                <div id="g-recaptcha" name="g-recaptcha" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
+                <div name="recaptcha-error" id="recaptcha-error" style="color: red; display: none;"></div>
+                <input type="submit" value="ENVOYER" />
+                <input type="text" name="language" value="fr" class="hidden"/>
+            </form>
+        </div>
+        <div class="d-md-none">
+            <div class="right_box">
+                <h5><a href="https://www.spo.ch/" target="_blank">Au sujet de l’OSP Organisation des patients</a></h5>
+                
+                    <p>Schweizerische Stiftung<br>
+                    SPO Patientenorganisation<br>
+                    Häringstrasse 20<br>
+                    8001 Zürich<br>
+                    Tel: 044 252 54 22<br>
+                    <a href="https://www.spo.ch/" target="_blank">www.spo.ch</a></p>
+            </div>
+            <div class="right_box fqa">
+                <h5>FAQ</h5>
+                <ul>
+                    <li><a href="#" onclick="open_faq('fr');">Qu’entendons-nous par de possibles dépassements des limites?</a></li>
+                    <li><a href="#" onclick="open_faq('fr');">Comment mon anonymat est-il assuré?</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--------------Italian-------------->
+    <div class="container hidden" id="it">
+		<div id="language-selector" class="taright">
+			<img src="/assets/spo/image/de.png" alt="Deutsche Flagge" onclick="changeLanguage('de')" class="flag">
+			<img src="/assets/spo/image/fr.png" alt="Französische Flagge" onclick="changeLanguage('fr')" class="flag">
+			<img src="/assets/spo/image/it.png" alt="Italienische Flagge" onclick="changeLanguage('it')" class="flag selected">
+		</div>
+        <div class="mainContent_box">
+            <div class="content_left">
+                <div class="left-text">
+                    <h2>Benvenuti</h2>
+                    <h4>sulla nostra pagina per la segnalazione di comportamenti indesiderati nel settore sanitario.</h4>
+                    <h5>
+                     Attraverso questa pagina, potete segnalare in modo sicuro e anonimo comportamenti indesiderati o possibili violazioni nel sistema sanitario. La vostra segnalazione sarà inoltrata all'organizzazione dei pazienti OSP tramite un sito web criptato.
+                    </h5>
+                    <div class="green_divider"></div>
+                    <p>
+                    L'OSP è un'organizzazione indipendente nel settore della sanità. La vostra segnalazione e tutti i contenuti delle conversazioni riguardanti la segnalazione saranno trattati in modo strettamente confidenziale. La vostra identità e tutte le informazioni che consentono di trarre conclusioni sulla vostra identità rimangono esclusivamente all'OSP e non vengono trasmesse all'ospedale. Vi assicuriamo quindi l'assoluto anonimato. Con la vostra segnalazione, contribuite a migliorare le problematiche della vita ospedaliera quotidiana senza rivelare la vostra identità all'ospedale.
+                    </p>
+                    <p>Con la vostra segnalazione contribuite a migliorare le problematiche del sistema sanitario senza rivelare la vostra identità all'ospedale.</p>
+                </div>
+            </div>
+            <div class="content_right d-md-block">
+                <div class="right_box">
+                    <h5><a href="https://www.spo.ch/" target="_blank">Per saperne di più sull'organizzazione dei pazienti SPO</a></h5>
+                    
+                        <p>Fondazione svizzera<br>
+                        Organizzazione dei pazienti OSP<br>
+                        Häringstrasse 20<br>
+                        8001 Zurigo<br>
+                        Tel: 044 252 54 22<br>
+                        <a href="https://www.spo.ch/" target="_blank">www.spo.ch</a></p>
+                </div>
+                <div class="right_box fqa">
+                    <h5>FAQ</h5>
+                    <ul>
+                        <li><a href="#" onclick="open_faq('it');">Cosa intendiamo con comportamenti indesiderati o possibili violazioni nel sistema sanitario?</a></li>
+                        <li><a href="#" onclick="open_faq('it');">Come viene garantito il mio anonimato?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="left-form">
+            <h5>Grazie per la vostra collaborazione.</h5>
+            <form id="form_it">
+                <input type="text" name="fname" placeholder="Nome" required />
+                <input type="text" name="lname" placeholder="Cognome" required />
+                <input type="text" name="availability" placeholder="Quando possiamo raggiungervi al meglio" required />
+                <input type="tel" name="phone" placeholder="Numero di telefono per eventuali necessità di chiarimento" required />
+                <input type="email" name="email" placeholder="E-mail per eventuali necessità di chiarimento" required />
+                <textarea name="report" rows="5" required>Il vostro messaggio</textarea>
+                <div id="g-recaptcha" name="g-recaptcha" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
+                <div name="recaptcha-error" id="recaptcha-error" style="color: red; display: none;"></div>
+                <input type="submit" value="INVIARE" />
+                <input type="text" name="language" value="it" class="hidden"/>
+            </form>
+        </div>
+        <div class="d-md-none">
+            <div class="right_box">
+                <h5><a href="https://www.spo.ch/" target="_blank">Per saperne di più sull'organizzazione dei pazienti SPO</a></h5>
+                
+                    <p>Fondazione svizzera<br>
+                    Organizzazione dei pazienti OSP<br>
+                    Häringstrasse 20<br>
+                    8001 Zurigo<br>
+                    Tel: 044 252 54 22<br>
+                    <a href="https://www.spo.ch/" target="_blank">www.spo.ch</a></p>
+            </div>
+            <div class="right_box fqa">
+                <h5>FAQ</h5>
+                <ul>
+                    <li><a href="#" onclick="open_faq('it');">Cosa intendiamo con comportamenti indesiderati o possibili violazioni nel sistema sanitario?</a></li>
+                    <li><a href="#" onclick="open_faq('it');">Come viene garantito il mio anonimato?</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </section>
-<!-- success Modal -->
-<div id="success_modal" class="modal">
+
+<!-- success Modal German-->
+<div id="success_modal_de" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
         <span id="success_modal_close" class="close">&times;</span>
-        <p>Vielen Dank für Ihre Meldung.<br>Sie wird schnellst möglich bearbeitet.</p>
+        <p>Vielen Dank für Ihre Nachricht.<br>Sie wird so schnell wie möglich bearbeitet.</p>
     </div>
 </div>
-<!-- error Modal -->
-<div id="error_modal" class="modal">
+<!-- error Modal Deutsch-->
+<div id="error_modal_de" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
         <span id="error_modal_close" class="close">&times;</span>
-        <p>Oops! Da ist etwas schief gelaufen.<br>Bitte kontaktieren Sie wenn möglich die SPO</p>
+        <p>Ups, da ist etwas schief gelaufen.<br>Wenden Sie sich nach Möglichkeit an die SPO.</p>
+    </div>
+</div>
+
+<!-- success Modal French-->
+<div id="success_modal_fr" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="success_modal_close" class="close">&times;</span>
+        <p>Merci beaucoup pour votre message.<br>Elle sera traitée dans les plus brefs délais.</p>
+    </div>
+</div>
+<!-- error Modal Deutsch-->
+<div id="error_modal_fr" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="error_modal_close" class="close">&times;</span>
+        <p>Oups, quelque chose s'est mal passé.<br>Si possible, adressez-vous à l'OSP.</p>
+    </div>
+</div>
+
+<!-- success Modal Italian-->
+<div id="success_modal_it" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="success_modal_close" class="close">&times;</span>
+        <p>Grazie per il suo messaggio.<br>Verrà elaborato il prima possibile.</p>
+    </div>
+</div>
+<!-- error Modal Italian-->
+<div id="error_modal_it" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="error_modal_close" class="close">&times;</span>
+        <p>Ops! Qualcosa è andato storto.<br>Contattare l'OSP se possibile.</p>
     </div>
 </div>
 <!-- mainContent-area end -->
 
 <!-- The FAQ Modal -->
-        <div id="faq_modal" class="modal">
+		<!-------------GERMAN------------->
+        <div id="faq_modal_de" class="modal">
 
           <!-- Modal content -->
           <div class="modal-content">
-            <span class="close-faq" onclick="close_faq();">&times;</span>
+            <span class="close-faq" onclick="close_faq('de');">&times;</span>
             <h1>FAQ</h1>
             <h2>Was verstehen wir unter möglichen Grenzüberschreitungen?</h2>
             <p>Grundsätzlich können alle Sachverhalte gemeldet werden, die als Grenzüberschreitung empfunden werden. Hier führen wir Ihnen einige Beispiele auf:</p>
@@ -130,23 +328,127 @@ Ihre schriftliche Meldung gelangt verschlüsselt über ein eigens für die SPO e
           </div>
 
         </div>
+        <!-------------FRENCH------------->
+        <div id="faq_modal_fr" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close-faq" onclick="close_faq('fr');">&times;</span>
+            <h1>FAQ</h1>
+            <h2>Qu’entendons-nous par de possibles dépassements des limites?</h2>
+            <p>D’une manière générale, toutes les circonstances considérées comme des dépassements des limites peuvent être signalées. Voici quelques exemples:</p>
+            <ul>
+                <li>&#9679; Violations à l’égard de la sécurité au travail, du temps de travail, contrats de travail incorrects</li>
+                <li>&#9679; Mise en danger du bien-être du patient, préférence donnée à certains patients, dissimulation d’erreurs de traitement </li>
+                <li>&#9679; Problèmes avec le mode de direction des supérieurs, problèmes systématiques au niveau des procédures</li>
+                <li>&#9679; Transmission insuffisante des informations</li>
+                <li>&#9679; Honoraires faussés, dédommagements et rémunération variable des médecins</li>
+                <li>&#9679; Subvention financière, cadeaux ou autres avantages</li>
+                <li>&#9679; Sexisme, racisme, mobbing, discrimination à l’égard de collaborateurs et/ou de patients</li>
+                <li>&#9679; Décomptes incorrects, fausse documentation, codage</li>
+                <li>&#9679; Sécurité des données, protection des données</li>
+                <li>&#9679; Erreurs systématiques au niveau de l’approvisionnement ou des achats</li>
+            </ul>
+            <p>Si vous n’êtes pas certain que votre observation doit être signalée, n‘hésitez pas à nous contacter. Nous vous soutenons volontiers et décidons ensuite ensemble, si les circonstances en question doivent être signalées.</p>
+
+            <h2>Que dois-je faire lorsque je suis incertain au sujet d’un signalement?</h2>
+            <p>Si vous n’êtes pas sûr de devoir signaler des circonstances observées ou si vous avez un doute concernant un comportement inapproprié de la part d’autres collaborateurs de l’hôpital, nous vous conseillons vivement de vous annoncer chez nous dans tous les cas. Au cours d’un entretien personnel, nous vous aidons volontiers à vérifier vos soupçons. Même une observation non confirmée aidera l’hôpital à reconnaître et à aborder les problèmes à temps.</p>
+
+            <h2>Comment se déroule un signalement?</h2>
+            <p>Après l’envoi du signalement via un formulaire en ligne, nous prenons contact avec vous dans un délai de deux jours ouvrables à un moment que vous nous aurez indiqué, afin de confirmer la réception de votre signalement et poser d’éventuelles questions.</p>
+
+            <h2>Que se passe-t-il avec mon signalement? </h2>
+            <p>Le signalement est communiqué à l’hôpital sous forme résumée et anonymisée. Celui-ci décide, au terme de l’entretien avec l’OSP, d’éventuelles mesures et démarches et les communique à l’OSP. L’OSP informe la personne qui a fait le signalement des démarches entreprises.</p>
+
+            <h2>Comment mon anonymat est-il garanti?</h2>
+            <p>La protection de votre identité ainsi que de la totalité des contenus conversationnels est la priorité absolue de l’OSP. Votre signalement est communiqué à l’hôpital de façon à ce qu’aucune déduction ne puisse être faite quant à la personne à l’origine du signalement. 
+            Votre signalement écrit nous parvient de manière cryptée via un système spécifiquement développé pour l’OSP. Ce système répond aux exigences maximales en termes de protection des données. 
+            L’hôpital reçoit un procès-verbal anonymisé, réalisé par l’OSP elle-même sur la base de votre signalement et de l’entretien.</p>
+          </div>
+
+        </div>
+        <!-------------ITALIAN------------->
+        <div id="faq_modal_it" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close-faq" onclick="close_faq('it');">&times;</span>
+            <h1>FAQ</h1>
+            <h2>Cosa intendiamo con comportamenti indesiderati o possibili violazioni nel sistema sanitario?</h2>
+            <p>Generalmente, tutti i fatti che vengono percepiti come indesiderati possono essere segnalati. Di seguito elenchiamo alcuni esempi:</p>
+            <ul>
+                <li>&#9679; Violazione della sicurezza sul lavoro, degli orari di lavoro, dei contratti di lavoro non conformi nel settore sanitario</li>
+                <li>&#9679; Messa in pericolo del benessere del paziente, trattamento preferenziale dei pazienti, occultamento di errori di trattamento</li>
+                <li>&#9679; Problemi con lo stile di leadership dei superiori, problemi sistematici nei processi</li>
+                <li>&#9679; Insufficiente diffusione di informazioni</li>
+                <li>&#9679; Falsi onorari, spese e compensi variabili dei medici</li>
+                <li>&#9679; Benefici finanziari, regali o altri vantaggi</li>
+                <li>&#9679; Sessismo, razzismo, bullismo, discriminazione nei confronti del personale e/o dei pazienti</li>
+                <li>&#9679; Fatturazione non corretta, documentazione non corretta, codificazione</li>
+                <li>&#9679; Sicurezza dei dati, protezione dei dati</li>
+                <li>&#9679; Errori sistematici nell'approvvigionamento o negli acquisti.</li>
+            </ul>
+            <p>Se non siete sicuri se la vostra osservazione debba essere segnalata, non esitate a contattarci. Saremo lieti di aiutarvi e di decidere insieme se i fatti vanno segnalati.</p>
+
+            <h2>Come mi devo comportare se non sono sicuro di segnalare qualcosa?</h2>
+            <p>Se non siete sicuri di dover segnalare un fatto osservato, vi consigliamo di contattarci comunque. Saremo lieti di aiutarvi in un colloquio personale per verificare i vostri sospetti. Anche un'osservazione non confermata aiuta l'ospedale a identificare e affrontare i problemi in una fase iniziale. In nessun caso l'ospedale verrà informato su chi ha segnalato il caso.</p>
+
+            <h2>Qual è la procedura</h2>
+            <p>Dopo aver inviato la segnalazione tramite il modulo online, vi contatteremo telefonicamente entro due giorni lavorativi, all'orario da voi indicato, per confermare la ricezione della segnalazione e per chiedere eventuali chiarimenti.</p>
+
+            <h2>Cosa succede con la mia segnalazione?</h2>
+            <p>La segnalazione viene comunicata da parte dell'OSP all'ospedale in forma sintetica e anonima. Dopo la discussione con l'OSP, l'ospedale decide le misure e i passi da compiere e li comunica all'OSP. L'OSP informa la persona che ha fatto la segnalazione dei passi corrispondenti.</p>
+
+            <h2>Come viene garantito il mio anonimato?</h2>
+            <p>La protezione della vostra identità e del contenuto di tutte le conversazioni è una priorità assoluta dell'OSP. Tutti i dipendenti dell'OSP sono tenuti al segreto professionale. La vostra segnalazione sarà comunicata all'ospedale in modo tale che non si possano trarre conclusioni su chi l'ha fatta. 
+            Il vostro rapporto scritto ci viene inviato in forma criptata attraverso un sistema appositamente sviluppato per l'OSP. Il sistema soddisfa i massimi requisiti di protezione dei dati. L'ospedale riceve un protocollo anonimo, preparato dall'OSP stesso sulla base della vostra segnalazione e della conversazione.
+            </p>
+          </div>
+
+        </div>
 
         <script>
-        // Get the modal
-        var modal = document.getElementById("faq_modal");
-
-        // When the user clicks anywhere outside of the modal, close it
+		// Get selected language
+		function changeLanguage(lang) {
+			var language = document.getElementById(lang);
+			language.classList.remove('hidden');
+			if (lang != 'de') {
+				var not_language = document.getElementById('de');
+				not_language.classList.add('hidden');
+			}
+			if (lang != 'fr') {
+				var not_language = document.getElementById('fr');
+				not_language.classList.add('hidden');
+			}
+			if (lang != 'it') {
+				var not_language = document.getElementById('it');
+				not_language.classList.add('hidden');
+			}
+		}
+		
+		var modal_de = document.getElementById('faq_modal_de');
+		var modal_fr = document.getElementById('faq_modal_fr');
+		var modal_it = document.getElementById('faq_modal_it');
+		
+        
+        function open_faq(lang) {
+			var modal = document.getElementById("faq_modal_" + lang);
+            modal.style.display = "block"; 
+        }
+        
+        function close_faq(lang) {
+			var modal = document.getElementById("faq_modal_" + lang);
+            modal.style.display = "none";
+        }
+        
         window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
+          if (event.target == modal_de) {
+            modal_de.style.display = "none";
+          } else if (event.target == modal_fr) {
+			  modal_fr.style.display = "none";
+			} else if (event.target == modal_it) {
+			  modal_it.style.display = "none";
+			}
         }
-        
-        function open_faq() {
-            modal.style.display = "block";
-        }
-        
-        function close_faq() {
-            modal.style.display = "none";
-        }
+
         </script>

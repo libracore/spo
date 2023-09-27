@@ -10,11 +10,18 @@ var onloadCallback = function() {
 function handleSubmit(event, form) {
     event.preventDefault();
     var response = grecaptcha.getResponse();
-    console.log(response);
+    var object = buildJsonFormData(form);
+    var language = object.language
     //recaptcha failed validation
     if (response.length == 0) {
         var recaptcha_error = document.getElementById("recaptcha-error");
-        recaptcha_error.innerHTML = 'Bitte bestätigen Sie, dass Sie kein Roboter sind.';
+        if (language == "de") {
+			recaptcha_error.innerHTML = "Bitte bestätigen Sie, dass Sie kein Roboter sind.";
+		} else if (language == "fr") {
+			recaptcha_error.innerHTML = "Veuillez confirmer que vous n'êtes pas un robot.";
+		} else if (language == "it") {
+			recaptcha_error.innerHTML = "Confermare di non essere un robot.";
+		}
         recaptcha_error.style.display = "block";
         return false;
     } else {
@@ -33,7 +40,7 @@ function handleSubmit(event, form) {
         .then(r => {
             console.log(r);
             if (r.message.success) {
-                var modal = document.getElementById("success_modal");
+                var modal = document.getElementById("success_modal_"+language);
                 var span = document.getElementById("success_modal_close");
                 span.onclick = function() {
                     modal.style.display = "none";
@@ -52,10 +59,16 @@ function handleSubmit(event, form) {
                 if (r.message.error == 'reCAPTCHA') {
                     grecaptcha.reset();
                     var recaptcha_error = document.getElementById("recaptcha-error");
-                    recaptcha_error.innerHTML = 'Die reCAPTCHA Validierung ist fehlgeschlagen, bitte versuchen Sie es erneut.';
+                    if (language == "de") {
+						recaptcha_error.innerHTML = 'Die reCAPTCHA Validierung ist fehlgeschlagen, bitte versuchen Sie es erneut.';
+                    } else if (language == "fr") {
+						recaptcha_error.innerHTML = 'La validation reCAPTCHA a échoué, veuillez réessayer.';
+					} else if (language == "it") {
+						recaptcha_error.innerHTML = 'La convalida del reCAPTCHA non è riuscita, riprovare.';
+					}
                     recaptcha_error.style.display = "block";
                 } else {
-                    var modal = document.getElementById("error_modal");
+                    var modal = document.getElementById("error_modal_"+language);
                     var span = document.getElementById("error_modal_close");
                     span.onclick = function() {
                         modal.style.display = "none";
@@ -89,5 +102,10 @@ var correctCaptcha = function(response) {
 };
 
 // Form Event Handler
-const form = document.querySelector('form');
-form.addEventListener('submit', function(e) {handleSubmit(e, this);});
+var form_de = document.getElementById('form_de');
+//~ const form = document.querySelector('form');
+form_de.addEventListener('submit', function(e) {handleSubmit(e, this);});
+var form_fr = document.getElementById('form_fr');
+form_fr.addEventListener('submit', function(e) {handleSubmit(e, this);});
+var form_it = document.getElementById('form_it');
+form_it.addEventListener('submit', function(e) {handleSubmit(e, this);});
