@@ -19,8 +19,7 @@ function handleSubmit(event, form) {
     var object = buildJsonFormData(form);
     var language = object.language
     //recaptcha failed validation
-    //~ if (response.length == 0) {
-    if (false) {
+    if (response.length == 0) {
         var recaptcha_error = document.getElementById("recaptcha-error-"+language);
         if (language == "de") {
 			recaptcha_error.innerHTML = "Bitte bestätigen Sie, dass Sie kein Roboter sind.";
@@ -112,7 +111,6 @@ var correctCaptcha = function(response) {
 
 // Form Event Handler
 var form_de = document.getElementById('form_de');
-//~ const form = document.querySelector('form');
 form_de.addEventListener('submit', function(e) {handleSubmit(e, this);});
 var form_fr = document.getElementById('form_fr');
 form_fr.addEventListener('submit', function(e) {handleSubmit(e, this);});
