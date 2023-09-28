@@ -2,7 +2,13 @@ document.querySelector('nav').remove();
 document.querySelector('footer').remove();
 
 var onloadCallback = function() {
-    grecaptcha.render('g-recaptcha', {
+    grecaptcha.render('g-recaptcha-de', {
+        'sitekey' : '6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L'
+    });
+    grecaptcha.render('g-recaptcha-fr', {
+        'sitekey' : '6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L'
+    });
+    grecaptcha.render('g-recaptcha-it', {
         'sitekey' : '6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L'
     });
 };
@@ -13,8 +19,9 @@ function handleSubmit(event, form) {
     var object = buildJsonFormData(form);
     var language = object.language
     //recaptcha failed validation
-    if (response.length == 0) {
-        var recaptcha_error = document.getElementById("recaptcha-error");
+    //~ if (response.length == 0) {
+    if (false) {
+        var recaptcha_error = document.getElementById("recaptcha-error-"+language);
         if (language == "de") {
 			recaptcha_error.innerHTML = "Bitte bestätigen Sie, dass Sie kein Roboter sind.";
 		} else if (language == "fr") {
@@ -26,9 +33,11 @@ function handleSubmit(event, form) {
         return false;
     } else {
         //recaptcha passed validation
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         document.getElementById("recaptcha-error").style.display = "none";
         const jsonFormData = buildJsonFormData(form);
-        fetch('https://spo.libracore.ch/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
+        //~ fetch('https://spo.libracore.ch/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
+        fetch('/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -41,7 +50,7 @@ function handleSubmit(event, form) {
             console.log(r);
             if (r.message.success) {
                 var modal = document.getElementById("success_modal_"+language);
-                var span = document.getElementById("success_modal_close");
+                var span = document.getElementById("success_modal_close"+language);
                 span.onclick = function() {
                     modal.style.display = "none";
                     form.reset();
