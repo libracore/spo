@@ -23,12 +23,12 @@ function handleSubmit(event, form) {
     //~ if (response.length == 0) {
         //~ var recaptcha_error = document.getElementById("recaptcha-error-"+language);
         //~ if (language == "de") {
-			//~ recaptcha_error.innerHTML = "Bitte bestätigen Sie, dass Sie kein Roboter sind.";
-		//~ } else if (language == "fr") {
-			//~ recaptcha_error.innerHTML = "Veuillez confirmer que vous n'êtes pas un robot.";
-		//~ } else if (language == "it") {
-			//~ recaptcha_error.innerHTML = "Confermare di non essere un robot.";
-		//~ }
+            //~ recaptcha_error.innerHTML = "Bitte bestätigen Sie, dass Sie kein Roboter sind.";
+        //~ } else if (language == "fr") {
+            //~ recaptcha_error.innerHTML = "Veuillez confirmer que vous n'êtes pas un robot.";
+        //~ } else if (language == "it") {
+            //~ recaptcha_error.innerHTML = "Confermare di non essere un robot.";
+        //~ }
         //~ recaptcha_error.style.display = "block";
         //~ return false;
     //~ } else {
@@ -36,8 +36,7 @@ function handleSubmit(event, form) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         //~ document.getElementById("recaptcha-error").style.display = "none";
         const jsonFormData = buildJsonFormData(form);
-        //~ fetch('https://spo.libracore.ch/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
-        fetch('/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
+        fetch('https://spo.libracore.ch/api/method/spo.spo.doctype.meldestelle.meldestelle.new_request', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -47,10 +46,10 @@ function handleSubmit(event, form) {
         })
         .then(r => r.json())
         .then(r => {
-            console.log(r);
+            //console.log(r);
             if (r.message.success) {
                 var modal = document.getElementById("success_modal_"+language);
-                var span = document.getElementById("success_modal_close"+language);
+                var span = document.getElementById("success_modal_close_"+language);
                 span.onclick = function() {
                     modal.style.display = "none";
                     form.reset();
@@ -69,16 +68,16 @@ function handleSubmit(event, form) {
                     //~ grecaptcha.reset();
                     //~ var recaptcha_error = document.getElementById("recaptcha-error");
                     //~ if (language == "de") {
-						//~ recaptcha_error.innerHTML = 'Die reCAPTCHA Validierung ist fehlgeschlagen, bitte versuchen Sie es erneut.';
+                        //~ recaptcha_error.innerHTML = 'Die reCAPTCHA Validierung ist fehlgeschlagen, bitte versuchen Sie es erneut.';
                     //~ } else if (language == "fr") {
-						//~ recaptcha_error.innerHTML = 'La validation reCAPTCHA a échoué, veuillez réessayer.';
-					//~ } else if (language == "it") {
-						//~ recaptcha_error.innerHTML = 'La convalida del reCAPTCHA non è riuscita, riprovare.';
-					//~ }
+                        //~ recaptcha_error.innerHTML = 'La validation reCAPTCHA a échoué, veuillez réessayer.';
+                    //~ } else if (language == "it") {
+                        //~ recaptcha_error.innerHTML = 'La convalida del reCAPTCHA non è riuscita, riprovare.';
+                    //~ }
                     //~ recaptcha_error.style.display = "block";
                 } else {
                     var modal = document.getElementById("error_modal_"+language);
-                    var span = document.getElementById("error_modal_close"+language);
+                    var span = document.getElementById("error_modal_close_"+language);
                     span.onclick = function() {
                         modal.style.display = "none";
                     }
