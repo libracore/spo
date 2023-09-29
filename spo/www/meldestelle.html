@@ -1,5 +1,5 @@
 <!-- Google reCaptcha -->
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+<!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> -->
 <!-- mainContent-area start -->
 
 <section class="mainContent-area">
@@ -28,7 +28,6 @@
             <div class="content_right d-md-block">
                 <div class="right_box">
                     <h5><a href="https://www.spo.ch/" target="_blank">Über die SPO Patientenorganisation</a></h5>
-                    
                         <p>Schweizerische Stiftung<br>
                         SPO Patientenorganisation<br>
                         Häringstrasse 20<br>
@@ -54,8 +53,8 @@
                 <input type="tel" name="phone" placeholder="Telefonnummer bei Rückfragen" required />
                 <input type="email" name="email" placeholder="E-Mail bei Rückfragen" required />
                 <textarea name="report" rows="5" required>Ihre Meldung</textarea>
-                <div id="g-recaptcha-de" name="g-recaptcha-de" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
-                <div name="recaptcha-error-de" id="recaptcha-error-de" style="color: red; display: none;"></div>
+                <!--<div id="g-recaptcha-de" name="g-recaptcha-de" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
+                <div name="recaptcha-error-de" id="recaptcha-error-de" style="color: red; display: none;"></div>-->
                 <input type="submit" value="SENDEN" />
                 <input type="text" name="language" value="de" class="hidden"/>
             </form>
@@ -131,8 +130,8 @@
                 <input type="tel" name="phone" placeholder="Numéro de téléphone en cas de questions" required />
                 <input type="email" name="email" placeholder="e-mail en cas de questions" required />
                 <textarea name="report" rows="5" required>Votre signalement</textarea>
-                <div id="g-recaptcha-fr" name="g-recaptcha-fr" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
-                <div name="recaptcha-error-fr" id="recaptcha-error-fr" style="color: red; display: none;"></div>
+                <!--<div id="g-recaptcha-fr" name="g-recaptcha-fr" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
+                <div name="recaptcha-error-fr" id="recaptcha-error-fr" style="color: red; display: none;"></div>-->
                 <input type="submit" value="ENVOYER" />
                 <input type="text" name="language" value="fr" class="hidden"/>
             </form>
@@ -208,8 +207,8 @@
                 <input type="tel" name="phone" placeholder="Numero di telefono per eventuali necessità di chiarimento" required />
                 <input type="email" name="email" placeholder="E-mail per eventuali necessità di chiarimento" required />
                 <textarea name="report" rows="5" required>Il vostro messaggio</textarea>
-                <div id="g-recaptcha-it" name="g-recaptcha-it" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
-                <div name="recaptcha-error-it" id="recaptcha-error-it" style="color: red; display: none;"></div>
+                <!--<div id="g-recaptcha-it" name="g-recaptcha-it" class="g-recaptcha" data-sitekey="6LfJyw4cAAAAANc0KKbLSIkqE7TM_1AZyE9tTx4L" data-callback="correctCaptcha"></div>
+                <div name="recaptcha-error-it" id="recaptcha-error-it" style="color: red; display: none;"></div>-->
                 <input type="submit" value="INVIARE" />
                 <input type="text" name="language" value="it" class="hidden"/>
             </form>
@@ -240,7 +239,7 @@
 <div id="success_modal_de" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span id="success_modal_close" class="close">&times;</span>
+        <span id="success_modal_close_de" class="close">&times;</span>
         <p>Vielen Dank für Ihre Nachricht.<br>Sie wird so schnell wie möglich bearbeitet.</p>
     </div>
 </div>
@@ -248,7 +247,7 @@
 <div id="error_modal_de" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span id="error_modal_close" class="close">&times;</span>
+        <span id="error_modal_close_de" class="close">&times;</span>
         <p>Ups, da ist etwas schief gelaufen.<br>Wenden Sie sich nach Möglichkeit an die SPO.</p>
     </div>
 </div>
@@ -257,15 +256,15 @@
 <div id="success_modal_fr" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span id="success_modal_close" class="close">&times;</span>
+        <span id="success_modal_close_fr" class="close">&times;</span>
         <p>Merci beaucoup pour votre message.<br>Elle sera traitée dans les plus brefs délais.</p>
     </div>
 </div>
-<!-- error Modal Deutsch-->
+<!-- error Modal French-->
 <div id="error_modal_fr" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span id="error_modal_close" class="close">&times;</span>
+        <span id="error_modal_close_fr" class="close">&times;</span>
         <p>Oups, quelque chose s'est mal passé.<br>Si possible, adressez-vous à l'OSP.</p>
     </div>
 </div>
@@ -274,7 +273,7 @@
 <div id="success_modal_it" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span id="success_modal_close" class="close">&times;</span>
+        <span id="success_modal_close_it" class="close">&times;</span>
         <p>Grazie per il suo messaggio.<br>Verrà elaborato il prima possibile.</p>
     </div>
 </div>
@@ -282,7 +281,7 @@
 <div id="error_modal_it" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span id="error_modal_close" class="close">&times;</span>
+        <span id="error_modal_close_it" class="close">&times;</span>
         <p>Ops! Qualcosa è andato storto.<br>Contattare l'OSP se possibile.</p>
     </div>
 </div>
