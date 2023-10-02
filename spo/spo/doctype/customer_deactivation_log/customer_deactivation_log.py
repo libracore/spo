@@ -113,6 +113,7 @@ def proceed_sinv(sinv):
         return {
             'status': False,
             'sales_invoice': sinv_doc.name,
+	    'amount': sinv_doc.gradn_total,
             'customer': sinv_doc.customer,
             'mitgliedschaft': '',
             'error': str(err)
