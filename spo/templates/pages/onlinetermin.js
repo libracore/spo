@@ -5,7 +5,7 @@ function start() {
     document.getElementById("step2").style.display = "none";
     document.getElementById("step3").style.display = "none";
     document.getElementById("step6").style.display = "none";
-    document.getElementById("step7").style.display = "none";
+    //~ document.getElementById("step7").style.display = "none";
     document.getElementById("step10").style.display = "none";
     // prepare topic
     get_topics();
@@ -241,13 +241,13 @@ function select_payment() {
         // member with no used slots --> consider paid
         done();
     } else {
-        // requires payment
-        create_invoice();
+        // creates the new customer and if needed can be adapted to require payment
+        create_new_customer();
     }
 }
 
-function create_invoice() {
-    console.log("create invoice...");
+function create_new_customer() {
+    console.log("create new customer...");
     frappe.call({
         'method': 'spo.utils.onlinetermin.submit_request',
         'args': {
@@ -265,17 +265,19 @@ function create_invoice() {
         },
         'callback': function(response) {
             // invoice created
-            var payment = response.message;
-            
+            //~ var payment = response.message;
+
             // insert payrexx iframe here
-            console.log(payment['link']);
-            document.getElementById("payrexx").innerHTML = 
-                "<iframe src=\"" + payment['link'] + "\" title=\"Payrexx payment\""
-                + " frameborder=\"0\" style=\"width: 100%; height: 750px; \"></iframe>";
+            //~ console.log(payment['link']);
+            //~ document.getElementById("payrexx").innerHTML = 
+                //~ "<iframe src=\"" + payment['link'] + "\" title=\"Payrexx payment\""
+                //~ + " frameborder=\"0\" style=\"width: 100%; height: 750px; \"></iframe>";
                 
             // open payrexx page
-            document.getElementById("step6").style.display = "none";    // disable calendar
-            document.getElementById("step7").style.display = "block";
+            //~ document.getElementById("step6").style.display = "none";    // disable calendar (This will now be disable in done())
+            //~ document.getElementById("step7").style.display = "block";
+            
+            done();
         }
     });
 }
@@ -283,7 +285,7 @@ function create_invoice() {
 function done() {
     document.getElementById("step0").style.display = "none";
     document.getElementById("step6").style.display = "none";
-    document.getElementById("step7").style.display = "none";
+    //~ document.getElementById("step7").style.display = "none";
     document.getElementById("step10").style.display = "block";
 }
 
