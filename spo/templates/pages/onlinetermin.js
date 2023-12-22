@@ -23,7 +23,7 @@ function is_nonmember() {
 
 function is_partner(partner) {
     document.getElementById("is_partner").value = partner;
-	
+
     is_nonmember();
 }
 
@@ -222,8 +222,8 @@ function reserve_slot(id, title, start) {
                 document.getElementById("slot_title_final").value = title;
                 document.getElementById("slot_start_final").value = start.toLocaleString("de-ch", {weekday: "long", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});   
 
-				select_payment();
-				
+                select_payment();
+                
             } else {
                 // remain on calendar, could not lock this slot
                 console.log("slot reservation failed: " + id);
@@ -233,21 +233,21 @@ function reserve_slot(id, title, start) {
 }
 
 function select_payment() {
-	// check if a payment is required
-	if (document.getElementById("is_partner").value) {
-		// if partner 
-		done();
-	} else if (parseInt(document.getElementById("used_slots").value, 10) === 0) {
+    // check if a payment is required
+    if (document.getElementById("is_partner").value) {
+        // if partner 
+        done();
+    } else if (parseInt(document.getElementById("used_slots").value, 10) === 0) {
         // member with no used slots --> consider paid
         done();
     } else {
-        // requires payment
-        create_invoice();
+        // creates the new customer for a guest
+        create_new_customer();
     }
 }
 
-function create_invoice() {
-    console.log("create invoice...");
+function create_new_customer() {
+    console.log("create new customer...");
     frappe.call({
         'method': 'spo.utils.onlinetermin.submit_request',
         'args': {
@@ -263,19 +263,8 @@ function create_invoice() {
             'geburtsdatum': document.getElementById("inputBirthdate").value,
             'salutation_title': document.getElementById("salutation_title").value,
         },
-        'callback': function(response) {
-            // invoice created
-            var payment = response.message;
-            
-            // insert payrexx iframe here
-            console.log(payment['link']);
-            document.getElementById("payrexx").innerHTML = 
-                "<iframe src=\"" + payment['link'] + "\" title=\"Payrexx payment\""
-                + " frameborder=\"0\" style=\"width: 100%; height: 750px; \"></iframe>";
-                
-            // open payrexx page
-            document.getElementById("step6").style.display = "none";    // disable calendar
-            document.getElementById("step7").style.display = "block";
+        'callback': function(response) {            
+            done();
         }
     });
 }
@@ -316,20 +305,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function get_ombudsstelle() {
-  // fetching the list of partners and displaying a list only if they are active
-  frappe.call({
-    'method': 'spo.utils.onlinetermin.get_active_partners',
-    'callback': function (response) {
-       var data = response.message;	
-       var partners_list = document.getElementById("myDropdown");
-       data.forEach(res => {
-         if (res.active) {
-          partners_list.innerHTML += `<li onclick="is_partner('${res.active}')">${res.active}</li>`;
-         }
-       //console.log("res", res)
-       })
-     }
-  })
+    // fetching the list of partners and displaying a list only if they are active
+    frappe.call({
+        'method': 'spo.utils.onlinetermin.get_active_partners',
+        'callback': function (response) {
+           var data = response.message;	
+           var partners_list = document.getElementById("myDropdown");
+           data.forEach(res => {
+             if (res.active) {
+              partners_list.innerHTML += `<li onclick="is_partner('${res.active}')">${res.active}</li>`;
+             }
+           })
+        }
+    })
 }
 
 function get_arguments() {

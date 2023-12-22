@@ -1,4 +1,4 @@
-// Copyright (c) 2021, libracore and contributors
+// Copyright (c) 2021-2023, libracore and contributors
 // For license information, please see license.txt
 
 frappe.ui.form.on('Beratungsplanung', {
@@ -53,7 +53,7 @@ function fill_date(frm, options) {
                 } 
                 if (options.tue_aft === 1) {
                     user.push(options.advisor_tue_aft);
-                    time.push("14+15");
+                    time.push("13+14");
                     create = true;
                 }
             }
@@ -66,7 +66,7 @@ function fill_date(frm, options) {
                 }
                 if (options.wed_aft === 1) {
                     user.push(options.advisor_wed_aft);
-                    time.push("14+15");
+                    time.push("13+14");
                     create = true;
                 }
             }

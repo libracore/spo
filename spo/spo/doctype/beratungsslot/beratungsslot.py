@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2021-2022, libracore and contributors
+# Copyright (c) 2021-2023, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -37,7 +37,7 @@ class Beratungsslot(Document):
                 reference=self.name, 
                 purpose="Onlineberatung", 
                 amount=((sinv[0]['outstanding_amount'] or sinv[0]['base_grand_total']) * 100), 
-                vat_rate=7.7, 
+                vat_rate=8.1, 
                 sku=frappe.get_value("Einstellungen Onlinetermin", "Einstellungen Onlinetermin", "invoice_item"), 
                 currency="CHF", 
                 success_url="{0}?success={1}".format(get_url("onlinetermin"), self.name)

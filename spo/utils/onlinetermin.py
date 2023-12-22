@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2021, libracore and contributors
+# Copyright (c) 2021-2023, libracore and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
@@ -71,11 +71,11 @@ def check_membership(member, lastname):
                 status="success"
             )
             # valid membership, check availability of free consulation
-            used_slots = frappe.db.sql("""
-                SELECT COUNT(`name`) AS `slots`
-                FROM `tabBeratungsslot`
-                WHERE `customer` = "{member}" 
-                  AND DATE(`start`) >= (DATE_SUB(NOW(), INTERVAL 12 MONTH));""".format(member=member), as_dict=True)
+            # ~ used_slots = frappe.db.sql("""
+                # ~ SELECT COUNT(`name`) AS `slots`
+                # ~ FROM `tabBeratungsslot`
+                # ~ WHERE `customer` = "{member}" 
+                  # ~ AND DATE(`start`) >= (DATE_SUB(NOW(), INTERVAL 12 MONTH));""".format(member=member), as_dict=True)
             
             # return full contact details
             details = frappe.db.sql("""
@@ -102,7 +102,7 @@ def check_membership(member, lastname):
                 LIMIT 1;""".format(member=member), as_dict=True)
             if len(details) > 0:
                 detail_record = details[0]
-                detail_record['used_slots'] = used_slots[0]['slots']
+                # ~ detail_record['used_slots'] = used_slots[0]['slots']
                 return detail_record
             else:
                 # no valid record
@@ -170,27 +170,7 @@ def submit_request(slot, member, first_name, last_name, address,
         })
         address = address.insert(ignore_permissions=True)
         member = customer.name
-    # create new sales invoice
-    taxes = frappe.get_doc("Sales Taxes and Charges Template", settings.sales_taxes)
-    invoice = frappe.get_doc({
-        'doctype': 'Sales Invoice',
-        'company': settings.company,
-        'customer': member,
-        'beratungsslot': slot,
-        'items': [{
-            'item_code': settings.invoice_item,
-            'qty': 1,
-            'rate': settings.rate,
-            'description': slot
-        }],
-        'taxes_and_charges': settings.sales_taxes,
-        'taxes': taxes.taxes
-    })
-    invoice = invoice.insert(ignore_permissions=True)
-    invoice.submit()
-    # return {'invoice': invoice.name, 'rate': (invoice.rounded_total or invoice.grand_total)}
-    # create payrexx payment
-    return create_payment(slot)
+    return
     
 
 @frappe.whitelist(allow_guest=True)
