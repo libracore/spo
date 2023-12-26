@@ -280,6 +280,13 @@ def get_data():
                 },
                 {
                     "type": "report",
+                    "name": "MwSt Deklaration 2024",
+                    "label": _("MwSt Deklaration 2024"),
+                    "doctype": "GL Entry",
+                    "is_query_report": True
+                },
+                {
+                    "type": "report",
                     "name": "General Ledger",
                     "label": _("General Ledger"),
                     "doctype": "GL Entry",
