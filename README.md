@@ -3,6 +3,8 @@
 SPO Mandatsverwaltung
 
 ### Version Log
+#### 3.10.0
+Neue Auswertung MwSt-Deklaration 2024 mit den neuen Steuersätzen
 #### 3.9.9
 Der Daily-Job cleanup_anfragen wurde in einen Weekly-Job umgewandelt
 #### 3.9.8
