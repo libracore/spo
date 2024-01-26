@@ -320,10 +320,18 @@ function load_calendar(events) { //slots
           'center': 'title',
           'right': 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+        'eventDidMount': function(info) {
+            var tooltip = new Tooltip(info.el, {
+              title: info.event.extendedProps.language,
+              placement: 'top',
+              trigger: 'hover',
+              container: 'body'
+            });
+          },
         'events': events,
         'locale': 'de',
         'eventClick': function(info) {
-            choose_language(info.event.id, info.event.extendedProps.description, info.event.start, info.event.language);
+            choose_language(info.event.id, info.event.extendedProps.description, info.event.start, info.event.extendedProps.language);
         },
         'eventColor': '#ffffff'
     });
