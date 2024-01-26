@@ -1,5 +1,6 @@
 {
- "creation": "2024-01-18 14:36:18.478292",
+ "autoname": "field:language",
+ "creation": "2024-01-18 16:18:58.172519",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -8,20 +9,34 @@
  ],
  "fields": [
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "language",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Sprache",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   }
  ],
- "istable": 1,
- "modified": "2024-01-18 14:36:18.478292",
+ "modified": "2024-01-25 15:32:12.585902",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Sprache",
  "owner": "Administrator",
- "permissions": [],
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",

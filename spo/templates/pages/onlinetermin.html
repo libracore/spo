@@ -180,13 +180,21 @@
                 <button class="btn btn-primary" onclick="select_slot();">Termin finden</button>
             </div>
         </div>
-    </div>
+    </div> 
 
     <div id="step6" style="display: none; "><!-- step 6: select slot -->
         <h2>Termin finden</h2>
     
         <div id="calendar">
         </div>
+
+        <form id="select_language"> 
+            <label for="available_languages">Bitte wählen Sie eine der verfügbaren Sprachen für die Beratung</label>
+            <select id="available_languages">
+
+            </select>
+            <button type="button" id="confirm_language_selection" onclick="">Bestätigen</button>
+        </form>
         
         <div class="row" style="margin-top: 20px; padding-bottom: 20px;">
             <div class="form-column col-sm-12">

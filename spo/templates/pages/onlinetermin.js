@@ -185,9 +185,43 @@ function get_topics() {
 }
 
 // this function is called when a calender slot is selected
-function reserve_slot(id, title, start) {
+function choose_language(id, title, start, languages){
     // hide calendar to prevent double-hits
     document.getElementById("calendar").style.display = "none";
+    //select language if multiple are available
+    if (languages.length > 1){
+        var selectElement = document.getElementById("available_languages");
+        var defaultOption = document.createElement("language");
+        defaultOption.text = languages[0];
+        defaultOption.value = languages[0];
+        defaultOption.selected = true;
+        selectElement.appendChild(defaultOption);
+
+        languages.forEach(function(language) {
+            var option = document.createElement("language");
+            option.text = language;
+            option.value = language;
+            selectElement.appendChild(option);
+        });
+
+        document.getElementById("select_language").style.display = "block";
+
+        confirmLanguageSelection.addEventListener("click", function(event){
+            event.preventDefault();
+            var language = selectElement.value;
+            document.getElementById("select_language").style.display = "none";
+        });
+        
+    } else {
+        var language = languages[0];
+    }
+
+    reserve_slot(id, title, start, language);
+
+}
+
+//this function reserves the slot after having chosen a language
+function reserve_slot(id, title, start,language) {
     document.getElementById("calendar_wait").style.display = "block";
     
     console.log("reserve slot...");
@@ -204,6 +238,7 @@ function reserve_slot(id, title, start) {
             'pincode': document.getElementById("inputZIP").value, 
             'email': document.getElementById("inputEmail").value, 
             'phone': document.getElementById("inputPhone").value,
+            'language' : language,
             'used_slots': document.getElementById("used_slots").value,
             'consultation_type': document.getElementById("consultation_mode").value,
             'text': document.getElementById("text").value,
@@ -276,7 +311,7 @@ function done() {
     document.getElementById("step10").style.display = "block";
 }
 
-function load_calendar(events) {
+function load_calendar(events) { //slots
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       'initialView': 'dayGridMonth',
@@ -288,7 +323,7 @@ function load_calendar(events) {
         'events': events,
         'locale': 'de',
         'eventClick': function(info) {
-            reserve_slot(info.event.id, info.event.extendedProps.description, info.event.start);
+            choose_language(info.event.id, info.event.extendedProps.description, info.event.start, info.event.language);
         },
         'eventColor': '#ffffff'
     });
@@ -299,9 +334,13 @@ function load_calendar(events) {
 document.addEventListener("DOMContentLoaded", function(event) {
     // add change triggers here
     
+    //references to the form elements
+    var confirmLanguageSelection = document.getElementById("confirm_language_selection");
+    
     // process command line arguments
     get_arguments();
     get_ombudsstelle();
+
 });
 
 function get_ombudsstelle() {
