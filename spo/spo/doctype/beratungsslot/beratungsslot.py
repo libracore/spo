@@ -103,7 +103,11 @@ def get_slots(topic="Medizin"):
             AND `topic` = "{topic}"
         GROUP BY b.name;""".format(topic=topic), as_dict=True)
     for slot in available_slots:
-        slot['language'] = slot['language'].split(', ')
+        language_str = slot.get('language')
+        if language_str:
+            slot['language'] = language_str.split(', ')
+        else:
+            slot['language'] = ['Deutsch']
 
     return available_slots
 

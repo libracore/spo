@@ -49,7 +49,6 @@ function start_over() {
     document.getElementById("step2").style.display = "none";
 }
 
-
 function select_option_from_member() {
     var customer_nr = document.getElementById("customer_nr").value;
     var customer_lastname = document.getElementById("customer_lastname").value;
@@ -106,6 +105,24 @@ function back_to_options() {
     document.getElementById("step6").style.display = "none";
 }
 
+function back_to_calendar() {
+    //document.getElementById("step6").style.display = "block";
+    document.getElementById("select_language").style.display = "none";
+    document.getElementById("calendar").style.display = "block";
+    document.getElementById("calendar_wait").style.display = "none";
+}
+
+function languageToFlag(language){
+    const flagMapping = {
+        'Englisch': '🇬🇧',
+        'Französisch': '🇫🇷',
+        'Deutsch': '🇩🇪',
+        'Italienisch': '🇮🇹',
+        'Spanisch': '🇪🇸'
+    };
+    return language.map(code => flagMapping[code]).join(' ');
+}
+
 function select_option_from_nonmember() {
     var firstname = document.getElementById("inputFirstname").value;
     var lastname = document.getElementById("inputSurname").value;
@@ -156,8 +173,10 @@ function select_slot() {
         },
         'callback': function(response) {
             var slots = response.message;
+            console.log(slots);
             
             document.getElementById("step6").style.display = "block";
+            document.getElementById("select_language").style.display = "none";
             document.getElementById("calendar").style.display = "block";
             document.getElementById("calendar_wait").style.display = "none";
             
@@ -188,41 +207,41 @@ function get_topics() {
 function choose_language(id, title, start, languages){
     // hide calendar to prevent double-hits
     document.getElementById("calendar").style.display = "none";
+    var confirmLanguageSelection = document.getElementById("confirm_language_selection");
     //select language if multiple are available
     if (languages.length > 1){
         var selectElement = document.getElementById("available_languages");
-        var defaultOption = document.createElement("language");
-        defaultOption.text = languages[0];
-        defaultOption.value = languages[0];
-        defaultOption.selected = true;
-        selectElement.appendChild(defaultOption);
+        selectElement.innerHTML = "";
 
         languages.forEach(function(language) {
-            var option = document.createElement("language");
+            var option = document.createElement("option");
             option.text = language;
             option.value = language;
             selectElement.appendChild(option);
         });
 
+        document.getElementById("finalization").style.display="none";
         document.getElementById("select_language").style.display = "block";
+        document.getElementById("confirm_language_selection").style.display = "inline-block";
 
         confirmLanguageSelection.addEventListener("click", function(event){
             event.preventDefault();
             var language = selectElement.value;
             document.getElementById("select_language").style.display = "none";
+            reserve_slot(id, title, start, language);
         });
         
     } else {
         var language = languages[0];
+        console.log(language);
+        reserve_slot(id, title, start, language);
     }
-
-    reserve_slot(id, title, start, language);
-
 }
 
 //this function reserves the slot after having chosen a language
 function reserve_slot(id, title, start,language) {
-    document.getElementById("calendar_wait").style.display = "block";
+    document.getElementById("finalization").style.display = "block";
+    document.getElementById("calendar_wait").style.display = "inline-block";
     
     console.log("reserve slot...");
     // reserve slot
@@ -312,6 +331,10 @@ function done() {
 }
 
 function load_calendar(events) { //slots
+    events.forEach(event => {
+        const flags = languageToFlag(event.language);
+        event.title += ' ' + flags;
+    });
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       'initialView': 'dayGridMonth',
@@ -320,15 +343,7 @@ function load_calendar(events) { //slots
           'center': 'title',
           'right': 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        'eventDidMount': function(info) {
-            var tooltip = new Tooltip(info.el, {
-              title: info.event.extendedProps.language,
-              placement: 'top',
-              trigger: 'hover',
-              container: 'body'
-            });
-          },
-        'events': events,
+        'events': events,  
         'locale': 'de',
         'eventClick': function(info) {
             choose_language(info.event.id, info.event.extendedProps.description, info.event.start, info.event.extendedProps.language);
@@ -339,12 +354,10 @@ function load_calendar(events) { //slots
 }
 
 //change triggers
+
 document.addEventListener("DOMContentLoaded", function(event) {
     // add change triggers here
-    
-    //references to the form elements
-    var confirmLanguageSelection = document.getElementById("confirm_language_selection");
-    
+
     // process command line arguments
     get_arguments();
     get_ombudsstelle();
