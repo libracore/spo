@@ -106,7 +106,7 @@ function back_to_options() {
 }
 
 function back_to_calendar() {
-    //document.getElementById("step6").style.display = "block";
+    document.getElementById("step6").style.display = "block";
     document.getElementById("select_language").style.display = "none";
     document.getElementById("calendar").style.display = "block";
     document.getElementById("calendar_wait").style.display = "none";
@@ -173,7 +173,6 @@ function select_slot() {
         },
         'callback': function(response) {
             var slots = response.message;
-            console.log(slots);
             
             document.getElementById("step6").style.display = "block";
             document.getElementById("select_language").style.display = "none";
@@ -233,7 +232,6 @@ function choose_language(id, title, start, languages){
         
     } else {
         var language = languages[0];
-        console.log(language);
         reserve_slot(id, title, start, language);
     }
 }
