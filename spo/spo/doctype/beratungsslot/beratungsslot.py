@@ -90,18 +90,18 @@ class Beratungsslot(Document):
 def get_slots(topic="Medizin"):
     available_slots = frappe.db.sql("""
         SELECT 
-            b.`name` AS `id`, 
-            b.`status` AS `title`, 
-            b.`topic` AS `description`,
-            b.`start`, 
-            b.`end`,
-            GROUP_CONCAT(i.language SEPARATOR ', ') as `language`
-        FROM `tabBeratungsslot` b
-        LEFT JOIN `tabBeratungssprachen` i ON b.name = i.parent
+            `b`.`name` AS `id`, 
+            `b`.`status` AS `title`, 
+            `b`.`topic` AS `description`,
+            `b`.`start`, 
+            `b`.`end`,
+            GROUP_CONCAT(`i`.`language` SEPARATOR ', ') AS `language`
+        FROM `tabBeratungsslot` AS `b`
+        LEFT JOIN `tabBeratungssprachen` AS `i` ON `b`.`name` = `i`.`parent`
         WHERE `start` >= DATE_ADD(DATE(NOW()), INTERVAL 2 DAY)
             AND `status` = 'frei'
             AND `topic` = "{topic}"
-        GROUP BY b.name;""".format(topic=topic), as_dict=True)
+        GROUP BY `b`.`name`;""".format(topic=topic), as_dict=True)
     for slot in available_slots:
         language_str = slot.get('language')
         if language_str:
