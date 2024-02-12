@@ -106,9 +106,11 @@ def get_slots(topic="Medizin"):
         language_str = slot.get('language')
         if language_str:
             slot['language'] = language_str.split(', ')
+            if 'Deutsch' not in slot['language']:
+                slot['language'].append('Deutsch')
         else:
             slot['language'] = ['Deutsch']
-
+    print(available_slots)
     return available_slots
 
 @frappe.whitelist(allow_guest=True)
