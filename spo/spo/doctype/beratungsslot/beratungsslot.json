@@ -194,7 +194,7 @@
    "fieldtype": "Select",
    "label": "Art",
    "no_copy": 1,
-   "options": "Telefongespr\u00e4ch\nOnline Meeting"
+   "options": "Telefongespr\u00e4ch"
   },
   {
    "fieldname": "text",
@@ -241,7 +241,7 @@
    "options": "Beratungssprachen"
   }
  ],
- "modified": "2024-01-25 12:21:41.392706",
+ "modified": "2024-03-01 08:44:57.521428",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 import time
+import json
 from spo.utils.payrexx import get_payment_status, create_payment
 
 @frappe.whitelist(allow_guest=True) 
@@ -192,3 +193,16 @@ def get_topics():
     for t in topics:
         topic_list.append(t['name'])
     return topic_list
+
+@frappe.whitelist(allow_guest=True)
+def language_to_flag(events):
+    events_list = json.loads(events)
+    for event in events_list:
+        flags = []
+        for language in event["language"]:
+            language_doc = frappe.get_doc("Sprache", language)
+            flags.append(language_doc.flag)
+        
+        event["title"] += ' ' + ' '.join(flags)
+
+    return events_list

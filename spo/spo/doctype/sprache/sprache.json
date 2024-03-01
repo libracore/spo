@@ -5,7 +5,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "language"
+  "language",
+  "flag"
  ],
  "fields": [
   {
@@ -16,9 +17,14 @@
    "label": "Sprache",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "flag",
+   "fieldtype": "Data",
+   "label": "Flag"
   }
  ],
- "modified": "2024-02-09 09:40:39.284908",
+ "modified": "2024-02-28 11:06:23.589589",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Sprache",
@@ -35,15 +41,6 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
-  },
-  {
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Projects User",
-   "share": 1
   }
  ],
  "quick_entry": 1,

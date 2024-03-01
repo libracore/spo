@@ -112,16 +112,6 @@ function back_to_calendar() {
     document.getElementById("calendar_wait").style.display = "none";
 }
 
-function languageToFlag(language){
-    const flagMapping = {
-        'Englisch': '🇬🇧',
-        'Französisch': '🇫🇷',
-        'Deutsch': '🇩🇪',
-        'Italienisch': '🇮🇹',
-        'Spanisch': '🇪🇸'
-    };
-    return language.map(code => flagMapping[code]).join(' ');
-}
 
 function select_option_from_nonmember() {
     var firstname = document.getElementById("inputFirstname").value;
@@ -329,10 +319,22 @@ function done() {
 }
 
 function load_calendar(events) { //slots
-    events.forEach(event => {
-        const flags = languageToFlag(event.language);
-        event.title += ' ' + flags;
+    //for each event display the event.title + language flag
+    frappe.call({
+        'method': 'spo.utils.onlinetermin.language_to_flag',
+        'async': false,
+        'args': {
+            'events': events
+        },
+        'callback': function(response) {
+            if (response.message) {
+                display_calendar(response.message)
+            }
+        }
     });
+}
+
+function display_calendar(events){
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       'initialView': 'dayGridMonth',
