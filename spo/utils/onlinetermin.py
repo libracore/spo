@@ -10,23 +10,23 @@ from spo.utils.payrexx import get_payment_status, create_payment
 
 @frappe.whitelist(allow_guest=True) 
 def get_active_partners():
-	sql_query = """
-		SELECT 
-		IF (`tabOmbudsstellen Partner`.`active` = 1, `tabOmbudsstellen Partner`.`name`, null) AS active
-		FROM `tabOmbudsstellen Partner`
-		ORDER BY `tabOmbudsstellen Partner`.`active` DESC
-	"""
-	data = frappe.db.sql(sql_query, as_dict = True)
-	return data
+    sql_query = """
+        SELECT 
+        IF (`tabOmbudsstellen Partner`.`active` = 1, `tabOmbudsstellen Partner`.`name`, null) AS active
+        FROM `tabOmbudsstellen Partner`
+        ORDER BY `tabOmbudsstellen Partner`.`active` DESC
+    """
+    data = frappe.db.sql(sql_query, as_dict = True)
+    return data
 
 @frappe.whitelist(allow_guest=True)
 def check_membership(member, lastname):
     # check if requests to API are accepted (fail block on 100 hits per day)
     failed = frappe.db.sql("""
-    SELECT COUNT(`name`) AS `failed`
-    FROM `tabOnlinetermin Access Log`
-    WHERE `status` = "failed" 
-      AND `creation` >= (DATE_SUB(NOW(), INTERVAL 1 DAY));""", as_dict=True)[0]['failed']
+        SELECT COUNT(`name`) AS `failed`
+        FROM `tabOnlinetermin Access Log`
+        WHERE `status` = "failed" 
+          AND `creation` >= (DATE_SUB(NOW(), INTERVAL 1 DAY));""", as_dict=True)[0]['failed']
     if failed > 100:
         # gateway locked
         time.sleep(30)      # wait for 30 seconds
@@ -203,6 +203,7 @@ def language_to_flag(events):
             language_doc = frappe.get_doc("Sprache", language)
             flags.append(language_doc.flag)
         
-        event["title"] += ' ' + ' '.join(flags)
+        if flags:
+            event["title"] = "{0} {1}".format(event.get("title"), " ".join(flags))
 
     return events_list
