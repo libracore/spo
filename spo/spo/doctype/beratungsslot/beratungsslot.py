@@ -90,21 +90,32 @@ class Beratungsslot(Document):
 def get_slots(topic="Medizin"):
     available_slots = frappe.db.sql("""
         SELECT 
-            `name` AS `id`, 
-            "frei" AS `title`, 
-            `topic` AS `description`,
-            `start`, 
-            `end`
-        FROM `tabBeratungsslot`
+            `b`.`name` AS `id`, 
+            `b`.`status` AS `title`, 
+            `b`.`topic` AS `description`,
+            `b`.`start`, 
+            `b`.`end`,
+            GROUP_CONCAT(`i`.`language` SEPARATOR ', ') AS `language`
+        FROM `tabBeratungsslot` AS `b`
+        LEFT JOIN `tabBeratungssprachen` AS `i` ON `b`.`name` = `i`.`parent`
         WHERE `start` >= DATE_ADD(DATE(NOW()), INTERVAL 2 DAY)
-          AND `status` = "frei"
-          AND `topic` = "{topic}";""".format(topic=topic), as_dict=True)
-          
+            AND `status` = 'frei'
+            AND `topic` = "{topic}"
+        GROUP BY `b`.`name`;""".format(topic=topic), as_dict=True)
+    for slot in available_slots:
+        language_str = slot.get('language')
+        if language_str:
+            slot['language'] = language_str.split(', ')
+            if 'Deutsch' not in slot['language']:
+                slot['language'].append('Deutsch')
+        else:
+            slot['language'] = ['Deutsch']
+    print(available_slots)
     return available_slots
 
 @frappe.whitelist(allow_guest=True)
 def reserve_slot(slot, member, first_name, last_name, address, 
-    city, pincode, email, phone, used_slots=1, consultation_type="Online", 
+    city, pincode, email, phone, language, used_slots=1, consultation_type="Online", 
     text="", geburtsdatum=None, salutation_title=None, ombudsstelle=None):
     # verify if this slot is still available
     available_slots = frappe.db.sql("""
@@ -128,6 +139,10 @@ def reserve_slot(slot, member, first_name, last_name, address,
         slot.geburtsdatum = geburtsdatum
         slot.salutation_title = salutation_title
         slot.ombudsstelle = ombudsstelle
+        if language:
+            slot.append("language", {
+                'language': language
+            })
         if cint(used_slots) == 0 or ombudsstelle:
             slot.status = "inklusive"
         else:

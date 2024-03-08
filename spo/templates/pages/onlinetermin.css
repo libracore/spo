@@ -239,3 +239,7 @@ a, a:hover {
 .dropdown li:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+#available_languages {
+  width:auto;
+}

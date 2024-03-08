@@ -12,6 +12,7 @@
 				<ul id="myDropdown" class="dropdown-content"></ul>
 			</div>
     </div>
+    
     <div id="step1" style="display: none; "><!-- Step 1 member: identify -->
         <h2>Mitgliedschaft</h2>
         
@@ -50,6 +51,7 @@
         <p id="member_failed" style="display: none; color: #f2c774; ">Die angegebenen Benutzerdaten sind ungültig.</p>
 
     </div>
+
     <div id="step2" style="display: none; "><!-- Step 2: non-member: credentials -->
         <h2>Persönliche Daten</h2>
             <div class="row" style="margin-top: 20px; ">
@@ -146,7 +148,6 @@
                 <div class="control-group">
                     <select id="consultation_mode" class="form-control">
                         <option id="consultation_mode_phone">Telefongespräch</option>
-                        <option id="consultation_mode_online" >Online Meeting</option>
                     </select>
                 </div>
             </div>
@@ -180,21 +181,41 @@
                 <button class="btn btn-primary" onclick="select_slot();">Termin finden</button>
             </div>
         </div>
-    </div>
+    </div> 
 
     <div id="step6" style="display: none; "><!-- step 6: select slot -->
         <h2>Termin finden</h2>
     
         <div id="calendar">
+            
         </div>
         
-        <div class="row" style="margin-top: 20px; padding-bottom: 20px;">
-            <div class="form-column col-sm-12">
-                <button class="btn btn-secondary" onclick="back_to_options();">Zurück</button> 
-                <p id="calendar_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> buchen... bitte schliessen Sie diese Seite nicht</p>
+        <section id="select_language">
+            <form> 
+                <label for="available_languages">Bitte wählen Sie eine der verfügbaren Sprachen für die Beratung</label>
+                <select id="available_languages" class="form-control">
+    
+                </select>
+                <div class="row" style="margin-top: 20px; padding-bottom: 20px;">
+                    <div class="form-column col-sm-12">
+                        <button class="btn btn-secondary" onclick="back_to_calendar();">Zurück</button> 
+                        <button class="btn btn-primary" id="confirm_language_selection">Bestätigen</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        
+        <section id="finalization">
+            <div class="row" style="margin-top: 20px; padding-bottom: 20px;">
+                <div class="form-column col-sm-12">
+                    <button class="btn btn-secondary" onclick="back_to_options();">Zurück</button> 
+                    <p id="calendar_wait" style="display: none; "><img src="/assets/spo/image/ajax-loader.gif" /> buchen... bitte schliessen Sie diese Seite nicht</p>
+                </div>
             </div>
-        </div>
+        </section>
+
     </div>
+
     <div id="step7" style="display: none; "><!-- step 7: payment -->
         <h2>Zahlung</h2>
         <div class="row" style="margin-top: 20px; ">
@@ -259,3 +280,4 @@
 <link href="/assets/spo/js/fullcalendar.min.css" rel="stylesheet">
 <script src="/assets/spo/js/fullcalendar.min.js"></script>
 <script src="/assets/spo/js/locales-all.min.js"></script>
+

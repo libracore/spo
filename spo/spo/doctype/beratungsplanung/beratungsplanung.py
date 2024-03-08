@@ -29,6 +29,9 @@ def create_slot(date, hour, subject, user):
         'user': user,
         'status': 'frei'
     })
+    beraterzuweisung_doc = frappe.get_doc("Beraterzuweisung", user)
+    if beraterzuweisung_doc:
+        new_slot.language = beraterzuweisung_doc.beratungssprachen
     #frappe.log_error("{0}".format(new_slot.as_dict()))
     new_slot.insert()
     return

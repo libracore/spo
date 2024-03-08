@@ -6,7 +6,8 @@
  "engine": "InnoDB",
  "field_order": [
   "user",
-  "objective"
+  "objective",
+  "beratungssprachen"
  ],
  "fields": [
   {
@@ -20,9 +21,15 @@
    "fieldtype": "Link",
    "label": "Berater/In",
    "options": "User"
+  },
+  {
+   "fieldname": "beratungssprachen",
+   "fieldtype": "Table MultiSelect",
+   "label": "Beratungssprachen",
+   "options": "Beratungssprachen"
   }
  ],
- "modified": "2021-12-27 15:41:37.494480",
+ "modified": "2024-02-28 10:20:10.901928",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beraterzuweisung",

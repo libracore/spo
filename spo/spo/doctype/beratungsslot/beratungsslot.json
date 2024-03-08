@@ -13,6 +13,7 @@
   "topic",
   "user",
   "advisor_email",
+  "language",
   "section_status",
   "status",
   "column_status",
@@ -193,8 +194,7 @@
    "fieldtype": "Select",
    "label": "Art",
    "no_copy": 1,
-   "read_only": 0,
-   "options": "Telefongespräch\nOnline Meeting"
+   "options": "Telefongespr\u00e4ch"
   },
   {
    "fieldname": "text",
@@ -233,9 +233,15 @@
    "fieldname": "section_ombudsstellen",
    "fieldtype": "Section Break",
    "label": "Ombudsstellen"
+  },
+  {
+   "fieldname": "language",
+   "fieldtype": "Table MultiSelect",
+   "label": "Beratungssprache",
+   "options": "Beratungssprachen"
   }
  ],
- "modified": "2022-07-28 13:43:59.817884",
+ "modified": "2024-03-01 08:44:57.521428",
  "modified_by": "Administrator",
  "module": "SPO",
  "name": "Beratungsslot",

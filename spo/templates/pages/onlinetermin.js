@@ -49,7 +49,6 @@ function start_over() {
     document.getElementById("step2").style.display = "none";
 }
 
-
 function select_option_from_member() {
     var customer_nr = document.getElementById("customer_nr").value;
     var customer_lastname = document.getElementById("customer_lastname").value;
@@ -106,6 +105,14 @@ function back_to_options() {
     document.getElementById("step6").style.display = "none";
 }
 
+function back_to_calendar() {
+    document.getElementById("step6").style.display = "block";
+    document.getElementById("select_language").style.display = "none";
+    document.getElementById("calendar").style.display = "block";
+    document.getElementById("calendar_wait").style.display = "none";
+}
+
+
 function select_option_from_nonmember() {
     var firstname = document.getElementById("inputFirstname").value;
     var lastname = document.getElementById("inputSurname").value;
@@ -158,6 +165,7 @@ function select_slot() {
             var slots = response.message;
             
             document.getElementById("step6").style.display = "block";
+            document.getElementById("select_language").style.display = "none";
             document.getElementById("calendar").style.display = "block";
             document.getElementById("calendar_wait").style.display = "none";
             
@@ -185,10 +193,43 @@ function get_topics() {
 }
 
 // this function is called when a calender slot is selected
-function reserve_slot(id, title, start) {
+function choose_language(id, title, start, languages){
     // hide calendar to prevent double-hits
     document.getElementById("calendar").style.display = "none";
-    document.getElementById("calendar_wait").style.display = "block";
+    var confirmLanguageSelection = document.getElementById("confirm_language_selection");
+    //select language if multiple are available
+    if (languages.length > 1){
+        var selectElement = document.getElementById("available_languages");
+        selectElement.innerHTML = "";
+
+        languages.forEach(function(language) {
+            var option = document.createElement("option");
+            option.text = language;
+            option.value = language;
+            selectElement.appendChild(option);
+        });
+
+        document.getElementById("finalization").style.display="none";
+        document.getElementById("select_language").style.display = "block";
+        document.getElementById("confirm_language_selection").style.display = "inline-block";
+
+        confirmLanguageSelection.addEventListener("click", function(event){
+            event.preventDefault();
+            var language = selectElement.value;
+            document.getElementById("select_language").style.display = "none";
+            reserve_slot(id, title, start, language);
+        });
+        
+    } else {
+        var language = languages[0];
+        reserve_slot(id, title, start, language);
+    }
+}
+
+//this function reserves the slot after having chosen a language
+function reserve_slot(id, title, start,language) {
+    document.getElementById("finalization").style.display = "block";
+    document.getElementById("calendar_wait").style.display = "inline-block";
     
     console.log("reserve slot...");
     // reserve slot
@@ -204,6 +245,7 @@ function reserve_slot(id, title, start) {
             'pincode': document.getElementById("inputZIP").value, 
             'email': document.getElementById("inputEmail").value, 
             'phone': document.getElementById("inputPhone").value,
+            'language' : language,
             'used_slots': document.getElementById("used_slots").value,
             'consultation_type': document.getElementById("consultation_mode").value,
             'text': document.getElementById("text").value,
@@ -276,7 +318,23 @@ function done() {
     document.getElementById("step10").style.display = "block";
 }
 
-function load_calendar(events) {
+function load_calendar(events) { //slots
+    //for each event display the event.title + language flag
+    frappe.call({
+        'method': 'spo.utils.onlinetermin.language_to_flag',
+        'async': false,
+        'args': {
+            'events': events
+        },
+        'callback': function(response) {
+            if (response.message) {
+                display_calendar(response.message)
+            }
+        }
+    });
+}
+
+function display_calendar(events){
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       'initialView': 'dayGridMonth',
@@ -285,10 +343,10 @@ function load_calendar(events) {
           'center': 'title',
           'right': 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        'events': events,
+        'events': events,  
         'locale': 'de',
         'eventClick': function(info) {
-            reserve_slot(info.event.id, info.event.extendedProps.description, info.event.start);
+            choose_language(info.event.id, info.event.extendedProps.description, info.event.start, info.event.extendedProps.language);
         },
         'eventColor': '#ffffff'
     });
@@ -296,12 +354,14 @@ function load_calendar(events) {
 }
 
 //change triggers
+
 document.addEventListener("DOMContentLoaded", function(event) {
     // add change triggers here
-    
+
     // process command line arguments
     get_arguments();
     get_ombudsstelle();
+
 });
 
 function get_ombudsstelle() {

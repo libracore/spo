@@ -2,3 +2,4 @@ execute:import unidecode # new requirement
 spo.patches.v1_4_3.create_demographie_bins
 spo.patches.v2_0_0.spo_vip_status
 spo.patches.v3_0_0.inaktivierungen
+spo.patches.v3_0_0.create_languages
